@@ -2,13 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct _RoyArray {
-  void * data;
-  size_t length;
-  size_t element_size;
-  size_t capacity;
-};
-
 RoyArray * roy_array_new(size_t capacity,
                          size_t element_size) {
   RoyArray * ret = malloc(sizeof(void *) + sizeof(size_t) * 3);

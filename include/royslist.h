@@ -4,6 +4,11 @@
 #ifndef ROYSLIST_H
 #define ROYSLIST_H
 
+struct _RoySList {
+  void * data;
+  struct _RoySList * next;
+};
+
 // RoySList: a container implemented as a singly-linked list
 // which supports fast insertion and removal from anywhere in the container.
 // Fast random access is not supported.

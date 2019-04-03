@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct _RoySList {
-  void * data;
-  struct _RoySList * next;
-};
 
 RoySList *
 roy_slist_new(void) {

@@ -4,6 +4,12 @@
 #ifndef ROYARRAY_H
 #define ROYARRAY_H
 
+struct _RoyArray {
+  void * data;
+  size_t length;
+  size_t element_size;
+  size_t capacity;
+};
 
 // RoyArray: a container that encapsulates fixed size arrays.
 typedef struct _RoyArray RoyArray;
