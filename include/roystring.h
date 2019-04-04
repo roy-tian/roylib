@@ -74,8 +74,13 @@ char * roy_string_entab(char * str, size_t tab_size);
 
 // Returns a string in which 'ch' will occur 'count' times.
 // e.g. ch = 'a', count = 5, then 'dest' would be 'aaaaa'.
-// The behavior is undefined if 'dest' is not long enough.
+// The behavior is undefined if the capacity of 'dest' is insufficient.
 char * roy_string_fill_char(char * dest, int ch, size_t count);
+
+// Expands shorthand notations into its equivalent complete list.
+// e.g if 'pattern' is 'a-g' you will get a 'dest' fill with 'abcdefg'.
+// The behavior is undefined if the capacity of 'dest' is insufficient.
+char * roy_string_fill_sequence(char * dest, const char * pattern);
 
 // Folds the single-lined 'str' into two or more shorter lines
 // after the last non-blank character that occurs before 'line_width'.

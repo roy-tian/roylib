@@ -6,7 +6,7 @@ typedef long RoyInteger;
 typedef double RoyReal;
 
 // Converts 'str' of hexadecimal digits into its equivalent value.
-RoyUInteger roy_parse_hexadecimal(const char * str);
+RoyInteger roy_parse_hexadecimal(const char * str);
 
 char * roy_number_to_string_binary(RoyUInteger num);
 

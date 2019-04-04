@@ -58,11 +58,11 @@ char * roy_string_unique_char(char * str, int ch) {
   return str;
 }
 
+// TODO: the function needs to be character insensible.
 char * roy_string_replace_all(char * str,
                               const char * old_sub,
                               const char * new_sub,
                               bool sensibility) {
-// TODO: the function needs to be character sensible.
   // the length should be when all work is done.
   size_t len_after = strlen(str) +
                      roy_string_count_substring(str, old_sub, true) *
@@ -151,6 +151,13 @@ char * roy_string_fill_char(char * dest, int ch, size_t count) {
   }
   *(dest + i) = '\0';
   return dest;
+}
+
+char * roy_string_fill_sequence(char * dest, const char * pattern) {
+  bool flag = false; // is current char in sequence
+  while (*pattern != '\0') {
+    
+  }
 }
 
 char * roy_string_detab(char * str, size_t tab_size) {

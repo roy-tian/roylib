@@ -2,8 +2,15 @@
 #include "../include/roystring.h"
 #include <ctype.h>
 
-RoyUInteger roy_parse_hexadecimal(const char * str) {
-  RoyUInteger ret = 0;
+RoyInteger roy_parse_hexadecimal(const char * str) {
+  RoyInteger ret = 0;
+  RoyInteger pn = 1;
+  if (strchr(str, '-') == str) {
+    str += 1;
+    pn = -1;
+  } else if (strchr(str, '+') == str) {
+    str += 1;
+  }
   if (strstr(str, "0X") == str || strstr(str, "0x") == str) {
     str += 2;
   }
@@ -19,6 +26,6 @@ RoyUInteger roy_parse_hexadecimal(const char * str) {
       ret += cur_chr - 'a' + 10;
     }
   }
-  return ret;
+  return ret * pn;
 }
 
