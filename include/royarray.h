@@ -4,21 +4,14 @@
 #ifndef ROYARRAY_H
 #define ROYARRAY_H
 
-struct _RoyArray {
-  void * data;
-  size_t length;
-  size_t element_size;
-  size_t capacity;
-};
-
 // RoyArray: a container that encapsulates fixed size arrays.
 typedef struct _RoyArray RoyArray;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
-// Allocates suficient memory for an RoyArray and returns a pointer to it.
+// Allocates sufficient memory for an RoyArray and returns a pointer to it.
 // The array can store 'capacity' elements with size 'element_size' each.
-// (Operations on unnewed RoyArrays will cause undefined behavior.)
+// (Operations on un-newed RoyArrays will cause undefined behavior.)
 RoyArray * roy_array_new(size_t capacity,
                          size_t element_size);
 
