@@ -264,8 +264,7 @@ size_t roy_string_count_word(const char * str) {
       flag = false;
       count++;
     }
-    pstr++;
-  } while (*pstr != '\0');
+  } while (*pstr++ != '\0');
   return count;
 }
 
@@ -295,11 +294,9 @@ size_t roy_string_count_word_if(const char * str, size_t length) {
 
 size_t roy_string_count_line(const char * str) {
   size_t str_length = strlen(str);
-  if (str_length == 0) {
-    return 0;
-  }
   size_t count = roy_string_count_char(str, '\n');
-  if (*(str + str_length - 1) != '\n') {
+  if (str_length != 0 && *(str + str_length - 1) != '\n') {
+    // last char is not '\n', but that line still needs to be counted.
     count++;
   }
   return count;
