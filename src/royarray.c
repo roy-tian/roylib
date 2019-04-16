@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct _RoyArray {
+struct RoyArray_ {
   void * data;
   size_t length;
   size_t element_size;
@@ -25,18 +25,18 @@ void roy_array_delete(RoyArray * array) {
 }
 
 void * roy_array_pointer(RoyArray * array,
-                         ptrdiff_t  position) {
+                         int        position) {
   return array->data + array->element_size * position;
 }
 
 const void * roy_array_const_pointer(const RoyArray * array,
-                                     ptrdiff_t        position) {
+                                     int              position) {
   return array->data + array->element_size * position;
 }
 
 void * roy_array_element(void           * dest,
                          const RoyArray * array,
-                         ptrdiff_t        position) {
+                         int              position) {
   if (position < roy_array_length(array)) {
     return memcpy(dest,
                   roy_array_const_pointer(array, position),
@@ -62,7 +62,7 @@ bool roy_array_full(const RoyArray * array) {
 }
 
 RoyArray * roy_array_insert(RoyArray   * array,
-                            ptrdiff_t    position,
+                            int          position,
                             const void * data) {
   if (!roy_array_full(array)) {
     if (position > roy_array_length(array)) { // position exceeds.
@@ -87,7 +87,7 @@ RoyArray * roy_array_push_back(RoyArray   * array,
 }
 
 RoyArray * roy_array_erase(RoyArray * array,
-                           ptrdiff_t  position) {
+                           int        position) {
   if (!roy_array_empty(array)) {
     if (position >= roy_array_length(array)) { // position exceeds.
       position = roy_array_length(array) - 1;
@@ -107,7 +107,7 @@ RoyArray * roy_array_pop_back(RoyArray * array) {
 }
 
 RoyArray * roy_array_erase_fast(RoyArray * array,
-                                ptrdiff_t position) {
+                                int        position) {
   if (!roy_array_empty(array)) {
     if (position >= roy_array_length(array)) { // position exceeds.
       position = roy_array_length(array) - 1;
