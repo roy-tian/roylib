@@ -24,10 +24,8 @@ char * roy_string_reverse(char * str) {
   char * pstr_tail = str + strlen(str) - 1;
   while (pstr_tail > pstr_head) {
     char temp = *pstr_head;
-    *pstr_head = *pstr_tail;
-    *pstr_tail = temp;
-    pstr_head++;
-    pstr_tail--;
+    *pstr_head++ = *pstr_tail;
+    *pstr_tail-- = temp;
   }
   return str;
 }
@@ -63,12 +61,8 @@ char * roy_string_replace_all(char * str,
                               const char * old_sub,
                               const char * new_sub,
                               bool sensibility) {
-  // the length should be when all work is done.
-  size_t len_after = strlen(str) +
-                     roy_string_count_substring(str, old_sub, true) *
-                     (strlen(new_sub) - strlen(old_sub));
   // temp_str: a temporary-stored string.
-  ROY_STRING(temp_str, len_after)
+  ROY_STRING(temp_str, strlen(str))
   // a pointer to the real temp_str.
   char * ptemp_str = temp_str;
   // a pointer to the real str.
@@ -85,6 +79,7 @@ char * roy_string_replace_all(char * str,
   strcpy(str, temp_str);
   return str;
 }
+
 
 char * roy_string_replace_index(char * str,
                                 size_t old_sub_pos,
@@ -119,6 +114,30 @@ char * roy_string_replace_between(char * str,
   return str;
 }
 
+
+char * roy_string_replace_all_char(char * str, int old_ch, int new_ch) {
+  char * pstr = str;
+  while (*pstr != '\0') {
+    if (*pstr == old_ch) {
+      *pstr = new_ch;
+    }
+    pstr++;
+  }
+  return str;
+}
+
+char * roy_string_replace_all_char_if(char * str,
+                                      int (*condition)(int),
+                                      int new_ch) {
+  char * pstr = str;
+  while (*pstr != '\0') {
+    if (condition(*pstr)) {
+      *pstr = new_ch;
+    }
+    pstr++;
+  }
+  return str;
+}
 
 char * roy_string_trim_line(char * str) {
   char * pstr_tail = str + strlen(str);
@@ -156,8 +175,9 @@ char * roy_string_fill_char(char * dest, int ch, size_t count) {
 char * roy_string_fill_sequence(char * dest, const char * pattern) {
   bool flag = false; // is current char in sequence
   while (*pattern != '\0') {
-    
+    pattern++;
   }
+  return "";
 }
 
 char * roy_string_detab(char * str, size_t tab_size) {
@@ -303,7 +323,7 @@ size_t roy_string_count_line(const char * str) {
 }
 
 int roy_string_break_index(const char * str, const char * set) {
-  size_t pos = 0;
+  int pos = 0;
   while (*(str + pos) != '\0' && !strchr(set, *(str + pos))) {
     pos++;
   }
@@ -367,7 +387,7 @@ char * roy_string_fold(char * str, size_t line_width) {
   return str;
 }
 
-char * roy_stirng_squeeze(char * str, const char * set) {
+char * roy_string_squeeze(char * str, const char * set) {
   int i = 0, j = 0;
   while (*(str + i) != '\0') {
     if (strchr(set, *(str + i))) { /* current character belongs to 'set' */
@@ -393,14 +413,14 @@ char * roy_string_read_from_file(char * dest, const char * path) {
 }
 
 int roy_string_append_to_file(const char * src, const char * path) {
-  FILE * fp = fopen(path, "a");
+  FILE * fp = fopen(path, "a+");
   int ret = fputs(src, fp);
   fclose(fp);
   return ret;
 }
 
 int roy_string_write_to_file(const char * src, const char * path) {
-  FILE * fp = fopen(path, "w");
+  FILE * fp = fopen(path, "w+");
   int ret = fputs(src, fp);
   fclose(fp);
   return ret;

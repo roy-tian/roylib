@@ -11,8 +11,8 @@
 
 // Formulates a empty character string
 // which named 'str' and is 'size'-character long.
-#define ROY_STRING(str, size)\
-        char str[size + 1];\
+#define ROY_STRING(str, size)         \
+        char str[size + 1];           \
         memset(str, '\0', size + 1);
 
 // Converses all characters in 'str' to lowercase.
@@ -28,12 +28,13 @@ char * roy_string_reverse(char * str);
 // group of equivalent characters from 'str'.
 char * roy_string_unique_char(char * str, int ch);
 
-// Replaces all 'old_sub' acurred with 'new_sub'.
+// Replaces all 'old_sub' with 'new_sub'.
 // The behavior is undefined if the length of 'str' grows out of its capacity.
 char * roy_string_replace_all(char * str,
                               const char * old_sub,
                               const char * new_sub,
                               bool sensibility);
+
 
 // Replaces 'old_sub' with 'new_sub',
 // 'old_sub' starts at str[old_sub_pos], and is 'old_sub_len' character long.
@@ -48,6 +49,14 @@ char * roy_string_replace_between(char * str,
                                   const char * pattern_head,
                                   const char * pattern_tail,
                                   const char * new_sub);
+
+// Replaces all 'old_ch' with 'new_ch'.
+char * roy_string_replace_all_char(char * str, int old_ch, int new_ch);
+
+// Replaces all characters meet 'condition' with 'new_ch'.
+char * roy_string_replace_all_char_if(char * str,
+                                      int (*condition)(int),
+                                      int new_ch);
 
 // Gets the content of line 'line_number'.
 // The behavior is undefined if 'line_number' exceeds 'str',
@@ -94,19 +103,19 @@ char * roy_string_fold(char * str, size_t line_width);
 // Deletes every character in 'str' that matches any character in 'set'.
 char * roy_string_squeeze(char * str, const char * set);
 
-// Counts the occurrence time of 'ch' in 'str'.
+// Counts the occurrence times of 'ch' in 'str'.
 size_t roy_string_count_char(const char * str, int ch);
 
-// Counts the occurrence time of 'ch' which meets 'condition' function.
+// Counts the occurrence times of 'ch' which meets 'condition' function.
 size_t roy_string_count_char_if(const char * str,
                                 int (*condition)(int));
 
-// Counts the occurrence time of 'sub' in 'str'.
+// Counts the occurrence times of 'sub' in 'str'.
 size_t roy_string_count_substring(const char * str,
                                   const char * sub,
                                   bool sensibility);
 
-// Counts words in 'str'.
+// Counts number of words in 'str'.
 size_t roy_string_count_word(const char * str);
 
 // Counts words in 'str' which are 'length'-character long.
