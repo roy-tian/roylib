@@ -4,11 +4,6 @@
 #ifndef ROYSLIST_H
 #define ROYSLIST_H
 
-struct _RoySList {
-  void * data;
-  struct _RoySList * next;
-};
-
 // RoySList: a container implemented as a singly-linked list
 // which supports fast insertion and removal from anywhere in the container.
 // Fast random access is not supported.
@@ -30,7 +25,7 @@ void roy_slist_delete(RoySList * slist);
 // Returns an iterator to 'position' in 'slist' where the element takes place.
 // Returns the head of 'slist' if position is negative, NULL if position exceeds.
 RoySList * roy_slist_pointer(RoySList * slist,
-                             ptrdiff_t  position);
+                             int        position);
 
 // Returns an iterator to the first element.
 RoySList * roy_slist_front(RoySList * slist);
@@ -41,7 +36,7 @@ RoySList * roy_slist_back(RoySList * slist);
 // Returns a const iterator to 'position' in 'slist' where the element takes place.
 // Returns the head of 'slist' if position is negative, NULL if position exceeds.
 const RoySList * roy_slist_const_pointer(const RoySList * slist,
-                                         ptrdiff_t        position);
+                                         int              position);
 
 // Returns a const iterator to the first element.
 const RoySList * roy_slist_const_front(const RoySList * slist);
@@ -54,7 +49,7 @@ const RoySList * roy_slist_const_back(const RoySList * slist);
 void * roy_slist_element(void           * dest,
                          size_t           element_size,
                          const RoySList * slist,
-                         ptrdiff_t        position);
+                         int              position);
 
 // Returns a typed pointer to the element at 'position',
 // NULL if position exceeds.
@@ -73,7 +68,7 @@ bool roy_slist_empty(const RoySList * slist);
 
 // Add an 'element_size'-sized element named 'data' into 'slist' at 'position'.
 RoySList * roy_slist_insert(RoySList   * slist,
-                            ptrdiff_t    position,
+                            int          position,
                             const void * data,
                             size_t       element_size);
 
@@ -89,7 +84,7 @@ RoySList * roy_slist_push_back(RoySList   * slist,
 
 // Removes an element from 'slist' at 'position'.
 RoySList * roy_slist_erase(RoySList * slist,
-                           ptrdiff_t  position);
+                           int        position);
 
 // Removes the first element from 'slist'.
 RoySList * roy_slist_pop_front(RoySList * slist);
