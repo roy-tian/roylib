@@ -302,7 +302,7 @@ size_t roy_string_count_line(const char * str) {
   return count;
 }
 
-size_t roy_string_break_index(const char * str, const char * set) {
+int roy_string_break_index(const char * str, const char * set) {
   size_t pos = 0;
   while (*(str + pos) != '\0' && !strchr(set, *(str + pos))) {
     pos++;

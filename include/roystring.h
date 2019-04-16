@@ -15,10 +15,10 @@
         char str[size + 1];\
         memset(str, '\0', size + 1);
 
-// Converses all the characters in 'str' to lowercase.
+// Converses all characters in 'str' to lowercase.
 char * roy_string_to_lower(char * str);
 
-// Converses all the characters in 'str' to uppercase.
+// Converses all characters in 'str' to uppercase.
 char * roy_string_to_upper(char * str);
 
 // Reverses 'str' in place.
@@ -124,7 +124,7 @@ size_t roy_string_line_length(const char * str, size_t line_number);
 // returns the position index of that character,
 // or strlen(str), which is an invalid output, indicates not found.
 // (similar to std 'strpbrk' except the return value.)
-size_t roy_string_break_index(const char * str, const char * set);
+int roy_string_break_index(const char * str, const char * set);
 
 // Reads the content of file at 'path' to 'dest'.
 // (This is a convenient function with performance sacrificed.)
