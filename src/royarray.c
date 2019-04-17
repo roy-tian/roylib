@@ -2,15 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct RoyArray_ {
-  void * data;
-  size_t length;
-  size_t element_size;
-  size_t capacity;
-};
 
-RoyArray * roy_array_new(size_t capacity,
-                         size_t element_size) {
+RoyArray *
+roy_array_new(size_t capacity,
+              size_t element_size) {
   RoyArray * ret = malloc(sizeof(void *) + sizeof(size_t) * 3);
   ret->data = calloc(capacity, element_size);
   ret->capacity = capacity;
@@ -19,24 +14,28 @@ RoyArray * roy_array_new(size_t capacity,
   return ret;
 }
 
-void roy_array_delete(RoyArray * array) {
+void
+roy_array_delete(RoyArray * array) {
   free(array->data);
   free(array);
 }
 
-void * roy_array_pointer(RoyArray * array,
-                         int        position) {
+void *
+roy_array_pointer(RoyArray * array,
+                  int        position) {
   return array->data + array->element_size * position;
 }
 
-const void * roy_array_const_pointer(const RoyArray * array,
-                                     int              position) {
+const void *
+roy_array_const_pointer(const RoyArray * array,
+                        int              position) {
   return array->data + array->element_size * position;
 }
 
-void * roy_array_element(void           * dest,
-                         const RoyArray * array,
-                         int              position) {
+void *
+roy_array_element(void           * dest,
+                  const RoyArray * array,
+                  int              position) {
   if (position < roy_array_length(array)) {
     return memcpy(dest,
                   roy_array_const_pointer(array, position),
@@ -45,25 +44,30 @@ void * roy_array_element(void           * dest,
   return NULL;
 }
 
-size_t roy_array_length(const RoyArray * array) {
+size_t
+roy_array_length(const RoyArray * array) {
   return array->length;
 }
 
-size_t roy_array_capacity(const RoyArray * array) {
+size_t
+roy_array_capacity(const RoyArray * array) {
   return array->capacity;
 }
 
-bool roy_array_empty(const RoyArray * array) {
+bool
+roy_array_empty(const RoyArray * array) {
   return array->length == 0;
 }
 
-bool roy_array_full(const RoyArray * array) {
+bool
+roy_array_full(const RoyArray * array) {
   return array->length >= array->capacity;
 }
 
-RoyArray * roy_array_insert(RoyArray   * array,
-                            int          position,
-                            const void * data) {
+RoyArray *
+roy_array_insert(RoyArray   * array,
+                 int          position,
+                 const void * data) {
   if (!roy_array_full(array)) {
     if (position > roy_array_length(array)) { // position exceeds.
       position = roy_array_length(array);
@@ -81,13 +85,15 @@ RoyArray * roy_array_insert(RoyArray   * array,
   return array;
 }
 
-RoyArray * roy_array_push_back(RoyArray   * array,
-                               const void * data) {
+RoyArray *
+roy_array_push_back(RoyArray   * array,
+                    const void * data) {
   return roy_array_insert(array, roy_array_length(array), data);
 }
 
-RoyArray * roy_array_erase(RoyArray * array,
-                           int        position) {
+RoyArray *
+roy_array_erase(RoyArray * array,
+                int        position) {
   if (!roy_array_empty(array)) {
     if (position >= roy_array_length(array)) { // position exceeds.
       position = roy_array_length(array) - 1;
@@ -102,11 +108,13 @@ RoyArray * roy_array_erase(RoyArray * array,
   return array;
 }
 
-RoyArray * roy_array_pop_back(RoyArray * array) {
+RoyArray *
+roy_array_pop_back(RoyArray * array) {
   return roy_array_erase(array, roy_array_length(array) - 1);
 }
 
-RoyArray * roy_array_erase_fast(RoyArray * array,
+RoyArray *
+roy_array_erase_fast(RoyArray * array,
                                 int        position) {
   if (!roy_array_empty(array)) {
     if (position >= roy_array_length(array)) { // position exceeds.
@@ -123,7 +131,8 @@ RoyArray * roy_array_erase_fast(RoyArray * array,
   return array;
 }
 
-RoyArray * roy_array_clear(RoyArray * array) {
+RoyArray *
+roy_array_clear(RoyArray * array) {
   for (size_t i = 0; i < roy_array_length(array); i++) {
     memset(roy_array_pointer(array, i),
            '\0',

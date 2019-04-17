@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 RoySList *
 roy_slist_new(void) {
   RoySList * ret = malloc(sizeof(void *) + sizeof(RoySList *));
@@ -35,8 +34,8 @@ roy_slist_delete(RoySList * slist) {
 
 RoySList *
 roy_slist_pointer(RoySList * slist,
-                  ptrdiff_t  position) {
-  ptrdiff_t cur_position = 0;
+                  int        position) {
+  int cur_position = 0;
   RoySList * iter = slist;
   while (iter->next && cur_position <= position) {
     iter = iter->next;
@@ -61,8 +60,8 @@ roy_slist_back(RoySList * slist) {
 
 const RoySList *
 roy_slist_const_pointer(const RoySList * slist,
-                        ptrdiff_t        position) {
-  ptrdiff_t cur_position = 0;
+                        int              position) {
+  int cur_position = 0;
   const RoySList * iter = slist;
   while (iter->next && cur_position <= position) {
     iter = iter->next;
@@ -89,14 +88,15 @@ void *
 roy_slist_element(void *           dest,
                   size_t           element_size,
                   const RoySList * slist,
-                  ptrdiff_t        position) {
+                  int              position) {
   memcpy(dest,
          roy_slist_const_pointer(slist, position)->data,
          element_size);
   return dest;   
 }
 
-size_t roy_slist_length(const RoySList * slist) {
+size_t
+roy_slist_length(const RoySList * slist) {
   const RoySList * iter = slist;
   size_t count = 0;
   while (iter->next) {
@@ -106,14 +106,15 @@ size_t roy_slist_length(const RoySList * slist) {
   return count;
 }
 
-bool roy_slist_empty(const RoySList * slist) {
+bool
+roy_slist_empty(const RoySList * slist) {
   return roy_slist_const_front(slist) == NULL;
 }
 
 
 RoySList *
 roy_slist_insert(RoySList   * slist,
-                 ptrdiff_t    position,
+                 int          position,
                  const void * data,
                  size_t       element_size) {
   return 
@@ -141,7 +142,7 @@ roy_slist_push_back(RoySList   * slist,
 
 RoySList *
 roy_slist_erase(RoySList * slist,
-                ptrdiff_t  position) {
+                int        position) {
   return roy_slist_pop_front(roy_slist_pointer(slist, position - 1));
 }
 

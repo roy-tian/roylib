@@ -3,7 +3,8 @@
 #include <ctype.h>
 #include <limits.h>
 
-long long roy_parse_hexadecimal(const char * str) {
+long long
+roy_parse_hexadecimal(const char * str) {
   long long ret = 0;
   long long pn = 1;
   if (strchr(str, '-') == str) {
@@ -30,11 +31,12 @@ long long roy_parse_hexadecimal(const char * str) {
   return ret * pn;
 }
 
-char * roy_llong_to_string(char      * dest,
-                           long long   number,
-                           size_t      base,
-                           size_t      width,
-                           bool        fill_zero) {
+char *
+roy_llong_to_string(char      * dest,
+                    long long   number,
+                    size_t      base,
+                    size_t      width,
+                    bool        fill_zero) {
   bool pn = true, llong_min = false;
   if (number == LLONG_MIN) {
     llong_min = true;
@@ -49,8 +51,12 @@ char * roy_llong_to_string(char      * dest,
     int cur_digit = number % base;
     *pdest++ = cur_digit + (cur_digit <= 9 ? '0' : 'A' - 10);
   } while ((number /= base) > 0);
-  if (!pn) { *pdest++ = '-'; }
-  if (llong_min) { (*dest)++; }
+  if (!pn) {
+    *pdest++ = '-';
+  }
+  if (llong_min) {
+    (*dest)++;
+  }
   size_t dest_width = pdest - dest;
   while (width-- > dest_width) {
     *pdest++ = fill_zero ? '0' : ' ';
@@ -59,11 +65,12 @@ char * roy_llong_to_string(char      * dest,
   return roy_string_reverse(dest);
 }
 
-char * roy_ullong_to_string(char               * dest,
-                            unsigned long long   number,
-                            size_t               base,
-                            size_t               width,
-                            bool                 fill_zero) {
+char *
+roy_ullong_to_string(char               * dest,
+                     unsigned long long   number,
+                     size_t               base,
+                     size_t               width,
+                     bool                 fill_zero) {
   char * pdest = dest;
   do {
     int cur_digit = number % base;
