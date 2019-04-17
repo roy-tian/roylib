@@ -17,7 +17,7 @@ typedef struct _RoyArray RoyArray;
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Allocates sufficient memory for an RoyArray and returns a pointer to it.
-// The array can store 'capacity' elements with size 'element_size' each.
+// The array can store 'capacity' elements with each size 'element_size' .
 // (Operations on un-newed RoyArrays will cause undefined behavior.)
 RoyArray * roy_array_new(size_t capacity, size_t element_size);
 
