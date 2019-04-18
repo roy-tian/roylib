@@ -1,8 +1,8 @@
-#include <stddef.h>
-#include <stdbool.h>
-
 #ifndef ROYSLIST_H
 #define ROYSLIST_H
+
+#include <stddef.h>
+#include <stdbool.h>
 
 struct _RoySList {
   void             * data;

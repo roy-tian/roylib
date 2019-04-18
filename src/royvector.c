@@ -7,7 +7,7 @@ expand(RoyVector * vector) {
   void * temp = calloc(roy_vector_capacity(vector) + vector->capacity_unit, 
                        vector->element_size);
   memcpy(temp, vector->data,
-         roy_vector_capacity(vector) * vector->element_size);
+         roy_vector_length(vector) * vector->element_size);
   free(vector->data);
   vector->data = temp;
   vector->steps++;
@@ -19,7 +19,7 @@ shrink(RoyVector * vector) {
   void * temp = calloc(roy_vector_capacity(vector) - vector->capacity_unit, 
                        vector->element_size);
   memcpy(temp, vector->data,
-         roy_vector_capacity(vector) * vector->element_size);
+         roy_vector_length(vector) * vector->element_size);
   free(vector->data);
   vector->data = temp;
   vector->steps--;
