@@ -2,6 +2,7 @@
 #include "../include/roystring.h"
 #include <ctype.h>
 #include <limits.h>
+#include <math.h>
 
 unsigned long long
 roy_parse_binary(const char * str) {
