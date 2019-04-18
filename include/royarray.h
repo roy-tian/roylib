@@ -1,8 +1,8 @@
-#include <stddef.h>
-#include <stdbool.h>
-
 #ifndef ROYARRAY_H
 #define ROYARRAY_H
+
+#include <stddef.h>
+#include <stdbool.h>
 
 struct _RoyArray {
   void * data;

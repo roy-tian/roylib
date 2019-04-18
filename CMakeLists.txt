@@ -11,4 +11,5 @@ ADD_LIBRARY (roylib
              src/roynumber.c include/roynumber.h
              src/royarray.c  include/royarray.h
              src/royslist.c  include/royslist.h
+             src/royvector.c include/royvector.h
             )
