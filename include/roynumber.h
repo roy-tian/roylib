@@ -5,10 +5,17 @@
 #include <stdbool.h>
 
 enum NumeralSystem {
-  ROY_NUMERAL_BINARY = 2,
-  ROY_NUMERAL_OCTAL = 8,
-  ROY_NUMERAL_DECIMAL = 10,
-  ROY_NUMERAL_HEXDECIMAL = 16
+  ROY_BINARY = 2,
+  ROY_OCTAL = 8,
+  ROY_DECIMAL = 10,
+  ROY_HEXDECIMAL = 16
+};
+
+enum BinaryWidths {
+  ROY_BYTE = 8,
+  ROY_WORD = 16,
+  ROY_DWORD = 32,
+  ROY_QWORD = 64
 };
 
 // Converts 'str' of binary digits into its equivalent unsigned value.
@@ -39,13 +46,20 @@ char * roy_llong_to_string(char * dest, long long number, size_t base, size_t wi
 // (The behavior is undefined if 'dest' or 'width' is insefi`cient, or 'base' is larger than 36 ([0-9a-z]).)
 char * roy_ullong_to_string(char * dest, unsigned long long number, size_t base, size_t width, bool fill_zero);
 
+// Returns 'dest' with the 'count' bits that begin at position 'position' set to the rightmost 'count' bits of 'src', 
+// the other bits are left unchanged.
 unsigned long long roy_ullong_set_bits(unsigned long long * dest, int position, size_t count, unsigned long long src);
 
+// Returns 'dest' with the 'count' bits that begin at position 'position' inverted 
+// (i.e., I changed into 0 and vice versa), the other bits are left unchanged.
 unsigned long long roy_ullong_invert(long long * number, int position, size_t count);
 
+// Returns the value of the 'width'-width unsigned integer 'number' rotated to the right by 'steps' bit positions.
 unsigned long long roy_ullong_rotate_right(unsigned long long * number, int steps, size_t width); 
 
+// Returns the value of the 'width'-width unsigned integer 'number' rotated to the left by 'steps' bit positions.
 unsigned long long roy_ullong_rotate_left(unsigned long long * number, int steps, size_t width); 
 
+// Counts '1' bits in unsigned integer 'number'.
 size_t roy_ullong_count_bit(unsigned long long number);
 #endif // ROYNUMBER_H
