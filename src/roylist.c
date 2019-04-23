@@ -4,21 +4,24 @@
 
 RoyList *
 roy_list_new(void) {
-  RoyList * ret = malloc(sizeof(void *) + sizeof(RoyList *) * 2);
-  ret->data = NULL;
-  ret->next = NULL;
-  ret->prev = NULL;
-  return ret;
+  RoyList * head = malloc(sizeof(void *) + sizeof(RoyList *) * 2);
+  RoyList * tail = malloc(sizeof(void *) + sizeof(RoyList *) * 2);
+  head->data = tail->data = NULL;
+  head->next = tail;
+  head->prev = NULL;
+  tail->next = NULL;
+  tail->prev = head;
+  return head;
 }
 
 RoyList *
 roy_list_new_with_data(const void * data,
-                       size_t       element_size) {
-  RoyList * ret = malloc(sizeof(void *) + sizeof(RoyList *) * 2);
+                        size_t       element_size) {
+  RoyList * ret = malloc(sizeof(void *) + sizeof(RoyList *));
   ret->data = malloc(element_size);
   memcpy(ret->data, data, element_size);
-  ret->next = NULL;
   ret->prev = NULL;
+  ret->next = NULL;
   return ret; 
 }
 
@@ -54,7 +57,7 @@ roy_list_front(RoyList * list) {
 RoyList *
 roy_list_back(RoyList * list) {
   RoyList * iter = roy_list_front(list);
-  while (iter->next) {
+  while (iter->next->next) {
     iter = iter->next;
   }
   return iter; 
@@ -65,7 +68,7 @@ roy_list_const_pointer(const RoyList * list,
                        int             position) {
   int cur_position = 0;
   const RoyList * iter = list;
-  while (iter->next && cur_position <= position) {
+  while (iter->next->next && cur_position <= position) {
     iter = iter->next;
     cur_position++;
   }
@@ -80,7 +83,7 @@ roy_list_const_front(const RoyList * list) {
 const RoyList *
 roy_list_const_back(const RoyList * list) {
   const RoyList * iter = roy_list_const_front(list);
-  while (iter->next) {
+  while (iter->next->next) {
     iter = iter->next;
   }
   return iter;  
@@ -101,7 +104,7 @@ size_t
 roy_list_length(const RoyList * list) {
   const RoyList * iter = list;
   size_t count = 0;
-  while (iter->next) {
+  while (iter->next->next) {
     iter = iter->next;
     count++;
   }
@@ -110,7 +113,7 @@ roy_list_length(const RoyList * list) {
 
 bool
 roy_list_empty(const RoyList * list) {
-  return roy_list_const_front(list) == NULL;
+  return roy_list_const_front(list) == roy_list_const_back(list);
 }
 
 
@@ -121,8 +124,8 @@ roy_list_insert(RoyList    * list,
                 size_t       element_size) {
   return 
   roy_list_push_front(roy_list_pointer(list, position - 1),
-                       data,
-                       element_size);
+                      data,
+                      element_size);
 }
 
 RoyList *
@@ -130,7 +133,9 @@ roy_list_push_front(RoyList    * list,
                     const void * data,
                     size_t       element_size) {
   RoyList * elem = roy_list_new_with_data(data, element_size);
+  list->next->prev = elem;
   elem->next = list->next;
+  elem->next = list->next->next;
   list->next = elem;
   return list;
 }

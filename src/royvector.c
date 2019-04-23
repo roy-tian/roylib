@@ -45,20 +45,20 @@ roy_vector_delete(RoyVector * vector) {
 
 void *
 roy_vector_pointer(RoyVector * vector,
-                   int        position) {
+                   int         position) {
   return vector->data + vector->element_size * position;
 }
 
 const void *
 roy_vector_const_pointer(const RoyVector * vector,
-                         int              position) {
+                         int               position) {
   return vector->data + vector->element_size * position;
 }
 
 void *
-roy_vector_element(void           * dest,
+roy_vector_element(void            * dest,
                    const RoyVector * vector,
-                   int              position) {
+                   int               position) {
   if (position < roy_vector_length(vector)) {
     return memcpy(dest,
                   roy_vector_const_pointer(vector, position),

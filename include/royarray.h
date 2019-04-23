@@ -69,7 +69,7 @@ RoyArray * roy_array_push_back(RoyArray * array, const void * data);
 // Removes an element at 'position', and fill the empty positionition with its next recursively.
 // (The last element will be removed if 'position' exceeds.)
 // (Deprecated: slower when 'position' near head and lenth of array is huge.)
-RoyArray * roy_array_erase(RoyArray  * array, int position);
+RoyArray * roy_array_erase(RoyArray * array, int position);
 
 // Removes the last element.
 RoyArray * roy_array_pop_back(RoyArray * array);

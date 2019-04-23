@@ -18,7 +18,7 @@ typedef struct _RoyVector RoyVector;
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Allocates sufficient memory for an RoyVector and returns a pointer to it.
-// The vector can store 'capacity' elements with each size 'element_size' .
+// The vector can store 'capacity' elements with each size 'element_size'.
 // (Operations on un-newed RoyArrays will cause undefined behavior.)
 RoyVector * roy_vector_new(size_t capacity, size_t element_size);
 
@@ -60,27 +60,33 @@ bool roy_vector_full(const RoyVector * vector);
 
 // Adds an element named 'data' into 'vector' at 'position'.
 // ('data' will be pushed to the back of 'vector' if 'position' exceeds.)
+// ('vector' will be extended if its full.)
 // (The behavior is undefined if 'data' is uninitialized.)
 RoyVector * roy_vector_insert(RoyVector * vector, int position, const void * data);
 
 // Adds an element named 'data' into 'vector' next to the last element.
+// ('vector' will be extended if its full.)
 // (The behavior is undefined if 'data' is uninitialized.)
 RoyVector * roy_vector_push_back(RoyVector * vector, const void * data);
 
 // Removes an element at 'position', and fill the empty positionition with its next recursively.
 // (The last element will be removed if 'position' exceeds.)
+// ('vector' will be shrunk to fit all elements whenever it could.)
 // (Deprecated: slower when 'position' near head and lenth of vector is huge.)
 RoyVector * roy_vector_erase(RoyVector  * vector, int position);
 
 // Removes the last element.
+// ('vector' will be shrunk to fit all elements whenever it could.)
 RoyVector * roy_vector_pop_back(RoyVector * vector);
 
 // Removes an element at 'position', and fill the empty position with the last element 
+// ('vector' will be shrunk to fit all elements whenever it could.)
 // (This function is faster than 'roy_vector_erase'.)
 // (The last element will be removed if 'position' exceeds.)
 RoyVector * roy_vector_erase_fast(RoyVector * vector, int position);
 
 // Removes all the elements in 'vector'.
+// (The capacity of 'vector' will remain unchanged.)
 RoyVector * roy_vector_clear(RoyVector * vector);
 
 #endif // ROYVECTOR_H
