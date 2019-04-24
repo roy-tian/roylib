@@ -86,17 +86,21 @@ roy_deque_insert(RoyDeque   * deque,
                  int          position,
                  const void * data) {
   if (position <= deque->length / 2) { // smaller half
-    roy_list_pointer(deque->head, position)->data;
+    roy_list_insert(deque->head, position, data, deque->element_size);
   } else { // bigger half
-    return
-    roy_list_reverse_pointer(deque->tail, deque->length - position - 1)->data;
+    roy_list_insert_reverse(deque->tail,
+                            deque->length - position - 1,
+                            data,
+                            deque->element_size);
   }
+  return deque;
 }
 
 RoyDeque *
 roy_deque_push_front(RoyDeque   * deque,
                      const void * data) {
   roy_list_push_front(deque->head, data, deque->element_size);
+  deque->length++;
   return deque;
 }
 
@@ -104,30 +108,38 @@ RoyDeque *
 roy_deque_push_back(RoyDeque   * deque,
                     const void * data) {
   roy_list_push_back(deque->tail, data, deque->element_size);
+  deque->length++;
   return deque;
 }
 
 RoyDeque *
 roy_deque_erase(RoyDeque * deque,
                 int        position) {
-  return roy_deque_pop_front(roy_deque_pointer(deque, position - 1));
+  if (position <= deque->length / 2) { // smaller half
+    roy_list_erase(deque->head, position);
+  } else { // bigger half
+    roy_list_erase_reverse(deque->tail,
+                           deque->length - position - 1);
+  }
+  return deque;
 }
 
 RoyDeque *
 roy_deque_pop_front(RoyDeque * deque) {
-  if (!roy_deque_empty(deque)) {
-    RoyDeque * to_erase = roy_deque_front(deque);
-    RoyDeque * next_elem = to_erase->next;
-    deque->next = next_elem;
-    next_elem->prev = deque;
-    roy_deque_delete_node(to_erase);
+  if (!roy_list_empty(deque->head)) {
+    roy_list_pop_front(deque->head);
+    deque->length--;
   }
   return deque;
 }
 
 RoyDeque *
 roy_deque_pop_back(RoyDeque * deque) {
-  return roy_deque_pop_front(roy_deque_back(deque));
+  if (deque->tail->prev) { // not empty
+    roy_list_pop_back(deque->tail);
+    deque->length--;
+  }
+  return deque;
 }
 
 RoyDeque *

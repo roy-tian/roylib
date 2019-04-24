@@ -109,11 +109,6 @@ roy_array_erase(RoyArray * array,
 }
 
 RoyArray *
-roy_array_pop_back(RoyArray * array) {
-  return roy_array_erase(array, roy_array_length(array) - 1);
-}
-
-RoyArray *
 roy_array_erase_fast(RoyArray * array,
                                 int        position) {
   if (!roy_array_empty(array)) {
@@ -129,6 +124,11 @@ roy_array_erase_fast(RoyArray * array,
     array->length--;
   }
   return array;
+}
+
+RoyArray *
+roy_array_pop_back(RoyArray * array) {
+  return roy_array_erase(array, roy_array_length(array) - 1);
 }
 
 RoyArray *

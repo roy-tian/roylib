@@ -71,13 +71,13 @@ RoyArray * roy_array_push_back(RoyArray * array, const void * data);
 // (Deprecated: slower when 'position' near head and lenth of array is huge.)
 RoyArray * roy_array_erase(RoyArray * array, int position);
 
-// Removes the last element.
-RoyArray * roy_array_pop_back(RoyArray * array);
-
 // Removes an element at 'position', and fill the empty position with the last element 
 // (This function is faster than 'roy_array_erase'.)
 // (The last element will be removed if 'position' exceeds.)
 RoyArray * roy_array_erase_fast(RoyArray * array, int position);
+
+// Removes the last element.
+RoyArray * roy_array_pop_back(RoyArray * array);
 
 // Removes all the elements in 'array'.
 RoyArray * roy_array_clear(RoyArray * array);

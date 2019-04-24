@@ -53,14 +53,8 @@ char * roy_string_line(char * dest, const char * src, size_t line_number);
 char * roy_string_trim_line(char * str);
 
 // Trims the trailing blanks characters from string 'str'.
-// (This function can avoid the undefined behavior of 'roy_string_trim_line', but runs slower.)
+// (This function can avoid the undefined behavior of 'trim_line', but runs slower.)
 char * roy_string_trim(char * str);
-
-// Replaces all tabs with proper number of blanks.
-char * roy_string_detab(char * str, size_t tab_size);
-
-// Replaces strings of blanks by the minimum number of tabs and blanks that achieves the same spacing.
-char * roy_string_entab(char * str, size_t tab_size);
 
 // Returns a string where 'ch' occurs 'count' times,
 // e.g. ch = 'a', count = 5, then 'dest' will be 'aaaaa'.
@@ -71,6 +65,12 @@ char * roy_string_fill_char(char * dest, int ch, size_t count);
 // e.g. 'pattern' = 'a-g', then 'dest' will be 'abcdefg'.
 // The behavior is undefined if the capacity of 'dest' is insufficient.
 char * roy_string_fill_sequence(char * dest, const char * pattern);
+
+// Replaces all tabs with proper number of blanks.
+char * roy_string_detab(char * str, size_t tab_size);
+
+// Replaces strings of blanks by the minimum number of tabs and blanks that achieves the same spacing.
+char * roy_string_entab(char * str, size_t tab_size);
 
 // Folds the single-lined 'str' into two or more shorter lines
 // after the last non-blank character that occurs before 'line_width'.

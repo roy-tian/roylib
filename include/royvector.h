@@ -86,7 +86,7 @@ RoyVector * roy_vector_pop_back(RoyVector * vector);
 RoyVector * roy_vector_erase_fast(RoyVector * vector, int position);
 
 // Removes all the elements in 'vector'.
-// (The capacity of 'vector' will remain unchanged.)
+// (The capacity of 'vector' will be reset.)
 RoyVector * roy_vector_clear(RoyVector * vector);
 
 #endif // ROYVECTOR_H

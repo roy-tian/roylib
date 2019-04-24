@@ -4,10 +4,27 @@
 #include <limits.h>
 #include <math.h>
 
+// Converts pure number string 'str' into decimal number.
+#define STR_TO_INT(num, str)      \
+        while (isdigit(*str)) {   \
+          num *= 10;              \
+          num += *str++ - '0';    \
+        }
+
+// Trims the first character of 'str' if it's in 'set'.
+#define STR_INC(set, str)         \
+        if (strchr(set, *str)) {  \
+          str++;                  \
+        }
+// Trims all blanks and tabs on the left of 'str'.
+#define STR_TRIM_LEFT(str)        \
+        str += strspn(str, " \t");
+
 unsigned long long
 roy_parse_binary(const char * str) {
-  size_t len = strspn(str, "01");
   unsigned long long result = 0ULL;
+  STR_TRIM_LEFT(str)
+  size_t len = strspn(str, "01");
   for (size_t i = 0 ; i != len; i++) {
     result <<= 1;
     if (*(str + i) == '1') {
@@ -19,10 +36,9 @@ roy_parse_binary(const char * str) {
 
 unsigned long long
 roy_parse_octal(const char * str) {
-  if (*str == '0') {
-    str++;
-  }
   unsigned long long result = 0ULL;
+  STR_TRIM_LEFT(str)
+  STR_INC("0", str)
   size_t len = strspn(str, "01234567");
   for (size_t i = 0; i != len; i++) {
     result <<= 3;
@@ -34,6 +50,7 @@ roy_parse_octal(const char * str) {
 unsigned long long
 roy_parse_hexadecimal(const char * str) {
   unsigned long long result = 0ULL;
+  STR_TRIM_LEFT(str)
   if (strstr(str, "0X") == str || strstr(str, "0x") == str) {
     str += 2;
   }
@@ -54,36 +71,17 @@ roy_parse_hexadecimal(const char * str) {
 
 long long
 roy_parse_integer(const char * str) {
-  int pn = 1;
-  if (*str == '-') {
-    str++;
-    pn = -1;
-  } else if (*str == '+') {
-    str++;
-  }
   long long result = 0LL;
-  size_t len = strspn(str, "0123456789");
-  for (int i = 0; i != len; i++) {
-    result *= 10;
-    result += *(str + i) - '0';
-  }
+  STR_TRIM_LEFT(str)
+  int pn = *str == '-' ? -1 : 1;
+  STR_INC("+-", str)
+  STR_TO_INT(result, str)
   return pn * result;
 }
 
-#define STR_TO_INT(num, str)      \
-        while (isdigit(*str)) {   \
-          num *= 10.0;            \
-          num += *str++ - '0';    \
-        }
-
-#define STR_INC(set, str)         \
-        if (strchr(set, *str)) {  \
-          str++;                  \
-        }
-
 double roy_parse_double(const char * str) {
-  str += strspn(str, " \t");
   double result = 0.0;
+  STR_TRIM_LEFT(str)
   int pn = (*str == '-' ? -1 : 1);
   STR_INC("+-", str)
   STR_TO_INT(result, str)

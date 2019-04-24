@@ -137,11 +137,6 @@ roy_vector_erase(RoyVector * vector,
 }
 
 RoyVector *
-roy_vector_pop_back(RoyVector * vector) {
-  return roy_vector_erase(vector, roy_vector_length(vector) - 1);
-}
-
-RoyVector *
 roy_vector_erase_fast(RoyVector * vector,
                       int         position) {
   if (!roy_vector_empty(vector)) {
@@ -161,6 +156,11 @@ roy_vector_erase_fast(RoyVector * vector,
     shrink(vector);
   }
   return vector;
+}
+
+RoyVector *
+roy_vector_pop_back(RoyVector * vector) {
+  return roy_vector_erase(vector, roy_vector_length(vector) - 1);
 }
 
 RoyVector *

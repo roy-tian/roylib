@@ -151,6 +151,22 @@ roy_string_replace_all_char_if(char  * str,
 }
 
 char *
+roy_string_line(char       * line_content,
+                const char * str,
+                size_t       line_number) {
+  while ((line_number-- > 1) && strchr(str, '\n')) {
+    str = strchr(str, '\n') + 1; // excludes the '\n' right before the line.
+  }
+  const char * str_tail = strchr(str, '\n');
+  if (!str_tail) {
+    strcpy(line_content, str);
+  } else {
+    strncpy(line_content, str, str_tail - str);
+  }
+  return line_content;
+}
+
+char *
 roy_string_trim_line(char * str) {
   char * pstr_tail = str + strlen(str);
   while (str < pstr_tail && isblank(*(pstr_tail - 1))) {
@@ -242,6 +258,56 @@ roy_string_entab(char   * str,
     pstr++;
     pos++;
   }
+  return str;
+}
+
+
+char *
+roy_string_fold_line(char   * str,
+                     size_t   line_width) {
+  char * pstr = str;
+  while (strlen(pstr) > line_width) {    
+    pstr += line_width - 1;
+    if(isblank(*(pstr + 1))) {
+      while (isblank(*(pstr++ + 1))) {  }
+      *(pstr - 1) = '\n';
+    } else {
+      if (!isblank(*pstr)) {
+        while (!isblank(*(pstr-- - 1))) {  }
+      }
+      *pstr++ = '\n';
+    }
+  }
+  return str;
+}
+
+char *
+roy_string_fold(char   * str,
+                size_t   line_width) {
+  ROY_STRING(temp_str, strlen(str))
+  for (size_t i = 1; i <= roy_string_count_line(str); i++) {
+    ROY_STRING(cur_line, roy_string_line_length(str, i))
+    roy_string_line(cur_line, str, i);
+    roy_string_fold_line(cur_line, line_width);
+    strcat(temp_str, "\n");
+    strcat(temp_str, cur_line);
+  } 
+  strcpy(str, temp_str + 1);
+  return str;
+}
+
+char *
+roy_string_squeeze(char       * str,
+                   const char * set) {
+  int i = 0, j = 0;
+  while (*(str + i) != '\0') {
+    if (strchr(set, *(str + i))) { /* current character belongs to 'set' */
+      i++;
+    } else {
+      *(str + j++) = *(str + i++);
+    }
+  }
+  *(str + j) = '\0';
   return str;
 }
 
@@ -353,32 +419,6 @@ roy_string_count_line(const char * str) {
   return count;
 }
 
-int
-roy_string_break_index(const char * str,
-                       const char * set) {
-  int pos = 0;
-  while (*(str + pos) != '\0' && !strchr(set, *(str + pos))) {
-    pos++;
-  }
-  return pos;
-}
-
-char *
-roy_string_line(char       * line_content,
-                const char * str,
-                size_t       line_number) {
-  while ((line_number-- > 1) && strchr(str, '\n')) {
-    str = strchr(str, '\n') + 1; // excludes the '\n' right before the line.
-  }
-  const char * str_tail = strchr(str, '\n');
-  if (!str_tail) {
-    strcpy(line_content, str);
-  } else {
-    strncpy(line_content, str, str_tail - str);
-  }
-  return line_content;
-}
-
 size_t
 roy_string_line_length(const char * str,
                        size_t       line_number) {
@@ -393,53 +433,14 @@ roy_string_line_length(const char * str,
   }
 }
 
-char *
-roy_string_fold_line(char   * str,
-                     size_t   line_width) {
-  char * pstr = str;
-  while (strlen(pstr) > line_width) {    
-    pstr += line_width - 1;
-    if(isblank(*(pstr + 1))) {
-      while (isblank(*(pstr++ + 1))) {  }
-      *(pstr - 1) = '\n';
-    } else {
-      if (!isblank(*pstr)) {
-        while (!isblank(*(pstr-- - 1))) {  }
-      }
-      *pstr++ = '\n';
-    }
+int
+roy_string_break_index(const char * str,
+                       const char * set) {
+  int pos = 0;
+  while (*(str + pos) != '\0' && !strchr(set, *(str + pos))) {
+    pos++;
   }
-  return str;
-}
-
-char *
-roy_string_fold(char   * str,
-                size_t   line_width) {
-  ROY_STRING(temp_str, strlen(str))
-  for (size_t i = 1; i <= roy_string_count_line(str); i++) {
-    ROY_STRING(cur_line, roy_string_line_length(str, i))
-    roy_string_line(cur_line, str, i);
-    roy_string_fold_line(cur_line, line_width);
-    strcat(temp_str, "\n");
-    strcat(temp_str, cur_line);
-  } 
-  strcpy(str, temp_str + 1);
-  return str;
-}
-
-char *
-roy_string_squeeze(char       * str,
-                   const char * set) {
-  int i = 0, j = 0;
-  while (*(str + i) != '\0') {
-    if (strchr(set, *(str + i))) { /* current character belongs to 'set' */
-      i++;
-    } else {
-      *(str + j++) = *(str + i++);
-    }
-  }
-  *(str + j) = '\0';
-  return str;
+  return pos;
 }
 
 char *

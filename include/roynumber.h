@@ -39,11 +39,11 @@ long long roy_parse_integer(const char * str);
 double roy_parse_double(const char * str);
 
 // Converts the integer 'number' into a 'width'-width, 'base' character representation in the string 'dest'.
-// (The behavior is undefined if 'dest' or 'width' is insefi`cient, or 'base' is larger than 36 ([0-9a-z]).)
+// (The behavior is undefined if 'dest' or 'width' is insufficient, or 'base' is larger than 36 ([0-9a-z]).)
 char * roy_llong_to_string(char * dest, long long number, size_t base, size_t width, bool fill_zero);
 
 // Converts the unsigned integer 'number' into a 'width'-width, 'base' character representation in the string 'dest'.
-// (The behavior is undefined if 'dest' or 'width' is insefi`cient, or 'base' is larger than 36 ([0-9a-z]).)
+// (The behavior is undefined if 'dest' or 'width' is insufficient, or 'base' is larger than 36 ([0-9a-z]).)
 char * roy_ullong_to_string(char * dest, unsigned long long number, size_t base, size_t width, bool fill_zero);
 
 // Returns 'dest' with the 'count' bits that begin at position 'position' set to the rightmost 'count' bits of 'src', 
@@ -51,7 +51,7 @@ char * roy_ullong_to_string(char * dest, unsigned long long number, size_t base,
 unsigned long long roy_ullong_set_bits(unsigned long long * dest, int position, size_t count, unsigned long long src);
 
 // Returns 'dest' with the 'count' bits that begin at position 'position' inverted 
-// (i.e., I changed into 0 and vice versa), the other bits are left unchanged.
+// (i.e., 1 changed into 0 and vice versa), the other bits are left unchanged.
 unsigned long long roy_ullong_invert(long long * number, int position, size_t count);
 
 // Returns the value of the 'width'-width unsigned integer 'number' rotated to the right by 'steps' bit positions.

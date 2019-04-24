@@ -3,15 +3,7 @@
 #include <string.h>
 
 RoySList *
-roy_slist_new(void) {
-  RoySList * ret = malloc(sizeof(void *) + sizeof(RoySList *));
-  ret->data = NULL;
-  ret->next = NULL;
-  return ret;
-}
-
-RoySList *
-roy_slist_new_with_data(const void * data,
+node_new_with_data(const void * data,
                         size_t       element_size) {
   RoySList * ret = malloc(sizeof(void *) + sizeof(RoySList *));
   ret->data = malloc(element_size);
@@ -21,9 +13,17 @@ roy_slist_new_with_data(const void * data,
 }
 
 void
-roy_slist_delete_node(RoySList * slist) {
+node_delete(RoySList * slist) {
   free(slist->data);
   free(slist);
+}
+
+RoySList *
+roy_slist_new(void) {
+  RoySList * ret = malloc(sizeof(void *) + sizeof(RoySList *));
+  ret->data = NULL;
+  ret->next = NULL;
+  return ret;
 }
 
 void
@@ -127,7 +127,7 @@ RoySList *
 roy_slist_push_front(RoySList   * slist,
                      const void * data,
                      size_t       element_size) {
-  RoySList * elem = roy_slist_new_with_data(data, element_size);
+  RoySList * elem = node_new_with_data(data, element_size);
   elem->next = slist->next;
   slist->next = elem;
   return slist;
@@ -151,7 +151,7 @@ roy_slist_pop_front(RoySList * slist) {
   if (!roy_slist_empty(slist)) {
     RoySList * to_erase = roy_slist_front(slist);
     slist->next = to_erase->next;
-    roy_slist_delete_node(to_erase);
+    node_delete(to_erase);
   }
   return slist;
 }

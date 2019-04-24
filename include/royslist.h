@@ -45,7 +45,7 @@ const RoySList * roy_slist_const_front(const RoySList * slist);
 // Returns a const iterator to the last element.
 const RoySList * roy_slist_const_back(const RoySList * slist);
 
-// Returns a copy of the element at 'position'. (With boundary check)
+// Returns a copy of the element at 'position'.
 // (The behavior is undefined if 'dest' is uninitialized.)
 void * roy_slist_element(void * dest, size_t element_size, const RoySList * slist, int position);
 

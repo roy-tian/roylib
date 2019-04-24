@@ -10,7 +10,7 @@ struct _RoyDeque {
   size_t    element_size;
 };
 
-// RoyDeque: a double ended queue with a RoyList inside,
+// RoyDeque: a double ended queue powered by a RoyList inside,
 // which supports fast insertion and removal from both end of the queue.
 typedef struct _RoyDeque RoyDeque;
 

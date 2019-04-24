@@ -72,29 +72,29 @@ bool roy_list_empty(const RoyList * list);
 
 /* MODIFIERS */
 
-// Adds an 'element_size'-sized element named 'data' at the beginning of the list.
-RoyList * roy_list_push_front(RoyList * list_head, const void * data, size_t element_size);
-
-// Adds an 'element_size'-sized element named 'data' at the end of the list.
-RoyList * roy_list_push_back(RoyList * list_tail, const void * data, size_t element_size);
-
 // Add an 'element_size'-sized element named 'data' into 'list' at 'position'.
 RoyList * roy_list_insert(RoyList * list_head, int position, const void * data, size_t element_size);
 
 // Add an 'element_size'-sized element named 'data' into 'list_tail' at 'reverse_position' rightmost.
 RoyList * roy_list_insert_reverse(RoyList * list_tail, int reverse_position, const void * data, size_t element_size);
 
-// Removes the first element from 'list_head'.
-RoyList * roy_list_pop_front(RoyList * list_head);
+// Adds an 'element_size'-sized element named 'data' at the beginning of the list.
+RoyList * roy_list_push_front(RoyList * list_head, const void * data, size_t element_size);
 
-// Removes the last element from 'list_tail'.
-RoyList * roy_list_pop_back(RoyList * list_tail);
+// Adds an 'element_size'-sized element named 'data' at the end of the list.
+RoyList * roy_list_push_back(RoyList * list_tail, const void * data, size_t element_size);
 
 // Removes an element from 'list_head' at 'position'.
 RoyList * roy_list_erase(RoyList * list_head, int position);
 
 // Removes an element from 'list_tail' at 'reverse_position'.
 RoyList * roy_list_erase_reverse(RoyList * list_tail, int reverse_position);
+
+// Removes the first element from 'list_head'.
+RoyList * roy_list_pop_front(RoyList * list_head);
+
+// Removes the last element from 'list_tail'.
+RoyList * roy_list_pop_back(RoyList * list_tail);
 
 // Removes all the element from 'list'.
 RoyList * roy_list_clear(RoyList * list_head);

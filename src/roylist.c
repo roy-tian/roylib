@@ -3,7 +3,7 @@
 #include <string.h>
 
 RoyList *
-list_node_new_with_data(const void * data,
+node_new_with_data(const void * data,
                        size_t       element_size) {
   RoyList * ret = malloc(sizeof(void *) + sizeof(RoyList *) * 2);
   ret->data = malloc(element_size);
@@ -14,7 +14,7 @@ list_node_new_with_data(const void * data,
 }
 
 void
-list_node_delete(RoyList * list) {
+node_delete(RoyList * list) {
   free(list->data);
   free(list);
 }
@@ -133,32 +133,6 @@ roy_list_empty(const RoyList * list_head) {
 }
 
 RoyList *
-roy_list_push_front(RoyList    * list_head,
-                    const void * data,
-                    size_t       element_size) {
-  RoyList * elem = list_node_new_with_data(data, element_size);
-  RoyList * front = list_head->next;
-  list_head->next = elem;
-  front->prev = elem;
-  elem->prev = list_head;
-  elem->next = front;
-  return list_head;
-}
-
-RoyList *
-roy_list_push_back(RoyList    * list_tail,
-                   const void * data,
-                   size_t       element_size) {
-  RoyList * elem = list_node_new_with_data(data, element_size);
-  RoyList * back = list_tail->prev;
-  list_tail->prev = elem;
-  back->next = elem;
-  elem->prev = back;
-  elem->next = list_tail;
-  return list_tail;
-}
-
-RoyList *
 roy_list_insert(RoyList    * list_head,
                 int          position,
                 const void * data,
@@ -181,26 +155,28 @@ roy_list_insert_reverse(RoyList    * list_tail,
 }
 
 RoyList *
-roy_list_pop_front(RoyList * list_head) {
-  if (!roy_list_empty(list_head)) {
-    RoyList * to_erase = roy_list_front(list_head);
-    RoyList * next_elem = to_erase->next;
-    list_head->next = next_elem;
-    next_elem->prev = list_head;
-    list_node_delete(to_erase);
-  }
+roy_list_push_front(RoyList    * list_head,
+                    const void * data,
+                    size_t       element_size) {
+  RoyList * elem = node_new_with_data(data, element_size);
+  RoyList * front = list_head->next;
+  list_head->next = elem;
+  front->prev = elem;
+  elem->prev = list_head;
+  elem->next = front;
   return list_head;
 }
 
 RoyList *
-roy_list_pop_back(RoyList * list_tail) {
-  if (list_tail->prev->prev) { // not empty
-    RoyList * to_erase = roy_list_back(list_tail);
-    RoyList * prev_elem = to_erase->prev;
-    list_tail->prev = prev_elem;
-    prev_elem->next = list_tail;
-    list_node_delete(to_erase);
-  }
+roy_list_push_back(RoyList    * list_tail,
+                   const void * data,
+                   size_t       element_size) {
+  RoyList * elem = node_new_with_data(data, element_size);
+  RoyList * back = list_tail->prev;
+  list_tail->prev = elem;
+  back->next = elem;
+  elem->prev = back;
+  elem->next = list_tail;
   return list_tail;
 }
 
@@ -215,6 +191,30 @@ roy_list_erase_reverse(RoyList * list_tail,
                        int       reverse_position) {
   return
   roy_list_pop_back(roy_list_reverse_pointer(list_tail, reverse_position - 1));
+}
+
+RoyList *
+roy_list_pop_front(RoyList * list_head) {
+  if (!roy_list_empty(list_head)) {
+    RoyList * to_erase = roy_list_front(list_head);
+    RoyList * next_elem = to_erase->next;
+    list_head->next = next_elem;
+    next_elem->prev = list_head;
+    node_delete(to_erase);
+  }
+  return list_head;
+}
+
+RoyList *
+roy_list_pop_back(RoyList * list_tail) {
+  if (list_tail->prev->prev) { // not empty
+    RoyList * to_erase = roy_list_back(list_tail);
+    RoyList * prev_elem = to_erase->prev;
+    list_tail->prev = prev_elem;
+    prev_elem->next = list_tail;
+    node_delete(to_erase);
+  }
+  return list_tail;
 }
 
 RoyList *
