@@ -5,10 +5,10 @@
 #include <stdbool.h>
 
 struct _RoyArray {
-  void * data;
-  size_t length;
-  size_t element_size;
-  size_t capacity;
+  void   * data;
+  size_t   length;
+  size_t   element_size;
+  size_t   capacity;
 };
 
 // RoyArray: a container that encapsulates fixed size arrays.

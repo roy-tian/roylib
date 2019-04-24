@@ -56,12 +56,12 @@ roy_array_capacity(const RoyArray * array) {
 
 bool
 roy_array_empty(const RoyArray * array) {
-  return array->length == 0;
+  return roy_array_length(array) == 0;
 }
 
 bool
 roy_array_full(const RoyArray * array) {
-  return array->length >= array->capacity;
+  return roy_array_length(array) >= roy_array_capacity(array);
 }
 
 RoyArray *

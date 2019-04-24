@@ -5,17 +5,17 @@
 #include <stdbool.h>
 
 enum NumeralSystem {
-  ROY_BINARY = 2,
-  ROY_OCTAL = 8,
-  ROY_DECIMAL = 10,
+  ROY_BINARY     = 2,
+  ROY_OCTAL      = 8,
+  ROY_DECIMAL    = 10,
   ROY_HEXDECIMAL = 16
 };
 
 enum BinaryWidths {
-  ROY_BYTE = 8,
-  ROY_WORD = 16,
-  ROY_DWORD = 32,
-  ROY_QWORD = 64
+  ROY_BYTE       = 8,
+  ROY_WORD       = 16,
+  ROY_DWORD      = 32,
+  ROY_QWORD      = 64
 };
 
 // Converts 'str' of binary digits into its equivalent unsigned value.

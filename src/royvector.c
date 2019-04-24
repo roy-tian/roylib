@@ -79,7 +79,7 @@ roy_vector_capacity(const RoyVector * vector) {
 
 bool
 roy_vector_empty(const RoyVector * vector) {
-  return vector->length == 0;
+  return roy_vector_length(vector) == 0;
 }
 
 bool

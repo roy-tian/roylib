@@ -5,11 +5,11 @@
 #include <stdbool.h>
 
 struct _RoyVector {
-  void * data;
-  size_t length;
-  size_t element_size;
-  size_t capacity_unit;
-  size_t steps;
+  void   * data;
+  size_t   length;
+  size_t   element_size;
+  size_t   capacity_unit;
+  size_t   steps;
 };
 
 // RoyArray: a container that encapsulates scalable size vectors.
@@ -73,7 +73,7 @@ RoyVector * roy_vector_push_back(RoyVector * vector, const void * data);
 // (The last element will be removed if 'position' exceeds.)
 // ('vector' will be shrunk to fit all elements whenever it could.)
 // (Deprecated: slower when 'position' near head and lenth of vector is huge.)
-RoyVector * roy_vector_erase(RoyVector  * vector, int position);
+RoyVector * roy_vector_erase(RoyVector * vector, int position);
 
 // Removes the last element.
 // ('vector' will be shrunk to fit all elements whenever it could.)

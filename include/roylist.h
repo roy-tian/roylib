@@ -10,7 +10,7 @@ struct _RoyList {
   struct _RoyList * prev;
 };
 
-// RoyList: a container implemented as a singly-linked list which supports fast insertion and removal
+// RoyList: a container implemented as a double-linked list which supports fast insertion and removal
 // from anywhere in the container. Fast random access is not supported.
 typedef struct _RoyList RoyList;
 
@@ -28,31 +28,39 @@ void roy_list_delete(RoyList * list);
 
 // Returns an iterator to 'position' in 'list' where the element takes place.
 // (Returns the head of 'list' if position is negative, NULL if position exceeds.)
-RoyList * roy_list_pointer(RoyList * list, int position);
+RoyList * roy_list_pointer(RoyList * list_head, int position);
+
+// Returns an reversed iterator to 'position' right most in 'list' where the element takes place.
+// (Returns the tail of 'list' if position is negative, NULL if position exceeds.)
+RoyList * roy_list_reverse_pointer(RoyList * list_tail, int reverse_position);
 
 // Returns an iterator to the first element.
-RoyList * roy_list_front(RoyList * list);
+RoyList * roy_list_front(RoyList * list_head);
 
-// Returns an iterator to the last element.
-RoyList * roy_list_back(RoyList * list);
+// Returns an reversed iterator to the last element.
+RoyList * roy_list_back(RoyList * list_tail);
 
 // Returns a const iterator to 'position' in 'list' where the element takes place.
 // (Returns the head of 'list' if position is negative, NULL if position exceeds.)
-const RoyList * roy_list_const_pointer(const RoyList * list, int position);
+const RoyList * roy_list_const_pointer(const RoyList * list_head, int position);
+
+// Returns an const reversed iterator to 'position' right most in 'list' where the element takes place.
+// (Returns the tail of 'list' if position is negative, NULL if position exceeds.)
+const RoyList * roy_list_const_reverse_pointer(const RoyList * list_tail, int reverse_position);
 
 // Returns a const iterator to the first element.
-const RoyList * roy_list_const_front(const RoyList * list);
+const RoyList * roy_list_const_front(const RoyList * list_head);
 
-// Returns a const iterator to the last element.
-const RoyList * roy_list_const_back(const RoyList * list);
+// Returns a const reversed iterator to the last element.
+const RoyList * roy_list_const_back(const RoyList * list_tail);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)
-void * roy_list_element(void * dest, size_t element_size, const RoyList * list, int position);
+void * roy_list_element(void * dest, size_t element_size, const RoyList * list_head, int position);
 
 // Returns a typed pointer to the element at 'position', NULL if position exceeds.
-#define roy_list_at(list, element_type, position)             \
-        (element_type*)roy_list_pointer(list, position)->data
+#define roy_list_at(list_head, element_type, position)          \
+        (element_type*)(roy_list_pointer(list, position)->data)
 
 /* CAPACITY */
 
@@ -64,25 +72,31 @@ bool roy_list_empty(const RoyList * list);
 
 /* MODIFIERS */
 
+// Adds an 'element_size'-sized element named 'data' at the beginning of the list.
+RoyList * roy_list_push_front(RoyList * list_head, const void * data, size_t element_size);
+
+// Adds an 'element_size'-sized element named 'data' at the end of the list.
+RoyList * roy_list_push_back(RoyList * list_tail, const void * data, size_t element_size);
+
 // Add an 'element_size'-sized element named 'data' into 'list' at 'position'.
-RoyList * roy_list_insert(RoyList * list, int position, const void * data, size_t element_size);
+RoyList * roy_list_insert(RoyList * list_head, int position, const void * data, size_t element_size);
 
-// Adds an 'element_size'-sized element named 'data' at the beginning of 'list'.
-RoyList * roy_list_push_front(RoyList * list, const void * data, size_t element_size);
+// Add an 'element_size'-sized element named 'data' into 'list_tail' at 'reverse_position' rightmost.
+RoyList * roy_list_insert_reverse(RoyList * list_tail, int reverse_position, const void * data, size_t element_size);
 
-// Adds an 'element_size'-sized element named 'data' at the end of 'list'.
-RoyList * roy_list_push_back(RoyList * list, const void * data, size_t element_size);
+// Removes the first element from 'list_head'.
+RoyList * roy_list_pop_front(RoyList * list_head);
 
-// Removes an element from 'list' at 'position'.
-RoyList * roy_list_erase(RoyList * list, int position);
+// Removes the last element from 'list_tail'.
+RoyList * roy_list_pop_back(RoyList * list_tail);
 
-// Removes the first element from 'list'.
-RoyList * roy_list_pop_front(RoyList * list);
+// Removes an element from 'list_head' at 'position'.
+RoyList * roy_list_erase(RoyList * list_head, int position);
 
-// Removes the last element from 'list'.
-RoyList * roy_list_pop_back(RoyList * list);
+// Removes an element from 'list_tail' at 'reverse_position'.
+RoyList * roy_list_erase_reverse(RoyList * list_tail, int reverse_position);
 
 // Removes all the element from 'list'.
-RoyList * roy_list_clear(RoyList * list);
+RoyList * roy_list_clear(RoyList * list_head);
 
 #endif // ROYLIST_H
