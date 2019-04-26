@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 RoyArray *
 roy_array_new(size_t capacity,
               size_t element_size) {
@@ -86,12 +85,6 @@ roy_array_insert(RoyArray   * array,
 }
 
 RoyArray *
-roy_array_push_back(RoyArray   * array,
-                    const void * data) {
-  return roy_array_insert(array, roy_array_length(array), data);
-}
-
-RoyArray *
 roy_array_erase(RoyArray * array,
                 int        position) {
   if (!roy_array_empty(array)) {
@@ -110,7 +103,7 @@ roy_array_erase(RoyArray * array,
 
 RoyArray *
 roy_array_erase_fast(RoyArray * array,
-                                int        position) {
+                     int        position) {
   if (!roy_array_empty(array)) {
     if (position >= roy_array_length(array)) { // position exceeds.
       position = roy_array_length(array) - 1;
@@ -124,6 +117,12 @@ roy_array_erase_fast(RoyArray * array,
     array->length--;
   }
   return array;
+}
+
+RoyArray *
+roy_array_push_back(RoyArray   * array,
+                    const void * data) {
+  return roy_array_insert(array, roy_array_length(array), data);
 }
 
 RoyArray *
