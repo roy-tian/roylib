@@ -53,7 +53,7 @@ void * roy_deque_element(void * dest, const RoyDeque * deque, int position);
 
 // Returns a typed pointer to the element at 'position', NULL if position exceeds.
 #define roy_deque_at(deque, element_type, position)               \
-        (element_type*)(roy_deque_pointer(list, position)->data)
+        (element_type*)roy_deque_pointer(deque, position)
 
 /* CAPACITY */
 
