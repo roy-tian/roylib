@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+int position_rectify(const RoyArray * array, int position, bool right_included);
 
 RoyArray *
 roy_array_new(size_t capacity,
@@ -69,12 +70,7 @@ roy_array_insert(RoyArray   * array,
                  int          position,
                  const void * data) {
   if (!roy_array_full(array)) {
-    if (position > roy_array_size(array)) {
-      position = roy_array_size(array);
-    }
-    if (position < 0) {
-      position = 0;
-    }
+    position = position_rectify(array, position, true);
     for (size_t i = roy_array_size(array); i > position; i--) {
       memcpy(roy_array_pointer(array, i),
              roy_array_const_pointer(array, (i - 1)),
@@ -104,13 +100,8 @@ RoyArray *
 roy_array_erase(RoyArray * array,
                 int        position) {
   if (!roy_array_empty(array)) {
-    if (position >= roy_array_size(array)) {
-      position = roy_array_size(array) - 1;
-    }
-    if (position < 0) {
-      position = 0;
-    }
-    for (size_t i = position; i < roy_array_size(array) - 1; i++) {
+    position = position_rectify(array, position, false);
+    for (size_t i = position; i != roy_array_size(array) - 1; i++) {
       memcpy(roy_array_pointer(array, i),
              roy_array_const_pointer(array, i + 1),
              array->element_size);
@@ -124,12 +115,7 @@ RoyArray *
 roy_array_erase_fast(RoyArray * array,
                      int        position) {
   if (!roy_array_empty(array)) {
-    if (position >= roy_array_size(array)) {
-      position = roy_array_size(array) - 1;
-    }
-    if (position < 0) {
-      position = 0;
-    }
+    position = position_rectify(array, position, false);
     memcpy(roy_array_pointer(array, position),
            roy_array_const_pointer(array, array->size - 1),
            array->element_size);
@@ -137,8 +123,6 @@ roy_array_erase_fast(RoyArray * array,
   }
   return array;
 }
-
-
 
 RoyArray *
 roy_array_pop_back(RoyArray * array) {
@@ -157,7 +141,7 @@ roy_array_clear(RoyArray * array) {
 
 void
 roy_array_for_each(RoyArray * array,
-                   void(* operate)(void *)) {
+                   void    (* operate) (void *)) {
   size_t array_size = roy_array_size(array);
   for (size_t i = 0; i != array_size; i++) {
     operate(roy_array_pointer(array, i));
@@ -166,8 +150,8 @@ roy_array_for_each(RoyArray * array,
 
 void
 roy_array_for_which(RoyArray * array,
-                    bool(* condition)(const void *),
-                    void(* operate)(void *)) {
+                    bool    (* condition) (const void *),
+                    void    (* operate)         (void *)) {
   size_t array_size = roy_array_size(array);
   for (size_t i = 0; i != array_size; i++) {
     if (condition(roy_array_const_pointer(array, i))) {
@@ -176,14 +160,20 @@ roy_array_for_which(RoyArray * array,
   }
 }
 
-void
-roy_array_for_which_const(RoyArray * array,
-                          bool(* condition)(const void *),
-                          void(* iterate)(const void *)) {
-  size_t array_size = roy_array_size(array);
-  for (size_t i = 0; i != array_size; i++) {
-    if (condition(roy_array_const_pointer(array, i))) {
-      iterate(roy_array_const_pointer(array, i));
-    }
+/* PRIVATE FUNCTIONS BELOW */
+
+int
+position_rectify(const RoyArray * array,
+                 int              position,
+                 bool             right_included) {
+  if (position < 0) {
+    return 0;
   }
+  if (right_included && position > roy_array_size(array)) {
+    return roy_array_size(array);
+  }
+  if (!right_included && position >= roy_array_size(array)) {
+    return roy_array_size(array) - 1;
+  }
+  return position;
 }

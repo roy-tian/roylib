@@ -6,7 +6,7 @@
 
 struct _RoyStack {
   void   * data;
-  size_t   length;
+  size_t   size;
   size_t   element_size;
   size_t   capacity;
 };
@@ -29,12 +29,12 @@ void roy_stack_delete(RoyStack * stack);
 
 #define roy_stack_top(stack, element_type)          \
         (element_type *)(stack->data +              \
-        stack->element_size * (stack->length - 1))
+        stack->element_size * (stack->size - 1))
 
 /* CAPACITY */
 
 // Returns the number of elements in 'stack'.
-size_t roy_stack_length(const RoyStack * stack);
+size_t roy_stack_size(const RoyStack * stack);
 
 // Returns the capacity of 'stack'.
 size_t roy_stack_capacity(const RoyStack * stack);
