@@ -6,7 +6,7 @@
 struct _RoyDeque {
   RoyList * head;
   RoyList * tail;
-  size_t    length;
+  size_t    size;
   size_t    element_size;
 };
 
@@ -58,7 +58,7 @@ void * roy_deque_element(void * dest, const RoyDeque * deque, int position);
 /* CAPACITY */
 
 // Returns the number of elements in 'deque'.
-size_t roy_deque_length(const RoyDeque * deque);
+size_t roy_deque_size(const RoyDeque * deque);
 
 // Returns whether there is any elements in 'deque'.
 bool roy_deque_empty(const RoyDeque * deque);

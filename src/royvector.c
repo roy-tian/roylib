@@ -10,12 +10,12 @@ int position_rectify(const RoyVector * vector, int position, bool right_included
 RoyVector *
 roy_vector_new(size_t capacity_unit,
                size_t element_size) {
-  RoyVector * ret = malloc(sizeof(void *) + sizeof(size_t) * 3);
-  ret->data = calloc(capacity_unit, element_size);
+  RoyVector * ret    = malloc(sizeof(RoyVector));
+  ret->data          = calloc(capacity_unit, element_size);
+  ret->size          = 0;
+  ret->steps         = 1;
   ret->capacity_unit = capacity_unit;
-  ret->element_size = element_size;
-  ret->size = 0;
-  ret->steps = 1;
+  ret->element_size  = element_size;
   return ret;
 }
 

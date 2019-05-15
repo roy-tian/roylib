@@ -27,7 +27,9 @@ void roy_stack_delete(RoyStack * stack);
 
 /* ELEMENT ACCESS */
 
-#define roy_stack_top(stack, element_type) \
+#define roy_stack_top(stack, element_type)  \
+        roy_stack_empty(stack)            ? \
+        NULL                              : \
         (element_type *)(stack->data + stack->element_size * (stack->size - 1))
 
 /* CAPACITY */

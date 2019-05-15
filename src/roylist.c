@@ -2,22 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-RoyList *
-node_new_with_data(const void * data,
-                       size_t       element_size) {
-  RoyList * ret = malloc(sizeof(void *) + sizeof(RoyList *) * 2);
-  ret->data = malloc(element_size);
-  memcpy(ret->data, data, element_size);
-  ret->prev = NULL;
-  ret->next = NULL;
-  return ret; 
-}
-
-void
-node_delete(RoyList * list) {
-  free(list->data);
-  free(list);
-}
+RoyList * node_new(const void * data, size_t element_size);
+void node_delete(RoyList * list);
 
 RoyList *
 roy_list_new(void) {
@@ -49,28 +35,6 @@ roy_list_pointer(RoyList * list_head,
   return iter;
 }
 
-RoyList *
-roy_list_reverse_pointer(RoyList * list_tail,
-                         int       reverse_position) {
-  int cur_position = 0;
-  RoyList * riter = list_tail;
-  while (riter->prev->prev && cur_position <= reverse_position) {
-    riter = riter->prev;
-    cur_position++;
-  }
-  return riter;
-}
-
-RoyList *
-roy_list_front(RoyList * list_head) {
-  return list_head->next->next ? list_head->next : NULL;
-}
-
-RoyList *
-roy_list_back(RoyList * list_tail) {
-  return list_tail->prev->prev ? list_tail->prev : NULL;
-}
-
 const RoyList *
 roy_list_const_pointer(const RoyList * list_head,
                        int             position) {
@@ -81,6 +45,18 @@ roy_list_const_pointer(const RoyList * list_head,
     cur_position++;
   }
   return iter;
+}
+
+RoyList *
+roy_list_reverse_pointer(RoyList * list_tail,
+                         int       reverse_position) {
+  int cur_position = 0;
+  RoyList * riter = list_tail;
+  while (riter->prev->prev && cur_position <= reverse_position) {
+    riter = riter->prev;
+    cur_position++;
+  }
+  return riter;
 }
 
 const RoyList *
@@ -95,9 +71,19 @@ roy_list_const_reverse_pointer(const RoyList * list_tail,
   return riter;
 }
 
+RoyList *
+roy_list_front(RoyList * list_head) {
+  return list_head->next->next ? list_head->next : NULL;
+}
+
 const RoyList *
 roy_list_const_front(const RoyList * list_head) {
   return list_head->next->next ? list_head->next : NULL;
+}
+
+RoyList *
+roy_list_back(RoyList * list_tail) {
+  return list_tail->prev->prev ? list_tail->prev : NULL;
 }
 
 const RoyList *
@@ -117,7 +103,7 @@ roy_list_element(void *          dest,
 }
 
 size_t
-roy_list_length(const RoyList * list_head) {
+roy_list_size(const RoyList * list_head) {
   const RoyList * iter = list_head;
   size_t count = 0;
   while (iter->next->next) {
@@ -158,7 +144,7 @@ RoyList *
 roy_list_push_front(RoyList    * list_head,
                     const void * data,
                     size_t       element_size) {
-  RoyList * elem = node_new_with_data(data, element_size);
+  RoyList * elem = node_new(data, element_size);
   RoyList * front = list_head->next;
   list_head->next = elem;
   front->prev = elem;
@@ -171,7 +157,7 @@ RoyList *
 roy_list_push_back(RoyList    * list_tail,
                    const void * data,
                    size_t       element_size) {
-  RoyList * elem = node_new_with_data(data, element_size);
+  RoyList * elem = node_new(data, element_size);
   RoyList * back = list_tail->prev;
   list_tail->prev = elem;
   back->next = elem;
@@ -223,4 +209,23 @@ roy_list_clear(RoyList * list) {
     roy_list_pop_front(list);
   }
   return list;
+}
+
+/* PRIVATE FUNCTIONS BELOW */
+
+RoyList *
+node_new(const void * data,
+         size_t       element_size) {
+  RoyList * ret = malloc(sizeof(void *) + sizeof(RoyList *) * 2);
+  ret->data = malloc(element_size);
+  memcpy(ret->data, data, element_size);
+  ret->prev = NULL;
+  ret->next = NULL;
+  return ret; 
+}
+
+void
+node_delete(RoyList * list) {
+  free(list->data);
+  free(list);
 }

@@ -7,7 +7,7 @@ roy_deque_new(size_t element_size) {
   RoyDeque * ret = malloc(sizeof(RoyList *) * 2 + sizeof(size_t) * 2);
   ret->head = roy_list_new();
   ret->tail = ret->head->next;
-  ret->length = 0;
+  ret->size = 0;
   ret->element_size = element_size;
   return ret;
 }
@@ -21,11 +21,11 @@ roy_deque_delete(RoyDeque * deque) {
 void *
 roy_deque_pointer(RoyDeque * deque,
                  int         position) {
-  if (position <= deque->length / 2) { // smaller half
+  if (position <= deque->size / 2) { // smaller half
     return roy_list_pointer(deque->head, position)->data;
   } else { // bigger half
     return
-    roy_list_reverse_pointer(deque->tail, deque->length - position - 1)->data;
+    roy_list_reverse_pointer(deque->tail, deque->size - position - 1)->data;
   }
 }
 
@@ -42,12 +42,12 @@ roy_deque_back(RoyDeque * deque) {
 const void *
 roy_deque_const_pointer(const RoyDeque * deque,
                         int              position) {
-  if (position <= deque->length / 2) { // smaller half
+  if (position <= deque->size / 2) { // smaller half
     return roy_list_const_pointer(deque->head, position)->data;
   } else { // bigger half
     return
     roy_list_const_reverse_pointer(deque->tail,
-                                   deque->length - position - 1)->data;
+                                   deque->size - position - 1)->data;
   }
 }
 
@@ -72,24 +72,24 @@ roy_deque_element(void           * dest,
 }
 
 size_t
-roy_deque_length(const RoyDeque * deque) {
-  return deque->length;
+roy_deque_size(const RoyDeque * deque) {
+  return deque->size;
 }
 
 bool
 roy_deque_empty(const RoyDeque * deque) {
-  return roy_deque_length(deque) == 0;
+  return roy_deque_size(deque) == 0;
 }
 
 RoyDeque *
 roy_deque_insert(RoyDeque   * deque,
                  int          position,
                  const void * data) {
-  if (position <= deque->length / 2) { // smaller half
+  if (position <= deque->size / 2) { // smaller half
     roy_list_insert(deque->head, position, data, deque->element_size);
   } else { // bigger half
     roy_list_insert_reverse(deque->tail,
-                            deque->length - position - 1,
+                            deque->size - position - 1,
                             data,
                             deque->element_size);
   }
@@ -100,7 +100,7 @@ RoyDeque *
 roy_deque_push_front(RoyDeque   * deque,
                      const void * data) {
   roy_list_push_front(deque->head, data, deque->element_size);
-  deque->length++;
+  deque->size++;
   return deque;
 }
 
@@ -108,18 +108,18 @@ RoyDeque *
 roy_deque_push_back(RoyDeque   * deque,
                     const void * data) {
   roy_list_push_back(deque->tail, data, deque->element_size);
-  deque->length++;
+  deque->size++;
   return deque;
 }
 
 RoyDeque *
 roy_deque_erase(RoyDeque * deque,
                 int        position) {
-  if (position <= deque->length / 2) { // smaller half
+  if (position <= deque->size / 2) { // smaller half
     roy_list_erase(deque->head, position);
   } else { // bigger half
     roy_list_erase_reverse(deque->tail,
-                           deque->length - position - 1);
+                           deque->size - position - 1);
   }
   return deque;
 }
@@ -128,7 +128,7 @@ RoyDeque *
 roy_deque_pop_front(RoyDeque * deque) {
   if (!roy_list_empty(deque->head)) {
     roy_list_pop_front(deque->head);
-    deque->length--;
+    deque->size--;
   }
   return deque;
 }
@@ -137,7 +137,7 @@ RoyDeque *
 roy_deque_pop_back(RoyDeque * deque) {
   if (deque->tail->prev) { // not empty
     roy_list_pop_back(deque->tail);
-    deque->length--;
+    deque->size--;
   }
   return deque;
 }

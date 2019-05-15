@@ -7,11 +7,11 @@ int position_rectify(const RoyArray * array, int position, bool right_included);
 RoyArray *
 roy_array_new(size_t capacity,
               size_t element_size) {
-  RoyArray * ret = malloc(sizeof(void *) + sizeof(size_t) * 3);
-  ret->data = calloc(capacity, element_size);
-  ret->capacity = capacity;
+  RoyArray * ret    = malloc(sizeof(RoyArray));
+  ret->data         = calloc(capacity, element_size);
+  ret->size         = 0;
+  ret->capacity     = capacity;
   ret->element_size = element_size;
-  ret->size = 0;
   return ret;
 }
 

@@ -7,9 +7,9 @@
 struct _RoyVector {
   void   * data;
   size_t   size;
-  size_t   element_size;
-  size_t   capacity_unit;
   size_t   steps;
+  size_t   capacity_unit;
+  size_t   element_size;
 };
 
 // RoyVector: a container that encapsulates scalable size vectors.
@@ -49,14 +49,11 @@ void * roy_vector_element(void * dest, const RoyVector * vector, int position);
 // Returns the number of elements in 'vector'.
 size_t roy_vector_size(const RoyVector * vector);
 
-// Returns the capacity of 'vector'.
+// Returns the capacity of 'vector' at current status.
 size_t roy_vector_capacity(const RoyVector * vector);
 
 // Returns whether there is any elements in 'vector'.
 bool roy_vector_empty(const RoyVector * vector);
-
-// Returns whether the number of elements in 'vector' reaches its current capacity.
-bool roy_vector_full(const RoyVector * vector);
 
 /* MODIFIERS */
 

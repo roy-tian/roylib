@@ -65,7 +65,7 @@ void * roy_list_element(void * dest, size_t element_size, const RoyList * list_h
 /* CAPACITY */
 
 // Returns the number of elements in 'list'.
-size_t roy_list_length(const RoyList * list);
+size_t roy_list_size(const RoyList * list);
 
 // Returns whether there is any elements in 'list'.
 bool roy_list_empty(const RoyList * list);

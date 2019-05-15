@@ -7,8 +7,8 @@
 struct _RoyArray {
   void   * data;
   size_t   size;
-  size_t   element_size;
   size_t   capacity;
+  size_t   element_size;
 };
 
 // RoyArray: a container that encapsulates fixed size arrays.

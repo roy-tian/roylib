@@ -2,21 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-RoySList *
-node_new_with_data(const void * data,
-                        size_t       element_size) {
-  RoySList * ret = malloc(sizeof(void *) + sizeof(RoySList *));
-  ret->data = malloc(element_size);
-  memcpy(ret->data, data, element_size);
-  ret->next = NULL;
-  return ret; 
-}
-
-void
-node_delete(RoySList * slist) {
-  free(slist->data);
-  free(slist);
-}
+RoySList * node_new(const void * data, size_t element_size);
+void node_delete(RoySList * slist);
 
 RoySList *
 roy_slist_new(void) {
@@ -96,7 +83,7 @@ roy_slist_element(void *           dest,
 }
 
 size_t
-roy_slist_length(const RoySList * slist) {
+roy_slist_size(const RoySList * slist) {
   const RoySList * iter = slist;
   size_t count = 0;
   while (iter->next) {
@@ -127,7 +114,7 @@ RoySList *
 roy_slist_push_front(RoySList   * slist,
                      const void * data,
                      size_t       element_size) {
-  RoySList * elem = node_new_with_data(data, element_size);
+  RoySList * elem = node_new(data, element_size);
   elem->next = slist->next;
   slist->next = elem;
   return slist;
@@ -167,4 +154,22 @@ roy_slist_clear(RoySList * slist) {
     roy_slist_pop_front(slist);
   }
   return slist;
+}
+
+/* PRIVATE FUNCTIONS BELOW */
+
+RoySList *
+node_new(const void * data,
+         size_t       element_size) {
+  RoySList * ret = malloc(sizeof(void *) + sizeof(RoySList *));
+  ret->data = malloc(element_size);
+  memcpy(ret->data, data, element_size);
+  ret->next = NULL;
+  return ret; 
+}
+
+void
+node_delete(RoySList * slist) {
+  free(slist->data);
+  free(slist);
 }
