@@ -37,12 +37,11 @@ void *
 roy_array_element(void           * dest,
                   const RoyArray * array,
                   int              position) {
-  return
-  (position >= 0 && position < roy_array_size(array)) ?
-  memcpy(dest,
-         roy_array_const_pointer(array, position),
-         array->element_size)                         :
-  NULL;
+  return (position >= 0 && position < roy_array_size(array)) ?
+         memcpy(dest,
+                roy_array_const_pointer(array, position),
+                array->element_size)                         :
+         NULL;
 }
 
 size_t

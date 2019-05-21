@@ -1,6 +1,6 @@
 #include "../include/roystack.h"
-#include <string.h>
-#include <stdlib.h>
+// #include <string.h>
+// #include <stdlib.h>
 
 static void swap_elements(void * data1, void * data2, size_t size);
 
@@ -46,8 +46,6 @@ roy_stack_duplicate_top(RoyStack * stack) {
                         roy_array_const_pointer(ROY_ARRAY(stack),
                                                 roy_stack_size(stack) - 1));
 }
-
-
 
 RoyStack *
 roy_stack_swap_top_two(RoyStack * stack) {

@@ -10,11 +10,14 @@ struct _RoyQueue {
   size_t   size;
   size_t   capacity;
   size_t   element_size;
+  int      front_index;
+  int      back_index;
 };
 
 /* CONSTRUCTION AND DESTRUCTION */
 
-// RoyQueue: a container adapter that gives the functionality of a LIFO data structure.
+// RoyQueue: a container adapter that gives the functionality of a FIFO data structure,
+// which inplemented as an cycled linear list.
 typedef struct _RoyQueue RoyQueue;
 
 #define ROY_QUEUE(queue) (RoyQueue *)(queue)
@@ -31,7 +34,10 @@ void roy_queue_delete(RoyQueue * queue);
 /* ELEMENT ACCESS */
 
 #define roy_queue_front(queue, element_type)  \
-        roy_array_at(ROY_ARRAY(queue), element_type, roy_queue_size(queue) - 1)
+        roy_array_at(ROY_ARRAY(queue), element_type, queue->front_index)
+
+#define roy_queue_back(queue, element_type)   \
+        roy_array_at(ROY_ARRAY(queue), element_type, queue->back_index)
 
 /* CAPACITY */
 
