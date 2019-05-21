@@ -14,6 +14,11 @@ struct _RoyArray {
 // RoyArray: a container that encapsulates fixed size arrays.
 typedef struct _RoyArray RoyArray;
 
+#define ROY_ARRAY(array) (RoyArray *)(array)
+#define ROY_ITERATOR(iterate) (void(*)(void *))(iterate)
+#define ROY_CONDITION(condition) (bool(*)(const void *))(condition)
+#define ROY_COMPARE(compare) (int(*)(const void *, const void *))(compare)
+
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Allocates sufficient memory for an RoyArray and returns a pointer to it.
@@ -86,8 +91,6 @@ RoyArray * roy_array_clear(RoyArray * array);
 
 /* TRAVERSE */
 
-#define ROY_ITERATE_FUNC(operate) (void(*)(void *))(operate)
-#define ROY_CONDITION_FUNC(condition) (bool(*)(const void *))(condition)
 
 // Traverses all elements in 'array' using 'operate'.
 void roy_array_for_each(RoyArray * array, void(* iterate)(void *));

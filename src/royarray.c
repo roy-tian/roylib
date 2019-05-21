@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int position_rectify(const RoyArray * array, int position, bool right_included);
+static int position_rectify(const RoyArray * array, int position, bool right_included);
 
 RoyArray *
 roy_array_new(size_t capacity,
@@ -134,7 +134,6 @@ roy_array_pop_back(RoyArray * array) {
 
 RoyArray *
 roy_array_clear(RoyArray * array) {
-
   array->size = 0;
   return array;
 }
@@ -162,7 +161,7 @@ roy_array_for_which(RoyArray * array,
 
 /* PRIVATE FUNCTIONS BELOW */
 
-int
+static int
 position_rectify(const RoyArray * array,
                  int              position,
                  bool             right_included) {

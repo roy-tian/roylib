@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 3.13)
+CMAKE_MINIMUM_REQUIRED (VERSION 3.14)
 
 PROJECT (roylib C)
 
@@ -11,8 +11,9 @@ ADD_LIBRARY (roylib
              src/roynumber.c
              src/royarray.c
              src/royvector.c
+             src/roystack.c
+             src/royqueue.c
              src/royslist.c
              src/roylist.c
              src/roydeque.c
-             src/roystack.c
             )

@@ -99,4 +99,25 @@ RoyList * roy_list_pop_back(RoyList * list_tail);
 // Removes all the element from 'list'.
 RoyList * roy_list_clear(RoyList * list_head);
 
+/* LIST OPERATIONS */
+
+RoyList * roy_list_remove(RoyList * list, const void * data);
+
+RoyList * roy_list_remove_if(RoyList * list, bool (*condition)(const void *));
+
+RoyList * roy_list_reverse(RoyList * list);
+
+RoyList * roy_list_unique(RoyList * list, int (*compare)(const void *, const void *));
+
+RoyList * roy_list_sort(RoyList * list, int (*compare)(const void *, const void *));
+
+/* TRAVERSE */
+
+// Traverses all elements in 'vector' using 'operate'.
+void roy_list_for_each(RoyList * list, void(* iterate)(void *));
+
+// Traverses all elements whichever meets 'condition' in 'vector' using 'operate'.
+void roy_list_for_which(RoyList * list, bool(* condition)(const void *), void(* iterate)(void *));
+
+
 #endif // ROYLIST_H

@@ -1,19 +1,22 @@
 #ifndef ROYVECTOR_H
 #define ROYVECTOR_H
 
-#include <stddef.h>
-#include <stdbool.h>
+#include "../include/royarray.h"
+// #include <stddef.h>
+// #include <stdbool.h>
 
 struct _RoyVector {
   void   * data;
   size_t   size;
-  size_t   steps;
-  size_t   capacity_unit;
+  size_t   capacity;
   size_t   element_size;
+  size_t   capacity_base;
 };
 
 // RoyVector: a container that encapsulates scalable size vectors.
 typedef struct _RoyVector RoyVector;
+
+#define ROY_VECTOR(vector) (RoyVector *)(vector)
 
 /* CONSTRUCTION AND DESTRUCTION */
 
@@ -40,9 +43,7 @@ void * roy_vector_element(void * dest, const RoyVector * vector, int position);
 
 // Returns a typed pointer to the element at 'position'. (With boundary check)
 #define roy_vector_at(vector, element_type, position)         \
-        (position >= 0 && position < vector->size)          ? \
-        (element_type*)roy_vector_pointer(vector, position) : \
-        NULL
+        roy_array_at(ROY_ARRAY(vector), element_type, position)
 
 /* CAPACITY */
 
@@ -90,14 +91,11 @@ RoyVector * roy_vector_clear(RoyVector * vector);
 
 /* TRAVERSE */
 
-#define ROY_ITERATE_FUNC(operate) (void(*)(void *))(operate)
-#define ROY_CONDITION_FUNC(condition) (bool(*)(const void *))(condition)
-
 // Traverses all elements in 'vector' using 'operate'.
-void RoyVector_for_each(RoyVector * vector, void(* iterate)(void *));
+void roy_vector_for_each(RoyVector * vector, void(* iterate)(void *));
 
 // Traverses all elements whichever meets 'condition' in 'vector' using 'operate'.
-void RoyVector_for_which(RoyVector * vector, bool(* condition)(const void *), void(* operate)(void *));
+void roy_vector_for_which(RoyVector * vector, bool(* condition)(const void *), void(* operate)(void *));
 
 
 #endif // ROYVECTOR_H

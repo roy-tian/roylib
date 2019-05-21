@@ -2,120 +2,89 @@
 #include <stdlib.h>
 #include <string.h>
 
-RoyVector * expand(RoyVector * vector);
-RoyVector * shrink(RoyVector * vector);
-bool shrinkable(const RoyVector * vector);
-int position_rectify(const RoyVector * vector, int position, bool right_included);
+static RoyVector * expand(RoyVector * vector);
+static RoyVector * shrink(RoyVector * vector);
+static bool need_expand(const RoyVector * vector);
+static bool need_shrink(const RoyVector * vector);
 
 RoyVector *
-roy_vector_new(size_t capacity_unit,
+roy_vector_new(size_t capacity,
                size_t element_size) {
-  RoyVector * ret    = malloc(sizeof(RoyVector));
-  ret->data          = calloc(capacity_unit, element_size);
-  ret->size          = 0;
-  ret->steps         = 1;
-  ret->capacity_unit = capacity_unit;
-  ret->element_size  = element_size;
+  RoyVector * ret     = malloc(sizeof(RoyVector));
+  ret->data           = calloc(capacity, element_size);
+  ret->size           = 0;
+  ret->capacity       = capacity;
+  ret->element_size   = element_size;
+  ret->capacity_base  = capacity;
   return ret;
 }
 
 void
 roy_vector_delete(RoyVector * vector) {
-  free(vector->data);
-  free(vector);
+  roy_array_delete(ROY_ARRAY(vector));
 }
 
 void *
 roy_vector_pointer(RoyVector * vector,
                    int         position) {
-  return vector->data + vector->element_size * position;
+  return roy_array_pointer(ROY_ARRAY(vector), position);
 }
 
 const void *
 roy_vector_const_pointer(const RoyVector * vector,
                          int               position) {
-  return vector->data + vector->element_size * position;
+  return roy_array_const_pointer(ROY_ARRAY(vector), position);
 }
 
 void *
 roy_vector_element(void            * dest,
                    const RoyVector * vector,
                    int               position) {
-  return
-  (position >= 0 && position < roy_vector_size(vector)) ?
-  memcpy(dest,
-         roy_vector_const_pointer(vector, position),
-         vector->element_size)                          :
-  NULL;
+  return roy_array_element(dest, ROY_ARRAY(vector), position);
 }
 
 size_t
 roy_vector_size(const RoyVector * vector) {
-  return vector->size;
+  return roy_array_size(ROY_ARRAY(vector));
 }
 
 size_t
 roy_vector_capacity(const RoyVector * vector) {
-  return vector->capacity_unit * vector->steps;
+  return roy_array_capacity(ROY_ARRAY(vector));
 }
 
 bool
 roy_vector_empty(const RoyVector * vector) {
-  return roy_vector_size(vector) == 0;
-}
-
-bool
-roy_vector_full(const RoyVector * vector) {
-  return vector->size == roy_vector_capacity(vector);
+  return roy_array_empty(ROY_ARRAY(vector));
 }
 
 RoyVector *
 roy_vector_insert(RoyVector  * vector,
                   int          position,
                   const void * data) {
-  if (roy_vector_full(vector)) {
+  if (need_expand(vector)) {
     expand(vector);
   }
-  position = position_rectify(vector, position, true);
-  for (size_t i = roy_vector_size(vector); i > position; i--) {
-    memcpy(roy_vector_pointer(vector, i),
-           roy_vector_const_pointer(vector, (i - 1)),
-           vector->element_size);             
-  }
-  memcpy(roy_vector_pointer(vector, position),
-         data,
-         vector->element_size);
-  vector->size++;
+  roy_array_insert(ROY_ARRAY(vector), position, data);
   return vector;
 }
 
 RoyVector *
 roy_vector_push_back(RoyVector  * vector,
                      const void * data) {
-  if (roy_vector_full(vector)) {
+  if (need_expand(vector)) {
     expand(vector);
   }
-  memcpy(roy_vector_pointer(vector, roy_vector_size(vector)),
-         data,
-         vector->element_size);
-  vector->size++;
+  roy_array_push_back(ROY_ARRAY(vector), data);
   return vector;
 }
 
 RoyVector *
 roy_vector_erase(RoyVector * vector,
                  int         position) {
-  if (!roy_vector_empty(vector)) {
-    position = position_rectify(vector, position, false);
-    for (size_t i = position; i != roy_vector_size(vector) - 1; i++) {
-      memcpy(roy_vector_pointer(vector, i),
-             roy_vector_const_pointer(vector, i + 1),
-             vector->element_size);
-    }
-    vector->size--;
-    if (shrinkable(vector)) {
-      shrink(vector);
-    }
+  roy_array_erase(ROY_ARRAY(vector), position);
+  if (need_shrink(vector)) {
+    shrink(vector);
   }
   return vector;
 }
@@ -123,104 +92,68 @@ roy_vector_erase(RoyVector * vector,
 RoyVector *
 roy_vector_erase_fast(RoyVector * vector,
                       int         position) {
-  if (!roy_vector_empty(vector)) {
-    position = position_rectify(vector, position, false);
-    memcpy(roy_vector_pointer(vector, position),
-           roy_vector_const_pointer(vector, vector->size - 1),
-           vector->element_size);
-    vector->size--;
-    if (shrinkable(vector)) {
-      shrink(vector);
-    }
+  roy_array_erase_fast(ROY_ARRAY(vector), position);
+  if (need_shrink(vector)) {
+    shrink(vector);
   }
   return vector;
 }
 
 RoyVector *
 roy_vector_pop_back(RoyVector * vector) {
-  if (!roy_vector_empty(vector)) {
-    vector->size--;
-    if (shrinkable(vector)) {
-      shrink(vector);
-    }
+  roy_array_pop_back(ROY_ARRAY(vector));
+  if (need_shrink(vector)) {
+    shrink(vector);
   }
   return vector;
 }
 
 RoyVector *
 roy_vector_clear(RoyVector * vector) {
-  size_t capacity_unit = vector->capacity_unit;
+  size_t capacity = vector->capacity_base;
   size_t element_size = vector->element_size;
   roy_vector_delete(vector);
-  return vector = roy_vector_new(capacity_unit, element_size);
+  return vector = roy_vector_new(capacity, element_size);
 }
 
 void
 roy_vector_for_each(RoyVector * vector,
-                   void    (* operate) (void *)) {
-  size_t vector_size = roy_vector_size(vector);
-  for (size_t i = 0; i != vector_size; i++) {
-    operate(roy_vector_pointer(vector, i));
-  }
+                    void     (* iterate) (void *)) {
+  roy_array_for_each(ROY_ARRAY(vector), iterate);
 }
 
 void
 roy_vector_for_which(RoyVector * vector,
-                    bool    (* condition) (const void *),
-                    void    (* operate)         (void *)) {
-  size_t vector_size = roy_vector_size(vector);
-  for (size_t i = 0; i != vector_size; i++) {
-    if (condition(roy_vector_const_pointer(vector, i))) {
-      operate(roy_vector_pointer(vector, i));
-    }
-  }
+                     bool     (* condition) (const void *),
+                     void     (* iterate)         (void *)) {
+  roy_array_for_which(ROY_ARRAY(vector), condition, iterate);
 }
 
 /* PRIVATE FUNCTIONS BELOW */
 
-RoyVector *
+static RoyVector *
 expand(RoyVector * vector) {
-  void * temp = calloc(roy_vector_capacity(vector) + vector->capacity_unit, 
-                       vector->element_size);
-  memcpy(temp, vector->data,
-         roy_vector_size(vector) * vector->element_size);
-  free(vector->data);
-  vector->data = temp;
-  vector->steps++;
+  vector->capacity += vector->capacity_base;
+  vector->data = realloc(vector->data,
+                         vector->capacity * vector->element_size);
   return vector;
 }
 
-RoyVector *
+static RoyVector *
 shrink(RoyVector * vector) {
-  void * temp = calloc(roy_vector_capacity(vector) - vector->capacity_unit, 
-                       vector->element_size);
-  memcpy(temp, vector->data,
-         roy_vector_size(vector) * vector->element_size);
-  free(vector->data);
-  vector->data = temp;
-  vector->steps--;
+  vector->capacity -= vector->capacity_base;
+  vector->data = realloc(vector->data,
+                         vector->capacity * vector->element_size);
   return vector;
 }
 
-bool
-shrinkable(const RoyVector * vector) {
-  return
-  roy_vector_capacity(vector) - roy_vector_size(vector) >= 
-  vector->capacity_unit;
+static bool
+need_expand(const RoyVector * vector) {
+  return roy_vector_size(vector) == roy_vector_capacity(vector);
 }
 
-int
-position_rectify(const RoyVector * vector,
-                 int               position,
-                 bool              right_included) {
-  if (position < 0) {
-    return 0;
-  }
-  if (right_included && position > roy_vector_size(vector)) {
-    return roy_vector_size(vector);
-  }
-  if (!right_included && position >= roy_vector_size(vector)) {
-    return roy_vector_size(vector) - 1;
-  }
-  return position;
+static bool
+need_shrink(const RoyVector * vector) {
+  return roy_vector_capacity(vector) - roy_vector_size(vector) >= 
+         vector->capacity_base;
 }
