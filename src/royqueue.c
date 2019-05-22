@@ -1,12 +1,11 @@
 #include "../include/royqueue.h"
-// #include <string.h>
-// #include <stdlib.h>
+#include <stdlib.h>
 
 RoyQueue *
 roy_queue_new(size_t capacity,
               size_t element_size) {
   RoyQueue * ret    = malloc(sizeof(RoyQueue));
-  ret->data         = calloc(capacity * element_size);
+  ret->data         = calloc(capacity, element_size);
   ret->size         = 0;
   ret->capacity     = capacity;
   ret->element_size = element_size;
