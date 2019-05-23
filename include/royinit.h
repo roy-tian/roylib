@@ -7,6 +7,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 
 enum NumeralSystem {
   ROY_BINARY     = 2,
