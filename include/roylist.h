@@ -1,8 +1,7 @@
 #ifndef ROYLIST_H
 #define ROYLIST_H
 
-#include <stddef.h>
-#include <stdbool.h>
+#include "royinit.h"
 
 struct _RoyList {
   void            * data;
