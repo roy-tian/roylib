@@ -14,7 +14,6 @@ struct _RoyVector {
 // RoyVector: a container that encapsulates scalable size vectors.
 typedef struct _RoyVector RoyVector;
 
-
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Allocates sufficient memory for an RoyVector and returns a pointer to it.

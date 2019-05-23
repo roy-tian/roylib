@@ -57,8 +57,6 @@ RoySList * roy_slist_clear(RoySList * slist);
 
 /* LIST OPERATIONS */
 
-RoySList * roy_slist_remove(RoySList * slist, const void * data);
-
 RoySList * roy_slist_remove_if(RoySList * slist, bool (*condition)(const void *));
 
 RoySList * roy_slist_reverse(RoySList * slist);

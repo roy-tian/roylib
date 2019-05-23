@@ -2,6 +2,7 @@
 
 static RoySList * node_new(const void * data, size_t element_size);
 static void node_delete(RoySList * slist);
+static RoySList * back(RoySList * slist);
 
 RoySList *
 roy_slist_new(void) {
@@ -71,11 +72,10 @@ roy_slist_clear(RoySList * slist) {
   return slist;
 }
 
-
 RoySList *
 roy_slist_remove_if(RoySList * slist,
                     bool    (* condition)(const void *)) {
-  RoySList * temp = roy_slist_front(slist);
+  RoySList * temp = slist;
   while (!roy_slist_empty(temp)) {
     if (condition(temp->data)) {
       roy_slist_pop_front(temp);
@@ -86,7 +86,16 @@ roy_slist_remove_if(RoySList * slist,
   return slist;
 }
 
-RoySList * roy_slist_reverse(RoySList * slist);
+RoySList * roy_slist_reverse(RoySList * slist) {
+  RoySList * bak = back(slist);
+  while (roy_slist_front(slist) != bak) {
+    bak->next   = roy_slist_front(slist);
+    slist->next = bak->next->next;
+    bak         = bak->next;
+    bak->next   = NULL; 
+  }
+  return slist;
+}
 
 RoySList * roy_slist_unique(RoySList * slist, int (*compare)(const void *, const void *));
 
@@ -95,9 +104,7 @@ RoySList * roy_slist_sort(RoySList * slist, int (*compare)(const void *, const v
 void
 roy_slist_for_each(RoySList * slist,
                    void    (* iterate)(void *)) {
-  for (RoySList * iter = roy_slist_front(slist);
-       iter->next != NULL;
-       iter = iter->next) {
+  for (RoySList * iter = roy_slist_front(slist); iter; iter = iter->next) {
     iterate(iter->data);
   }
 }
@@ -105,9 +112,7 @@ roy_slist_for_each(RoySList * slist,
 void roy_slist_for_which(RoySList * slist,
                          bool    (* condition)(const void *),
                          void    (* iterate)(void *)) {
-  for (RoySList * iter = roy_slist_front(slist);
-       iter->next != NULL;
-       iter = iter->next) {
+  for (RoySList * iter = roy_slist_front(slist); iter; iter = iter->next) {
     if (condition(iter->data)) {
       iterate(iter->data);
     }
@@ -130,4 +135,12 @@ static void
 node_delete(RoySList * slist) {
   free(slist->data);
   free(slist);
+}
+
+static RoySList *
+back(RoySList * slist) {
+  while (slist->next) {
+    slist = slist->next;
+  }
+  return slist;
 }
