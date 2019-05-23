@@ -1,9 +1,7 @@
 #ifndef ROYQUEUE_H
 #define ROYQUEUE_H
 
-#include "../include/royarray.h"
-// #include <stddef.h>
-// #include <stdbool.h>
+#include "royarray.h"
 
 struct _RoyQueue {
   void   * data;
@@ -20,7 +18,6 @@ struct _RoyQueue {
 // which inplemented as an cycled linear list.
 typedef struct _RoyQueue RoyQueue;
 
-#define ROY_QUEUE(queue) ((RoyQueue *)(queue))
 
 // Allocates sufficient memory for an RoyQueue and returns a pointer to it.
 // The queue can store 'capacity' elements with each size 'element_size' .

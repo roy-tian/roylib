@@ -1,6 +1,4 @@
 #include "../include/roylist.h"
-#include <stdlib.h>
-#include <string.h>
 
 RoyList * node_new(const void * data, size_t element_size);
 void node_delete(RoyList * list);

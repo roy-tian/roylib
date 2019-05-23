@@ -119,5 +119,4 @@ void roy_list_for_each(RoyList * list, void(* iterate)(void *));
 // Traverses all elements whichever meets 'condition' in 'vector' using 'operate'.
 void roy_list_for_which(RoyList * list, bool(* condition)(const void *), void(* iterate)(void *));
 
-
 #endif // ROYLIST_H

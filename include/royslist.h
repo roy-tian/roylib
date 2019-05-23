@@ -1,11 +1,7 @@
 #ifndef ROYSLIST_H
 #define ROYSLIST_H
 
-#include <stddef.h>
-#include <stdbool.h>
-
-#define ROY_CONDITION_FUNC(condition) (bool(*)(const void *))(condition)
-#define ROY_COMPARE_FUNC(compare) (int(*)(const void *, const void *))(compare)
+#include "royinit.h"
 
 struct _RoySList {
   void             * data;

@@ -1,6 +1,4 @@
 #include "../include/royarray.h"
-#include <stdlib.h>
-#include <string.h>
 
 static int position_rectify(const RoyArray * array, int position, bool right_included);
 

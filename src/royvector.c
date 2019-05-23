@@ -1,6 +1,4 @@
 #include "../include/royvector.h"
-#include <stdlib.h>
-#include <string.h>
 
 static RoyVector * expand(RoyVector * vector);
 static RoyVector * shrink(RoyVector * vector);

@@ -1,9 +1,7 @@
 #ifndef ROYSTACK_H
 #define ROYSTACK_H
 
-#include "../include/royarray.h"
-// #include <stddef.h>
-// #include <stdbool.h>
+#include "royarray.h"
 
 struct _RoyStack {
   void   * data;
@@ -17,7 +15,6 @@ struct _RoyStack {
 // RoyStack: a container adapter that gives the functionality of a LIFO data structure.
 typedef struct _RoyStack RoyStack;
 
-#define ROY_STACK(stack) ((RoyStack *)(stack))
 
 // Allocates sufficient memory for an RoyStack and returns a pointer to it.
 // The stack can store 'capacity' elements with each size 'element_size' .

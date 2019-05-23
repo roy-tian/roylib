@@ -1,19 +1,7 @@
 #ifndef ROYSTRING_H
 #define ROYSTRING_H
 
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
-
-#define WORD_CAPACITY        31
-#define STRING_CAPACITY      1023
-#define STRING_CAPACITY_HUGE 65535
-
-// Formulates a empty character string
-// which named 'str' and is 'size'-character long.
-#define ROY_STRING(str, size)         \
-        char str[size + 1];           \
-        memset(str, '\0', size + 1);
+#include "royinit.h"
 
 // Converses all characters in 'str' to lowercase.
 char * roy_string_to_lower(char * str);

@@ -1,8 +1,7 @@
 #ifndef ROYARRAY_H
 #define ROYARRAY_H
 
-#include <stddef.h>
-#include <stdbool.h>
+#include "royinit.h"
 
 struct _RoyArray {
   void   * data;
@@ -13,11 +12,6 @@ struct _RoyArray {
 
 // RoyArray: a container that encapsulates fixed size arrays.
 typedef struct _RoyArray RoyArray;
-
-#define ROY_ARRAY(array) ((RoyArray *)(array))
-#define ROY_ITERATOR(iterate) ((void(*)(void *))(iterate))
-#define ROY_CONDITION(condition) ((bool(*)(const void *))(condition))
-#define ROY_COMPARE(compare) ((int(*)(const void *, const void *))(compare))
 
 /* CONSTRUCTION AND DESTRUCTION */
 
@@ -90,7 +84,6 @@ RoyArray * roy_array_pop_back(RoyArray * array);
 RoyArray * roy_array_clear(RoyArray * array);
 
 /* TRAVERSE */
-
 
 // Traverses all elements in 'array' using 'operate'.
 void roy_array_for_each(RoyArray * array, void(* iterate)(void *));

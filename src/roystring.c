@@ -1,7 +1,4 @@
 #include "../include/roystring.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
 
 char *
 roy_string_to_lower(char * str) {

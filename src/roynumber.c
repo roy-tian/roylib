@@ -1,6 +1,5 @@
 #include "../include/roynumber.h"
 #include "../include/roystring.h"
-#include <ctype.h>
 #include <limits.h>
 #include <math.h>
 

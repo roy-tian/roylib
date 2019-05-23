@@ -1,9 +1,7 @@
 #ifndef ROYVECTOR_H
 #define ROYVECTOR_H
 
-#include "../include/royarray.h"
-// #include <stddef.h>
-// #include <stdbool.h>
+#include "royarray.h"
 
 struct _RoyVector {
   void   * data;
@@ -16,7 +14,6 @@ struct _RoyVector {
 // RoyVector: a container that encapsulates scalable size vectors.
 typedef struct _RoyVector RoyVector;
 
-#define ROY_VECTOR(vector) ((RoyVector *)(vector))
 
 /* CONSTRUCTION AND DESTRUCTION */
 

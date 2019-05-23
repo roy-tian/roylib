@@ -1,6 +1,4 @@
 #include "../include/royslist.h"
-#include <stdlib.h>
-#include <string.h>
 
 static RoySList * node_new(const void * data, size_t element_size);
 static void node_delete(RoySList * slist);

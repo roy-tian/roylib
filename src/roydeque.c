@@ -1,6 +1,4 @@
 #include "../include/roydeque.h"
-#include <stdlib.h>
-#include <string.h>
 
 RoyDeque *
 roy_deque_new(size_t element_size) {
