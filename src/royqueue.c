@@ -41,11 +41,31 @@ roy_queue_full(const RoyQueue * queue) {
 
 RoyQueue *
 roy_queue_push(RoyQueue * queue, const void * data) {
-  if (roy_queue_empty(queue)) {
-    roy_array_insert(ROY_ARRAY(queue), queue->back_index, data);
-    queue->back_index++;
-    queue->back_index %= roy_queue_capacity(queue);
-    queue->size++;
+  if (!roy_queue_full(queue)) {
+    roy_array_insert(ROY_ARRAY(queue), queue->back_index++, data);
+    if (queue->back_index == roy_queue_capacity(queue)) {
+      queue->back_index = 0;
+    }
   }
   return queue; 
+}
+
+RoyQueue *
+roy_queue_pop(RoyQueue * queue) {
+  if (!roy_queue_empty(queue)) {
+    queue->size--;
+    queue->front_index++;
+    if (queue->front_index == roy_queue_capacity(queue)) {
+      queue->front_index = 0;
+    }
+  }
+  return queue;
+}
+
+RoyQueue *
+roy_queue_clear(RoyQueue * queue) {
+  queue->size        = 0;
+  queue->front_index = 0;
+  queue->back_index  = 0;
+  return queue;
 }

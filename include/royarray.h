@@ -14,10 +14,10 @@ struct _RoyArray {
 // RoyArray: a container that encapsulates fixed size arrays.
 typedef struct _RoyArray RoyArray;
 
-#define ROY_ARRAY(array) (RoyArray *)(array)
-#define ROY_ITERATOR(iterate) (void(*)(void *))(iterate)
-#define ROY_CONDITION(condition) (bool(*)(const void *))(condition)
-#define ROY_COMPARE(compare) (int(*)(const void *, const void *))(compare)
+#define ROY_ARRAY(array) ((RoyArray *)(array))
+#define ROY_ITERATOR(iterate) ((void(*)(void *))(iterate))
+#define ROY_CONDITION(condition) ((bool(*)(const void *))(condition))
+#define ROY_COMPARE(compare) ((int(*)(const void *, const void *))(compare))
 
 /* CONSTRUCTION AND DESTRUCTION */
 
@@ -43,9 +43,9 @@ const void * roy_array_const_pointer(const RoyArray * array, int position);
 void * roy_array_element(void * dest, const RoyArray * array, int position);
 
 // Returns a typed pointer to the element at 'position'. (With boundary check)
-#define roy_array_at(array, element_type, position)           \
-        (position >= 0 && position < array->size)           ? \
-        ((element_type*)roy_array_pointer(array, position)) : \
+#define roy_array_at(array, element_type, position)                \
+        ((position) >= 0 && (position) < (array->size))          ? \
+        ((element_type*)roy_array_pointer((array), (position)))  : \
         NULL
 
 /* CAPACITY */

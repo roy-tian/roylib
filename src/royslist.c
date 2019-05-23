@@ -85,6 +85,7 @@ roy_slist_remove_if(RoySList * slist,
       temp = temp->next;
     }
   }
+  return slist;
 }
 
 RoySList * roy_slist_reverse(RoySList * slist);

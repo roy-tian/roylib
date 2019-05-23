@@ -16,7 +16,7 @@ struct _RoyVector {
 // RoyVector: a container that encapsulates scalable size vectors.
 typedef struct _RoyVector RoyVector;
 
-#define ROY_VECTOR(vector) (RoyVector *)(vector)
+#define ROY_VECTOR(vector) ((RoyVector *)(vector))
 
 /* CONSTRUCTION AND DESTRUCTION */
 

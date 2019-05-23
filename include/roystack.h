@@ -17,7 +17,7 @@ struct _RoyStack {
 // RoyStack: a container adapter that gives the functionality of a LIFO data structure.
 typedef struct _RoyStack RoyStack;
 
-#define ROY_STACK(stack) (RoyStack *)(stack)
+#define ROY_STACK(stack) ((RoyStack *)(stack))
 
 // Allocates sufficient memory for an RoyStack and returns a pointer to it.
 // The stack can store 'capacity' elements with each size 'element_size' .

@@ -20,7 +20,7 @@ struct _RoyQueue {
 // which inplemented as an cycled linear list.
 typedef struct _RoyQueue RoyQueue;
 
-#define ROY_QUEUE(queue) (RoyQueue *)(queue)
+#define ROY_QUEUE(queue) ((RoyQueue *)(queue))
 
 // Allocates sufficient memory for an RoyQueue and returns a pointer to it.
 // The queue can store 'capacity' elements with each size 'element_size' .
@@ -34,10 +34,8 @@ void roy_queue_delete(RoyQueue * queue);
 /* ELEMENT ACCESS */
 
 #define roy_queue_front(queue, element_type)  \
-        roy_array_at(ROY_ARRAY(queue), element_type, queue->front_index)
-
-#define roy_queue_back(queue, element_type)   \
-        roy_array_at(ROY_ARRAY(queue), element_type, queue->back_index)
+        (roy_queue_empty(queue)) ? NULL :       \
+        ((element_type*)roy_array_pointer((ROY_ARRAY(queue)), (queue->front_index)))
 
 /* CAPACITY */
 
