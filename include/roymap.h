@@ -3,19 +3,21 @@
 
 #include "royinit.h"
 
+struct _RoyMapNode { };
+
 struct _RoyMap {
-  void           * key;
-  void           * value;
-  struct _RoyMap * left;
-  struct _RoyMap * right;
+  struct _RoyMapNode * root;
+  size_t               key_size;
+  size_t               value_size;
+  int               (* comp) (const void *, const void *);
 };
 
 typedef struct _RoyMap RoyMap;
 
-RoyMap * roy_map_new(void);
+RoyMap * roy_map_new(size_t key_size, size_t value_size, int (* comp)(const void *, const void *));
 
 void roy_map_delete(RoyMap * map);
 
-RoyMap * roy_map_insert_sort(RoyMap * map, const void * key, size_t key_size, const void * value, size_t value_size, int (* comp)(const void *, const void *));
+RoyMap * roy_map_insert_sort(RoyMap * map, const void * key, const void * value);
 
 #endif // ROYMAP_H
