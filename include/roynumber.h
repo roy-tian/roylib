@@ -19,7 +19,7 @@ unsigned long long roy_parse_hexadecimal(const char * str);
 // (The parsing phase ends immediately when 'str' turned to be ill-formed.)
 long long roy_parse_integer(const char * str);
 
-// Converts 'str' of floating number into its equivalent value.
+// Converts 'str' of floating point number into its equivalent value.
 // (The parsing phase ends immediately when 'str' turned to be ill-formed.)
 double roy_parse_double(const char * str);
 

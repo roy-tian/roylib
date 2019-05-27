@@ -32,9 +32,7 @@ const RoySList * roy_slist_const_front(const RoySList * slist);
 
 // Returns a typed pointer to the element at 'position', NULL if position exceeds.
 #define roy_slist_front_data(slist, element_type)       \
-        roy_slist_empty(slist)                        ? \
-        NULL                                          : \
-        (element_type *)(roy_slist_front(slist)->data)
+        (roy_slist_empty(slist)) ? NULL : ((element_type *)(roy_slist_front(slist)->data))
 
 /* CAPACITY */
 

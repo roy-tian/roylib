@@ -9,8 +9,8 @@ struct _RoyList {
   struct _RoyList * prev;
 };
 
-// RoyList: a container implemented as a double-linked list which supports fast insertion and removal
-// from anywhere in the container. Fast random access is not supported.
+// RoyList: a container implemented as a double-linked list which supports fast insertion and removal from anywhere in the container.
+// Fast random access is not supported.
 typedef struct _RoyList RoyList;
 
 /* CONSTRUCTION AND DESTRUCTION */
@@ -71,10 +71,10 @@ bool roy_list_empty(const RoyList * list);
 
 /* MODIFIERS */
 
-// Add an 'element_size'-sized element named 'data' into 'list' at 'position'.
+// Adds an 'element_size'-sized element named 'data' into 'list' at 'position'.
 RoyList * roy_list_insert(RoyList * list_head, int position, const void * data, size_t element_size);
 
-// Add an 'element_size'-sized element named 'data' into 'list_tail' at 'reverse_position' rightmost.
+// Adds an 'element_size'-sized element named 'data' into 'list_tail' at 'reverse_position' rightmost.
 RoyList * roy_list_insert_reverse(RoyList * list_tail, int reverse_position, const void * data, size_t element_size);
 
 // Adds an 'element_size'-sized element named 'data' at the beginning of the list.
@@ -99,8 +99,6 @@ RoyList * roy_list_pop_back(RoyList * list_tail);
 RoyList * roy_list_clear(RoyList * list_head);
 
 /* LIST OPERATIONS */
-
-RoyList * roy_list_remove(RoyList * list, const void * data);
 
 RoyList * roy_list_remove_if(RoyList * list, bool (*condition)(const void *));
 

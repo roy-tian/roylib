@@ -26,7 +26,7 @@ void roy_deque_delete(RoyDeque * deque);
 /* ELEMENT ACCESS */
 
 // Returns an iterator to 'position' in 'deque' where the element takes place.
-// (If 'position' is in small half of the list, iteration will start at head, or it will start at tail reversely.)
+// (If 'position' is in small half of the list, iteration will start at head, and vice versa.)
 // (Returns NULL if position is out of range.)
 void * roy_deque_pointer(RoyDeque * deque, int position);
 
@@ -37,7 +37,7 @@ void * roy_deque_front(RoyDeque * deque);
 void * roy_deque_back(RoyDeque * deque);
 
 // Returns an iterator to 'position' in 'deque' where the element takes place.
-// (If 'position' is in small half of the list, iteration will start at head, or it will start at tail reversely.)
+// (If 'position' is in small half of the list, iteration will start at head, and vice versa.)
 // (Returns NULL if position is out of range.)
 const void * roy_deque_const_pointer(const RoyDeque * deque, int position);
 

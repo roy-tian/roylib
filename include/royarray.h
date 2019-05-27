@@ -16,7 +16,7 @@ typedef struct _RoyArray RoyArray;
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Allocates sufficient memory for an RoyArray and returns a pointer to it.
-// The array can store 'capacity' elements with each size 'element_size' .
+// The array can store 'capacity' elements with each size 'element_size'.
 // (Operations on un-newed RoyArrays will cause undefined behavior.)。
 RoyArray * roy_array_new(size_t capacity, size_t element_size);
 
@@ -32,11 +32,11 @@ void * roy_array_pointer(RoyArray * array, int position);
 // Returns a const void pointer to the element at 'position'. (No boundary check)
 const void * roy_array_const_pointer(const RoyArray * array, int position);
 
-// Returns a copy of the element at 'position'. (With boundary check)
+// Returns a copy of the element at 'position', or NULL if 'position' is invalid.
 // (The behavior is undefined if 'dest' is uninitialized.)
 void * roy_array_element(void * dest, const RoyArray * array, int position);
 
-// Returns a typed pointer to the element at 'position'. (With boundary check)
+// Returns a typed pointer to the element at 'position', or NULL if 'position' is invalid.
 #define roy_array_at(array, element_type, position)                \
         ((position) >= 0 && (position) < (array->size))          ? \
         ((element_type*)roy_array_pointer((array), (position)))  : \
@@ -58,12 +58,12 @@ bool roy_array_full(const RoyArray * array);
 
 /* MODIFIERS */
 
-// Adds an element named 'data' into 'array' at 'position'.
+// Adds an element named 'data' into 'array' at 'position', or does nothing if 'array' is full.
 // ('data' will be pushed to the front of 'array' if 'position' is negative, or to the back if 'position' exceeds.)
 // (The behavior is undefined if 'data' is uninitialized.)
 RoyArray * roy_array_insert(RoyArray * array, int position, const void * data);
 
-// Adds an element named 'data' into 'array' next to the last element.
+// Adds an element named 'data' into 'array' next to the last element, or does nothing if 'array' is full.
 // (The behavior is undefined if 'data' is uninitialized.)
 RoyArray * roy_array_push_back(RoyArray * array, const void * data);
 
@@ -85,7 +85,7 @@ RoyArray * roy_array_clear(RoyArray * array);
 
 /* TRAVERSE */
 
-// Traverses all elements in 'array' using 'operate'.
+// Traverses all elements in 'array' using 'operate' sequentially.
 void roy_array_for_each(RoyArray * array, void(* iterate)(void *));
 
 // Traverses all elements whichever meets 'condition' in 'array' using 'operate'.

@@ -38,8 +38,7 @@ enum String {
 #define ROY_CONDITION(condition) ((bool(*)(const void *))(condition))
 #define ROY_COMPARE(compare) ((int(*)(const void *, const void *))(compare))
 
-// Formulates a empty character string
-// which named 'str' and is 'size'-character long.
+// Formulates an empty character string which named 'str' and is 'size'-character long.
 #define ROY_STRING(str, size)         \
         char str[size + 1];           \
         memset(str, '\0', size + 1);

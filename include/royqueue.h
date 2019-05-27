@@ -31,7 +31,7 @@ void roy_queue_delete(RoyQueue * queue);
 /* ELEMENT ACCESS */
 
 #define roy_queue_front(queue, element_type)  \
-        (roy_queue_empty(queue)) ? NULL :       \
+        (roy_queue_empty(queue)) ? NULL :     \
         ((element_type*)roy_array_pointer((ROY_ARRAY(queue)), (queue->front_index)))
 
 /* CAPACITY */
@@ -54,10 +54,10 @@ bool roy_queue_full(const RoyQueue * queue);
 // (The behavior is undefined if 'data' is uninitialized.)
 RoyQueue * roy_queue_push(RoyQueue * queue, const void * data);
 
-// Removes the last element.
+// Removes the first element.
 RoyQueue * roy_queue_pop(RoyQueue * queue);
 
-// Removes all the elements in 'array'.
+// Removes all the elements in 'queue'.
 RoyQueue * roy_queue_clear(RoyQueue * queue);
 
 #endif // ROYQUEUE_H
