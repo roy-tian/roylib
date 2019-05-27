@@ -6,7 +6,7 @@ static RoySList * back(RoySList * slist);
 
 RoySList *
 roy_slist_new(void) {
-  RoySList * ret = malloc(sizeof(void *) + sizeof(RoySList *));
+  RoySList * ret = malloc(sizeof(RoySList));
   ret->data = NULL;
   ret->next = NULL;
   return ret;
