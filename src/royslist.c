@@ -1,7 +1,7 @@
 #include "../include/royslist.h"
 
 static RoySList * node_new(const void * data, size_t element_size);
-static void node_delete(RoySList * slist);
+static void       node_delete(RoySList * slist);
 static RoySList * back(RoySList * slist);
 
 RoySList *
@@ -49,8 +49,8 @@ roy_slist_push_front(RoySList   * slist,
                      const void * data,
                      size_t       element_size) {
   RoySList * elem = node_new(data, element_size);
-  elem->next = slist->next;
-  slist->next = elem;
+  elem->next      = slist->next;
+  slist->next     = elem;
   return slist;
 }
 

@@ -15,8 +15,8 @@ typedef struct _RoyList RoyList;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
-// Returns a pointer to a newly build RoyList's head for navigating, it contains no data, 
-// the real data takes places from the 2nd element.
+// Returns a pointer to a newly build RoyList's head for navigating.
+// It contains no data, the real data takes places from the 2nd element.
 RoyList * roy_list_new(void);
 
 // Deallocates all the memory allocated.
@@ -110,10 +110,10 @@ RoyList * roy_list_sort(RoyList * list, int (*compare)(const void *, const void 
 
 /* TRAVERSE */
 
-// Traverses all elements in 'vector' using 'operate'.
+// Traverses all elements in 'list' using 'iterate'.
 void roy_list_for_each(RoyList * list, void(* iterate)(void *));
 
-// Traverses all elements whichever meets 'condition' in 'vector' using 'operate'.
+// Traverses all elements whichever meets 'condition' in 'list' using 'iterate'.
 void roy_list_for_which(RoyList * list, bool(* condition)(const void *), void(* iterate)(void *));
 
 #endif // ROYLIST_H

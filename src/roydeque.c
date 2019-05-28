@@ -2,7 +2,7 @@
 
 RoyDeque *
 roy_deque_new(size_t element_size) {
-  RoyDeque * ret = malloc(sizeof(RoyList *) * 2 + sizeof(size_t) * 2);
+  RoyDeque * ret = malloc(sizeof(RoyDeque));
   ret->head = roy_list_new();
   ret->tail = ret->head->next;
   ret->size = 0;
