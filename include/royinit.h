@@ -29,10 +29,15 @@ enum String {
   STRING_CAPACITY_HUGE = 65535
 };
 
-#define ROY_ARRAY(array) ((RoyArray *)(array))
-#define ROY_QUEUE(queue) ((RoyQueue *)(queue))
-#define ROY_STACK(stack) ((RoyStack *)(stack))
+#define ROY_ARRAY(array)   ((RoyArray *)(array))
+#define ROY_QUEUE(queue)   ((RoyQueue *)(queue))
+#define ROY_STACK(stack)   ((RoyStack *)(stack))
 #define ROY_VECTOR(vector) ((RoyVector *)(vector))
+#define ROY_SLIST(slist)   ((RoySList *)(slist))
+#define ROY_LIST(list)     ((RoyList *)(list))
+#define ROY_DEQUE(deque)   ((RoyDeque *)(deque))
+#define ROY_SET(set)       ((RoySet *)(set))
+#define ROY_MSET(mset)     ((RoyMSet *)(mset))
 
 #define ROY_ITERATOR(iterate) ((void(*)(void *))(iterate))
 #define ROY_CONDITION(condition) ((bool(*)(const void *))(condition))

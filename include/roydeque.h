@@ -10,7 +10,7 @@ struct _RoyDeque {
   size_t    element_size;
 };
 
-// RoyDeque: a double ended queue powered by a RoyList inside,
+// RoyDeque: a double ended queue powered by a RoyDeque inside,
 // which supports fast insertion and removal from both end of the queue.
 typedef struct _RoyDeque RoyDeque;
 
@@ -26,7 +26,7 @@ void roy_deque_delete(RoyDeque * deque);
 /* ELEMENT ACCESS */
 
 // Returns an iterator to 'position' in 'deque' where the element takes place.
-// (If 'position' is in small half of the list, iteration will start at head, and vice versa.)
+// (If 'position' is in small half of the deque, iteration will start at head, and vice versa.)
 // (Returns NULL if position is out of range.)
 void * roy_deque_pointer(RoyDeque * deque, int position);
 
@@ -37,7 +37,7 @@ void * roy_deque_front(RoyDeque * deque);
 void * roy_deque_back(RoyDeque * deque);
 
 // Returns an iterator to 'position' in 'deque' where the element takes place.
-// (If 'position' is in small half of the list, iteration will start at head, and vice versa.)
+// (If 'position' is in small half of the deque, iteration will start at head, and vice versa.)
 // (Returns NULL if position is out of range.)
 const void * roy_deque_const_pointer(const RoyDeque * deque, int position);
 
@@ -85,5 +85,23 @@ RoyDeque * roy_deque_pop_back(RoyDeque * deque);
 
 // Removes all the element from 'deque'.
 RoyDeque * roy_deque_clear(RoyDeque * deque);
+
+/* LIST OPERATIONS */
+
+RoyDeque * roy_deque_remove_if(RoyDeque * deque, bool (*condition)(const void *));
+
+RoyDeque * roy_deque_reverse(RoyDeque * deque);
+
+RoyDeque * roy_deque_unique(RoyDeque * deque, int (*compare)(const void *, const void *));
+
+RoyDeque * roy_deque_sort(RoyDeque * deque, int (*compare)(const void *, const void *));
+
+/* TRAVERSE */
+
+// Traverses all elements in 'deque' using 'iterate'.
+void roy_deque_for_each(RoyDeque * deque, void(* iterate)(void *));
+
+// Traverses all elements whichever meets 'condition' in 'deque' using 'iterate'.
+void roy_deque_for_which(RoyDeque * deque, bool(* condition)(const void *), void(* iterate)(void *));
 
 #endif // ROYDEQUE_H
