@@ -35,9 +35,9 @@ bool roy_mset_empty(const RoyMSet * mset) {
 
 RoyMSet *
 roy_mset_insert(RoyMSet     ** mset,
-               const void *  key,
-               size_t        key_size,
-               int       (*  comp)(const void *, const void *)) {
+                const void *  key,
+                size_t        key_size,
+                int       (*  comp)(const void *, const void *)) {
   if (!*mset) {
     *mset = node_new(key, key_size);
   } else if (comp(key, (*mset)->key) == 1) {

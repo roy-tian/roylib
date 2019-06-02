@@ -17,4 +17,5 @@ ADD_LIBRARY (roylib
              src/roylist.c
              src/roydeque.c
              src/royset.c
-             src/roymset.c)
+             src/roymset.c
+        )
