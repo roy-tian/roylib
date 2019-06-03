@@ -37,10 +37,9 @@ const void * roy_array_const_pointer(const RoyArray * array, int position);
 void * roy_array_element(void * dest, const RoyArray * array, int position);
 
 // Returns a typed pointer to the element at 'position', or NULL if 'position' is invalid.
-#define roy_array_at(array, element_type, position)                \
-        ((position) >= 0 && (position) < (array->size))          ? \
-        ((element_type*)roy_array_pointer((array), (position)))  : \
-        NULL
+#define roy_array_at(array, element_type, position)               \
+        (((position) >= 0 && (position) < (array->size))         ? \
+         ((element_type*)roy_array_pointer((array), (position))) : NULL)
 
 /* CAPACITY */
 

@@ -58,8 +58,9 @@ const RoyList * roy_list_const_back(const RoyList * list_tail);
 void * roy_list_element(void * dest, size_t element_size, const RoyList * list_head, int position);
 
 // Returns a typed pointer to the element at 'position', NULL if position exceeds.
-#define roy_list_at(list_head, element_type, position)          \
-        (element_type*)(roy_list_pointer(list, position)->data)
+#define roy_list_at(list_head, element_type, position)   \
+        ((roy_list_pointer((list), (position)))        ? \
+         (element_type *)((roy_list_pointer((list), (position)))->data) : NULL)
 
 /* CAPACITY */
 

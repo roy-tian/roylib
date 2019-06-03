@@ -9,28 +9,28 @@ struct _RoyMSet {
   struct _RoyMSet * right;
 };
 
-// RoyMSet [Multi Set]: an associative container that contains a sorted set of objects of type Key.
+// RoyMSet [Multi Set]: an associative container that contains a sorted set of objects of type Key, duplicated objects is allowed.
 // Sorting is done using the key comparison function 'comp'. Search, removal, and insertion operations have logarithmic complexity.
 typedef struct _RoyMSet RoyMSet;
 
 /* ELEMENT ACCESS */
 
 // Returns an iterator to the minimum element of 'mset'.
-RoyMSet * roy_mset_min(RoyMSet * mset);
+RoyMSet * roy_mset_front(RoyMSet * mset);
 
 // Returns an iterator to the maximum element of 'mset'.
-RoyMSet * roy_mset_max(RoyMSet * mset);
+RoyMSet * roy_mset_back(RoyMSet * mset);
 
 // Returns a const iterator to the minimum element of 'mset'.
-const RoyMSet * roy_mset_const_min(RoyMSet * mset);
+const RoyMSet * roy_mset_const_front(const RoyMSet * mset);
 
 // Returns a const iterator to the maximum element of 'mset'.
-const RoyMSet * roy_mset_const_max(RoyMSet * mset);
+const RoyMSet * roy_mset_const_back(const RoyMSet * mset);
 
 /* CAPACITY */
 
 // Returns the number of elements in 'mset'.
-size_t roy_mset_size(RoyMSet * mset);
+size_t roy_mset_size(const RoyMSet * mset);
 
 // Returns whether there is any elements in 'mset'.
 bool roy_mset_empty(const RoyMSet * mset);
@@ -45,6 +45,16 @@ RoyMSet * roy_mset_erase(RoyMSet ** mset, const void * key, size_t key_size, int
 
 // Removes all the element from 'mset'.
 RoyMSet * roy_mset_clear(RoyMSet * mset);
+
+/* LOOKUP */
+
+RoyMSet * roy_mset_count(const RoyMSet * mset, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+
+RoyMSet * roy_mset_find(const RoyMSet * mset, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+
+RoyMSet * roy_mset_lower_bound(const RoyMSet * mset, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+
+RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, size_t key_size, int (*comp)(const void *, const void *));
 
 /* TRAVERSE */
 
