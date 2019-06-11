@@ -37,9 +37,8 @@ const void * roy_array_const_pointer(const RoyArray * array, int position);
 void * roy_array_element(void * dest, const RoyArray * array, int position);
 
 // Returns a typed pointer to the element at 'position', or NULL if 'position' is invalid.
-#define roy_array_at(array, element_type, position)               \
-        (((position) >= 0 && (position) < (array->size))         ? \
-         ((element_type*)roy_array_pointer((array), (position))) : NULL)
+#define roy_array_at(array, element_type, position) \
+        ((element_type*)((position) >= 0 && (position) < ((array)->size) ? roy_array_pointer((array), (position)) : NULL))
 
 /* CAPACITY */
 
@@ -58,7 +57,7 @@ bool roy_array_full(const RoyArray * array);
 /* MODIFIERS */
 
 // Adds an element named 'data' into 'array' at 'position', or does nothing if 'array' is full.
-// ('data' will be pushed to the front of 'array' if 'position' is negative, or to the back if 'position' exceeds.)
+// (does nothing if 'position' is negative or exceeds.)
 // (The behavior is undefined if 'data' is uninitialized.)
 RoyArray * roy_array_insert(RoyArray * array, int position, const void * data);
 

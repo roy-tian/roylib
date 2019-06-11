@@ -3,8 +3,6 @@
 static RoySet * node_new(const void * key, size_t key_size);
 static void     node_delete(RoySet * set);
 
-
-
 RoySet *
 roy_set_front(RoySet * set) {
   if (!set) {
@@ -140,10 +138,10 @@ static RoySet *
 node_new(const void * key,
          size_t       key_size) {
   RoySet * ret = malloc(sizeof(RoySet));
-  ret->key     = malloc(key_size);
-  memcpy(ret->key, key, key_size);
   ret->left    = NULL;
   ret->right   = NULL;
+  ret->key     = malloc(key_size);
+  memcpy(ret->key, key, key_size);
   return ret;
 }
 

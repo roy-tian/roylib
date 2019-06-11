@@ -38,8 +38,8 @@ const void * roy_vector_const_pointer(const RoyVector * vector, int position);
 void * roy_vector_element(void * dest, const RoyVector * vector, int position);
 
 // Returns a typed pointer to the element at 'position', or NULL if 'position' is invalid.
-#define roy_vector_at(vector, element_type, position)         \
-        roy_array_at(ROY_ARRAY((vector)), (element_type), (position))
+#define roy_vector_at(vector, element_type, position) \
+        ((element_type *)((position) >= 0 && (position) < ((vector)->size) ? roy_vector_pointer((vector), (position)) : NULL))
 
 /* CAPACITY */
 

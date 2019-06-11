@@ -19,12 +19,12 @@ roy_slist_delete(RoySList * slist) {
 }
 
 RoySList *
-roy_slist_front(RoySList * slist) {
+roy_slist_begin(RoySList * slist) {
   return slist->next;
 }
 
 const RoySList *
-roy_slist_const_front(const RoySList * slist) {
+roy_slist_const_begin(const RoySList * slist) {
   return slist->next;
 }
 
@@ -41,7 +41,7 @@ roy_slist_size(const RoySList * slist) {
 
 bool
 roy_slist_empty(const RoySList * slist) {
-  return roy_slist_const_front(slist) == NULL;
+  return roy_slist_const_begin(slist) == NULL;
 }
 
 RoySList *
@@ -57,7 +57,7 @@ roy_slist_push_front(RoySList   * slist,
 RoySList *
 roy_slist_pop_front(RoySList * slist) {
   if (!roy_slist_empty(slist)) {
-    RoySList * to_erase = roy_slist_front(slist);
+    RoySList * to_erase = roy_slist_begin(slist);
     slist->next = to_erase->next;
     node_delete(to_erase);
   }
@@ -88,8 +88,8 @@ roy_slist_remove_if(RoySList * slist,
 
 RoySList * roy_slist_reverse(RoySList * slist) {
   RoySList * bak = back(slist);
-  while (roy_slist_front(slist) != bak) {
-    bak->next   = roy_slist_front(slist);
+  while (roy_slist_begin(slist) != bak) {
+    bak->next   = roy_slist_begin(slist);
     slist->next = bak->next->next;
     bak         = bak->next;
     bak->next   = NULL; 
@@ -104,7 +104,7 @@ RoySList * roy_slist_sort(RoySList * slist, int (*compare)(const void *, const v
 void
 roy_slist_for_each(RoySList * slist,
                    void    (* iterate)(void *)) {
-  for (RoySList * iter = roy_slist_front(slist); iter; iter = iter->next) {
+  for (RoySList * iter = roy_slist_begin(slist); iter; iter = iter->next) {
     iterate(iter->data);
   }
 }
@@ -112,7 +112,7 @@ roy_slist_for_each(RoySList * slist,
 void roy_slist_for_which(RoySList * slist,
                          bool    (* condition)(const void *),
                          void    (* iterate)(void *)) {
-  for (RoySList * iter = roy_slist_front(slist); iter; iter = iter->next) {
+  for (RoySList * iter = roy_slist_begin(slist); iter; iter = iter->next) {
     if (condition(iter->data)) {
       iterate(iter->data);
     }

@@ -31,8 +31,7 @@ void roy_queue_delete(RoyQueue * queue);
 /* ELEMENT ACCESS */
 
 #define roy_queue_front(queue, element_type)  \
-        (roy_queue_empty(queue)) ? NULL :     \
-        ((element_type*)roy_array_pointer((ROY_ARRAY(queue)), (queue->front_index)))
+        ((element_type *)(roy_queue_empty((queue)) ? NULL : (roy_array_pointer(ROY_ARRAY((queue)), (queue)->front_index))))
 
 /* CAPACITY */
 

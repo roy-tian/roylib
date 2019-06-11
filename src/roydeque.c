@@ -20,43 +20,43 @@ void *
 roy_deque_pointer(RoyDeque * deque,
                  int         position) {
   if (position <= deque->size / 2) { // smaller half
-    return roy_list_pointer(deque->head, position)->data;
+    return roy_list_iterator(deque->head, position)->data;
   } else { // bigger half
     return
-    roy_list_reverse_pointer(deque->tail, deque->size - position - 1)->data;
+    roy_list_reverse_iterator(deque->tail, deque->size - position - 1)->data;
   }
 }
 
 void *
 roy_deque_front(RoyDeque * deque) {
-  return roy_list_front(deque->head)->data;
+  return roy_list_begin(deque->head)->data;
 }
 
 void *
 roy_deque_back(RoyDeque * deque) {
-  return roy_list_back(deque->tail)->data;
+  return roy_list_rbegin(deque->tail)->data;
 }
 
 const void *
 roy_deque_const_pointer(const RoyDeque * deque,
                         int              position) {
   if (position <= deque->size / 2) { // smaller half
-    return roy_list_const_pointer(deque->head, position)->data;
+    return roy_list_const_iterator(deque->head, position)->data;
   } else { // bigger half
     return
-    roy_list_const_reverse_pointer(deque->tail,
+    roy_list_const_reverse_iterator(deque->tail,
                                    deque->size - position - 1)->data;
   }
 }
 
 const void *
 roy_deque_const_front(const RoyDeque * deque) {
-  return roy_list_const_front(deque->head)->data;
+  return roy_list_const_begin(deque->head)->data;
 }
 
 const void *
 roy_deque_const_back(const RoyDeque * deque) {
-  return roy_list_const_back(deque->tail)->data;
+  return roy_list_const_rbegin(deque->tail)->data;
 }
 
 void *

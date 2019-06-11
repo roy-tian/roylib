@@ -27,40 +27,38 @@ void roy_list_delete(RoyList * list);
 
 // Returns an iterator to 'position' in 'list' where the element takes place.
 // (Returns the head of 'list' if position is negative, NULL if position exceeds.)
-RoyList * roy_list_pointer(RoyList * list_head, int position);
+RoyList * roy_list_iterator(RoyList * list_head, int position);
 
 // Returns an reversed iterator to 'position' right most in 'list' where the element takes place.
 // (Returns the tail of 'list' if position is negative, NULL if position exceeds.)
-RoyList * roy_list_reverse_pointer(RoyList * list_tail, int reverse_position);
+RoyList * roy_list_reverse_iterator(RoyList * list_tail, int reverse_position);
 
 // Returns an iterator to the first element.
-RoyList * roy_list_front(RoyList * list_head);
+RoyList * roy_list_begin(RoyList * list_head);
 
 // Returns an reversed iterator to the last element.
-RoyList * roy_list_back(RoyList * list_tail);
+RoyList * roy_list_rbegin(RoyList * list_tail);
 
 // Returns a const iterator to 'position' in 'list' where the element takes place.
 // (Returns the head of 'list' if position is negative, NULL if position exceeds.)
-const RoyList * roy_list_const_pointer(const RoyList * list_head, int position);
+const RoyList * roy_list_const_iterator(const RoyList * list_head, int position);
 
 // Returns an const reversed iterator to 'position' right most in 'list' where the element takes place.
 // (Returns the tail of 'list' if position is negative, NULL if position exceeds.)
-const RoyList * roy_list_const_reverse_pointer(const RoyList * list_tail, int reverse_position);
+const RoyList * roy_list_const_reverse_iterator(const RoyList * list_tail, int reverse_position);
 
 // Returns a const iterator to the first element.
-const RoyList * roy_list_const_front(const RoyList * list_head);
+const RoyList * roy_list_const_begin(const RoyList * list_head);
 
 // Returns a const reversed iterator to the last element.
-const RoyList * roy_list_const_back(const RoyList * list_tail);
+const RoyList * roy_list_const_rbegin(const RoyList * list_tail);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)
 void * roy_list_element(void * dest, size_t element_size, const RoyList * list_head, int position);
 
 // Returns a typed pointer to the element at 'position', NULL if position exceeds.
-#define roy_list_at(list_head, element_type, position)   \
-        ((roy_list_pointer((list), (position)))        ? \
-         (element_type *)((roy_list_pointer((list), (position)))->data) : NULL)
+#define roy_list_at(list_head, element_type, position) ((element_type *)(roy_list_iterator((list_head), (position))->data))
 
 /* CAPACITY */
 

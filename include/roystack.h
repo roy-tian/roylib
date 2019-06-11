@@ -29,7 +29,7 @@ void roy_stack_delete(RoyStack * stack);
 
 // Returns a typed pointer to the first element of 'stack'.
 #define roy_stack_top(stack, element_type)  \
-        roy_array_at((ROY_ARRAY(stack)), (element_type), (roy_stack_size(stack) - 1))
+        (element_type*)(roy_stack_empty(stack) ? NULL : roy_array_pointer(ROY_ARRAY(stack), (roy_stack_size(stack) - 1)))
 
 /* CAPACITY */
 

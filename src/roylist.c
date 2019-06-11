@@ -22,8 +22,8 @@ roy_list_delete(RoyList * list) {
 }
 
 RoyList *
-roy_list_pointer(RoyList * list_head,
-                 int       position) {
+roy_list_iterator(RoyList * list_head,
+                  int       position) {
   int cur_position = 0;
   RoyList * iter = list_head;
   while (iter->next->next && cur_position <= position) {
@@ -34,8 +34,8 @@ roy_list_pointer(RoyList * list_head,
 }
 
 const RoyList *
-roy_list_const_pointer(const RoyList * list_head,
-                       int             position) {
+roy_list_const_iterator(const RoyList * list_head,
+                        int             position) {
   int cur_position = 0;
   const RoyList * iter = list_head;
   while (iter->next->next && cur_position <= position) {
@@ -46,8 +46,8 @@ roy_list_const_pointer(const RoyList * list_head,
 }
 
 RoyList *
-roy_list_reverse_pointer(RoyList * list_tail,
-                         int       reverse_position) {
+roy_list_reverse_iterator(RoyList * list_tail,
+                          int       reverse_position) {
   int cur_position = 0;
   RoyList * riter = list_tail;
   while (riter->prev->prev && cur_position <= reverse_position) {
@@ -58,8 +58,8 @@ roy_list_reverse_pointer(RoyList * list_tail,
 }
 
 const RoyList *
-roy_list_const_reverse_pointer(const RoyList * list_tail,
-                               int             reverse_position) {
+roy_list_const_reverse_iterator(const RoyList * list_tail,
+                                int             reverse_position) {
   int cur_position = 0;
   const RoyList * riter = list_tail;
   while (riter->prev->prev && cur_position <= reverse_position) {
@@ -70,22 +70,22 @@ roy_list_const_reverse_pointer(const RoyList * list_tail,
 }
 
 RoyList *
-roy_list_front(RoyList * list_head) {
+roy_list_begin(RoyList * list_head) {
   return list_head->next->next ? list_head->next : NULL;
 }
 
 const RoyList *
-roy_list_const_front(const RoyList * list_head) {
+roy_list_const_begin(const RoyList * list_head) {
   return list_head->next->next ? list_head->next : NULL;
 }
 
 RoyList *
-roy_list_back(RoyList * list_tail) {
+roy_list_rbegin(RoyList * list_tail) {
   return list_tail->prev->prev ? list_tail->prev : NULL;
 }
 
 const RoyList *
-roy_list_const_back(const RoyList * list_tail) {
+roy_list_const_rbegin(const RoyList * list_tail) {
   return list_tail->prev->prev ? list_tail->prev : NULL;
 }
 
@@ -95,7 +95,7 @@ roy_list_element(void *          dest,
                  const RoyList * list,
                  int             position) {
   memcpy(dest,
-         roy_list_const_pointer(list, position)->data,
+         roy_list_const_iterator(list, position)->data,
          element_size);
   return dest;   
 }
@@ -122,7 +122,7 @@ roy_list_insert(RoyList    * list_head,
                 const void * data,
                 size_t       element_size) {
   return 
-  roy_list_push_front(roy_list_pointer(list_head, position - 1),
+  roy_list_push_front(roy_list_iterator(list_head, position - 1),
                       data,
                       element_size);
 }
@@ -133,7 +133,7 @@ roy_list_insert_reverse(RoyList    * list_tail,
                         const void * data,
                         size_t       element_size) {
   return 
-  roy_list_push_back(roy_list_reverse_pointer(list_tail, reverse_position - 1),
+  roy_list_push_back(roy_list_reverse_iterator(list_tail, reverse_position - 1),
                      data,
                      element_size);
 }
@@ -167,20 +167,20 @@ roy_list_push_back(RoyList    * list_tail,
 RoyList *
 roy_list_erase(RoyList * list_head,
                int       position) {
-  return roy_list_pop_front(roy_list_pointer(list_head, position - 1));
+  return roy_list_pop_front(roy_list_iterator(list_head, position - 1));
 }
 
 RoyList *
 roy_list_erase_reverse(RoyList * list_tail,
                        int       reverse_position) {
   return
-  roy_list_pop_back(roy_list_reverse_pointer(list_tail, reverse_position - 1));
+  roy_list_pop_back(roy_list_reverse_iterator(list_tail, reverse_position - 1));
 }
 
 RoyList *
 roy_list_pop_front(RoyList * list_head) {
   if (!roy_list_empty(list_head)) {
-    RoyList * to_erase = roy_list_front(list_head);
+    RoyList * to_erase = roy_list_begin(list_head);
     RoyList * next_elem = to_erase->next;
     list_head->next = next_elem;
     next_elem->prev = list_head;
@@ -192,7 +192,7 @@ roy_list_pop_front(RoyList * list_head) {
 RoyList *
 roy_list_pop_back(RoyList * list_tail) {
   if (list_tail->prev->prev) { // not empty
-    RoyList * to_erase = roy_list_back(list_tail);
+    RoyList * to_erase = roy_list_rbegin(list_tail);
     RoyList * prev_elem = to_erase->prev;
     list_tail->prev = prev_elem;
     prev_elem->next = list_tail;
@@ -212,7 +212,7 @@ roy_list_clear(RoyList * list) {
 void
 roy_list_for_each(RoyList * list,
                   void   (* iterate)(void *)) {
-  for (RoyList * iter = roy_list_front(list); iter->next; iter = iter->next) {
+  for (RoyList * iter = roy_list_begin(list); iter->next; iter = iter->next) {
     iterate(iter->data);
   }
 }
@@ -220,7 +220,7 @@ roy_list_for_each(RoyList * list,
 void roy_list_for_which(RoyList * list,
                         bool   (* condition)(const void *),
                         void   (* iterate)(void *)) {
-  for (RoyList * iter = roy_list_front(list); iter->next; iter = iter->next) {
+  for (RoyList * iter = roy_list_begin(list); iter->next; iter = iter->next) {
     if (condition(iter->data)) {
       iterate(iter->data);
     }

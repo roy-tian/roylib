@@ -4,12 +4,12 @@
 #include "royinit.h"
 
 struct _RoySet {
-  void           * key;
   struct _RoySet * left;
   struct _RoySet * right;
+  void           * key;
 };
 
-// RoySet: an associative container that contains a sorted set of unique objects of type Key.
+// RoySet: an associative container that contains a sorted set of unique objects.
 // Sorting is done using the key comparison function 'comp'. Search, removal, and insertion operations have logarithmic complexity.
 typedef struct _RoySet RoySet;
 

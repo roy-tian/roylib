@@ -25,10 +25,10 @@ void roy_slist_delete(RoySList * slist);
 /* ELEMENT ACCESS */
 
 // Returns an iterator to the first element.
-RoySList * roy_slist_front(RoySList * slist);
+RoySList * roy_slist_begin(RoySList * slist);
 
 // Returns a const iterator to the first element.
-const RoySList * roy_slist_const_front(const RoySList * slist);
+const RoySList * roy_slist_const_begin(const RoySList * slist);
 
 /* CAPACITY */
 
