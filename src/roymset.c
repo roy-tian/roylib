@@ -57,7 +57,7 @@ roy_mset_erase(RoyMSet    ** mset,
     return NULL;
   }
   if (comp((*mset)->key, key) == -1) {
-    (*mset)->left =  roy_mset_erase(&(*mset)->left, key, key_size, comp);
+    (*mset)->left = roy_mset_erase(&(*mset)->left, key, key_size, comp);
   } else
   if (comp((*mset)->key, key) == 1) {
     (*mset)->right = roy_mset_erase(&(*mset)->right, key, key_size, comp);
