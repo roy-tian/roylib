@@ -16,16 +16,16 @@ typedef struct _RoyMSet RoyMSet;
 /* ELEMENT ACCESS */
 
 // Returns an iterator to the minimum element of 'mset'.
-RoyMSet * roy_mset_iterator_min(RoyMSet * mset);
+RoyMSet * roy_mset_min(RoyMSet *mset);
 
 // Returns an iterator to the maximum element of 'mset'.
-RoyMSet * roy_mset_iterator_max(RoyMSet * mset);
+RoyMSet * roy_mset_max(RoyMSet *mset);
 
 // Returns a const iterator to the minimum element of 'mset'.
-const RoyMSet * roy_mset_const_iterator_min(const RoyMSet * mset);
+const RoyMSet * roy_mset_const_min(const RoyMSet *mset);
 
 // Returns a const iterator to the maximum element of 'mset'.
-const RoyMSet * roy_mset_const_iterator_max(const RoyMSet * mset);
+const RoyMSet * roy_mset_const_max(const RoyMSet *mset);
 
 /* CAPACITY */
 
