@@ -1,7 +1,7 @@
 #include "../include/roylist.h"
 
-RoyList * node_new(const void * data, size_t element_size);
-void node_delete(RoyList * list);
+static RoyList * node_new(const void * data, size_t element_size);
+static void node_delete(RoyList * list);
 
 RoyList *
 roy_list_new(void) {
@@ -230,7 +230,7 @@ void roy_list_for_which(RoyList * list,
 
 /* PRIVATE FUNCTIONS BELOW */
 
-RoyList *
+static RoyList *
 node_new(const void * data,
          size_t       element_size) {
   RoyList * ret = malloc(sizeof(void *) + sizeof(RoyList *) * 2);
@@ -241,7 +241,7 @@ node_new(const void * data,
   return ret; 
 }
 
-void
+static void
 node_delete(RoyList * list) {
   free(list->data);
   free(list);
