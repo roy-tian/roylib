@@ -1,21 +1,19 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 3.14)
+cmake_minimum_required(VERSION 3.0.0)
+project(roylib VERSION 0.1.0)
 
-PROJECT (roylib C)
+add_library(roylib
+            src/roystring.c
+            src/roynumber.c
+            src/royarray.c
+            src/royvector.c
+            src/roystack.c
+            src/royqueue.c
+            src/royslist.c
+            src/roylist.c
+            src/roydeque.c
+            src/royset.c
+            src/roymset.c
+)
 
-SET (CMAKE_C_STANDARD 11)
-
-SET (LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
-
-ADD_LIBRARY (roylib
-             src/roystring.c
-             src/roynumber.c
-             src/royarray.c
-             src/royvector.c
-             src/roystack.c
-             src/royqueue.c
-             src/royslist.c
-             src/roylist.c
-             src/roydeque.c
-             src/royset.c
-             src/roymset.c
-        )
+set(CMAKE_C_STANDARD 11)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
