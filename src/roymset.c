@@ -5,23 +5,23 @@ static RoyMSet * node_new(const void * key, size_t key_size);
 static void      node_delete(RoyMSet * mset);
 
 RoyMSet *
-roy_mset_front(RoyMSet * mset) {
-  return ROY_MSET(roy_set_front(ROY_SET(mset)));
+roy_mset_iterator_min(RoyMSet * mset) {
+  return ROY_MSET(roy_set_min(ROY_SET(mset)));
 }
 
 RoyMSet *
-roy_mset_back(RoyMSet * mset) {
-  return ROY_MSET(roy_set_back(ROY_SET(mset)));
+roy_mset_iterator_max(RoyMSet * mset) {
+  return ROY_MSET(roy_set_max(ROY_SET(mset)));
 }
 
 const RoyMSet *
-roy_mset_const_front(const RoyMSet * mset) {
-  return ROY_MSET(roy_set_const_front(ROY_SET(mset)));
+roy_mset_const_iterator_min(const RoyMSet * mset) {
+  return ROY_MSET(roy_set_const_min(ROY_SET(mset)));
 }
 
 const RoyMSet *
-roy_mset_const_back(const RoyMSet * mset) {
-  return ROY_MSET(roy_set_const_back(ROY_SET(mset)));
+roy_mset_const_iterator_max(const RoyMSet * mset) {
+  return ROY_MSET(roy_set_const_max(ROY_SET(mset)));
 }
 
 size_t
@@ -64,7 +64,7 @@ roy_mset_erase(RoyMSet    ** mset,
   } else /* ((*mset)->key == key), match found */ {
     RoyMSet * temp = (*mset);
     if ((*mset)->left && (*mset)->right) {
-      memcpy((*mset)->key, roy_mset_const_front((*mset)->right)->key, key_size);
+      memcpy((*mset)->key, roy_mset_const_iterator_min((*mset)->right)->key, key_size);
       (*mset)->right = roy_mset_erase(mset, key, key_size, comp);
     } else
     if ((*mset)->left && !(*mset)->right) {
@@ -96,10 +96,10 @@ static RoyMSet *
 node_new(const void * key,
          size_t       key_size) {
   RoyMSet * ret = malloc(sizeof(RoyMSet));
-  ret->key      = malloc(key_size);
-  memcpy(ret->key, key, key_size);
   ret->left     = NULL;
   ret->right    = NULL;
+  ret->key      = malloc(key_size);
+  memcpy(ret->key, key, key_size);
   return ret;
 }
 

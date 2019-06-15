@@ -4,46 +4,46 @@ static RoySet * node_new(const void * key, size_t key_size);
 static void     node_delete(RoySet * set);
 
 RoySet *
-roy_set_front(RoySet * set) {
+roy_set_min(RoySet *set) {
   if (!set) {
     return NULL;
   } else if (!set->left) {
     return set;
   } else {
-    return roy_set_front(set->left);
+    return roy_set_min(set->left);
   }
 }
 
 RoySet *
-roy_set_back(RoySet * set) {
+roy_set_max(RoySet *set) {
   if (!set) {
     return NULL;
   } else if (!set->right) {
     return set;
   } else {
-    return roy_set_back(set->right);
+    return roy_set_max(set->right);
   }
 }
 
 const RoySet *
-roy_set_const_front(const RoySet * set) {
+roy_set_const_min(const RoySet *set) {
   if (!set) {
     return NULL;
   } else if (!set->left) {
     return set;
   } else {
-    return roy_set_const_front(set->left);
+    return roy_set_const_min(set->left);
   }
 }
 
 const RoySet *
-roy_set_const_back(const RoySet * set) {
+roy_set_const_max(const RoySet *set) {
   if (!set) {
     return NULL;
   } else if (!set->right) {
     return set;
   } else {
-    return roy_set_const_back(set->right);
+    return roy_set_const_max(set->right);
   }
 }
 
@@ -91,7 +91,7 @@ roy_set_erase(RoySet     ** set,
   } else /* ((*set)->key == key), match found */ {
     RoySet * temp = (*set);
     if ((*set)->left && (*set)->right) {
-      memcpy((*set)->key, roy_set_const_front((*set)->right)->key, key_size);
+      memcpy((*set)->key, roy_set_const_min((*set)->right)->key, key_size);
       (*set)->right = roy_set_erase(set, key, key_size, comp);
     } else
     if ((*set)->left && !(*set)->right) {

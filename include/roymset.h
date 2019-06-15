@@ -4,9 +4,9 @@
 #include "royinit.h"
 
 struct _RoyMSet {
-  void            * key;
   struct _RoyMSet * left;
   struct _RoyMSet * right;
+  void            * key;
 };
 
 // RoyMSet [Multi Set]: an associative container that contains a sorted set of objects of type Key, duplicated objects is allowed.
@@ -16,16 +16,16 @@ typedef struct _RoyMSet RoyMSet;
 /* ELEMENT ACCESS */
 
 // Returns an iterator to the minimum element of 'mset'.
-RoyMSet * roy_mset_front(RoyMSet * mset);
+RoyMSet * roy_mset_iterator_min(RoyMSet * mset);
 
 // Returns an iterator to the maximum element of 'mset'.
-RoyMSet * roy_mset_back(RoyMSet * mset);
+RoyMSet * roy_mset_iterator_max(RoyMSet * mset);
 
 // Returns a const iterator to the minimum element of 'mset'.
-const RoyMSet * roy_mset_const_front(const RoyMSet * mset);
+const RoyMSet * roy_mset_const_iterator_min(const RoyMSet * mset);
 
 // Returns a const iterator to the maximum element of 'mset'.
-const RoyMSet * roy_mset_const_back(const RoyMSet * mset);
+const RoyMSet * roy_mset_const_iterator_max(const RoyMSet * mset);
 
 /* CAPACITY */
 

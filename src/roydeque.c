@@ -51,12 +51,12 @@ roy_deque_const_pointer(const RoyDeque * deque,
 
 const void *
 roy_deque_const_front(const RoyDeque * deque) {
-  return roy_list_const_begin(deque->head)->data;
+  return roy_list_cbegin(deque->head)->data;
 }
 
 const void *
 roy_deque_const_back(const RoyDeque * deque) {
-  return roy_list_const_rbegin(deque->tail)->data;
+  return roy_list_crbegin(deque->tail)->data;
 }
 
 void *

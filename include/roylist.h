@@ -48,10 +48,10 @@ const RoyList * roy_list_const_iterator(const RoyList * list_head, int position)
 const RoyList * roy_list_const_reverse_iterator(const RoyList * list_tail, int reverse_position);
 
 // Returns a const iterator to the first element.
-const RoyList * roy_list_const_begin(const RoyList * list_head);
+const RoyList * roy_list_cbegin(const RoyList *list_head);
 
 // Returns a const reversed iterator to the last element.
-const RoyList * roy_list_const_rbegin(const RoyList * list_tail);
+const RoyList * roy_list_crbegin(const RoyList *list_tail);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)

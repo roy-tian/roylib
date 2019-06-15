@@ -18,7 +18,7 @@ typedef struct _RoySList RoySList;
 // the real data takes places from the 2nd element.
 RoySList * roy_slist_new(void);
 
-// Deallocates all the memory allocated.
+// De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'slist', or memory leak will occur.)
 void roy_slist_delete(RoySList * slist);
 
@@ -28,7 +28,7 @@ void roy_slist_delete(RoySList * slist);
 RoySList * roy_slist_begin(RoySList * slist);
 
 // Returns a const iterator to the first element.
-const RoySList * roy_slist_const_begin(const RoySList * slist);
+const RoySList * roy_slist_cbegin(const RoySList * slist);
 
 /* CAPACITY */
 

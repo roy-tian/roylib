@@ -24,7 +24,7 @@ roy_slist_begin(RoySList * slist) {
 }
 
 const RoySList *
-roy_slist_const_begin(const RoySList * slist) {
+roy_slist_cbegin(const RoySList *slist) {
   return slist->next;
 }
 
@@ -41,7 +41,7 @@ roy_slist_size(const RoySList * slist) {
 
 bool
 roy_slist_empty(const RoySList * slist) {
-  return roy_slist_const_begin(slist) == NULL;
+  return roy_slist_cbegin(slist) == NULL;
 }
 
 RoySList *
@@ -97,9 +97,9 @@ RoySList * roy_slist_reverse(RoySList * slist) {
   return slist;
 }
 
-RoySList * roy_slist_unique(RoySList * slist, int (*compare)(const void *, const void *));
+RoySList * roy_slist_unique(RoySList * slist, int (*compare)(const void *, const void *)) {}
 
-RoySList * roy_slist_sort(RoySList * slist, int (*compare)(const void *, const void *));
+RoySList * roy_slist_sort(RoySList * slist, int (*compare)(const void *, const void *)) {}
 
 void
 roy_slist_for_each(RoySList * slist,
