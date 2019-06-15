@@ -103,18 +103,18 @@ RoySList * roy_slist_sort(RoySList * slist, int (*compare)(const void *, const v
 
 void
 roy_slist_for_each(RoySList * slist,
-                   void    (* iterate)(void *)) {
+                   void    (* operate)(void *)) {
   for (RoySList * iter = roy_slist_begin(slist); iter; iter = iter->next) {
-    iterate(iter->data);
+    operate(iter->data);
   }
 }
 
 void roy_slist_for_which(RoySList * slist,
                          bool    (* condition)(const void *),
-                         void    (* iterate)(void *)) {
+                         void    (* operate)(void *)) {
   for (RoySList * iter = roy_slist_begin(slist); iter; iter = iter->next) {
     if (condition(iter->data)) {
-      iterate(iter->data);
+      operate(iter->data);
     }
   } 
 }

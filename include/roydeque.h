@@ -97,10 +97,10 @@ RoyDeque * roy_deque_sort(RoyDeque * deque, int (*compare)(const void *, const v
 
 /* TRAVERSE */
 
-// Traverses all elements in 'deque' using 'iterate'.
-void roy_deque_for_each(RoyDeque * deque, void(* iterate)(void *));
+// Traverses all elements in 'deque' using 'operate'.
+void roy_deque_for_each(RoyDeque * deque, void(* operate)(void *));
 
-// Traverses all elements whichever meets 'condition' in 'deque' using 'iterate'.
-void roy_deque_for_which(RoyDeque * deque, bool(* condition)(const void *), void(* iterate)(void *));
+// Traverses all elements whichever meets 'condition' in 'deque' using 'operate'.
+void roy_deque_for_which(RoyDeque * deque, bool(* condition)(const void *), void(* operate)(void *));
 
 #endif // ROYDEQUE_H

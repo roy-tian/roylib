@@ -62,9 +62,9 @@ RoySList * roy_slist_sort(RoySList * slist, int (*compare)(const void *, const v
 /* TRAVERSE */
 
 // Traverses all elements in 'vector' using 'operate'.
-void roy_slist_for_each(RoySList * slist, void(* iterate)(void *));
+void roy_slist_for_each(RoySList * slist, void(* operate)(void *));
 
 // Traverses all elements whichever meets 'condition' in 'vector' using 'operate'.
-void roy_slist_for_which(RoySList * slist, bool(* condition)(const void *), void(* iterate)(void *));
+void roy_slist_for_which(RoySList * slist, bool(* condition)(const void *), void(* operate)(void *));
 
 #endif // ROYSLIST_H

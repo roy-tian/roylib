@@ -150,13 +150,13 @@ roy_deque_clear(RoyDeque * deque) {
 
 void
 roy_deque_for_each(RoyDeque * deque,
-                   void    (* iterate)(void *)) {
-  roy_list_for_each(deque->head, iterate);
+                   void    (* operate)(void *)) {
+  roy_list_for_each(deque->head, operate);
 }
 
 void
 roy_deque_for_which(RoyDeque * deque,
                     bool    (* condition)(const void *),
-                    void    (* iterate)(void *)) {
-  roy_list_for_which(deque->head, condition, iterate);
+                    void    (* operate)(void *)) {
+  roy_list_for_which(deque->head, condition, operate);
 }

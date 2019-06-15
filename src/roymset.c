@@ -82,12 +82,12 @@ RoyMSet * roy_mset_clear(RoyMSet * mset) {
   return ROY_MSET(roy_set_clear(ROY_SET(mset)));
 }
 
-void roy_mset_for_each(RoyMSet * mset, void(* iterate)(void *)) {
-  roy_set_for_each(ROY_SET(mset), iterate);
+void roy_mset_for_each(RoyMSet * mset, void(* operate)(void *)) {
+  roy_set_for_each(ROY_SET(mset), operate);
 }
 
-void roy_mset_for_which(RoyMSet * mset, bool(* condition)(const void *), void(* iterate)(void *)) {
-  roy_set_for_which(ROY_SET(mset), condition, iterate);
+void roy_mset_for_which(RoyMSet * mset, bool(* condition)(const void *), void(* operate)(void *)) {
+  roy_set_for_which(ROY_SET(mset), condition, operate);
 }
 
 /* PRIVATE FUNCTIONS BELOW */

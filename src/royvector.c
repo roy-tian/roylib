@@ -116,15 +116,15 @@ roy_vector_clear(RoyVector * vector) {
 
 void
 roy_vector_for_each(RoyVector * vector,
-                    void     (* iterate) (void *)) {
-  roy_array_for_each(ROY_ARRAY(vector), iterate);
+                    void     (* operate) (void *)) {
+  roy_array_for_each(ROY_ARRAY(vector), operate);
 }
 
 void
 roy_vector_for_which(RoyVector * vector,
                      bool     (* condition) (const void *),
-                     void     (* iterate)         (void *)) {
-  roy_array_for_which(ROY_ARRAY(vector), condition, iterate);
+                     void     (* operate)         (void *)) {
+  roy_array_for_which(ROY_ARRAY(vector), condition, operate);
 }
 
 /* PRIVATE FUNCTIONS BELOW */

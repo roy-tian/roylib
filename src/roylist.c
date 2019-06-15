@@ -211,18 +211,18 @@ roy_list_clear(RoyList * list) {
 
 void
 roy_list_for_each(RoyList * list,
-                  void   (* iterate)(void *)) {
+                  void   (* operate)(void *)) {
   for (RoyList * iter = roy_list_begin(list); iter->next; iter = iter->next) {
-    iterate(iter->data);
+    operate(iter->data);
   }
 }
 
 void roy_list_for_which(RoyList * list,
                         bool   (* condition)(const void *),
-                        void   (* iterate)(void *)) {
+                        void   (* operate)(void *)) {
   for (RoyList * iter = roy_list_begin(list); iter->next; iter = iter->next) {
     if (condition(iter->data)) {
-      iterate(iter->data);
+      operate(iter->data);
     }
   } 
 }

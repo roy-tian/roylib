@@ -109,10 +109,10 @@ RoyList * roy_list_sort(RoyList * list, int (*compare)(const void *, const void 
 
 /* TRAVERSE */
 
-// Traverses all elements in 'list' using 'iterate'.
-void roy_list_for_each(RoyList * list, void(* iterate)(void *));
+// Traverses all elements in 'list' using 'operate'.
+void roy_list_for_each(RoyList * list, void(* operate)(void *));
 
-// Traverses all elements whichever meets 'condition' in 'list' using 'iterate'.
-void roy_list_for_which(RoyList * list, bool(* condition)(const void *), void(* iterate)(void *));
+// Traverses all elements whichever meets 'condition' in 'list' using 'operate'.
+void roy_list_for_which(RoyList * list, bool(* condition)(const void *), void(* operate)(void *));
 
 #endif // ROYLIST_H

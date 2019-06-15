@@ -39,7 +39,7 @@ enum String {
 #define ROY_SET(set)       ((RoySet *)(set))
 #define ROY_MSET(mset)     ((RoyMSet *)(mset))
 
-#define ROY_ITERATOR(iterate) ((void(*)(void *))(iterate))
+#define ROY_OPERATE(operate) ((void(*)(void *))(operate))
 #define ROY_CONDITION(condition) ((bool(*)(const void *))(condition))
 #define ROY_COMPARE(compare) ((int(*)(const void *, const void *))(compare))
 

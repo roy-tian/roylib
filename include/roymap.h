@@ -61,10 +61,10 @@ RoyMap * roy_map_upper_bound(RoyMap * map, const void * key, size_t key_size, in
 
 /* TRAVERSE */
 
-// Traverses all elements in 'map' using 'iterate'.
-void roy_map_for_each(RoyMap * map, void(* iterate)(void *));
+// Traverses all elements in 'map' using 'operate'.
+void roy_map_for_each(RoyMap * map, void(* operate)(void *));
 
-// Traverses all elements whichever meets 'condition' in 'map' using 'iterate'.
-void roy_map_for_which(RoyMap * map, bool(* condition)(const void *), void(* iterate)(void *));
+// Traverses all elements whichever meets 'condition' in 'map' using 'operate'.
+void roy_map_for_which(RoyMap * map, bool(* condition)(const void *), void(* operate)(void *));
 
 #endif // ROYMAP_H

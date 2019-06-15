@@ -58,10 +58,10 @@ RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, size_t ke
 
 /* TRAVERSE */
 
-// Traverses all elements in 'mset' using 'iterate'.
-void roy_mset_for_each(RoyMSet * mset, void(* iterate)(void *));
+// Traverses all elements in 'mset' using 'operate'.
+void roy_mset_for_each(RoyMSet * mset, void(* operate)(void *));
 
-// Traverses all elements whichever meets 'condition' in 'mset' using 'iterate'.
-void roy_mset_for_which(RoyMSet * mset, bool(* condition)(const void *), void(* iterate)(void *));
+// Traverses all elements whichever meets 'condition' in 'mset' using 'operate'.
+void roy_mset_for_which(RoyMSet * mset, bool(* condition)(const void *), void(* operate)(void *));
 
 #endif // ROYMSET_H

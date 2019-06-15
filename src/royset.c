@@ -114,21 +114,21 @@ RoySet * roy_set_clear(RoySet * set) {
   return NULL;
 }
 
-void roy_set_for_each(RoySet * set, void(* iterate)(void *)) {
+void roy_set_for_each(RoySet * set, void(* operate)(void *)) {
    if (set) {
-    roy_set_for_each(set->left, iterate);
-    iterate(set->key);
-    roy_set_for_each(set->right, iterate);
+    roy_set_for_each(set->left, operate);
+    operate(set->key);
+    roy_set_for_each(set->right, operate);
   }
 }
 
-void roy_set_for_which(RoySet * set, bool(* condition)(const void *), void(* iterate)(void *)) {
+void roy_set_for_which(RoySet * set, bool(* condition)(const void *), void(* operate)(void *)) {
   if (set) {
-    roy_set_for_which(set->left, condition, iterate);
+    roy_set_for_which(set->left, condition, operate);
     if (condition(set->key)) {
-      iterate(set->key);
+      operate(set->key);
     }
-    roy_set_for_which(set->right, condition, iterate);
+    roy_set_for_which(set->right, condition, operate);
   }
 }
 
