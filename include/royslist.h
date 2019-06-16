@@ -55,9 +55,9 @@ RoySList * roy_slist_remove_if(RoySList * slist, bool (*condition)(const void *)
 
 RoySList * roy_slist_reverse(RoySList * slist);
 
-RoySList * roy_slist_unique(RoySList * slist, int (*compare)(const void *, const void *));
+RoySList * roy_slist_unique(RoySList *slist, int (*comp)(const void *, const void *));
 
-RoySList * roy_slist_sort(RoySList * slist, int (*compare)(const void *, const void *));
+RoySList * roy_slist_sort(RoySList *slist, int (*comp)(const void *, const void *));
 
 /* TRAVERSE */
 

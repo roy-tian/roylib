@@ -87,19 +87,36 @@ roy_slist_remove_if(RoySList * slist,
 }
 
 RoySList * roy_slist_reverse(RoySList * slist) {
-  RoySList * bak = back(slist);
-  while (roy_slist_begin(slist) != bak) {
-    bak->next   = roy_slist_begin(slist);
-    slist->next = bak->next->next;
-    bak         = bak->next;
-    bak->next   = NULL; 
+  RoySList * pback = back(slist);
+  while (roy_slist_cbegin(slist) != pback) {
+    RoySList * first = roy_slist_begin(slist);
+    slist->next = first->next;
+    first->next = pback->next;
+    pback->next = first;
   }
   return slist;
 }
 
-RoySList * roy_slist_unique(RoySList * slist, int (*compare)(const void *, const void *)) {}
+RoySList *
+roy_slist_unique(RoySList *slist, int (*comp)(const void *, const void *)) {
+  RoySList * temp = slist;
+  while (!roy_slist_empty(temp) && !roy_slist_empty(temp->next)) {
+    if (comp(roy_slist_cbegin(temp)->data,
+             roy_slist_cbegin(temp->next)->data) == 0) {
+      roy_slist_pop_front(temp);
+    } else {
+      temp = temp->next;
+    }
+  }
+  return slist;
+}
 
-RoySList * roy_slist_sort(RoySList * slist, int (*compare)(const void *, const void *)) {}
+// TODO: using quick sort strategy
+RoySList *
+roy_slist_sort(RoySList *slist, int (*comp)(const void *, const void *)) {
+  return slist;
+}
+
 
 void
 roy_slist_for_each(RoySList * slist,
