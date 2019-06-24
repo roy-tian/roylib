@@ -25,7 +25,7 @@
   </tr>
 
   <tr>
-    <td rowspan="2">CONSTRUCTORS</td>
+    <td rowspan="2">CONSTRUCTOR<br>DESTRUCTOR</td>
     <td><code>new</code></td>
     <td><code>new</code></td>
     <td><code>new</code></td>
@@ -38,7 +38,7 @@
     <td><code>new</code></td>
     <td><code>new</code></td>
     <td></td>
-    <td rowspan="2">CONSTRUCTORS</td>
+    <td rowspan="2">CONSTRUCTOR<br>DESTRUCTOR</td>
   </tr>
 
   <tr>
