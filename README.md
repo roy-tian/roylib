@@ -553,6 +553,7 @@
     <th colspan="3">LINKED LINEAR LISTS</th>
     <th colspan="4">BINARY TREES</th>
     <th colspan="3">ADAPTERS</th>
+    <th></th>
   </tr>
 </table>
 
