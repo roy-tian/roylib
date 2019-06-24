@@ -171,7 +171,6 @@
     <td></td>
     <td></td>
     <td></td>
-td>
     <td></td>
   </tr>
   
@@ -504,14 +503,12 @@ td>
     <td><code>for_each</code></td>
     <td><code>for_each</code></td>
     <td><code>for_each</code></td>
-    <td><code>for_each</code></td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
 
   <tr>
-    <td><code>for_which</code></td>
     <td><code>for_which</code></td>
     <td><code>for_which</code></td>
     <td><code>for_which</code></td>
