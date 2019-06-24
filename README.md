@@ -20,6 +20,7 @@
     <td><strong><code>RoyStack</code></strong></td>
     <td><strong><code>RoyQueue</code></strong></td>
     <td><strong><code>RoyHeap</code></strong></td>
+    <td></td>
   </tr>
 
   <tr>
@@ -36,6 +37,7 @@
     <td><code>new</code></td>
     <td><code>new</code></td>
     <td></td>
+    <td rowspan="2">CONSTRUCTORS</td>
   </tr>
 
   <tr>
@@ -67,6 +69,7 @@
     <td></td>
     <td></td>
     <td></td>
+    <td rowspan="10">POINTERS /<br>ITERATORS</td>
   </tr>
 
   <tr>
@@ -218,6 +221,7 @@
     <td><code>size</code></td>
     <td><code>size</code></td>
     <td><code>size</code></td>
+    <td rowspan="4">CAPACITY</td>
   </tr>
 
   <tr>
@@ -252,7 +256,7 @@
 
   <tr>
     <td><code>full</code></td>
-    <td><code></code></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -279,6 +283,7 @@
     <td></td>
     <td></td>
     <td></td>
+    <td rowspan="10">MOLDIFIERS</td>
   </tr>
 
   <tr>
@@ -430,6 +435,7 @@
     <td></td>
     <td></td>
     <td></td>
+    <td rowspan="5">LIST<br>OPERATIONS</td>
   </tr>
 
   <tr>
@@ -506,6 +512,7 @@
     <td></td>
     <td></td>
     <td></td>
+    <td rowspan="2">TRAVERSERS</td>
   </tr>
 
   <tr>
@@ -523,5 +530,29 @@
     <td></td>
   </tr>
 
+  <tr>
+    <td></td>
+    <td><strong><code>RoyArray</code></strong></td>
+    <td><strong><code>RoyVector</code></strong></td>
+    <td><strong><code>RoySList</code></strong></td>
+    <td><strong><code>RoyList</code></strong></td>
+    <td><strong><code>RoyDeque</code></td>
+    <td><strong><code>RoySet</code></strong></td>
+    <td><strong><code>RoyMSet</code></strong></td>
+    <td><strong><code>RoyMap</code></strong></td>
+    <td><strong><code>RoyMMap</code></strong></td>
+    <td><strong><code>RoyStack</code></strong></td>
+    <td><strong><code>RoyQueue</code></strong></td>
+    <td><strong><code>RoyHeap</code></strong></td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <th></th>
+    <th colspan="2">STATIC LINEAR LISTS</th>
+    <th colspan="3">LINKED LINEAR LISTS</th>
+    <th colspan="4">BINARY TREES</th>
+    <th colspan="3">ADAPTERS</th>
+  </tr>
 </table>
 
