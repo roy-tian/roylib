@@ -13,6 +13,7 @@ add_library(roylib
             src/roydeque.c
             src/royset.c
             src/roymset.c
+            src/roymap.c
 )
 
 set(CMAKE_C_STANDARD 11)

@@ -2,17 +2,27 @@
 #define ROYMAP_H
 
 #include "royinit.h"
+#include "royset.h"
 
 struct _RoyMap {
-  void           * key;
-  void           * value;
-  struct _RoyMap * left;
-  struct _RoyMap * right;
+  RoySet * root;
+  size_t   key_size;
+  size_t   value_size;
+  int   (* comp)(const void *, const void *);
 };
 
 // RoyMap: an associative container that contains a sorted map of unique objects of type Key.
 // Sorting is done using the key comparison function 'comp'. Search, removal, and insertion operations have logarithmic complexity.
 typedef struct _RoyMap RoyMap;
+
+/* CONSTRUCTION AND DESTRUCTION */
+
+// Returns a pointer to a newly build RoyMap. 
+RoyMap * roy_map_new(size_t key_size, size_t value_size, int (* comp)(const void *, const void *));
+
+// Deallocates all the memory allocated.
+// (Always call this function after the work is done by the given 'map', or memory leak will occur.)
+void roy_map_delete(RoyMap * map);
 
 /* ELEMENT ACCESS */
 
