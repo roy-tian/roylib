@@ -33,8 +33,8 @@
     <td><code>new</code></td>
     <td></td>
     <td></td>
-    <td></td>
-    <td></td>
+    <td><code>new</code></td>
+    <td><code>new</code></td>
     <td><code>new</code></td>
     <td><code>new</code></td>
     <td></td>
@@ -49,8 +49,8 @@
     <td><code>delete</code></td>
     <td></td>
     <td></td>
-    <td></td>
-    <td></td>
+    <td><code>delete</code></td>
+    <td><code>delete</code></td>
     <td><code>delete</code></td>
     <td><code>delete</code></td>
     <td></td>
@@ -150,17 +150,17 @@
 
   <tr>
     <td></td>
-    <td><code>front</code></td>
+    <td></td>
     <td><code>begin</code></td>
     <td><code>begin</code></td>
     <td><code>front</code></td>
     <td><code>min</code></td>
     <td><code>min</code></td>
+    <td><code>pmin</code></td>
+    <td><code>pmin</code></td>
     <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td><code>front</code></td>
+    <td><code>top</code></td>
   </tr>
 
   <tr>
@@ -171,8 +171,8 @@
     <td><code>const_front</code></td>
     <td><code>const_min</code></td>
     <td><code>const_min</code></td>
-    <td></td>
-    <td></td>
+    <td><code>const_pmin</code></td>
+    <td><code>const_pmin</code></td>
     <td></td>
     <td></td>
     <td></td>
@@ -186,8 +186,8 @@
     <td><code>back</code></td>
     <td><code>max</code></td>
     <td><code>max</code></td>
-    <td></td>
-    <td></td>
+    <td><code>pmax</code></td>
+    <td><code>pmax</code></td>
     <td><code>top</code></td>
     <td><code>back</code></td>
     <td></td>
@@ -201,8 +201,8 @@
     <td><code>const_back</code></td>
     <td><code>const_max</code></td>
     <td><code>const_max</code></td>
-    <td></td>
-    <td></td>
+    <td><code>const_pmax</code></td>
+    <td><code>const_pmax</code></td>
     <td></td>
     <td></td>
     <td></td>
@@ -494,6 +494,68 @@
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td rowspan="4">LOOKUP</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><code>count</code></td>
+    <td><code>count</code></td>
+    <td><code>count</code></td>
+    <td><code>count</code></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td rowspan="4">LOOKUP</td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><code>find</code></td>
+    <td><code>find</code></td>
+    <td><code>find</code></td>
+    <td><code>find</code></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><code>lower_bound</code></td>
+    <td><code>lower_bound</code></td>
+    <td><code>lower_bound</code></td>
+    <td><code>lower_bound</code></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><code>upper_bound</code></td>
+    <td><code>upper_bound</code></td>
+    <td><code>upper_bound</code></td>
+    <td><code>upper_bound</code></td>
     <td></td>
     <td></td>
     <td></td>

@@ -26,26 +26,25 @@ void roy_map_delete(RoyMap * map);
 
 /* ELEMENT ACCESS */
 
-// Returns an iterator to the minimum element of 'map'.
-RoyMap * roy_map_front(RoyMap * map);
+// Returns an pointer to the value of the minimum element of 'map'.
+void * roy_map_pmin(RoyMap * map);
 
-// Returns an iterator to the maximum element of 'map'.
-RoyMap * roy_map_back(RoyMap * map);
+// Returns an pointer to the value of the maximum element of 'map'.
+void * roy_map_pmax(RoyMap * map);
 
-// Returns a const iterator to the minimum element of 'map'.
-const RoyMap * roy_map_const_front(RoyMap * map);
+// Returns a const pointer to the value of the minimum element of 'map'.
+const void * roy_map_const_pmin(const RoyMap * map);
 
-// Returns a const iterator to the maximum element of 'map'.
-const RoyMap * roy_map_const_back(RoyMap * map);
+// Returns a const pointer to the value of the maximum element of 'map'.
+const void * roy_map_const_pmax(const RoyMap * map);
 
-#define roy_map_at(map, value_type, key, key_size, comp)    \
-        ((roy_map_find((map), (key), (key_size), ROY_COMPARE((comp)))) ? \
-         (value_type *)((roy_map_find((map), (key), (key_size), ROY_COMPARE((comp))))->value) : NULL)
+#define roy_map_at(map, value_type, key)    \
+        ((value_type *)((roy_map_find((map), (key))) ? (roy_map_find((map), (key))) : NULL))
 
 /* CAPACITY */
 
 // Returns the number of elements in 'map'.
-size_t roy_map_size(RoyMap * map);
+size_t roy_map_size(const RoyMap * map);
 
 // Returns whether there is any elements in 'map'.
 bool roy_map_empty(const RoyMap * map);
@@ -53,10 +52,10 @@ bool roy_map_empty(const RoyMap * map);
 /* MODIFIERS */
 
 // Adds a 'key_size'-sized key contains a 'value_size'-sized value into 'map' by ascending order.
-RoyMap * roy_map_insert(RoyMap ** map, const void * key, size_t key_size, const void * value, size_t value_size, int (*comp)(const void *, const void *));
+RoyMap * roy_map_insert(RoyMap * map, const void * key, const void * value);
 
 // Removes the element equals to 'key' from 'map'.
-RoyMap * roy_map_erase(RoyMap ** map, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+RoyMap * roy_map_erase(RoyMap * map, const void * key);
 
 // Removes all the element from 'map'.
 RoyMap * roy_map_clear(RoyMap * map);
