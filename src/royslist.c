@@ -111,7 +111,6 @@ roy_slist_unique(RoySList *slist, int (*comp)(const void *, const void *)) {
   return slist;
 }
 
-// TODO: using quick sort strategy
 RoySList *
 roy_slist_sort(RoySList *slist, int (*comp)(const void *, const void *)) {
   return slist;

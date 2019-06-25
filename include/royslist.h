@@ -46,17 +46,21 @@ RoySList * roy_slist_push_front(RoySList * slist, const void * data, size_t elem
 // Removes the first element from 'slist'.
 RoySList * roy_slist_pop_front(RoySList * slist);
 
-// Removes all the element from 'slist'.
+// Removes all the elements from 'slist'.
 RoySList * roy_slist_clear(RoySList * slist);
 
 /* LIST OPERATIONS */
 
+// Removes all elements in 'slist' which meet 'condition'.
 RoySList * roy_slist_remove_if(RoySList * slist, bool (*condition)(const void *));
 
+// Reverses the order of the elements in 'slist'.
 RoySList * roy_slist_reverse(RoySList * slist);
 
+// Removes all consecutive duplicate elements from 'slist', only the first element in each group of equal elements is left. 
 RoySList * roy_slist_unique(RoySList *slist, int (*comp)(const void *, const void *));
 
+// Sorts the elements in ascending order, using quick sort strategy.
 RoySList * roy_slist_sort(RoySList *slist, int (*comp)(const void *, const void *));
 
 /* TRAVERSE */

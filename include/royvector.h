@@ -56,7 +56,7 @@ bool roy_vector_empty(const RoyVector * vector);
 
 // Adds an element named 'data' into 'vector' at 'position'.
 // ('vector' will be extended automatically if it's full.)
-// ('data' will be pushed to the front of 'vector' if 'position' is negative, or to the back if 'position' exceeds.)
+// ('data' will not be pushed into 'vector' if 'position' exceeds.)
 // (The behavior is undefined if 'data' is uninitialized.)
 RoyVector * roy_vector_insert(RoyVector * vector, int position, const void * data);
 
