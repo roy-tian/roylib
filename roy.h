@@ -11,6 +11,7 @@
 #include "include/royset.h"
 #include "include/roymset.h"
 #include "include/roymap.h"
+#include "include/roymmap.h"
 #include "include/roynumber.h"
 #include "include/roystring.h"
 

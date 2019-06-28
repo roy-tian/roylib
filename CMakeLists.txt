@@ -14,7 +14,7 @@ add_library(roylib
             src/royset.c
             src/roymset.c
             src/roymap.c
-)
+            src/roymmap.c)
 
 set(CMAKE_C_STANDARD 11)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

@@ -1,12 +1,12 @@
-#include "../include/roymap.h"
+#include "../include/roymmap.h"
 
 static void * pair_new(const void * key, size_t key_size, const void * value, size_t value_size);
 
-RoyMap *
-roy_map_new(size_t   key_size,
+RoyMMap *
+roy_mmap_new(size_t   key_size,
             size_t   value_size,
             int   (* comp)(const void *, const void *)) {
-  RoyMap * ret    = malloc(sizeof(RoyMap));
+  RoyMMap * ret    = malloc(sizeof(RoyMMap));
   ret->root       = NULL;
   ret->key_size   = key_size;
   ret->value_size = value_size;
@@ -15,71 +15,71 @@ roy_map_new(size_t   key_size,
 }
 
 void
-roy_map_delete(RoyMap * map) {
-  map = roy_map_clear(map);
-  free(map);
+roy_mmap_delete(RoyMMap * mmap) {
+  mmap = roy_mmap_clear(mmap);
+  free(mmap);
 }
 
 void *
-roy_map_pmin(RoyMap * map) {
-  return roy_set_min(map->root)->key + map->key_size;
+roy_mmap_pmin(RoyMMap * mmap) {
+  return roy_mset_min(mmap->root)->key + mmap->key_size;
 }
 
-void * roy_map_pmax(RoyMap * map) {
-  return roy_set_max(map->root)->key + map->key_size;
-}
-
-const void *
-roy_map_const_pmin(const RoyMap * map) {
-  return roy_set_min(map->root)->key + map->key_size;
+void * roy_mmap_pmax(RoyMMap * mmap) {
+  return roy_mset_max(mmap->root)->key + mmap->key_size;
 }
 
 const void *
-roy_map_const_pmax(const RoyMap * map) {
-  return roy_set_max(map->root)->key + map->key_size;
+roy_mmap_const_pmin(const RoyMMap * mmap) {
+  return roy_mset_min(mmap->root)->key + mmap->key_size;
+}
+
+const void *
+roy_mmap_const_pmax(const RoyMMap * mmap) {
+  return roy_mset_max(mmap->root)->key + mmap->key_size;
 }
 
 size_t
-roy_map_size(const RoyMap * map) {
-  return roy_set_size(map->root);
+roy_mmap_size(const RoyMMap * mmap) {
+  return roy_mset_size(mmap->root);
 }
 
-bool roy_map_empty(const RoyMap * map) {
-  return roy_set_empty(map->root);
+bool roy_mmap_empty(const RoyMMap * mmap) {
+  return roy_mset_empty(mmap->root);
 }
 
-RoyMap *
-roy_map_insert(RoyMap * map, const void * key, const void * value) {
-  void * pair = pair_new(key, map->key_size, value, map->value_size);
-  map->root = roy_set_insert(&map->root,
+RoyMMap *
+roy_mmap_insert(RoyMMap * mmap, const void * key, const void * value) {
+  void * pair = pair_new(key, mmap->key_size, value, mmap->value_size);
+  mmap->root = roy_mset_insert(&mmap->root,
                              pair,
-                             map->key_size + map->value_size,
-                             map->comp);
+                             mmap->key_size + mmap->value_size,
+                             mmap->comp);
   free(pair);
-  return map;
+  return mmap;
 }
 
-RoyMap *
-roy_map_erase(RoyMap * map, const void * key) {
-  map->root = roy_set_erase(&map->root, key, map->key_size, map->comp);
-  return map;
+RoyMMap *
+roy_mmap_erase(RoyMMap * mmap, const void * key) {
+  mmap->root = roy_mset_erase(&mmap->root, key, mmap->key_size, mmap->comp);
+  return mmap;
 }
 
-RoyMap * roy_map_clear(RoyMap * map) {
-  map->root = roy_set_clear(map->root);
-  return map;
-}
-
-void
-roy_map_for_each(RoyMap * map, void(* operate)(void *)) {
-  roy_set_for_each(map->root, operate);
+RoyMMap * roy_mmap_clear(RoyMMap * mmap) {
+  mmap->root = roy_mset_clear(mmap->root);
+  return mmap;
 }
 
 void
-roy_map_for_which(RoyMap * map,
+roy_mmap_for_each(RoyMMap * mmap, void(* operate)(void *)) {
+  roy_mset_for_each(mmap->root, operate);
+}
+
+void
+roy_mmap_for_which(RoyMMap * mmap,
                   bool  (* condition)(const void *),
                   void  (* operate)(void *)) {
-  roy_set_for_which(map->root, condition, operate);
+  roy_mset_for_which(mmap->root, condition, operate);
 }
 
 // pair must be freed when it's done.
