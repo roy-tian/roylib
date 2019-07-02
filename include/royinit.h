@@ -37,10 +37,12 @@ enum String {
 #define ROY_DEQUE(deque)   ((RoyDeque *)(deque))
 #define ROY_SET(set)       ((RoySet *)(set))
 #define ROY_MSET(mset)     ((RoyMSet *)(mset))
+#define ROY_MAP(map)       ((RoyMap *)(map))
+#define ROY_MMAP(mmap)     ((RoyMMap *)(mmap))
 
-#define ROY_OPERATE(operate) ((void(*)(void *))(operate))
+#define ROY_OPERATE(operate)     ((void(*)(void *))(operate))
 #define ROY_CONDITION(condition) ((bool(*)(const void *))(condition))
-#define ROY_COMPARE(compare) ((int(*)(const void *, const void *))(compare))
+#define ROY_COMPARE(compare)     (( int(*)(const void *, const void *))(compare))
 
 // Formulates an empty character string which named 'str' and is 'size'-character long.
 #define ROY_STRING(str, size)         \

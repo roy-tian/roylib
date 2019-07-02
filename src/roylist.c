@@ -5,8 +5,8 @@ static void node_delete(RoyList * list);
 
 RoyList *
 roy_list_new(void) {
-  RoyList * head = malloc(sizeof(RoyList));
-  RoyList * tail = malloc(sizeof(RoyList));
+  RoyList * head = ROY_LIST(malloc(sizeof(RoyList)));
+  RoyList * tail = ROY_LIST(malloc(sizeof(RoyList)));
   head->data = tail->data = NULL;
   head->next = tail;
   head->prev = NULL;

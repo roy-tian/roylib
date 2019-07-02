@@ -6,7 +6,7 @@ RoyMMap *
 roy_mmap_new(size_t   key_size,
              size_t   value_size,
              int   (* comp)(const void *, const void *)) {
-  RoyMMap * ret   = malloc(sizeof(RoyMMap));
+  RoyMMap * ret   = ROY_MMAP(malloc(sizeof(RoyMMap)));
   ret->root       = NULL;
   ret->key_size   = key_size;
   ret->value_size = value_size;

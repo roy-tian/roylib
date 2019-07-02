@@ -8,12 +8,12 @@ static bool need_shrink(const RoyVector * vector);
 RoyVector *
 roy_vector_new(size_t capacity,
                size_t element_size) {
-  RoyVector * ret     = malloc(sizeof(RoyVector));
-  ret->data           = calloc(capacity, element_size);
-  ret->size           = 0;
-  ret->capacity       = capacity;
-  ret->element_size   = element_size;
-  ret->capacity_base  = capacity;
+  RoyVector * ret    = ROY_VECTOR(malloc(sizeof(RoyVector)));
+  ret->data          = calloc(capacity, element_size);
+  ret->size          = 0;
+  ret->capacity      = capacity;
+  ret->element_size  = element_size;
+  ret->capacity_base = capacity;
   return ret;
 }
 

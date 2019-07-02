@@ -5,7 +5,7 @@ static bool position_valid(const RoyArray * array, int position, bool right_incl
 RoyArray *
 roy_array_new(size_t capacity,
               size_t element_size) {
-  RoyArray * ret    = malloc(sizeof(RoyArray));
+  RoyArray * ret    = ROY_ARRAY(malloc(sizeof(RoyArray)));
   ret->data         = calloc(capacity, element_size);
   ret->size         = 0;
   ret->capacity     = capacity;

@@ -6,7 +6,7 @@ RoyMap *
 roy_map_new(size_t   key_size,
             size_t   value_size,
             int   (* comp)(const void *, const void *)) {
-  RoyMap * ret    = malloc(sizeof(RoyMap));
+  RoyMap * ret    = ROY_MAP(malloc(sizeof(RoyMap)));
   ret->root       = NULL;
   ret->key_size   = key_size;
   ret->value_size = value_size;
@@ -74,7 +74,7 @@ roy_map_clear(RoyMap * map) {
 void *
 roy_map_find(RoyMap     * map,
              const void * key){
-  return roy_set_find(ROY_SET(map), key, map->comp)->key + map->key_size;
+  return roy_set_find(map->root, key, map->comp)->key + map->key_size;
 }
 
 void

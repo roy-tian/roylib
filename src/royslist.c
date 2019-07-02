@@ -6,7 +6,7 @@ static RoySList * back(RoySList * slist);
 
 RoySList *
 roy_slist_new(void) {
-  RoySList * ret = malloc(sizeof(RoySList));
+  RoySList * ret = ROY_SLIST(malloc(sizeof(RoySList)));
   ret->data = NULL;
   ret->next = NULL;
   return ret;
@@ -140,7 +140,7 @@ void roy_slist_for_which(RoySList * slist,
 static RoySList *
 node_new(const void * data,
          size_t       element_size) {
-  RoySList * ret = malloc(sizeof(void *) + sizeof(RoySList *));
+  RoySList * ret = ROY_SLIST(malloc(sizeof(void *) + sizeof(RoySList *)));
   ret->data = malloc(element_size);
   memcpy(ret->data, data, element_size);
   ret->next = NULL;

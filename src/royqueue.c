@@ -3,7 +3,7 @@
 RoyQueue *
 roy_queue_new(size_t capacity,
               size_t element_size) {
-  RoyQueue * ret    = malloc(sizeof(RoyQueue));
+  RoyQueue * ret    = ROY_QUEUE(malloc(sizeof(RoyQueue)));
   ret->data         = calloc(capacity, element_size);
   ret->size         = 0;
   ret->capacity     = capacity;
