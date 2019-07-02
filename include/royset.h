@@ -48,11 +48,7 @@ RoySet * roy_set_clear(RoySet * set);
 
 /* LOOKUP */
 
-RoySet * roy_set_find(RoySet * set, const void * key, size_t key_size, int (*comp)(const void *, const void *));
-
-RoySet * roy_set_lower_bound(RoySet * set, const void * key, size_t key_size, int (*comp)(const void *, const void *));
-
-RoySet * roy_set_upper_bound(RoySet * set, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+RoySet * roy_set_find(RoySet * set, const void * key, int (*comp)(const void *, const void *));
 
 /* TRAVERSE */
 

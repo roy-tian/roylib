@@ -62,11 +62,11 @@ RoyMMap * roy_mmap_clear(RoyMMap * mmap);
 
 /* LOOKUP */
 
-RoyMMap * roy_mmap_find(RoyMMap * mmap, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+size_t roy_mmap_count(const RoyMSet * mset, const void * key, int (*comp)(const void *, const void *));
 
-RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key, int (*comp)(const void *, const void *));
 
-RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key, int (*comp)(const void *, const void *));
 
 /* TRAVERSE */
 

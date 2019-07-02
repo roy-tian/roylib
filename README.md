@@ -506,9 +506,9 @@
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
     <td><code>count</code></td>
-    <td><code>count</code></td>
-    <td><code>count</code></td>
+    <td></td>
     <td><code>count</code></td>
     <td></td>
     <td></td>
@@ -523,9 +523,9 @@
     <td></td>
     <td></td>
     <td><code>find</code></td>
+    <td></td>
     <td><code>find</code></td>
-    <td><code>find</code></td>
-    <td><code>find</code></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -537,9 +537,9 @@
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
     <td><code>lower_bound</code></td>
-    <td><code>lower_bound</code></td>
-    <td><code>lower_bound</code></td>
+    <td></td>
     <td><code>lower_bound</code></td>
     <td></td>
     <td></td>
@@ -552,9 +552,9 @@
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
     <td><code>upper_bound</code></td>
-    <td><code>upper_bound</code></td>
-    <td><code>upper_bound</code></td>
+    <td></td>
     <td><code>upper_bound</code></td>
     <td></td>
     <td></td>

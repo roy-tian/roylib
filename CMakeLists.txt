@@ -4,6 +4,7 @@ project(roylib VERSION 0.1.0)
 add_library(roylib
             src/roystring.c
             src/roynumber.c
+            src/royshell.c
             src/royarray.c
             src/royvector.c
             src/roystack.c

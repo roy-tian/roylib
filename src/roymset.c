@@ -82,6 +82,22 @@ RoyMSet * roy_mset_clear(RoyMSet * mset) {
   return ROY_MSET(roy_set_clear(ROY_SET(mset)));
 }
 
+// TODO
+size_t roy_mset_count(const RoyMSet * mset, const void * key, int (*comp)(const void *, const void *)) {
+  return 0;
+}
+
+// TODO
+RoyMSet * roy_mset_lower_bound(const RoyMSet * mset, const void * key, int (*comp)(const void *, const void *)) {
+  return NULL;
+}
+
+// TODO
+RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, int (*comp)(const void *, const void *)) {
+  return NULL;
+}
+
+
 void roy_mset_for_each(RoyMSet * mset, void(* operate)(void *)) {
   roy_set_for_each(ROY_SET(mset), operate);
 }

@@ -38,8 +38,7 @@ const void * roy_map_const_pmin(const RoyMap * map);
 // Returns a const pointer to the value of the maximum element of 'map'.
 const void * roy_map_const_pmax(const RoyMap * map);
 
-#define roy_map_at(map, value_type, key)    \
-        ((value_type *)((roy_map_find((map), (key))) ? (roy_map_find((map), (key))) : NULL))
+#define roy_map_at(map, value_type, key) ((value_type *)roy_map_find((map), (key)))
 
 /* CAPACITY */
 
@@ -62,11 +61,7 @@ RoyMap * roy_map_clear(RoyMap * map);
 
 /* LOOKUP */
 
-RoyMap * roy_map_find(RoyMap * map, const void * key, size_t key_size, int (*comp)(const void *, const void *));
-
-RoyMap * roy_map_lower_bound(RoyMap * map, const void * key, size_t key_size, int (*comp)(const void *, const void *));
-
-RoyMap * roy_map_upper_bound(RoyMap * map, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+void * roy_map_find(RoyMap * map, const void * key);
 
 /* TRAVERSE */
 

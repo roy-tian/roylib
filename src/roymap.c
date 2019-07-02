@@ -65,9 +65,16 @@ roy_map_erase(RoyMap * map, const void * key) {
   return map;
 }
 
-RoyMap * roy_map_clear(RoyMap * map) {
+RoyMap *
+roy_map_clear(RoyMap * map) {
   map->root = roy_set_clear(map->root);
   return map;
+}
+
+void *
+roy_map_find(RoyMap     * map,
+             const void * key){
+  return roy_set_find(ROY_SET(map), key, map->comp)->key + map->key_size;
 }
 
 void

@@ -48,13 +48,11 @@ RoyMSet * roy_mset_clear(RoyMSet * mset);
 
 /* LOOKUP */
 
-RoyMSet * roy_mset_count(const RoyMSet * mset, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+size_t roy_mset_count(const RoyMSet * mset, const void * key, int (*comp)(const void *, const void *));
 
-RoyMSet * roy_mset_find(const RoyMSet * mset, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+RoyMSet * roy_mset_lower_bound(const RoyMSet * mset, const void * key, int (*comp)(const void *, const void *));
 
-RoyMSet * roy_mset_lower_bound(const RoyMSet * mset, const void * key, size_t key_size, int (*comp)(const void *, const void *));
-
-RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, int (*comp)(const void *, const void *));
 
 /* TRAVERSE */
 

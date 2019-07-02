@@ -114,6 +114,18 @@ RoySet * roy_set_clear(RoySet * set) {
   return NULL;
 }
 
+RoySet * roy_set_find(RoySet * set, const void * key, int (*comp)(const void *, const void *)) {
+  if (!set) {
+    return NULL;
+  } else if (comp(key, set->key) == -1) {
+    return roy_set_find(set->left, key, comp);
+  } else if (comp(key, set->key) == 1) {
+    return roy_set_find(set->right, key, comp);
+  } else {
+    return set;
+  }
+}
+
 void roy_set_for_each(RoySet * set, void(* operate)(void *)) {
    if (set) {
     roy_set_for_each(set->left, operate);
