@@ -19,10 +19,6 @@ roy_shell_delete(RoyShell * shell) {
   free(shell);
 }
 
-void print(const char * str) {
-  puts(str);
-}
-
 void
 roy_shell_start(RoyShell * shell) {
   ROY_STRING(line, STRING_CAPACITY)
@@ -32,6 +28,13 @@ roy_shell_start(RoyShell * shell) {
     roy_deque_push_back(shell->line_history, line);
     parse(shell->line_parsed, line);
     
+    void * func = roy_map_find(shell->cmd_dict,
+                               roy_deque_const_front(shell->line_parsed));
+    if (!func) {
+      puts(roy_deque_const_front(shell->line_parsed));
+    } else {
+      ((void(*)(RoyDeque *))func)(shell->line_parsed);
+    }
   }
 }
 

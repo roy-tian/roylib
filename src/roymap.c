@@ -73,8 +73,13 @@ roy_map_clear(RoyMap * map) {
 
 void *
 roy_map_find(RoyMap     * map,
-             const void * key){
-  return roy_set_find(map->root, key, map->comp)->key + map->key_size;
+             const void * key) {
+  RoySet * pfound = roy_set_find(map->root, key, map->comp);
+  if (pfound) {
+    return pfound->key + map->key_size;
+  } else {
+    return NULL;
+  }
 }
 
 void
