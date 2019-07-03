@@ -38,7 +38,7 @@ const void * roy_map_const_pmin(const RoyMap * map);
 // Returns a const pointer to the value of the maximum element of 'map'.
 const void * roy_map_const_pmax(const RoyMap * map);
 
-#define roy_map_at(map, value_type, key) ((value_type *)roy_map_find((map), (key)))
+#define roy_map_at(map, value_type, key) (value_type *)roy_map_find((map), (key))
 
 /* CAPACITY */
 

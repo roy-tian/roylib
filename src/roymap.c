@@ -22,21 +22,25 @@ roy_map_delete(RoyMap * map) {
 
 void *
 roy_map_pmin(RoyMap * map) {
-  return roy_set_min(map->root)->key + map->key_size;
+  void * pnode = roy_set_min(map->root)->key;
+  return pnode ? pnode + map->key_size : NULL;
 }
 
 void * roy_map_pmax(RoyMap * map) {
-  return roy_set_max(map->root)->key + map->key_size;
+  void * pnode = roy_set_max(map->root)->key;
+  return pnode ? pnode + map->key_size : NULL;
 }
 
 const void *
 roy_map_const_pmin(const RoyMap * map) {
-  return roy_set_min(map->root)->key + map->key_size;
+  const void * pnode = roy_set_min(map->root)->key;
+  return pnode ? pnode + map->key_size : NULL;
 }
 
 const void *
 roy_map_const_pmax(const RoyMap * map) {
-  return roy_set_max(map->root)->key + map->key_size;
+  const void * pnode = roy_set_max(map->root)->key;
+  return pnode ? pnode + map->key_size : NULL;
 }
 
 size_t
@@ -74,12 +78,8 @@ roy_map_clear(RoyMap * map) {
 void *
 roy_map_find(RoyMap     * map,
              const void * key) {
-  RoySet * pfound = roy_set_find(map->root, key, map->comp);
-  if (pfound) {
-    return pfound->key + map->key_size;
-  } else {
-    return NULL;
-  }
+  void * pnode = roy_set_find(map->root, key, map->comp)->key;
+  return pnode ? pnode + map->key_size : NULL;
 }
 
 void
