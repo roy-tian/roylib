@@ -1,6 +1,6 @@
 #include "../include/roymap.h"
 
-static void * pair_new(const void * key, size_t key_size, const void * value, size_t value_size);
+void * pair_new(const void * key, size_t key_size, const void * value, size_t value_size);
 
 RoyMap *
 roy_map_new(size_t   key_size,
@@ -22,25 +22,25 @@ roy_map_delete(RoyMap * map) {
 
 void *
 roy_map_pmin(RoyMap * map) {
-  void * pnode = roy_set_min(map->root)->key;
-  return pnode ? pnode + map->key_size : NULL;
+  RoySet * pnode = roy_set_min(map->root);
+  return pnode ? pnode->key + map->key_size : NULL;
 }
 
 void * roy_map_pmax(RoyMap * map) {
-  void * pnode = roy_set_max(map->root)->key;
-  return pnode ? pnode + map->key_size : NULL;
+  RoySet * pnode = roy_set_max(map->root);
+  return pnode ? pnode->key + map->key_size : NULL;
 }
 
 const void *
 roy_map_const_pmin(const RoyMap * map) {
-  const void * pnode = roy_set_min(map->root)->key;
-  return pnode ? pnode + map->key_size : NULL;
+  const RoySet * pnode = roy_set_min(map->root);
+  return pnode ? pnode->key + map->key_size : NULL;
 }
 
 const void *
 roy_map_const_pmax(const RoyMap * map) {
-  const void * pnode = roy_set_max(map->root)->key;
-  return pnode ? pnode + map->key_size : NULL;
+  const RoySet * pnode = roy_set_max(map->root);
+  return pnode ? pnode->key + map->key_size : NULL;
 }
 
 size_t
@@ -78,8 +78,8 @@ roy_map_clear(RoyMap * map) {
 void *
 roy_map_find(RoyMap     * map,
              const void * key) {
-  void * pnode = roy_set_find(map->root, key, map->comp)->key;
-  return pnode ? pnode + map->key_size : NULL;
+  RoySet * pnode = roy_set_find(map->root, key, map->comp);
+  return pnode ? pnode->key + map->key_size : NULL;
 }
 
 void
@@ -95,7 +95,7 @@ roy_map_for_which(RoyMap * map,
 }
 
 // pair must be freed when it's done.
-static void *
+void *
 pair_new(const void * key,
          size_t       key_size,
          const void * value,

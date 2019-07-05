@@ -7,7 +7,9 @@ roy_shell_new(void) {
   RoyShell * ret = (RoyShell *)malloc(sizeof(RoyShell));
   ret->line_history = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
   ret->line_parsed = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
-  ret->cmd_dict = roy_map_new(STRING_CAPACITY, sizeof(void(*)(void *)), ROY_COMPARE(strcmp));
+  ret->cmd_dict = roy_map_new(STRING_CAPACITY + 1,
+                              sizeof(void(*)(void *)),
+                              ROY_COMPARE(strcmp));
   return ret;
 }
 
