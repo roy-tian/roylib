@@ -111,7 +111,7 @@ void roy_mset_for_which(RoyMSet * mset, bool(* condition)(const void *), void(* 
 static RoyMSet *
 node_new(const void * key,
          size_t       key_size) {
-  RoyMSet * ret = malloc(sizeof(RoyMSet));
+  RoyMSet * ret = ROY_MSET(malloc(sizeof(RoyMSet)));
   ret->left     = NULL;
   ret->right    = NULL;
   ret->key      = malloc(key_size);

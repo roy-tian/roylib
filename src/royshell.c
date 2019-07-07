@@ -42,6 +42,7 @@ roy_shell_start(RoyShell * shell) {
 RoyShell *
 roy_shell_add_command(RoyShell * shell, const char * cmd, void(*operate)(void *)) {
   roy_map_insert(shell->cmd_dict, cmd, operate);
+  return shell;
 }
 
 static RoyDeque *
