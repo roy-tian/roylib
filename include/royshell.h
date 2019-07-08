@@ -3,9 +3,9 @@
 #include "roymap.h"
 
 struct _RoyShell {
-  RoyDeque * line_history;
-  RoyDeque * line_parsed;
-  RoyMap   * cmd_dict;
+  RoyDeque * current;
+  RoyDeque * history;
+  RoyMap   * dict;
 };
 
 // RoyShell: A simulated shell with simple function.
@@ -21,4 +21,5 @@ void roy_shell_delete(RoyShell * shell);
 void roy_shell_start(RoyShell * shell);
 
 // Adds a new command 'cmd' with function 'operate' into command dictionary of 'shell'.
-RoyShell * roy_shell_add_command(RoyShell * shell, const char * cmd, void(*operate)(void *));
+// A RoyShell must have at least a default cmd "" (empty string) in order to perform 'roy_shell_start'.
+RoyShell * roy_shell_add_command(RoyShell * shell, const char * cmd, void(*operate)(RoyDeque *));
