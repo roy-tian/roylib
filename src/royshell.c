@@ -1,14 +1,22 @@
 #include "../include/royshell.h"
 
+typedef struct _RoyFunction {
+  void * pfunc;
+} RoyFunction;
+
+static RoyFunction * roy_function_set(RoyFunction * func, void * real_func);
+static const void * roy_function_get(const RoyFunction * func);
+
 static RoyShell * parse(RoyShell * shell, const char * line);
 
 RoyShell *
 roy_shell_new(void) {
   RoyShell * ret = (RoyShell *)malloc(sizeof(RoyShell));
+  strcpy(ret->prompt, "> ");
   ret->current = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
   ret->history = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
-  ret->dict = roy_map_new(STRING_CAPACITY + 1,
-                          sizeof(void(*)(RoyDeque *)),
+  ret->dict = roy_map_new(sizeof(char) * STRING_CAPACITY + 1,
+                          sizeof(RoyFunction),
                           ROY_COMPARE(strcmp));
   return ret;
 }
@@ -25,16 +33,19 @@ void
 roy_shell_start(RoyShell * shell) {
   ROY_STRING(line, STRING_CAPACITY)
   while (true) {
-    printf("> ");
+    printf("%s", shell->prompt);
     fgets(line, STRING_CAPACITY, stdin);
     if (strlen(line) > 1) { // more than only a '\n'
       *(line + strlen(line) - 1) = '\0';
       roy_deque_push_back(shell->history, line);
       parse(shell, line);
-      
-      void * func = roy_map_find(shell->dict,
-                                 roy_deque_const_front(shell->current));
-      (*(void(*)(RoyDeque *))func)(shell->current);
+      const void * func = roy_function_get(
+        roy_map_at(shell->dict,
+                   RoyFunction,
+                   roy_deque_const_front(shell->current)));
+      if (func) {
+        ((void(*)(RoyDeque *))func)(shell->current);
+      }
     }
   }
 }
@@ -43,9 +54,17 @@ RoyShell *
 roy_shell_add_command(RoyShell   * shell,
                       const char * cmd,
                       void      (* operate)(RoyDeque *)) {
-  roy_map_insert(shell->dict, cmd, operate);
+  RoyFunction func;
+  roy_map_insert(shell->dict, cmd, roy_function_set(&func, operate));
   return shell;
 }
+
+RoyShell * roy_shell_set_prompt_text(RoyShell * shell, const char * prompt) {
+  strcpy(shell->prompt, prompt);
+  return shell;
+}
+
+/* PRIVATE FUNCTIONS */
 
 static RoyShell *
 parse(RoyShell   * shell,
@@ -67,8 +86,20 @@ parse(RoyShell   * shell,
       phead = ptail;
     }
   }
-  if (roy_map_find(shell->dict, roy_deque_const_front(shell->current)) == NULL) {
+  if (!roy_map_find(shell->dict, roy_deque_const_front(shell->current))) {
     roy_deque_push_front(shell->current, "");
   }
   return shell;
+}
+
+static RoyFunction *
+roy_function_set(RoyFunction * func,
+                 void        * real_func) {
+  func->pfunc = real_func;
+  return func;
+}
+
+static const void *
+roy_function_get(const RoyFunction * func) {
+  return func ? func->pfunc : NULL;
 }
