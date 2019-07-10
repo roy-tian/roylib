@@ -5,6 +5,7 @@ add_library(roylib
             src/roystring.c
             src/roynumber.c
             src/royshell.c
+            src/roypointer.c
             src/royarray.c
             src/royvector.c
             src/roystack.c

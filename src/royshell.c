@@ -1,11 +1,5 @@
 #include "../include/royshell.h"
-
-typedef struct _RoyFunction {
-  void * pfunc;
-} RoyFunction;
-
-static RoyFunction * roy_function_set(RoyFunction * func, void * real_func);
-static const void * roy_function_get(const RoyFunction * func);
+#include "../include/roypointer.h"
 
 static RoyShell * parse(RoyShell * shell, const char * line);
 
@@ -16,7 +10,7 @@ roy_shell_new(void) {
   ret->current = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
   ret->history = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
   ret->dict = roy_map_new(sizeof(char) * STRING_CAPACITY + 1,
-                          sizeof(RoyFunction),
+                          sizeof(RoyPointer),
                           ROY_COMPARE(strcmp));
   return ret;
 }
@@ -39,9 +33,9 @@ roy_shell_start(RoyShell * shell) {
       *(line + strlen(line) - 1) = '\0';
       roy_deque_push_back(shell->history, line);
       parse(shell, line);
-      const void * func = roy_function_get(
+      const void * func = roy_pointer_get(
         roy_map_at(shell->dict,
-                   RoyFunction,
+                   RoyPointer,
                    roy_deque_const_front(shell->current)));
       if (func) {
         ((void(*)(RoyDeque *))func)(shell->current);
@@ -54,8 +48,8 @@ RoyShell *
 roy_shell_add_command(RoyShell   * shell,
                       const char * cmd,
                       void      (* operate)(RoyDeque *)) {
-  RoyFunction func;
-  roy_map_insert(shell->dict, cmd, roy_function_set(&func, operate));
+  RoyPointer func;
+  roy_map_insert(shell->dict, cmd, roy_pointer_set(&func, operate));
   return shell;
 }
 
@@ -90,16 +84,4 @@ parse(RoyShell   * shell,
     roy_deque_push_front(shell->current, "");
   }
   return shell;
-}
-
-static RoyFunction *
-roy_function_set(RoyFunction * func,
-                 void        * real_func) {
-  func->pfunc = real_func;
-  return func;
-}
-
-static const void *
-roy_function_get(const RoyFunction * func) {
-  return func ? func->pfunc : NULL;
 }
