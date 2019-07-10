@@ -6,9 +6,10 @@ static RoyShell * parse(RoyShell * shell, const char * line);
 RoyShell *
 roy_shell_new(void) {
   RoyShell * ret = (RoyShell *)malloc(sizeof(RoyShell));
+  *ret->cmd = '\0';
+  *ret->prompt = '\0';
   strcpy(ret->prompt, "> ");
-  ret->current = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
-  ret->history = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
+  ret->argv = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
   ret->dict = roy_map_new(sizeof(char) * STRING_CAPACITY + 1,
                           sizeof(RoyPointer),
                           ROY_COMPARE(strcmp));
@@ -17,8 +18,7 @@ roy_shell_new(void) {
 
 void
 roy_shell_delete(RoyShell * shell) {
-  roy_deque_delete(shell->current);
-  roy_deque_delete(shell->history);
+  roy_deque_delete(shell->argv);
   roy_map_clear(shell->dict);
   free(shell);
 }
@@ -31,14 +31,13 @@ roy_shell_start(RoyShell * shell) {
     fgets(line, STRING_CAPACITY, stdin);
     if (strlen(line) > 1) { // more than only a '\n'
       *(line + strlen(line) - 1) = '\0';
-      roy_deque_push_back(shell->history, line);
       parse(shell, line);
       const void * func = roy_pointer_get(
         roy_map_at(shell->dict,
                    RoyPointer,
-                   roy_deque_const_front(shell->current)));
+                   roy_deque_const_front(shell->argv)));
       if (func) {
-        ((void(*)(RoyDeque *))func)(shell->current);
+        ((void(*)(RoyShell *))func)(shell);
       }
     }
   }
@@ -47,7 +46,7 @@ roy_shell_start(RoyShell * shell) {
 RoyShell *
 roy_shell_add_command(RoyShell   * shell,
                       const char * cmd,
-                      void      (* operate)(RoyDeque *)) {
+                      void      (* operate)(RoyShell *)) {
   RoyPointer func;
   roy_map_insert(shell->dict, cmd, roy_pointer_set(&func, operate));
   return shell;
@@ -63,7 +62,7 @@ RoyShell * roy_shell_set_prompt_text(RoyShell * shell, const char * prompt) {
 static RoyShell *
 parse(RoyShell   * shell,
       const char * line) {
-  roy_deque_clear(shell->current);
+  roy_deque_clear(shell->argv);
   const char * phead = line;
   const char * ptail = line;
   while (*phead != '\0') {
@@ -76,12 +75,12 @@ parse(RoyShell   * shell,
       } while (isgraph(*ptail));
       ROY_STRING(arg, STRING_CAPACITY)
       strncpy(arg, phead, ptail - phead);
-      roy_deque_push_back(shell->current, arg);
+      roy_deque_push_back(shell->argv, arg);
       phead = ptail;
     }
   }
-  if (!roy_map_find(shell->dict, roy_deque_const_front(shell->current))) {
-    roy_deque_push_front(shell->current, "");
+  if (!roy_map_find(shell->dict, roy_deque_const_front(shell->argv))) {
+    roy_deque_push_front(shell->argv, "");
   }
   return shell;
 }
