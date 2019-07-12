@@ -87,7 +87,6 @@ roy_shell_line_without_space(const RoyShell * shell) {
 static void
 parse_cmd(RoyShell   * shell,
           const char * line) {
-  *shell->cmd = '\0';
   char * pcmd = shell->cmd;
   while (*line != '\0') {
     if (isgraph(*line)) {
