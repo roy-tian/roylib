@@ -1,7 +1,8 @@
 #include "../include/royshell.h"
 #include "../include/roypointer.h"
 
-static RoyShell * parse(RoyShell * shell, const char * line);
+static void parse_cmd(RoyShell * shell, const char * line);
+static void parse_argv(RoyShell * shell, const char * line);
 
 RoyShell *
 roy_shell_new(void) {
@@ -31,7 +32,8 @@ roy_shell_start(RoyShell * shell) {
     fgets(line, STRING_CAPACITY, stdin);
     if (strlen(line) > 1) { // more than only a '\n'
       *(line + strlen(line) - 1) = '\0';
-      parse(shell, line);
+      parse_argv(shell, line);
+      parse_cmd(shell, line);
       const void * func = roy_pointer_get(
         roy_map_at(shell->dict,
                    RoyPointer,
@@ -52,16 +54,54 @@ roy_shell_add_command(RoyShell   * shell,
   return shell;
 }
 
-RoyShell * roy_shell_set_prompt_text(RoyShell * shell, const char * prompt) {
+RoyShell *
+roy_shell_set_prompt_text(RoyShell   * shell,
+                          const char * prompt) {
   strcpy(shell->prompt, prompt);
   return shell;
 }
 
+size_t
+roy_shell_argument_count(const RoyShell * shell) {
+  return roy_deque_size(shell->argv);
+}
+
+const char *
+roy_shell_argument_at(const RoyShell * shell,
+                      int              position) {
+  return (const char *)roy_deque_const_pointer(shell->argv, position);
+}
+
+const char *
+roy_shell_command(const RoyShell * shell) {
+  return (const char *)roy_deque_const_front(shell->argv);
+}
+
+const char *
+roy_shell_line_without_space(const RoyShell * shell) {
+  return shell->cmd;
+}
+
 /* PRIVATE FUNCTIONS */
 
-static RoyShell *
-parse(RoyShell   * shell,
-      const char * line) {
+static void
+parse_cmd(RoyShell   * shell,
+          const char * line) {
+  *shell->cmd = '\0';
+  char * pcmd = shell->cmd;
+  while (*line != '\0') {
+    if (isgraph(*line)) {
+      *pcmd++ = *line++;
+    } else {
+      line++;
+    }
+  }
+  *pcmd = '\0';
+}
+
+static void
+parse_argv(RoyShell   * shell,
+           const char * line) {
   roy_deque_clear(shell->argv);
   const char * phead = line;
   const char * ptail = line;
@@ -82,5 +122,4 @@ parse(RoyShell   * shell,
   if (!roy_map_find(shell->dict, roy_deque_const_front(shell->argv))) {
     roy_deque_push_front(shell->argv, "");
   }
-  return shell;
 }
