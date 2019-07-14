@@ -37,7 +37,7 @@ roy_shell_start(RoyShell * shell) {
       const void * func = roy_pointer_get(
         roy_map_at(shell->dict,
                    RoyPointer,
-                   roy_deque_const_front(shell->argv)));
+                   roy_shell_command(shell)));
       if (func) {
         ((void(*)(RoyShell *))func)(shell);
       }
