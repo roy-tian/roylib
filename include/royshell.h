@@ -37,5 +37,5 @@ const char * roy_shell_argument_at(const RoyShell * shell, int position);
 // Returns the text of the 0th argument - the main command.
 const char * roy_shell_command(const RoyShell * shell);
 
-// Returns the current line, all spaces are trimed.
+// Returns the current line.
 const char * roy_shell_line(const RoyShell * shell);
