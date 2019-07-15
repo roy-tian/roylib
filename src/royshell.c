@@ -1,18 +1,18 @@
 #include "../include/royshell.h"
 #include "../include/roypointer.h"
 
-static void parse_argv(RoyShell * shell, const char * line);
+static void default_parse(RoyShell * shell, const char * line);
 
 RoyShell *
 roy_shell_new(void) {
   RoyShell * ret = (RoyShell *)malloc(sizeof(RoyShell));
-  *ret->cmd = '\0';
   *ret->prompt = '\0';
   strcpy(ret->prompt, "> ");
   ret->argv = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
   ret->dict = roy_map_new(sizeof(char) * STRING_CAPACITY + 1,
                           sizeof(RoyPointer),
                           ROY_COMPARE(strcmp));
+  ret->parse = default_parse;                          
   return ret;
 }
 
@@ -31,12 +31,11 @@ roy_shell_start(RoyShell * shell) {
     fgets(line, STRING_CAPACITY, stdin);
     if (strlen(line) > 1) { // more than only a '\n'
       *(line + strlen(line) - 1) = '\0';
-      strcpy(shell->cmd, line);
-      parse_argv(shell, line);
+      shell->parse(shell, line);
       const void * func = roy_pointer_get(
         roy_map_at(shell->dict,
                    RoyPointer,
-                   roy_shell_command(shell)));
+                   roy_shell_argument_at(shell, 0)));
       if (func) {
         ((void(*)(RoyShell *))func)(shell);
       }
@@ -71,21 +70,11 @@ roy_shell_argument_at(const RoyShell * shell,
   return (const char *)roy_deque_const_pointer(shell->argv, position);
 }
 
-const char *
-roy_shell_command(const RoyShell * shell) {
-  return (const char *)roy_deque_const_front(shell->argv);
-}
-
-const char *
-roy_shell_line(const RoyShell * shell) {
-  return shell->cmd;
-}
-
 /* PRIVATE FUNCTIONS */
 
 static void
-parse_argv(RoyShell   * shell,
-           const char * line) {
+default_parse(RoyShell   * shell,
+              const char * line) {
   roy_deque_clear(shell->argv);
   const char * phead = line;
   const char * ptail = line;
