@@ -233,7 +233,7 @@ void roy_list_for_which(RoyList * list,
 static RoyList *
 node_new(const void * data,
          size_t       element_size) {
-  RoyList * ret = malloc(sizeof(void *) + sizeof(RoyList *) * 2);
+  RoyList * ret = ROY_LIST(malloc(sizeof(void *) + sizeof(RoyList *) * 2));
   ret->data = malloc(element_size);
   memcpy(ret->data, data, element_size);
   ret->prev = NULL;
