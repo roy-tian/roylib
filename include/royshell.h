@@ -38,4 +38,4 @@ const char * roy_shell_argument_at(const RoyShell * shell, int position);
 const char * roy_shell_command(const RoyShell * shell);
 
 // Returns the current line, all spaces are trimed.
-const char * roy_shell_line_without_space(const RoyShell * shell);
+const char * roy_shell_line(const RoyShell * shell);

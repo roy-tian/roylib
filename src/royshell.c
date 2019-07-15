@@ -1,7 +1,6 @@
 #include "../include/royshell.h"
 #include "../include/roypointer.h"
 
-static void parse_cmd(RoyShell * shell, const char * line);
 static void parse_argv(RoyShell * shell, const char * line);
 
 RoyShell *
@@ -32,12 +31,12 @@ roy_shell_start(RoyShell * shell) {
     fgets(line, STRING_CAPACITY, stdin);
     if (strlen(line) > 1) { // more than only a '\n'
       *(line + strlen(line) - 1) = '\0';
+      strcpy(shell->cmd, line);
       parse_argv(shell, line);
-      parse_cmd(shell, line);
       const void * func = roy_pointer_get(
         roy_map_at(shell->dict,
                    RoyPointer,
-                   roy_deque_const_front(shell->argv)));
+                   roy_shell_command(shell)));
       if (func) {
         ((void(*)(RoyShell *))func)(shell);
       }
@@ -78,25 +77,11 @@ roy_shell_command(const RoyShell * shell) {
 }
 
 const char *
-roy_shell_line_without_space(const RoyShell * shell) {
+roy_shell_line(const RoyShell * shell) {
   return shell->cmd;
 }
 
 /* PRIVATE FUNCTIONS */
-
-static void
-parse_cmd(RoyShell   * shell,
-          const char * line) {
-  char * pcmd = shell->cmd;
-  while (*line != '\0') {
-    if (isgraph(*line)) {
-      *pcmd++ = *line++;
-    } else {
-      line++;
-    }
-  }
-  *pcmd = '\0';
-}
 
 static void
 parse_argv(RoyShell   * shell,
