@@ -15,5 +15,6 @@
 #include "include/roynumber.h"
 #include "include/roystring.h"
 #include "include/royshell.h"
+#include "include/roypointer.h"
 
 #endif // ROY_H
