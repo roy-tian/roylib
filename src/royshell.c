@@ -1,23 +1,24 @@
 #include "../include/royshell.h"
 #include "../include/roypointer.h"
 
-static void default_parse(RoyShell * shell, const char * line);
+static void parse(RoyShell * shell, const char * line);
 
 RoyShell *
 roy_shell_new(void) {
   RoyShell * ret = (RoyShell *)malloc(sizeof(RoyShell));
-  *ret->prompt = '\0';
-  strcpy(ret->prompt, "> ");
-  ret->argv = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
-  ret->dict = roy_map_new(sizeof(char) * STRING_CAPACITY + 1,
-                          sizeof(RoyPointer),
-                          ROY_COMPARE(strcmp));
-  ret->parse = default_parse;                          
+  ret->prompt = (char *)calloc(STRING_CAPACITY + 1, sizeof(char));
+  ret->line   = (char *)calloc(STRING_CAPACITY + 1, sizeof(char));
+  ret->argv   = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
+  ret->dict   = roy_map_new(sizeof(char) * STRING_CAPACITY + 1,
+                            sizeof(RoyPointer),
+                            ROY_COMPARE(strcmp));
   return ret;
 }
 
 void
 roy_shell_delete(RoyShell * shell) {
+  free(shell->prompt);
+  free(shell->line);
   roy_deque_delete(shell->argv);
   roy_map_clear(shell->dict);
   free(shell);
@@ -25,13 +26,14 @@ roy_shell_delete(RoyShell * shell) {
 
 void
 roy_shell_start(RoyShell * shell) {
-  ROY_STRING(line, STRING_CAPACITY)
+  char line[STRING_CAPACITY + 1] = "\0";
   while (true) {
     printf("%s", shell->prompt);
     fgets(line, STRING_CAPACITY, stdin);
     if (strlen(line) > 1) { // more than only a '\n'
       *(line + strlen(line) - 1) = '\0';
-      shell->parse(shell, line);
+      strcpy(shell->line, line);
+      parse(shell, line);
       const void * func = roy_pointer_get(
         roy_map_at(shell->dict,
                    RoyPointer,
@@ -70,10 +72,15 @@ roy_shell_argument_at(const RoyShell * shell,
   return (const char *)roy_deque_const_pointer(shell->argv, position);
 }
 
+const char *
+roy_shell_line(const RoyShell * shell) {
+  return shell->line;
+}
+
 /* PRIVATE FUNCTIONS */
 
 static void
-default_parse(RoyShell   * shell,
+parse(RoyShell   * shell,
               const char * line) {
   roy_deque_clear(shell->argv);
   const char * phead = line;

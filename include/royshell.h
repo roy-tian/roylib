@@ -3,10 +3,10 @@
 #include "roymap.h"
 
 struct _RoyShell {
+  char     * prompt;
+  char     * line;
   RoyDeque * argv;
   RoyMap   * dict;
-  void    (* parse)(struct _RoyShell * shell, const char * line);
-  char       prompt[STRING_CAPACITY + 1];
 };
 
 // RoyShell: A simulated shell with simple function.
@@ -33,3 +33,5 @@ size_t roy_shell_argument_count(const RoyShell * shell);
 
 // Returns the text of the 'position'-th arguments.
 const char * roy_shell_argument_at(const RoyShell * shell, int position);
+
+const char * roy_shell_line(const RoyShell * shell);
