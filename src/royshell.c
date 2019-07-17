@@ -12,6 +12,7 @@ roy_shell_new(void) {
   ret->dict   = roy_map_new(sizeof(char) * STRING_CAPACITY + 1,
                             sizeof(RoyPointer),
                             ROY_COMPARE(strcmp));
+  roy_shell_set_prompt_text(ret, "> ");
   return ret;
 }
 
@@ -30,10 +31,10 @@ roy_shell_start(RoyShell * shell) {
   while (true) {
     printf("%s", shell->prompt);
     fgets(line, STRING_CAPACITY, stdin);
-    if (strlen(line) > 1) { // more than only a '\n'
-      *(line + strlen(line) - 1) = '\0';
-      strcpy(shell->line, line);
-      parse(shell, line);
+    *(line + strlen(line) - 1) = '\0'; // trims '\n'
+    strcpy(shell->line, line);
+    parse(shell, line);
+    if (roy_shell_argument_count(shell) != 0) {
       const void * func = roy_pointer_get(
         roy_map_at(shell->dict,
                    RoyPointer,
@@ -81,7 +82,7 @@ roy_shell_line(const RoyShell * shell) {
 
 static void
 parse(RoyShell   * shell,
-              const char * line) {
+      const char * line) {
   roy_deque_clear(shell->argv);
   const char * phead = line;
   const char * ptail = line;
@@ -90,16 +91,15 @@ parse(RoyShell   * shell,
       phead++;
     } else {
       ptail = phead;
-      do {
-        ptail++;
-      } while (isgraph(*ptail));
+      do { ptail++; } while (isgraph(*ptail));      
       ROY_STRING(arg, STRING_CAPACITY)
       strncpy(arg, phead, ptail - phead);
       roy_deque_push_back(shell->argv, arg);
       phead = ptail;
     }
   }
-  if (!roy_map_find(shell->dict, roy_deque_const_front(shell->argv))) {
+  if (roy_shell_argument_count(shell) != 0 &&
+      !roy_map_find(shell->dict, roy_shell_argument_at(shell, 0))) {
     roy_deque_push_front(shell->argv, "");
   }
 }

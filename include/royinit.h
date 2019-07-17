@@ -23,9 +23,9 @@ enum BinaryWidths {
 };
 
 enum String {
-  WORD_CAPACITY        = 31,
-  STRING_CAPACITY      = 1023,
-  STRING_CAPACITY_HUGE = 65535
+  WORD_CAPACITY       = 31,
+  STRING_CAPACITY     = 1023,
+  BIG_STRING_CAPACITY = 65535
 };
 
 #define ROY_ARRAY(array)   ((RoyArray *)(array))

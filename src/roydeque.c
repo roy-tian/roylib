@@ -2,10 +2,10 @@
 
 RoyDeque *
 roy_deque_new(size_t element_size) {
-  RoyDeque * ret = ROY_DEQUE(malloc(sizeof(RoyDeque)));
-  ret->head = roy_list_new();
-  ret->tail = ret->head->next;
-  ret->size = 0;
+  RoyDeque * ret    = ROY_DEQUE(malloc(sizeof(RoyDeque)));
+  ret->head         = roy_list_new();
+  ret->tail         = ret->head->next;
+  ret->size         = 0;
   ret->element_size = element_size;
   return ret;
 }
@@ -19,44 +19,51 @@ roy_deque_delete(RoyDeque * deque) {
 void *
 roy_deque_pointer(RoyDeque * deque,
                  int         position) {
+  RoyList * pnode;
   if (position <= deque->size / 2) { // smaller half
-    return roy_list_iterator(deque->head, position)->data;
+    pnode = roy_list_iterator(deque->head, position);
   } else { // bigger half
-    return
-    roy_list_reverse_iterator(deque->tail, deque->size - position - 1)->data;
+    pnode = roy_list_reverse_iterator(deque->tail,
+                                      deque->size - position - 1);
   }
+  return pnode ? pnode->data : NULL;
 }
 
 void *
 roy_deque_front(RoyDeque * deque) {
-  return roy_list_begin(deque->head)->data;
+  RoyList * pnode = roy_list_begin(deque->head);
+  return pnode ? pnode->data : NULL;
 }
 
 void *
 roy_deque_back(RoyDeque * deque) {
-  return roy_list_rbegin(deque->tail)->data;
+  RoyList * pnode = roy_list_rbegin(deque->tail);
+  return pnode ? pnode->data : NULL;
 }
 
 const void *
 roy_deque_const_pointer(const RoyDeque * deque,
                         int              position) {
+  const RoyList * pnode;
   if (position <= deque->size / 2) { // smaller half
-    return roy_list_const_iterator(deque->head, position)->data;
+    pnode = roy_list_const_iterator(deque->head, position);
   } else { // bigger half
-    return
-    roy_list_const_reverse_iterator(deque->tail,
-                                   deque->size - position - 1)->data;
+    pnode = roy_list_const_reverse_iterator(deque->tail,
+                                            deque->size - position - 1);
   }
+  return pnode ? pnode->data : NULL;
 }
 
 const void *
 roy_deque_const_front(const RoyDeque * deque) {
-  return roy_list_cbegin(deque->head)->data;
+  const RoyList * pnode = roy_list_cbegin(deque->head);
+  return pnode ? pnode->data : NULL;
 }
 
 const void *
 roy_deque_const_back(const RoyDeque * deque) {
-  return roy_list_crbegin(deque->tail)->data;
+  const RoyList * pnode = roy_list_crbegin(deque->tail);
+  return pnode ? pnode->data : NULL;
 }
 
 void *
