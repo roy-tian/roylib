@@ -7,49 +7,52 @@ RoyShell *
 roy_shell_new(void) {
   RoyShell * ret = (RoyShell *)malloc(sizeof(RoyShell));
   ret->prompt = (char *)calloc(STRING_CAPACITY + 1, sizeof(char));
-  ret->line   = (char *)calloc(STRING_CAPACITY + 1, sizeof(char));
-  ret->argv   = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
-  ret->dict   = roy_map_new(sizeof(char) * STRING_CAPACITY + 1,
-                            sizeof(RoyPointer),
-                            ROY_COMPARE(strcmp));
   roy_shell_set_prompt_text(ret, "> ");
+  ret->dict = roy_map_new(sizeof(char) * STRING_CAPACITY + 1,
+                          sizeof(RoyPointer),
+                          ROY_COMPARE(strcmp));
+  ret->argv = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
+  ret->input_history = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
+  ret->output_history = roy_deque_new(sizeof(char) * (STRING_CAPACITY + 1));
   return ret;
 }
 
 void
 roy_shell_delete(RoyShell * shell) {
   free(shell->prompt);
-  free(shell->line);
-  roy_deque_delete(shell->argv);
   roy_map_clear(shell->dict);
+  roy_deque_delete(shell->argv);
+  roy_deque_delete(shell->input_history);
+  roy_deque_delete(shell->output_history);
   free(shell);
 }
 
 void
 roy_shell_start(RoyShell * shell) {
-  char line[STRING_CAPACITY + 1] = "\0";
+  char input[STRING_CAPACITY + 1] = "\0";
+  char output[STRING_CAPACITY + 1] = "\0";
   while (true) {
     printf("%s", shell->prompt);
-    fgets(line, STRING_CAPACITY, stdin);
-    *(line + strlen(line) - 1) = '\0'; // trims '\n'
-    strcpy(shell->line, line);
-    parse(shell, line);
+    fgets(input, STRING_CAPACITY, stdin);
+    *(input + strlen(input) - 1) = '\0'; // trims '\n'
+    roy_deque_push_back(shell->input_history, input);
+    parse(shell, input);
     if (roy_shell_argument_count(shell) != 0) {
-      const void * func = roy_pointer_get(
-        roy_map_at(shell->dict,
-                   RoyPointer,
-                   roy_shell_argument_at(shell, 0)));
+      RoyShellOperator func = (RoyShellOperator)roy_pointer_get(
+        roy_map_at(shell->dict, RoyPointer, roy_shell_argument_at(shell, 0)));
       if (func) {
-        ((void(*)(RoyShell *))func)(shell);
+        func(shell, output);
+        roy_deque_push_back(shell->output_history, output);
+        puts(output);
       }
     }
   }
 }
 
 RoyShell *
-roy_shell_add_command(RoyShell   * shell,
-                      const char * cmd,
-                      void      (* operate)(RoyShell *)) {
+roy_shell_add_command(RoyShell         * shell,
+                      const char       * cmd,
+                      RoyShellOperator   operate) {
   RoyPointer func;
   roy_map_insert(shell->dict, cmd, roy_pointer_set(&func, operate));
   return shell;
@@ -71,11 +74,6 @@ const char *
 roy_shell_argument_at(const RoyShell * shell,
                       int              position) {
   return (const char *)roy_deque_const_pointer(shell->argv, position);
-}
-
-const char *
-roy_shell_line(const RoyShell * shell) {
-  return shell->line;
 }
 
 /* PRIVATE FUNCTIONS */
