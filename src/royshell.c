@@ -8,6 +8,7 @@ roy_shell_new(void) {
   RoyShell * ret = (RoyShell *)malloc(sizeof(RoyShell));
   ret->prompt = (char *)calloc(STRING_CAPACITY + 1, sizeof(char));
   roy_shell_set_prompt_text(ret, "> ");
+  ret->buffer = (char *)calloc(STRING_CAPACITY + 1, sizeof(char));
   ret->dict = roy_map_new(sizeof(char) * STRING_CAPACITY + 1,
                           sizeof(RoyPointer),
                           ROY_COMPARE(strcmp));
@@ -20,6 +21,7 @@ roy_shell_new(void) {
 void
 roy_shell_delete(RoyShell * shell) {
   free(shell->prompt);
+  free(shell->buffer);
   roy_map_clear(shell->dict);
   roy_deque_delete(shell->argv);
   roy_deque_delete(shell->input_history);
@@ -30,7 +32,6 @@ roy_shell_delete(RoyShell * shell) {
 void
 roy_shell_start(RoyShell * shell) {
   char input[STRING_CAPACITY + 1] = "\0";
-  char output[STRING_CAPACITY + 1] = "\0";
   while (true) {
     printf("%s", shell->prompt);
     fgets(input, STRING_CAPACITY, stdin);
@@ -41,16 +42,17 @@ roy_shell_start(RoyShell * shell) {
       RoyShellOperator func = (RoyShellOperator)roy_pointer_get(
         roy_map_at(shell->dict, RoyPointer, roy_shell_argument_at(shell, 0)));
       if (func) {
-        func(shell, output);
-        roy_deque_push_back(shell->output_history, output);
-        puts(output);
+        memset(shell->buffer, '\0', STRING_CAPACITY + 1);
+        func(shell);
+        roy_deque_push_back(shell->output_history, shell->buffer);
+        puts(shell->buffer);
       }
     }
   }
 }
 
 RoyShell *
-roy_shell_add_command(RoyShell         * shell,
+roy_shell_command_add(RoyShell         * shell,
                       const char       * cmd,
                       RoyShellOperator   operate) {
   RoyPointer func;
@@ -75,6 +77,14 @@ roy_shell_argument_at(const RoyShell * shell,
                       int              position) {
   return (const char *)roy_deque_const_pointer(shell->argv, position);
 }
+
+
+RoyShell *
+roy_shell_output_append(RoyShell   * shell,
+                        const char * output) {
+  strcat(shell->buffer, output);
+}
+
 
 /* PRIVATE FUNCTIONS */
 
