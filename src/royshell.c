@@ -42,10 +42,12 @@ roy_shell_start(RoyShell * shell) {
       RoyShellOperator func = (RoyShellOperator)roy_pointer_get(
         roy_map_at(shell->dict, RoyPointer, roy_shell_argument_at(shell, 0)));
       if (func) {
-        memset(shell->buffer, '\0', STRING_CAPACITY + 1);
+        roy_shell_log_clear(shell);
         func(shell);
         roy_deque_push_back(shell->output_history, shell->buffer);
-        puts(shell->buffer);
+        if (strlen(shell->buffer) != 0) {
+          puts(shell->buffer);
+        }
       }
     }
   }
@@ -78,13 +80,31 @@ roy_shell_argument_at(const RoyShell * shell,
   return (const char *)roy_deque_const_pointer(shell->argv, position);
 }
 
-
 RoyShell *
-roy_shell_output_append(RoyShell   * shell,
-                        const char * output) {
-  strcat(shell->buffer, output);
+roy_shell_log_clear(RoyShell * shell) {
+  memset(shell->buffer, '\0', STRING_CAPACITY);
+  return shell;
 }
 
+RoyShell *
+roy_shell_log_append(RoyShell   * shell,
+                     const char * format,
+                     ...) {
+  va_list args;
+  va_start(args, format);
+  vsprintf(shell->buffer, format, args);
+  va_end(args);
+  return shell;
+}
+
+const char *
+roy_shell_log_at(const RoyShell * shell,
+                 int              position) {
+  if (position == -1) {
+    return (const char *)roy_deque_const_back(shell->output_history);
+  }
+  return (const char *)roy_deque_const_pointer(shell->output_history, position);
+}
 
 /* PRIVATE FUNCTIONS */
 

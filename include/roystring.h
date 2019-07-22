@@ -101,6 +101,10 @@ size_t roy_string_line_length(const char * str, size_t line_number);
 // (Similar to std 'strpbrk' except the return value.)
 int roy_string_break_index(const char * str, const char * set);
 
+bool roy_string_match(const char * str, const char * regex);
+
+int roy_string_regex_index(const char * str, const char * regex);
+
 // Reads the content of file at 'path' to 'dest'.
 // (This is a convenient function with performance sacrificed.)
 char * roy_string_read_from_file(char * dest, const char * path);

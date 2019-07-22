@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdarg.h>
 #include <string.h>
 
 enum NumeralSystem {
