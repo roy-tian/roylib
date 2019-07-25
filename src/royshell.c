@@ -100,8 +100,11 @@ roy_shell_log_append(RoyShell   * shell,
 const char *
 roy_shell_log_at(const RoyShell * shell,
                  int              position) {
-  if (position == -1) {
-    return (const char *)roy_deque_const_back(shell->output_history);
+  if (position < 0) {
+    return
+    (const char *)roy_deque_const_pointer(shell->output_history,
+                                          roy_deque_size(shell->output_history) + 
+                                          position);
   }
   return (const char *)roy_deque_const_pointer(shell->output_history, position);
 }
@@ -119,8 +122,8 @@ parse(RoyShell   * shell,
       phead++;
     } else {
       ptail = phead;
-      do { ptail++; } while (isgraph(*ptail));      
-      ROY_STRING(arg, STRING_CAPACITY)
+      do { ptail++; } while (isgraph(*ptail));
+      char arg[STRING_CAPACITY + 1] = "\0";
       strncpy(arg, phead, ptail - phead);
       roy_deque_push_back(shell->argv, arg);
       phead = ptail;

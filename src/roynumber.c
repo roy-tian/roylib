@@ -1,5 +1,5 @@
 #include "../include/roynumber.h"
-#include "../include/roystring.h"
+#include "../include/roystr.h"
 #include <limits.h>
 #include <math.h>
 
@@ -129,7 +129,7 @@ roy_llong_to_string(char      * dest,
     *pdest++ = fill_zero ? '0' : ' ';
   }
   *pdest = '\0';
-  return roy_string_reverse(dest);
+  return roy_str_reverse(dest);
 }
 
 char *
@@ -148,7 +148,7 @@ roy_ullong_to_string(char               * dest,
     *pdest++ = fill_zero ? '0' : ' ';
   }
   *pdest = '\0';
-  return roy_string_reverse(dest);
+  return roy_str_reverse(dest);
 }
 
 unsigned long long
