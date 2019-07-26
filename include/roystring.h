@@ -12,21 +12,21 @@ typedef struct _RoyString RoyString;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
-RoyString * roy_string_new();
+RoyString * roy_string_new(void);
 
 RoyString * roy_string_new_with_content(const char * str);
 
-void roy_string_delete(RoyString * string);
-
 RoyString * roy_string_assign(RoyString * string, const char * str);
+
+void roy_string_delete(RoyString * string);
 
 /* CHARACTER ACCESS */
 
 int roy_string_at(const RoyString * string, int index);
 
-char * roy_string_pointer(RoyString * string);
+char * roy_string_str(RoyString * string);
 
-const char * roy_string_const_pointer(const RoyString * string);
+const char * roy_string_cstr(const RoyString * string);
 
 /* CAPACITY */
 

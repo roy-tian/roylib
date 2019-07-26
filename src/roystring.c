@@ -2,7 +2,7 @@
 #include "../include/roystr.h"
 
 RoyString *
-roy_string_new() {
+roy_string_new(void) {
   RoyString * ret = (RoyString *)malloc(sizeof(RoyString));
   ret->str = NULL;
   return ret;
@@ -36,12 +36,12 @@ roy_string_at(const RoyString * string,
 }
 
 char *
-roy_string_pointer(RoyString * string) {
+roy_string_str(RoyString * string) {
   return string->str;
 }
 
 const char *
-roy_string_const_pointer(const RoyString * string) {
+roy_string_cstr(const RoyString * string) {
   return string->str;
 }
 
@@ -68,7 +68,7 @@ RoyString *
 roy_string_insert_str(RoyString  * string,
                       const char * substr,
                       int          index) {
-  ROY_STRING(temp, roy_string_size(string) + strlen(substr) + 1)
+  ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
   memcpy(temp, string->str, index);
   strcat(temp, substr);
   strncat(temp, string->str + index, roy_string_size(string) - index);
@@ -80,22 +80,23 @@ roy_string_insert(RoyString       * string,
                   const RoyString * substring,
                   int               index) {
   return
-  roy_string_insert_str(string, roy_string_const_pointer(substring), index);
+  roy_string_insert_str(string, roy_string_cstr(substring), index);
 }
 
 RoyString *
 roy_string_erase(RoyString * string,
                  int         index,
                  size_t      count) {
-  ROY_STRING(temp, roy_string_size(string) - count + 1)
+  ROY_STR(temp, roy_string_size(string) - count + 1)
   memcpy(temp, string->str, index);
-  strncat(temp, string->str + index + count, roy_string_size(string) - index - count);
+  strncat(temp, string->str + index + count,
+          roy_string_size(string) - index - count);
   return string = roy_string_assign(string, temp);
 }
 
 RoyString * roy_string_append_str(RoyString  * string,
                                   const char * substr) {
-  ROY_STRING(temp, roy_string_size(string) + strlen(substr) + 1);
+  ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1);
   memcpy(temp, string->str, roy_string_size(string) + 1);
   strcat(temp, substr);
   return string = roy_string_assign(string, temp);
@@ -104,11 +105,11 @@ RoyString * roy_string_append_str(RoyString  * string,
 RoyString *
 roy_string_append(RoyString       * string,
                   const RoyString * substring) {
-  return roy_string_append_str(string, roy_string_const_pointer(substring));
+  return roy_string_append_str(string, roy_string_cstr(substring));
 }
 
 RoyString * roy_string_replace_str(RoyString * string, const char * substr, int index, size_t count) {
-  
+
 }
 
 RoyString * roy_string_replace(RoyString * string, const RoyString * substr, int index, size_t count);

@@ -83,7 +83,7 @@ roy_map_find(RoyMap     * map,
 }
 
 void
-roy_map_for_each(RoyMap * map, void(* operate)(void *)) {
+roy_map_for_each(RoyMap * map, RoyOperate operate) {
   roy_set_for_each(map->root, operate);
 }
 

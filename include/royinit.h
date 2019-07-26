@@ -29,20 +29,24 @@ enum String {
   BIG_STRING_CAPACITY = 65535
 };
 
-#define ROY_ARRAY(array)   ((RoyArray *)(array))
-#define ROY_QUEUE(queue)   ((RoyQueue *)(queue))
-#define ROY_STACK(stack)   ((RoyStack *)(stack))
-#define ROY_VECTOR(vector) ((RoyVector *)(vector))
-#define ROY_SLIST(slist)   ((RoySList *)(slist))
-#define ROY_LIST(list)     ((RoyList *)(list))
-#define ROY_DEQUE(deque)   ((RoyDeque *)(deque))
-#define ROY_SET(set)       ((RoySet *)(set))
-#define ROY_MSET(mset)     ((RoyMSet *)(mset))
-#define ROY_MAP(map)       ((RoyMap *)(map))
-#define ROY_MMAP(mmap)     ((RoyMMap *)(mmap))
+typedef void (* RoyOperate)(void *);
+typedef bool (* RoyCondition)(const void *);
+typedef int  (* RoyCompare)(const void *, const void *);
 
-#define ROY_OPERATE(operate)     ((void(*)(void *))(operate))
-#define ROY_CONDITION(condition) ((bool(*)(const void *))(condition))
-#define ROY_COMPARE(compare)     (( int(*)(const void *, const void *))(compare))
+#define ROY_OPERATE(operate)     (RoyOperate)(operate)
+#define ROY_CONDITION(condition) (RoyCondition)(condition)
+#define ROY_COMPARE(compare)     (RoyCompare)(compare)
+
+#define ROY_ARRAY(array)   (RoyArray *)(array)
+#define ROY_QUEUE(queue)   (RoyQueue *)(queue)
+#define ROY_STACK(stack)   (RoyStack *)(stack)
+#define ROY_VECTOR(vector) (RoyVector *)(vector)
+#define ROY_SLIST(slist)   (RoySList *)(slist)
+#define ROY_LIST(list)     (RoyList *)(list)
+#define ROY_DEQUE(deque)   (RoyDeque *)(deque)
+#define ROY_SET(set)       (RoySet *)(set)
+#define ROY_MSET(mset)     (RoyMSet *)(mset)
+#define ROY_MAP(map)       (RoyMap *)(map)
+#define ROY_MMAP(mmap)     (RoyMMap *)(mmap)
 
 #endif // ROYINIT_H

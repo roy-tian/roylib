@@ -18,7 +18,7 @@ typedef struct _RoyMap RoyMap;
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Returns a pointer to a newly build RoyMap. 
-RoyMap * roy_map_new(size_t key_size, size_t value_size, int (* comp)(const void *, const void *));
+RoyMap * roy_map_new(size_t key_size, size_t value_size, RoyCompare comp);
 
 // Deallocates all the memory allocated.
 // (Always call this function after the work is done by the given 'map', or memory leak will occur.)
@@ -66,9 +66,9 @@ void * roy_map_find(RoyMap * map, const void * key);
 /* TRAVERSE */
 
 // Traverses all elements in 'map' using 'operate'.
-void roy_map_for_each(RoyMap * map, void(* operate)(void *));
+void roy_map_for_each(RoyMap * map, RoyOperate operate);
 
 // Traverses all elements whichever meets 'condition' in 'map' using 'operate'.
-void roy_map_for_which(RoyMap * map, bool(* condition)(const void *), void(* operate)(void *));
+void roy_map_for_which(RoyMap * map, RoyCondition condition, RoyOperate operate);
 
 #endif // ROYMAP_H

@@ -88,9 +88,9 @@ RoyVector * roy_vector_clear(RoyVector * vector);
 /* TRAVERSE */
 
 // Traverses all elements in 'vector' using 'operate'.
-void roy_vector_for_each(RoyVector * vector, void(* operate)(void *));
+void roy_vector_for_each(RoyVector * vector, RoyOperate operate);
 
 // Traverses all elements whichever meets 'condition' in 'vector' using 'operate'.
-void roy_vector_for_which(RoyVector * vector, bool(* condition)(const void *), void(* operate)(void *));
+void roy_vector_for_which(RoyVector * vector, RoyCondition condition, RoyOperate operate);
 
 #endif // ROYVECTOR_H

@@ -99,20 +99,20 @@ RoyList * roy_list_clear(RoyList * list_head);
 
 /* LIST OPERATIONS */
 
-RoyList * roy_list_remove_if(RoyList * list, bool (*condition)(const void *));
+RoyList * roy_list_remove_if(RoyList * list, RoyCondition condition);
 
 RoyList * roy_list_reverse(RoyList * list);
 
-RoyList * roy_list_unique(RoyList * list, int (*compare)(const void *, const void *));
+RoyList * roy_list_unique(RoyList * list, RoyCompare compare);
 
-RoyList * roy_list_sort(RoyList * list, int (*compare)(const void *, const void *));
+RoyList * roy_list_sort(RoyList * list, RoyCompare compare);
 
 /* TRAVERSE */
 
 // Traverses all elements in 'list' using 'operate'.
-void roy_list_for_each(RoyList * list, void(* operate)(void *));
+void roy_list_for_each(RoyList * list, RoyOperate operate);
 
 // Traverses all elements whichever meets 'condition' in 'list' using 'operate'.
-void roy_list_for_which(RoyList * list, bool(* condition)(const void *), void(* operate)(void *));
+void roy_list_for_which(RoyList * list, RoyCondition condition, RoyOperate operate);
 
 #endif // ROYLIST_H

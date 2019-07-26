@@ -71,7 +71,7 @@ RoyMMap * roy_mmap_clear(RoyMMap * mmap) {
 }
 
 void
-roy_mmap_for_each(RoyMMap * mmap, void(* operate)(void *)) {
+roy_mmap_for_each(RoyMMap * mmap, RoyOperate operate) {
   roy_mset_for_each(mmap->root, operate);
 }
 

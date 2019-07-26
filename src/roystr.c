@@ -34,7 +34,7 @@ char *
 roy_str_unique_char(char * str,
                     int    ch) {
   // temp_str: a temporary-stored string.
-  ROY_STRING(temp_str, strlen(str))
+  ROY_STR(temp_str, strlen(str))
   // a pointer to the real temp_str.
   char * ptemp_str = temp_str;
   // a pointer to the real str.
@@ -65,7 +65,7 @@ roy_str_replace_all(char       * str,
                        const char * new_sub,
                        bool         sensibility) {
   // temp_str: a temporary-stored string.
-  ROY_STRING(temp_str, strlen(str))
+  ROY_STR(temp_str, strlen(str))
   // a pointer to the real temp_str.
   char * ptemp_str = temp_str;
   // a pointer to the real str.
@@ -89,7 +89,7 @@ roy_str_replace_index(char       * str,
                          size_t       old_sub_pos,
                          size_t       old_sub_len,
                          const char * new_sub) {
-  ROY_STRING(temp_str, strlen(str) + strlen(new_sub) - old_sub_len)
+  ROY_STR(temp_str, strlen(str) + strlen(new_sub) - old_sub_len)
   strncpy(temp_str, str, old_sub_pos);
   strcat(temp_str, new_sub);
   strcat(temp_str, str + old_sub_pos + old_sub_len);
@@ -175,9 +175,9 @@ roy_str_trim_line(char * str) {
 
 char *
 roy_str_trim(char * str) {
-  ROY_STRING(temp_str, strlen(str))
+  ROY_STR(temp_str, strlen(str))
   for (int i = 1; i <= roy_str_count_line(str); i++) {
-    ROY_STRING(cur_line, roy_str_line_length(str, i))
+    ROY_STR(cur_line, roy_str_line_length(str, i))
     roy_str_line(cur_line, str, i);
     roy_str_trim_line(cur_line);
     if (strlen(cur_line) != 0) { 
@@ -218,7 +218,7 @@ roy_str_detab(char   * str,
   size_t tab_marker = 0;
   while (*pstr != '\0') {
     if (*pstr == '\t') {
-      ROY_STRING(rpt_str, tab_size)
+      ROY_STR(rpt_str, tab_size)
       size_t rpt_count = tab_size - tab_marker % tab_size;
       roy_str_fill_char(rpt_str, ' ', rpt_count);
       roy_str_replace_index(str, pstr - str, 1, rpt_str);
@@ -281,9 +281,9 @@ roy_str_fold_line(char   * str,
 char *
 roy_str_fold(char   * str,
                 size_t   line_width) {
-  ROY_STRING(temp_str, strlen(str))
+  ROY_STR(temp_str, strlen(str))
   for (size_t i = 1; i <= roy_str_count_line(str); i++) {
-    ROY_STRING(cur_line, roy_str_line_length(str, i))
+    ROY_STR(cur_line, roy_str_line_length(str, i))
     roy_str_line(cur_line, str, i);
     roy_str_fold_line(cur_line, line_width);
     strcat(temp_str, "\n");
@@ -339,8 +339,8 @@ roy_str_count_substring(const char * str,
   size_t count = 0;
   const char * pstr;
   const char * psub;
-  ROY_STRING(lower_str, strlen(str))
-  ROY_STRING(lower_sub, strlen(sub))
+  ROY_STR(lower_str, strlen(str))
+  ROY_STR(lower_sub, strlen(sub))
 
   if (sensibility) {
     pstr = str;
@@ -444,7 +444,7 @@ char *
 roy_str_read_from_file(char       * dest,
                           const char * path) {
   FILE * fp = fopen(path, "r");
-  ROY_STRING(buf, STRING_CAPACITY)
+  ROY_STR(buf, STRING_CAPACITY)
   fgets(buf, STRING_CAPACITY, fp);
   strcpy(dest, buf);
   while (fgets(buf, STRING_CAPACITY, fp)) {

@@ -98,7 +98,7 @@ RoySList * roy_slist_reverse(RoySList * slist) {
 }
 
 RoySList *
-roy_slist_unique(RoySList *slist, int (*comp)(const void *, const void *)) {
+roy_slist_unique(RoySList *slist, RoyCompare comp) {
   RoySList * temp = slist;
   while (!roy_slist_empty(temp) && !roy_slist_empty(temp->next)) {
     if (comp(roy_slist_cbegin(temp)->data,
@@ -112,7 +112,7 @@ roy_slist_unique(RoySList *slist, int (*comp)(const void *, const void *)) {
 }
 
 RoySList *
-roy_slist_sort(RoySList *slist, int (*comp)(const void *, const void *)) {
+roy_slist_sort(RoySList *slist, RoyCompare comp) {
   return slist;
 }
 

@@ -38,28 +38,28 @@ bool roy_mset_empty(const RoyMSet * mset);
 /* MODIFIERS */
 
 // Adds an 'key_size'-sized key into 'mset' by ascending order.
-RoyMSet * roy_mset_insert(RoyMSet ** mset, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+RoyMSet * roy_mset_insert(RoyMSet ** mset, const void * key, size_t key_size, RoyCompare comp);
 
 // Removes the element equals to 'key' from 'mset'.
-RoyMSet * roy_mset_erase(RoyMSet ** mset, const void * key, size_t key_size, int (*comp)(const void *, const void *));
+RoyMSet * roy_mset_erase(RoyMSet ** mset, const void * key, size_t key_size, RoyCompare comp);
 
 // Removes all the element from 'mset'.
 RoyMSet * roy_mset_clear(RoyMSet * mset);
 
 /* LOOKUP */
 
-size_t roy_mset_count(const RoyMSet * mset, const void * key, int (*comp)(const void *, const void *));
+size_t roy_mset_count(const RoyMSet * mset, const void * key, RoyCompare comp);
 
-RoyMSet * roy_mset_lower_bound(const RoyMSet * mset, const void * key, int (*comp)(const void *, const void *));
+RoyMSet * roy_mset_lower_bound(const RoyMSet * mset, const void * key, RoyCompare comp);
 
-RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, int (*comp)(const void *, const void *));
+RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, RoyCompare comp);
 
 /* TRAVERSE */
 
 // Traverses all elements in 'mset' using 'operate'.
-void roy_mset_for_each(RoyMSet * mset, void(* operate)(void *));
+void roy_mset_for_each(RoyMSet * mset, RoyOperate operate);
 
 // Traverses all elements whichever meets 'condition' in 'mset' using 'operate'.
-void roy_mset_for_which(RoyMSet * mset, bool(* condition)(const void *), void(* operate)(void *));
+void roy_mset_for_which(RoyMSet * mset, RoyCondition condition, RoyOperate operate);
 
 #endif // ROYMSET_H

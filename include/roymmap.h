@@ -18,7 +18,7 @@ typedef struct _RoyMMap RoyMMap;
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Returns a pointer to a newly build RoyMMap. 
-RoyMMap * roy_mmap_new(size_t key_size, size_t value_size, int (* comp)(const void *, const void *));
+RoyMMap * roy_mmap_new(size_t key_size, size_t value_size, RoyCompare comp);
 
 // Deallocates all the memory allocated.
 // (Always call this function after the work is done by the given 'mmap', or memory leak will occur.)
@@ -62,18 +62,18 @@ RoyMMap * roy_mmap_clear(RoyMMap * mmap);
 
 /* LOOKUP */
 
-size_t roy_mmap_count(const RoyMSet * mset, const void * key, int (*comp)(const void *, const void *));
+size_t roy_mmap_count(const RoyMSet * mset, const void * key, RoyCompare comp);
 
-RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key, int (*comp)(const void *, const void *));
+RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key, RoyCompare comp);
 
-RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key, int (*comp)(const void *, const void *));
+RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key, RoyCompare comp);
 
 /* TRAVERSE */
 
 // Traverses all elements in 'mmap' using 'operate'.
-void roy_mmap_for_each(RoyMMap * mmap, void(* operate)(void *));
+void roy_mmap_for_each(RoyMMap * mmap, RoyOperate operate);
 
 // Traverses all elements whichever meets 'condition' in 'mmap' using 'operate'.
-void roy_mmap_for_which(RoyMMap * mmap, bool(* condition)(const void *), void(* operate)(void *));
+void roy_mmap_for_which(RoyMMap * mmap, RoyCondition condition, RoyOperate operate);
 
 #endif // ROYMMAP_H
