@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(roylib VERSION 0.1.0)
 
+set(CMAKE_C_STANDARD 11)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+
 add_library(roylib
             src/roystr.c
             src/roystring.c
@@ -19,5 +22,4 @@ add_library(roylib
             src/roymap.c
             src/roymmap.c)
 
-set(CMAKE_C_STANDARD 11)
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+target_link_libraries(roylib pcre)

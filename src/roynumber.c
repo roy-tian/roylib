@@ -99,7 +99,7 @@ double roy_parse_double(const char * str) {
 }
 
 char *
-roy_llong_to_string(char      * dest,
+roy_llong_to_str(char      * dest,
                     long long   number,
                     size_t      base,
                     size_t      width,
@@ -133,7 +133,7 @@ roy_llong_to_string(char      * dest,
 }
 
 char *
-roy_ullong_to_string(char               * dest,
+roy_ullong_to_str(char               * dest,
                      unsigned long long   number,
                      size_t               base,
                      size_t               width,
