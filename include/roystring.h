@@ -60,7 +60,7 @@ int roy_string_find_str(RoyString * string, const char * substr, int index);
 
 int roy_string_find(RoyString * string, const RoyString * substr, int index);
 
-int roy_string_find_regex(RoyString * string, const char * regex);
+int roy_string_find_regex(RoyString * string, const char * regex, int index);
 
 bool * roy_string_match(RoyString * string, const char * regex);
 

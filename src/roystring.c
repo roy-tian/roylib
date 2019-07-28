@@ -1,5 +1,6 @@
 #include "../include/roystring.h"
 #include "../include/roystr.h"
+#include "../include/pcre.h"
 
 RoyString *
 roy_string_new(void) {
@@ -109,19 +110,56 @@ roy_string_append(RoyString       * string,
 }
 
 RoyString * roy_string_replace_str(RoyString * string, const char * substr, int index, size_t count) {
-
+  ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
+  strncpy(temp, string->str, index);
+  strcat(temp, substr);
+  strcat(temp, string->str + index + count);
+  return string = roy_string_assign(string, temp);
 }
 
-RoyString * roy_string_replace(RoyString * string, const RoyString * substr, int index, size_t count);
+RoyString * roy_string_replace(RoyString * string, const RoyString * substring, int index, size_t count) {
+  return roy_string_replace_str(string, roy_string_cstr(substring), index, count);
+}
 
-RoyString * roy_string_substring(RoyString * string, RoyString * substring, int index, size_t count);
+RoyString * roy_string_substring(RoyString * string, RoyString * substring, int index, size_t count) {
+  ROY_STR(temp, count + 1)
+  strncpy(temp, string->str + index, count);
+  return substring = roy_string_assign(substring, temp);
+}
 
 /* SEARCH */
 
-int roy_string_find_str(RoyString * string, const char * substr, int index);
+int roy_string_find_str(RoyString * string, const char * substr, int index) {
+  const char * begin = string->str + index;
+  const char * found = strstr(string->str + index, substr);
+  return found ? found - begin : -1;
+}
 
-int roy_string_find(RoyString * string, const RoyString * substr, int index);
+int roy_string_find(RoyString * string, const RoyString * substr, int index) {
+  return roy_string_find_str(string, roy_string_cstr(substr), index);
+}
 
-int roy_string_find_regex(RoyString * string, const char * regex);
+int roy_string_find_regex(RoyString * string, const char * regex, int index) {
+  const char * err_info;
+  int err_offset;
+  pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
+  pcre_extra * rex = pcre_study(re, 0, &err_info);
+  enum { OVECSIZE = 30 };
+  int ovector[OVECSIZE];
+  int ret = -1;
+  if (pcre_exec(re,
+                rex,
+                roy_string_cstr(string),
+                roy_string_size(string),
+                index,
+                0,
+                ovector,
+                OVECSIZE) != PCRE_ERROR_NOMATCH) {
+  ret = ovector[0];
+};
+  free(re);
+  free(rex);
+  return ret;
+}
 
 bool * roy_string_match(RoyString * string, const char * regex);
