@@ -4,7 +4,7 @@
 
 RoyString *
 roy_string_new(void) {
-  RoyString * ret = (RoyString *)malloc(sizeof(RoyString));
+  RoyString * ret = (RoyString *)malloc(sizeof(struct _RoyString));
   ret->str = NULL;
   return ret;
 }
@@ -21,7 +21,7 @@ roy_string_delete(RoyString * string) {
 }
 
 RoyString *
-roy_string_assign(RoyString  * string,
+roy_string_assign(RoyString *   string,
                   const char * str) {
   string->str = (char *)realloc(string->str, strlen(str) + 1);
   memcpy(string->str, str, strlen(str) + 1);
@@ -66,7 +66,7 @@ roy_string_clear(RoyString * string) {
 }
 
 RoyString *
-roy_string_insert_str(RoyString  * string,
+roy_string_insert_str(RoyString *  string,
                       const char * substr,
                       int          index) {
   ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
@@ -77,7 +77,7 @@ roy_string_insert_str(RoyString  * string,
 }
 
 RoyString *
-roy_string_insert(RoyString       * string,
+roy_string_insert(RoyString *       string,
                   const RoyString * substring,
                   int               index) {
   return
@@ -95,7 +95,7 @@ roy_string_erase(RoyString * string,
   return string = roy_string_assign(string, temp);
 }
 
-RoyString * roy_string_append_str(RoyString  * string,
+RoyString * roy_string_append_str(RoyString *   string,
                                   const char * substr) {
   ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1);
   memcpy(temp, string->str, roy_string_size(string) + 1);
@@ -104,7 +104,7 @@ RoyString * roy_string_append_str(RoyString  * string,
 }
 
 RoyString *
-roy_string_append(RoyString       * string,
+roy_string_append(RoyString *        string,
                   const RoyString * substring) {
   return roy_string_append_str(string, roy_string_cstr(substring));
 }
@@ -162,4 +162,25 @@ int roy_string_find_regex(RoyString * string, const char * regex, int index) {
   return ret;
 }
 
-bool * roy_string_match(RoyString * string, const char * regex);
+bool roy_string_match(RoyString * string, const char * regex) {
+  const char * err_info;
+  int err_offset;
+  pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
+  pcre_extra * rex = pcre_study(re, 0, &err_info);
+  enum { OVECSIZE = 30 };
+  int ovector[OVECSIZE];
+  bool matched = false;
+  if (pcre_exec(re,
+                rex,
+                roy_string_cstr(string),
+                roy_string_size(string),
+                0,
+                0,
+                ovector,
+                OVECSIZE) != PCRE_ERROR_NOMATCH) {
+  matched = true;
+};
+  free(re);
+  free(rex);
+  return matched && roy_string_size(string) == ovector[1] - ovector[0];
+}

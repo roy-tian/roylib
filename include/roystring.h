@@ -1,13 +1,14 @@
 #ifndef ROYSTRING_H
 #define ROYSTRING_H
 
+
 #include "royinit.h"
 
 struct _RoyString {
   char * str;
 };
 
-// RoyString: stores and manipulates sequences of chars, offering common string operations.
+// RoyString *: stores and manipulates sequences of chars, offering common string operations.
 typedef struct _RoyString RoyString;
 
 /* CONSTRUCTION AND DESTRUCTION */
@@ -62,6 +63,6 @@ int roy_string_find(RoyString * string, const RoyString * substr, int index);
 
 int roy_string_find_regex(RoyString * string, const char * regex, int index);
 
-bool * roy_string_match(RoyString * string, const char * regex);
+bool roy_string_match(RoyString * string, const char * regex);
 
-#endif // ROYSTRING_H
+#endif // RoyString *_H
