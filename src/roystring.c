@@ -1,6 +1,6 @@
 #include "../include/roystring.h"
 #include "../include/roystr.h"
-#include "../include/pcre.h"
+#include <pcre.h>
 
 RoyString *
 roy_string_new(void) {
@@ -21,7 +21,7 @@ roy_string_delete(RoyString * string) {
 }
 
 RoyString *
-roy_string_assign(RoyString *   string,
+roy_string_assign(RoyString  * string,
                   const char * str) {
   string->str = (char *)realloc(string->str, strlen(str) + 1);
   memcpy(string->str, str, strlen(str) + 1);
@@ -66,7 +66,7 @@ roy_string_clear(RoyString * string) {
 }
 
 RoyString *
-roy_string_insert_str(RoyString *  string,
+roy_string_insert_str(RoyString  * string,
                       const char * substr,
                       int          index) {
   ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
@@ -77,7 +77,7 @@ roy_string_insert_str(RoyString *  string,
 }
 
 RoyString *
-roy_string_insert(RoyString *       string,
+roy_string_insert(RoyString       * string,
                   const RoyString * substring,
                   int               index) {
   return
@@ -95,8 +95,9 @@ roy_string_erase(RoyString * string,
   return string = roy_string_assign(string, temp);
 }
 
-RoyString * roy_string_append_str(RoyString *   string,
-                                  const char * substr) {
+RoyString *
+roy_string_append_str(RoyString  * string,
+                      const char * substr) {
   ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1);
   memcpy(temp, string->str, roy_string_size(string) + 1);
   strcat(temp, substr);
@@ -104,12 +105,16 @@ RoyString * roy_string_append_str(RoyString *   string,
 }
 
 RoyString *
-roy_string_append(RoyString *        string,
+roy_string_append(RoyString       * string,
                   const RoyString * substring) {
   return roy_string_append_str(string, roy_string_cstr(substring));
 }
 
-RoyString * roy_string_replace_str(RoyString * string, const char * substr, int index, size_t count) {
+RoyString *
+roy_string_replace_str(RoyString  * string,
+                       const char * substr,
+                       int          index,
+                       size_t       count) {
   ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
   strncpy(temp, string->str, index);
   strcat(temp, substr);
@@ -117,11 +122,19 @@ RoyString * roy_string_replace_str(RoyString * string, const char * substr, int 
   return string = roy_string_assign(string, temp);
 }
 
-RoyString * roy_string_replace(RoyString * string, const RoyString * substring, int index, size_t count) {
+RoyString *
+roy_string_replace(RoyString       * string,
+                   const RoyString * substring,
+                   int               index, 
+                   size_t            count) {
   return roy_string_replace_str(string, roy_string_cstr(substring), index, count);
 }
 
-RoyString * roy_string_substring(RoyString * string, RoyString * substring, int index, size_t count) {
+RoyString *
+roy_string_substring(RoyString * string,
+                     RoyString * substring,
+                     int         index,
+                     size_t      count) {
   ROY_STR(temp, count + 1)
   strncpy(temp, string->str + index, count);
   return substring = roy_string_assign(substring, temp);
@@ -129,17 +142,26 @@ RoyString * roy_string_substring(RoyString * string, RoyString * substring, int 
 
 /* SEARCH */
 
-int roy_string_find_str(RoyString * string, const char * substr, int index) {
+int
+roy_string_find_str(RoyString  * string,
+                    const char * substr,
+                    int          index) {
   const char * begin = string->str + index;
   const char * found = strstr(string->str + index, substr);
   return found ? found - begin : -1;
 }
 
-int roy_string_find(RoyString * string, const RoyString * substr, int index) {
+int
+roy_string_find(RoyString       * string,
+                const RoyString * substr,
+                int               index) {
   return roy_string_find_str(string, roy_string_cstr(substr), index);
 }
 
-int roy_string_find_regex(RoyString * string, const char * regex, int index) {
+int
+roy_string_find_regex(RoyString  * string,
+                      const char * regex,
+                      int          index) {
   const char * err_info;
   int err_offset;
   pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
@@ -162,7 +184,9 @@ int roy_string_find_regex(RoyString * string, const char * regex, int index) {
   return ret;
 }
 
-bool roy_string_match(RoyString * string, const char * regex) {
+bool
+roy_string_match(RoyString  * string,
+                 const char * regex) {
   const char * err_info;
   int err_offset;
   pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);

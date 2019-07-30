@@ -56,7 +56,8 @@ roy_set_size(const RoySet * set) {
   }
 }
 
-bool roy_set_empty(const RoySet * set) {
+bool
+roy_set_empty(const RoySet * set) {
   return set == NULL;
 }
 
@@ -64,13 +65,13 @@ RoySet *
 roy_set_insert(RoySet     ** set,
                const void *  key,
                size_t        key_size,
-               int       (*  comp)(const void *, const void *)) {
+               int       (*  compare)(const void *, const void *)) {
   if (!*set) {
     *set = node_new(key, key_size);
-  } else if (comp(key, (*set)->key) < 0) {
-    (*set)->left = roy_set_insert(&(*set)->left, key, key_size, comp);
-  } else if (comp(key, (*set)->key) > 0) {
-    (*set)->right = roy_set_insert(&(*set)->right, key, key_size, comp);
+  } else if (compare(key, (*set)->key) < 0) {
+    (*set)->left = roy_set_insert(&(*set)->left, key, key_size, compare);
+  } else if (compare(key, (*set)->key) > 0) {
+    (*set)->right = roy_set_insert(&(*set)->right, key, key_size, compare);
   } // if (set->key == key) does nothing
   return *set;
 }
@@ -79,20 +80,20 @@ RoySet *
 roy_set_erase(RoySet     ** set,
               const void *  key,
               size_t        key_size,
-              int       (*  comp)(const void *, const void *)) {
+              int       (*  compare)(const void *, const void *)) {
   if (!*set) {
     return NULL;
   }
-  if (comp(key, (*set)->key) < 0) {
-    (*set)->left =  roy_set_erase(&(*set)->left, key, key_size, comp);
+  if (compare(key, (*set)->key) < 0) {
+    (*set)->left =  roy_set_erase(&(*set)->left, key, key_size, compare);
   } else
-  if (comp(key, (*set)->key) > 0) {
-    (*set)->right = roy_set_erase(&(*set)->right, key, key_size, comp);
+  if (compare(key, (*set)->key) > 0) {
+    (*set)->right = roy_set_erase(&(*set)->right, key, key_size, compare);
   } else /* ((*set)->key == key), match found */ {
     RoySet * temp = (*set);
     if ((*set)->left && (*set)->right) {
       memcpy((*set)->key, roy_set_const_min((*set)->right)->key, key_size);
-      (*set)->right = roy_set_erase(set, key, key_size, comp);
+      (*set)->right = roy_set_erase(set, key, key_size, compare);
     } else
     if ((*set)->left && !(*set)->right) {
       *set = (*set)->left;
@@ -105,7 +106,8 @@ roy_set_erase(RoySet     ** set,
   return *set;
 }
 
-RoySet * roy_set_clear(RoySet * set) {
+RoySet *
+roy_set_clear(RoySet * set) {
   if (set) {
     roy_set_clear(set->left);
     roy_set_clear(set->right);
@@ -114,19 +116,24 @@ RoySet * roy_set_clear(RoySet * set) {
   return NULL;
 }
 
-RoySet * roy_set_find(RoySet * set, const void * key, RoyCompare comp) {
+RoySet *
+roy_set_find(RoySet     * set,
+             const void * key, 
+             int       (* compare)(const void *, const void *)) {
   if (!set) {
     return NULL;
-  } else if (comp(key, set->key) < 0) {
-    return roy_set_find(set->left, key, comp);
-  } else if (comp(key, set->key) > 0) {
-    return roy_set_find(set->right, key, comp);
+  } else if (compare(key, set->key) < 0) {
+    return roy_set_find(set->left, key, compare);
+  } else if (compare(key, set->key) > 0) {
+    return roy_set_find(set->right, key, compare);
   } else {
     return set;
   }
 }
 
-void roy_set_for_each(RoySet * set, RoyOperate operate) {
+void
+roy_set_for_each(RoySet * set,
+                 void  (* operate)(void *)) {
    if (set) {
     roy_set_for_each(set->left, operate);
     operate(set->key);
@@ -134,7 +141,10 @@ void roy_set_for_each(RoySet * set, RoyOperate operate) {
   }
 }
 
-void roy_set_for_which(RoySet * set, RoyCondition condition, RoyOperate operate) {
+void
+roy_set_for_which(RoySet * set,
+                  bool  (* condition)(const void *),
+                  void  (* operate)        (void *)) {
   if (set) {
     roy_set_for_which(set->left, condition, operate);
     if (condition(set->key)) {

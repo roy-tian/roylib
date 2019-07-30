@@ -8,17 +8,17 @@ struct _RoyMap {
   RoySet * root;
   size_t   key_size;
   size_t   value_size;
-  int   (* comp)(const void *, const void *);
+  int   (* compare)(const void *, const void *);
 };
 
 // RoyMap: an associative container that contains a sorted map of unique objects of type Key.
-// Sorting is done using the key comparison function 'comp'. Search, removal, and insertion operations have logarithmic complexity.
+// Sorting is done using the key comparison function 'compare'. Search, removal, and insertion operations have logarithmic complexity.
 typedef struct _RoyMap RoyMap;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Returns a pointer to a newly build RoyMap. 
-RoyMap * roy_map_new(size_t key_size, size_t value_size, RoyCompare comp);
+RoyMap * roy_map_new(size_t key_size, size_t value_size, int (* compare)(const void *, const void *));
 
 // Deallocates all the memory allocated.
 // (Always call this function after the work is done by the given 'map', or memory leak will occur.)
@@ -66,9 +66,9 @@ void * roy_map_find(RoyMap * map, const void * key);
 /* TRAVERSE */
 
 // Traverses all elements in 'map' using 'operate'.
-void roy_map_for_each(RoyMap * map, RoyOperate operate);
+void roy_map_for_each(RoyMap * map, void (* operate)(void *));
 
 // Traverses all elements whichever meets 'condition' in 'map' using 'operate'.
-void roy_map_for_which(RoyMap * map, RoyCondition condition, RoyOperate operate);
+void roy_map_for_which(RoyMap * map, bool (* condition)(const void *), void (* operate)(void *));
 
 #endif // ROYMAP_H

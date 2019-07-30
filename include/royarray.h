@@ -84,9 +84,9 @@ RoyArray * roy_array_clear(RoyArray * array);
 /* TRAVERSE */
 
 // Traverses all elements in 'array' using 'operate' sequentially.
-void roy_array_for_each(RoyArray * array, RoyOperate operate);
+void roy_array_for_each(RoyArray * array, void (* operate)(void *));
 
 // Traverses all elements whichever meets 'condition' in 'array' using 'operate'.
-void roy_array_for_which(RoyArray * array, RoyCondition condition, RoyOperate operate);
+void roy_array_for_which(RoyArray * array, bool (* condition)(const void *), void (* operate)(void *));
 
 #endif // ROYARRAY_H

@@ -10,7 +10,7 @@ struct _RoySet {
 };
 
 // RoySet: an associative container that contains a sorted set of unique objects.
-// Sorting is done using the key comparison function 'comp'. Search, removal, and insertion operations have logarithmic complexity.
+// Sorting is done using the key comparison function 'compare'. Search, removal, and insertion operations have logarithmic complexity.
 typedef struct _RoySet RoySet;
 
 /* ELEMENT ACCESS */
@@ -38,24 +38,24 @@ bool roy_set_empty(const RoySet * set);
 /* MODIFIERS */
 
 // Adds an 'key_size'-sized key into 'set' by ascending order.
-RoySet * roy_set_insert(RoySet ** set, const void * key, size_t key_size, RoyCompare comp);
+RoySet * roy_set_insert(RoySet ** set, const void * key, size_t key_size, int (* compare)(const void *, const void *));
 
 // Removes the element equals to 'key' from 'set'.
-RoySet * roy_set_erase(RoySet ** set, const void * key, size_t key_size, RoyCompare comp);
+RoySet * roy_set_erase(RoySet ** set, const void * key, size_t key_size, int (* compare)(const void *, const void *));
 
 // Removes all the element from 'set'.
 RoySet * roy_set_clear(RoySet * set);
 
 /* LOOKUP */
 
-RoySet * roy_set_find(RoySet * set, const void * key, RoyCompare comp);
+RoySet * roy_set_find(RoySet * set, const void * key, int (* compare)(const void *, const void *));
 
 /* TRAVERSE */
 
 // Traverses all elements in 'set' using 'operate'.
-void roy_set_for_each(RoySet * set, RoyOperate operate);
+void roy_set_for_each(RoySet * set, void (* operate)(void *));
 
 // Traverses all elements whichever meets 'condition' in 'set' using 'operate'.
-void roy_set_for_which(RoySet * set, RoyCondition condition, RoyOperate operate);
+void roy_set_for_which(RoySet * set, bool (* condition)(const void *), void (* operate)(void *));
 
 #endif // ROYSET_H

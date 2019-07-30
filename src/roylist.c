@@ -75,7 +75,7 @@ roy_list_begin(RoyList * list_head) {
 }
 
 const RoyList *
-roy_list_cbegin(const RoyList *list_head) {
+roy_list_cbegin(const RoyList * list_head) {
   return list_head->next->next ? list_head->next : NULL;
 }
 
@@ -85,7 +85,7 @@ roy_list_rbegin(RoyList * list_tail) {
 }
 
 const RoyList *
-roy_list_crbegin(const RoyList *list_tail) {
+roy_list_crbegin(const RoyList * list_tail) {
   return list_tail->prev->prev ? list_tail->prev : NULL;
 }
 

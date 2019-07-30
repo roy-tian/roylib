@@ -86,7 +86,8 @@ roy_slist_remove_if(RoySList * slist,
   return slist;
 }
 
-RoySList * roy_slist_reverse(RoySList * slist) {
+RoySList *
+roy_slist_reverse(RoySList * slist) {
   RoySList * pback = back(slist);
   while (roy_slist_cbegin(slist) != pback) {
     RoySList * first = roy_slist_begin(slist);
@@ -98,10 +99,11 @@ RoySList * roy_slist_reverse(RoySList * slist) {
 }
 
 RoySList *
-roy_slist_unique(RoySList *slist, RoyCompare comp) {
+roy_slist_unique(RoySList * slist,
+                 int     (* compare)(const void *, const void *)) {
   RoySList * temp = slist;
   while (!roy_slist_empty(temp) && !roy_slist_empty(temp->next)) {
-    if (comp(roy_slist_cbegin(temp)->data,
+    if (compare(roy_slist_cbegin(temp)->data,
              roy_slist_cbegin(temp->next)->data) == 0) {
       roy_slist_pop_front(temp);
     } else {
@@ -112,7 +114,8 @@ roy_slist_unique(RoySList *slist, RoyCompare comp) {
 }
 
 RoySList *
-roy_slist_sort(RoySList *slist, RoyCompare comp) {
+roy_slist_sort(RoySList * slist,
+               int     (* compare)(const void *, const void *)) {
   return slist;
 }
 
@@ -127,7 +130,7 @@ roy_slist_for_each(RoySList * slist,
 
 void roy_slist_for_which(RoySList * slist,
                          bool    (* condition)(const void *),
-                         void    (* operate)(void *)) {
+                         void    (* operate)        (void *)) {
   for (RoySList * iter = roy_slist_begin(slist); iter; iter = iter->next) {
     if (condition(iter->data)) {
       operate(iter->data);

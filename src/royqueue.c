@@ -39,7 +39,8 @@ roy_queue_full(const RoyQueue * queue) {
 }
 
 RoyQueue *
-roy_queue_push(RoyQueue * queue, const void * data) {
+roy_queue_push(RoyQueue   * queue,
+               const void * data) {
   if (!roy_queue_full(queue)) {
     roy_array_insert(ROY_ARRAY(queue), queue->back_index++, data);
     if (queue->back_index == roy_queue_capacity(queue)) {

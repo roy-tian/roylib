@@ -8,17 +8,17 @@ struct _RoyMMap {
   RoyMSet * root;
   size_t   key_size;
   size_t   value_size;
-  int   (* comp)(const void *, const void *);
+  int   (* compare)(const void *, const void *);
 };
 
 // RoyMMap: an associative container that contains a sorted multi map of unique objects of type Key.
-// Sorting is done using the key comparison function 'comp'. Search, removal, and insertion operations have logarithmic complexity.
+// Sorting is done using the key comparison function 'compare'. Search, removal, and insertion operations have logarithmic complexity.
 typedef struct _RoyMMap RoyMMap;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Returns a pointer to a newly build RoyMMap. 
-RoyMMap * roy_mmap_new(size_t key_size, size_t value_size, RoyCompare comp);
+RoyMMap * roy_mmap_new(size_t key_size, size_t value_size, int (* compare)(const void *, const void *));
 
 // Deallocates all the memory allocated.
 // (Always call this function after the work is done by the given 'mmap', or memory leak will occur.)
@@ -62,18 +62,18 @@ RoyMMap * roy_mmap_clear(RoyMMap * mmap);
 
 /* LOOKUP */
 
-size_t roy_mmap_count(const RoyMSet * mset, const void * key, RoyCompare comp);
+size_t roy_mmap_count(const RoyMSet * mset, const void * key, int (* compare)(const void *, const void *));
 
-RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key, RoyCompare comp);
+RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key, int (* compare)(const void *, const void *));
 
-RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key, RoyCompare comp);
+RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key, int (* compare)(const void *, const void *));
 
 /* TRAVERSE */
 
 // Traverses all elements in 'mmap' using 'operate'.
-void roy_mmap_for_each(RoyMMap * mmap, RoyOperate operate);
+void roy_mmap_for_each(RoyMMap * mmap, void (* operate)(void *));
 
 // Traverses all elements whichever meets 'condition' in 'mmap' using 'operate'.
-void roy_mmap_for_which(RoyMMap * mmap, RoyCondition condition, RoyOperate operate);
+void roy_mmap_for_which(RoyMMap * mmap, bool (* condition)(const void *), void (* operate)(void *));
 
 #endif // ROYMMAP_H

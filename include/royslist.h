@@ -52,23 +52,23 @@ RoySList * roy_slist_clear(RoySList * slist);
 /* LIST OPERATIONS */
 
 // Removes all elements in 'slist' which meet 'condition'.
-RoySList * roy_slist_remove_if(RoySList * slist, RoyCondition condition);
+RoySList * roy_slist_remove_if(RoySList * slist, bool (* condition)(const void *));
 
 // Reverses the order of the elements in 'slist'.
 RoySList * roy_slist_reverse(RoySList * slist);
 
 // Removes all consecutive duplicate elements from 'slist', only the first element in each group of equal elements is left. 
-RoySList * roy_slist_unique(RoySList *slist, RoyCompare comp);
+RoySList * roy_slist_unique(RoySList *slist, int (* compare)(const void *, const void *));
 
 // Sorts the elements in ascending order, using quick sort strategy.
-RoySList * roy_slist_sort(RoySList *slist, RoyCompare comp);
+RoySList * roy_slist_sort(RoySList *slist, int (* compare)(const void *, const void *));
 
 /* TRAVERSE */
 
 // Traverses all elements in 'vector' using 'operate'.
-void roy_slist_for_each(RoySList * slist, RoyOperate operate);
+void roy_slist_for_each(RoySList * slist, void (* operate)(void *));
 
 // Traverses all elements whichever meets 'condition' in 'vector' using 'operate'.
-void roy_slist_for_which(RoySList * slist, RoyCondition condition, RoyOperate operate);
+void roy_slist_for_which(RoySList * slist, bool (* condition)(const void *), void (* operate)(void *));
 
 #endif // ROYSLIST_H

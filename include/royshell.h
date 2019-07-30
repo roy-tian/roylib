@@ -7,16 +7,12 @@ struct _RoyShell {
   char     * buffer;
   RoyMap   * dict;
   RoyDeque * argv;
-  RoyDeque * input_history;
-  RoyDeque * output_history;
+  RoyDeque * ihistory;
+  RoyDeque * ohistory;
 };
 
 // RoyShell: A simulated shell with simple function.
 typedef struct _RoyShell RoyShell;
-
-// When a command is committed, an operator will be invacated.
-// Use 'log_append' to show some info on the result of the operation.
-typedef void (* RoyShellOperator)(RoyShell * shell);
 
 // Returns a pointer to a newly build RoyShell.
 RoyShell * roy_shell_new(void);
@@ -29,7 +25,7 @@ void roy_shell_start(RoyShell * shell);
 
 // Adds a new command 'cmd' with function 'operate' into command dictionary of 'shell'.
 // A RoyShell must have at least a default command "" (empty string) in order to perform 'roy_shell_start'.
-RoyShell * roy_shell_command_add(RoyShell * shell, const char * cmd, RoyShellOperator operate);
+RoyShell * roy_shell_command_add(RoyShell * shell, const char * cmd, void (* operate)(RoyShell *));
 
 // Sets the shell prompt to any string you like, "> " by default.
 RoyShell * roy_shell_set_prompt_text(RoyShell * shell, const char * prompt);

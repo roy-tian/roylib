@@ -34,7 +34,8 @@ roy_stack_full(const RoyStack * stack) {
 }
 
 RoyStack *
-roy_stack_push(RoyStack * stack, const void * data) {
+roy_stack_push(RoyStack   * stack,
+               const void * data) {
   return ROY_STACK(roy_array_push_back(ROY_ARRAY(stack), data));
 }
 
@@ -69,9 +70,9 @@ roy_stack_clear(RoyStack * stack) {
 /* PRIVATE FUNCTIONS BELOW */
 
 static void
-swap_elements(void * data1,
-              void * data2,
-              size_t size) {
+swap_elements(void   * data1,
+              void   * data2,
+              size_t   size) {
   char temp[size];
   memcpy(temp,  data1, size);
   memcpy(data1, data2, size);

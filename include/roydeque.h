@@ -87,20 +87,20 @@ RoyDeque * roy_deque_clear(RoyDeque * deque);
 
 /* LIST OPERATIONS */
 
-RoyDeque * roy_deque_remove_if(RoyDeque * deque, RoyCondition condition);
+RoyDeque * roy_deque_remove_if(RoyDeque * deque, bool (* condition)(const void *));
 
 RoyDeque * roy_deque_reverse(RoyDeque * deque);
 
-RoyDeque * roy_deque_unique(RoyDeque * deque, RoyCompare compare);
+RoyDeque * roy_deque_unique(RoyDeque * deque, int (* compare)(const void *, const void *));
 
-RoyDeque * roy_deque_sort(RoyDeque * deque, RoyCompare compare);
+RoyDeque * roy_deque_sort(RoyDeque * deque, int (* compare)(const void *, const void *));
 
 /* TRAVERSE */
 
 // Traverses all elements in 'deque' using 'operate'.
-void roy_deque_for_each(RoyDeque * deque, RoyOperate operate);
+void roy_deque_for_each(RoyDeque * deque, void (* operate)(void *));
 
 // Traverses all elements whichever meets 'condition' in 'deque' using 'operate'.
-void roy_deque_for_which(RoyDeque * deque, RoyCondition condition, RoyOperate operate);
+void roy_deque_for_which(RoyDeque * deque, bool (* condition)(const void *), void (* operate)(void *));
 
 #endif // ROYDEQUE_H

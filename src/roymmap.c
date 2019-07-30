@@ -5,12 +5,12 @@ static void * pair_new(const void * key, size_t key_size, const void * value, si
 RoyMMap *
 roy_mmap_new(size_t   key_size,
              size_t   value_size,
-             int   (* comp)(const void *, const void *)) {
+             int   (* compare)(const void *, const void *)) {
   RoyMMap * ret   = ROY_MMAP(malloc(sizeof(RoyMMap)));
   ret->root       = NULL;
   ret->key_size   = key_size;
   ret->value_size = value_size;
-  ret->comp       = comp;
+  ret->compare       = compare;
   return ret;
 }
 
@@ -49,36 +49,41 @@ bool roy_mmap_empty(const RoyMMap * mmap) {
 }
 
 RoyMMap *
-roy_mmap_insert(RoyMMap * mmap, const void * key, const void * value) {
+roy_mmap_insert(RoyMMap    * mmap,
+                const void * key,
+                const void * value) {
   void * pair = pair_new(key, mmap->key_size, value, mmap->value_size);
   mmap->root = roy_mset_insert(&mmap->root,
                              pair,
                              mmap->key_size + mmap->value_size,
-                             mmap->comp);
+                             mmap->compare);
   free(pair);
   return mmap;
 }
 
 RoyMMap *
-roy_mmap_erase(RoyMMap * mmap, const void * key) {
-  mmap->root = roy_mset_erase(&mmap->root, key, mmap->key_size, mmap->comp);
+roy_mmap_erase(RoyMMap    * mmap,
+               const void * key) {
+  mmap->root = roy_mset_erase(&mmap->root, key, mmap->key_size, mmap->compare);
   return mmap;
 }
 
-RoyMMap * roy_mmap_clear(RoyMMap * mmap) {
+RoyMMap *
+roy_mmap_clear(RoyMMap * mmap) {
   mmap->root = roy_mset_clear(mmap->root);
   return mmap;
 }
 
 void
-roy_mmap_for_each(RoyMMap * mmap, RoyOperate operate) {
+roy_mmap_for_each(RoyMMap * mmap,
+                  void   (* operate)(void *)) {
   roy_mset_for_each(mmap->root, operate);
 }
 
 void
 roy_mmap_for_which(RoyMMap * mmap,
-                  bool  (* condition)(const void *),
-                  void  (* operate)(void *)) {
+                  bool    (* condition)(const void *),
+                  void    (* operate)        (void *)) {
   roy_mset_for_which(mmap->root, condition, operate);
 }
 

@@ -3,7 +3,6 @@
 
 #include "royinit.h"
 
-#define ROY_STR(str, length) char str[length + 1]; memset(str, '\0', length + 1);
 
 // Converses all characters in 'str' to lowercase.
 char * roy_str_to_lower(char * str);

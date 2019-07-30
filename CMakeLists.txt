@@ -5,21 +5,22 @@ set(CMAKE_C_STANDARD 11)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 add_library(roylib
-            src/roystr.c
-            src/roystring.c
-            src/roynumber.c
-            src/royshell.c
-            src/roypointer.c
-            src/royarray.c
-            src/royvector.c
-            src/roystack.c
-            src/royqueue.c
-            src/royslist.c
-            src/roylist.c
-            src/roydeque.c
-            src/royset.c
-            src/roymset.c
-            src/roymap.c
-            src/roymmap.c)
+  include/royinit      roy.h
+  include/roystr.h     src/roystr.c
+  include/roystring.h  src/roystring.c
+  include/roynumber.h  src/roynumber.c
+  include/royshell.h   src/royshell.c
+  include/roypointer.h src/roypointer.c
+  include/royarray.h   src/royarray.c
+  include/royvector.h  src/royvector.c
+  include/roystack.h   src/roystack.c
+  include/royqueue.h   src/royqueue.c
+  include/royslist.h   src/royslist.c
+  include/roylist.h    src/roylist.c
+  include/roydeque.h   src/roydeque.c
+  include/royset.h     src/royset.c
+  include/roymset.h    src/roymset.c
+  include/roymap.h     src/roymap.c
+  include/roymmap.h    src/roymmap.c)
 
 target_link_libraries(roylib pcre)

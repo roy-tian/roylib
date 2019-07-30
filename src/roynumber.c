@@ -78,7 +78,8 @@ roy_parse_integer(const char * str) {
   return pn * result;
 }
 
-double roy_parse_double(const char * str) {
+double
+roy_parse_double(const char * str) {
   double result = 0.0;
   STR_TRIM_LEFT(str)
   int pn = (*str == '-' ? -1 : 1);

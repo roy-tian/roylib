@@ -10,7 +10,7 @@ struct _RoyMSet {
 };
 
 // RoyMSet [Multi Set]: an associative container that contains a sorted set of objects of type Key, duplicated objects is allowed.
-// Sorting is done using the key comparison function 'comp'. Search, removal, and insertion operations have logarithmic complexity.
+// Sorting is done using the key comparison function 'compare'. Search, removal, and insertion operations have logarithmic complexity.
 typedef struct _RoyMSet RoyMSet;
 
 /* ELEMENT ACCESS */
@@ -38,28 +38,28 @@ bool roy_mset_empty(const RoyMSet * mset);
 /* MODIFIERS */
 
 // Adds an 'key_size'-sized key into 'mset' by ascending order.
-RoyMSet * roy_mset_insert(RoyMSet ** mset, const void * key, size_t key_size, RoyCompare comp);
+RoyMSet * roy_mset_insert(RoyMSet ** mset, const void * key, size_t key_size, int (* compare)(const void *, const void *));
 
 // Removes the element equals to 'key' from 'mset'.
-RoyMSet * roy_mset_erase(RoyMSet ** mset, const void * key, size_t key_size, RoyCompare comp);
+RoyMSet * roy_mset_erase(RoyMSet ** mset, const void * key, size_t key_size, int (* compare)(const void *, const void *));
 
 // Removes all the element from 'mset'.
 RoyMSet * roy_mset_clear(RoyMSet * mset);
 
 /* LOOKUP */
 
-size_t roy_mset_count(const RoyMSet * mset, const void * key, RoyCompare comp);
+size_t roy_mset_count(const RoyMSet * mset, const void * key, int (* compare)(const void *, const void *));
 
-RoyMSet * roy_mset_lower_bound(const RoyMSet * mset, const void * key, RoyCompare comp);
+RoyMSet * roy_mset_lower_bound(const RoyMSet * mset, const void * key, int (* compare)(const void *, const void *));
 
-RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, RoyCompare comp);
+RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, int (* compare)(const void *, const void *));
 
 /* TRAVERSE */
 
 // Traverses all elements in 'mset' using 'operate'.
-void roy_mset_for_each(RoyMSet * mset, RoyOperate operate);
+void roy_mset_for_each(RoyMSet * mset, void (* operate)(void *));
 
 // Traverses all elements whichever meets 'condition' in 'mset' using 'operate'.
-void roy_mset_for_which(RoyMSet * mset, RoyCondition condition, RoyOperate operate);
+void roy_mset_for_which(RoyMSet * mset, bool (* condition)(const void *), void (* operate)(void *));
 
 #endif // ROYMSET_H

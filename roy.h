@@ -13,6 +13,7 @@
 #include "include/roymap.h"
 #include "include/roymmap.h"
 #include "include/roynumber.h"
+#include "include/roystr.h"
 #include "include/roystring.h"
 #include "include/royshell.h"
 #include "include/roypointer.h"
