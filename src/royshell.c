@@ -50,11 +50,12 @@ roy_shell_start(RoyShell * shell) {
       if (func) {
         roy_shell_log_clear(shell);
         func(shell);
-        roy_deque_push_back(shell->ohistory, shell->buffer);
         if (strlen(shell->buffer) != 0) {
           puts(shell->buffer);
         }
       }
+      roy_deque_push_back(shell->ihistory, input);
+      roy_deque_push_back(shell->ohistory, shell->buffer);
     }
   }
 }
@@ -104,8 +105,17 @@ roy_shell_log_append(RoyShell   * shell,
 }
 
 const char *
-roy_shell_log_at(const RoyShell * shell,
-                 int              position) {
+roy_shell_ihistory_at(const RoyShell * shell,
+                      int              position) {
+  if (position < 0) {
+    position += roy_deque_size(shell->ihistory);
+  }
+  return (const char *)roy_deque_const_pointer(shell->ihistory, position);
+}
+
+const char *
+roy_shell_ohistory_at(const RoyShell * shell,
+                      int              position) {
   if (position < 0) {
     position += roy_deque_size(shell->ohistory);
   }

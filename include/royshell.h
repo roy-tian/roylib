@@ -30,7 +30,7 @@ RoyShell * roy_shell_command_add(RoyShell * shell, const char * cmd, void (* ope
 // Sets the shell prompt to any string you like, "> " by default.
 RoyShell * roy_shell_set_prompt_text(RoyShell * shell, const char * prompt);
 
-// Counts the number of arguments of current line, the main command is included even if its empty.
+// Counts the number of arguments of current line, the main command is included even if it's empty.
 size_t roy_shell_argument_count(const RoyShell * shell);
 
 // Returns the text of the 'position'-th arguments.
@@ -39,8 +39,14 @@ const char * roy_shell_argument_at(const RoyShell * shell, int position);
 // Clears the log buffer for a new info to be logged.
 RoyShell * roy_shell_log_clear(RoyShell * shell);
 
-// Add new info to the info flow, all info will be print to console and will be push into 'output_history' in one time.
+// Adds new info to the info flow, at the end of each round, all info will be print to console and push into 'ohistory' in one time.
 RoyShell * roy_shell_log_append(RoyShell * shell, const char * format, ...);
 
-// Show output history anytime you like, position == -1 to show the last output.
-const char * roy_shell_log_at(const RoyShell * shell, int position);
+// Returns the number of input/output operations.
+size_t roy_shell_history_count(const RoyShell * shell);
+
+// Shows input history anytime you like, position < 0 will show reversely.
+const char * roy_shell_ihistory_at(const RoyShell * shell, int position);
+
+// Shows output history anytime you like, position < 0 will show reversely.
+const char * roy_shell_ohistory_at(const RoyShell * shell, int position);
