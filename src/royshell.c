@@ -13,7 +13,8 @@ roy_shell_new(void) {
   RoyShell * ret = (RoyShell *)malloc(sizeof(RoyShell));
   ret->prompt    = (char *)calloc(MAX_LEN + 1, sizeof(char));
   roy_shell_set_prompt_text(ret, "> ");
-  ret->buffer    = (char *)calloc(MAX_LEN + 1, sizeof(char));
+  ret->ibuffer   = (char *)calloc(MAX_LEN + 1, sizeof(char));
+  ret->obuffer   = (char *)calloc(MAX_LEN + 1, sizeof(char));
   ret->dict      = roy_map_new(sizeof(char) * (ARG_LEN + 1),
                                sizeof(RoyPointer),
                                ROY_COMPARE(strcmp));
@@ -26,7 +27,8 @@ roy_shell_new(void) {
 void
 roy_shell_delete(RoyShell * shell) {
   free(shell->prompt);
-  free(shell->buffer);
+  free(shell->ibuffer);
+  free(shell->obuffer);
   roy_map_clear(shell->dict);
   roy_deque_delete(shell->argv);
   roy_deque_delete(shell->ihistory);
@@ -34,34 +36,46 @@ roy_shell_delete(RoyShell * shell) {
   free(shell);
 }
 
+static bool strAllSpace(const char * str) {
+  while (*str != '\0') {
+    if (!isspace(*str)) {
+      return false;
+    }
+    str++;
+  }
+  return true;
+}
+
 void
 roy_shell_start(RoyShell * shell) {
-  ROY_STR(input, MAX_LEN)
   while (true) {
     printf("%s", shell->prompt);
-    fgets(input, MAX_LEN, stdin);
-    *(input + strlen(input) - 1) = '\0'; // trims '\n'
-    parse(shell, input);
-    if (roy_shell_argument_count(shell) != 0) {
-      void (* func)(RoyShell *) = (void(*)(RoyShell *))roy_pointer_get(
-        roy_map_at(shell->dict, RoyPointer, roy_shell_argument_at(shell, 0)));
+    memset(shell->ibuffer, '\0', MAX_LEN);
+    fgets(shell->ibuffer, MAX_LEN, stdin);
+    *(shell->ibuffer + strlen(shell->ibuffer) - 1) = '\0'; // trims '\n'
+    if (strlen(shell->ibuffer) != 0 && !strAllSpace(shell->ibuffer)) {
+      parse(shell, shell->ibuffer);
+      void (* func)(RoyShell *) = 
+      roy_pointer_get(roy_map_at(shell->dict,
+                      RoyPointer,
+                      roy_shell_argument_at(shell, 0)));
       if (func) {
         roy_shell_log_clear(shell);
         func(shell);
-        if (strlen(shell->buffer) != 0) {
-          puts(shell->buffer);
+        if (strlen(shell->obuffer) != 0) {
+          puts(shell->obuffer);
         }
       }
-      roy_deque_push_back(shell->ihistory, input);
-      roy_deque_push_back(shell->ohistory, shell->buffer);
+      roy_deque_push_back(shell->ihistory, shell->ibuffer);
+      roy_deque_push_back(shell->ohistory, shell->obuffer);
     }
   }
 }
 
 RoyShell *
-roy_shell_command_add(RoyShell         * shell,
-                      const char       * cmd,
-                      void            (* operate)(RoyShell *)) {
+roy_shell_command_add(RoyShell   * shell,
+                      const char * cmd,
+                      void      (* operate)(RoyShell *)) {
   RoyPointer func;
   roy_map_insert(shell->dict, cmd, roy_pointer_set(&func, operate));
   return shell;
@@ -87,7 +101,7 @@ roy_shell_argument_at(const RoyShell * shell,
 
 RoyShell *
 roy_shell_log_clear(RoyShell * shell) {
-  memset(shell->buffer, '\0', MAX_LEN);
+  memset(shell->obuffer, '\0', MAX_LEN);
   return shell;
 }
 
@@ -97,7 +111,7 @@ roy_shell_log_append(RoyShell   * shell,
                      ...) {
   va_list args;
   va_start(args, format);
-  vsprintf(shell->buffer, format, args);
+  vsprintf(shell->obuffer, format, args);
   va_end(args);
   return shell;
 }

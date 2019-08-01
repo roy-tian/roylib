@@ -127,7 +127,10 @@ roy_string_replace(RoyString       * string,
                    const RoyString * substring,
                    int               index, 
                    size_t            count) {
-  return roy_string_replace_str(string, roy_string_cstr(substring), index, count);
+  return roy_string_replace_str(string,
+                                roy_string_cstr(substring),
+                                index,
+                                count);
 }
 
 RoyString *

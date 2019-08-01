@@ -4,7 +4,8 @@
 
 struct _RoyShell {
   char     * prompt;
-  char     * buffer;
+  char     * ibuffer;
+  char     * obuffer;
   RoyMap   * dict;
   RoyDeque * argv;
   RoyDeque * ihistory;

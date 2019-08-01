@@ -8,7 +8,7 @@ struct _RoyString {
   char * str;
 };
 
-// RoyString *: stores and manipulates sequences of chars, offering common string operations.
+// RoyString: stores and manipulates sequences of chars, offering common string operations.
 typedef struct _RoyString RoyString;
 
 /* CONSTRUCTION AND DESTRUCTION */
