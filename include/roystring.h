@@ -57,12 +57,12 @@ RoyString * roy_string_substring(RoyString * string, RoyString * substring, int 
 
 /* SEARCH */
 
-int roy_string_find_str(RoyString * string, const char * substr, int index);
+int roy_string_find_str(const RoyString * string, const char * substr, int index);
 
-int roy_string_find(RoyString * string, const RoyString * substr, int index);
+int roy_string_find(const RoyString * string, const RoyString * substr, int index);
 
-int roy_string_find_regex(RoyString * string, const char * regex, int index);
+int roy_string_find_regex(const RoyString * string, const char * regex, int index);
 
-bool roy_string_match(RoyString * string, const char * regex);
+bool roy_string_match(const RoyString * string, const char * regex);
 
 #endif // RoyString *_H

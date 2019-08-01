@@ -4,9 +4,8 @@
 static void parse(RoyShell * shell, const char * line);
 
 enum {
-  MAX_LEN      = 255,
-  ARG_LEN      = 63,
-  deque_UNIT  = 10
+  MAX_LEN = 255,
+  ARG_LEN = 63
 };
 
 RoyShell *
@@ -42,7 +41,6 @@ roy_shell_start(RoyShell * shell) {
     printf("%s", shell->prompt);
     fgets(input, MAX_LEN, stdin);
     *(input + strlen(input) - 1) = '\0'; // trims '\n'
-    roy_deque_push_back(shell->ihistory, input);
     parse(shell, input);
     if (roy_shell_argument_count(shell) != 0) {
       void (* func)(RoyShell *) = (void(*)(RoyShell *))roy_pointer_get(

@@ -143,25 +143,25 @@ roy_string_substring(RoyString * string,
 /* SEARCH */
 
 int
-roy_string_find_str(RoyString  * string,
-                    const char * substr,
-                    int          index) {
+roy_string_find_str(const RoyString  * string,
+                    const char       * substr,
+                    int                index) {
   const char * begin = string->str + index;
   const char * found = strstr(string->str + index, substr);
   return found ? found - begin : -1;
 }
 
 int
-roy_string_find(RoyString       * string,
+roy_string_find(const RoyString * string,
                 const RoyString * substr,
                 int               index) {
   return roy_string_find_str(string, roy_string_cstr(substr), index);
 }
 
 int
-roy_string_find_regex(RoyString  * string,
-                      const char * regex,
-                      int          index) {
+roy_string_find_regex(const RoyString * string,
+                      const char      * regex,
+                      int               index) {
   const char * err_info;
   int err_offset;
   pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
@@ -185,8 +185,8 @@ roy_string_find_regex(RoyString  * string,
 }
 
 bool
-roy_string_match(RoyString  * string,
-                 const char * regex) {
+roy_string_match(const RoyString * string,
+                 const char      * regex) {
   const char * err_info;
   int err_offset;
   pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
