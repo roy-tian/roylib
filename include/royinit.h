@@ -23,12 +23,6 @@ enum BinaryWidths {
   ROY_QWORD = 64
 };
 
-enum String {
-  WORD_CAPACITY       = 31,
-  STRING_CAPACITY     = 1023,
-  BIG_STRING_CAPACITY = 65535
-};
-
 #define ROY_STR(str, length) char str[length + 1]; memset(str, '\0', length + 1);
 
 #define ROY_OPERATE(operate)     (void(*)(void *))(operate)

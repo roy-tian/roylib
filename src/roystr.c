@@ -1,5 +1,7 @@
 #include "../include/roystr.h"
 
+enum {STRING_CAPACITY = 1023};
+
 char *
 roy_str_to_lower(char * str) {
   char * pstr = str;
