@@ -99,6 +99,17 @@ roy_shell_argument_at(const RoyShell * shell,
   return (const char *)roy_deque_const_pointer(shell->argv, position);
 }
 
+int
+roy_shell_argument_find(const RoyShell * shell,
+                        const char     * arg) {
+  for (int i = 1; i != roy_shell_argument_count(shell); i++) {
+    if (strcmp(arg, roy_shell_argument_at(shell, i)) == 0) {
+      return i;
+    }
+  }
+  return -1; // not found. (0 indicates the cmd itself which will not happen here)
+}
+
 RoyShell *
 roy_shell_log_clear(RoyShell * shell) {
   memset(shell->obuffer, '\0', MAX_LEN);
