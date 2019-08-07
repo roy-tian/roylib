@@ -190,24 +190,9 @@ roy_string_find_regex(const RoyString * string,
 bool
 roy_string_match(const RoyString * string,
                  const char      * regex) {
-  const char * err_info;
-  int err_offset;
-  pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
-  pcre_extra * rex = pcre_study(re, 0, &err_info);
-  enum { OVECSIZE = 30 };
-  int ovector[OVECSIZE];
-  bool matched = false;
-  if (pcre_exec(re,
-                rex,
-                roy_string_cstr(string),
-                roy_string_size(string),
-                0,
-                0,
-                ovector,
-                OVECSIZE) != PCRE_ERROR_NOMATCH) {
-  matched = true;
-};
-  free(re);
-  free(rex);
-  return matched && roy_string_size(string) == ovector[1] - ovector[0];
+  ROY_STR(re, strlen(regex) + 2)
+  *re = '^';
+  strcat(re, regex);
+  strcat(re, "$");
+  return roy_string_find_regex(string, re, 0) == 0;
 }

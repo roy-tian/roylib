@@ -1,5 +1,6 @@
 #include "../include/royshell.h"
 #include "../include/roypointer.h"
+#include "../include/roystring.h"
 
 static void parse(RoyShell * shell, const char * line);
 
@@ -36,7 +37,7 @@ roy_shell_delete(RoyShell * shell) {
   free(shell);
 }
 
-static bool strAllSpace(const char * str) {
+static bool str_all_space(const char * str) {
   while (*str != '\0') {
     if (!isspace(*str)) {
       return false;
@@ -53,7 +54,7 @@ roy_shell_start(RoyShell * shell) {
     memset(shell->ibuffer, '\0', MAX_LEN);
     fgets(shell->ibuffer, MAX_LEN, stdin);
     *(shell->ibuffer + strlen(shell->ibuffer) - 1) = '\0'; // trims '\n'
-    if (strlen(shell->ibuffer) != 0 && !strAllSpace(shell->ibuffer)) {
+    if (strlen(shell->ibuffer) != 0 && !str_all_space(shell->ibuffer)) {
       parse(shell, shell->ibuffer);
       void (* func)(RoyShell *) = 
       roy_pointer_get(roy_map_at(shell->dict,
@@ -101,12 +102,15 @@ roy_shell_argument_at(const RoyShell * shell,
 
 int
 roy_shell_argument_find(const RoyShell * shell,
-                        const char     * arg) {
+                        const char     * regex) {
+  RoyString * re = roy_string_new_with_content(regex);
   for (int i = 1; i != roy_shell_argument_count(shell); i++) {
-    if (strcmp(arg, roy_shell_argument_at(shell, i)) == 0) {
+    if (roy_string_match(re, roy_shell_argument_at(shell, i))) {
+      roy_string_delete(re);
       return i;
     }
   }
+  roy_string_delete(re);
   return -1; // not found. (0 indicates the cmd itself which will not happen here)
 }
 

@@ -38,7 +38,7 @@ size_t roy_shell_argument_count(const RoyShell * shell);
 const char * roy_shell_argument_at(const RoyShell * shell, int position);
 
 // Returns whether the argument 'arg' is in 'shell'.
-int roy_shell_argument_find(const RoyShell * shell, const char * arg);
+int roy_shell_argument_find(const RoyShell * shell, const char * regex);
 
 // Clears the log buffer for a new info to be logged.
 RoyShell * roy_shell_log_clear(RoyShell * shell);
