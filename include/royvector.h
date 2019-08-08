@@ -18,7 +18,7 @@ typedef struct _RoyVector RoyVector;
 
 // Allocates sufficient memory for an RoyVector and returns a pointer to it.
 // The vector can store 'capacity' elements with each size 'element_size'.
-// (Operations on un-newed RoyVectors will cause undefined behavior.)。
+// (Operations on un-newed RoyVectors will cause undefined behavior.)
 RoyVector * roy_vector_new(size_t capacity, size_t element_size);
 
 // Deallocates the memory allocated by 'roy_vector_new'.

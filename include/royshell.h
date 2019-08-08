@@ -37,7 +37,7 @@ size_t roy_shell_argument_count(const RoyShell * shell);
 // Returns the text of the 'position'-th arguments.
 const char * roy_shell_argument_at(const RoyShell * shell, int position);
 
-// Returns whether the argument 'arg' is in 'shell'.
+// Returns whether the current command line has any argument matches 'regex' or not.
 int roy_shell_argument_find(const RoyShell * shell, const char * regex);
 
 // Clears the log buffer for a new info to be logged.
