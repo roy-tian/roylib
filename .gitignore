@@ -1,7 +1,7 @@
 /.idea
 /.vscode
 /*build*
+/lib
 .DS_Store
 a.*
 **/*.a
-lib/libroylib.a
