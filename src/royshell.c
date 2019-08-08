@@ -103,15 +103,16 @@ roy_shell_argument_at(const RoyShell * shell,
 int
 roy_shell_argument_find(const RoyShell * shell,
                         const char     * regex) {
-  RoyString * re = roy_string_new_with_content(regex);
-  for (int i = 1; i != roy_shell_argument_count(shell); i++) {
-    if (roy_string_match(re, roy_shell_argument_at(shell, i))) {
-      roy_string_delete(re);
+  RoyString * arg = roy_string_new();
+  for (int i = 0; i != roy_shell_argument_count(shell); i++) {
+    roy_string_assign(arg, roy_shell_argument_at(shell, i));
+    if (roy_string_match(arg, regex)) {
+      roy_string_delete(arg);
       return i;
     }
   }
-  roy_string_delete(re);
-  return -1; // not found. (0 indicates the cmd itself which will not happen here)
+  roy_string_delete(arg);
+  return -1; // not found. (0 indicates the cmd itself)
 }
 
 RoyShell *
