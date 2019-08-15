@@ -63,6 +63,8 @@ int roy_string_find(const RoyString * string, const RoyString * substr, int inde
 
 int roy_string_find_regex(const RoyString * string, const char * regex, int index);
 
+char * roy_string_regex(char * dest, const RoyString * string, const char * regex, int index);
+
 bool roy_string_match(const RoyString * string, const char * regex);
 
 #endif // RoyString *_H

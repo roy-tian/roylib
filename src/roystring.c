@@ -187,6 +187,35 @@ roy_string_find_regex(const RoyString * string,
   return ret;
 }
 
+char *
+roy_string_regex(char            * dest,
+                 const RoyString * string,
+                 const char      * regex,
+                 int               index) {
+  const char * err_info;
+  int err_offset;
+  pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
+  pcre_extra * rex = pcre_study(re, 0, &err_info);
+  enum { OVECSIZE = 30 };
+  int ovector[OVECSIZE];
+  int ret = PCRE_ERROR_NOMATCH;
+  if (pcre_exec(re,
+                rex,
+                roy_string_cstr(string),
+                roy_string_size(string),
+                index,
+                0,
+                ovector,
+                OVECSIZE) != PCRE_ERROR_NOMATCH) {
+  strncpy(dest, roy_string_cstr(string), ovector[1] - ovector[0]);
+  *(dest + strlen(dest)) = '\0';
+};
+  free(re);
+  free(rex);
+  return dest;
+}
+
+
 bool
 roy_string_match(const RoyString * string,
                  const char      * regex) {
