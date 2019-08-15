@@ -28,6 +28,10 @@ void roy_shell_start(RoyShell * shell);
 // A RoyShell must have at least a default command "" (empty string) in order to perform 'roy_shell_start'.
 RoyShell * roy_shell_command_add(RoyShell * shell, const char * cmd, void (* operate)(RoyShell *));
 
+#define roy_shell_add(shell, cmd) roy_shell_command_add(shell, #cmd, cmd)
+
+#define roy_shell_default(shell, cmd) roy_shell_command_add(shell, "", cmd)
+
 // Sets the shell prompt to any string you like, "> " by default.
 RoyShell * roy_shell_set_prompt_text(RoyShell * shell, const char * prompt);
 
