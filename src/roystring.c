@@ -207,7 +207,7 @@ roy_string_regex(char            * dest,
                 0,
                 ovector,
                 OVECSIZE) != PCRE_ERROR_NOMATCH) {
-  strncpy(dest, roy_string_cstr(string), ovector[1] - ovector[0]);
+  strncpy(dest, roy_string_cstr(string) + ovector[0], ovector[1] - ovector[0]);
   *(dest + strlen(dest)) = '\0';
 };
   free(re);
