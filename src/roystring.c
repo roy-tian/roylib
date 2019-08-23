@@ -151,7 +151,7 @@ roy_string_find_str(const RoyString  * string,
                     int                index) {
   const char * begin = string->str + index;
   const char * found = strstr(string->str + index, substr);
-  return found ? found - begin : -1;
+  return found ? (int)(found - begin) : -1;
 }
 
 int
