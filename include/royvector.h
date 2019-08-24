@@ -3,7 +3,7 @@
 
 #include "royarray.h"
 
-struct _RoyVector {
+struct RoyVector_ {
   void   * data;
   size_t   size;
   size_t   capacity;
@@ -12,7 +12,7 @@ struct _RoyVector {
 };
 
 // RoyVector: a container that encapsulates scalable size vectors.
-typedef struct _RoyVector RoyVector;
+typedef struct RoyVector_ RoyVector;
 
 /* CONSTRUCTION AND DESTRUCTION */
 

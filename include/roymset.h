@@ -3,15 +3,15 @@
 
 #include "royinit.h"
 
-struct _RoyMSet {
-  struct _RoyMSet * left;
-  struct _RoyMSet * right;
+struct RoyMSet_ {
+  struct RoyMSet_ * left;
+  struct RoyMSet_ * right;
   void            * key;
 };
 
 // RoyMSet [Multi Set]: an associative container that contains a sorted set of objects of type Key, duplicated objects is allowed.
 // Sorting is done using the key comparison function 'compare'. Search, removal, and insertion operations have logarithmic complexity.
-typedef struct _RoyMSet RoyMSet;
+typedef struct RoyMSet_ RoyMSet;
 
 /* ELEMENT ACCESS */
 

@@ -2,7 +2,7 @@
 #include "roydeque.h"
 #include "roymap.h"
 
-struct _RoyShell {
+struct RoyShell_ {
   char     * prompt;
   char     * ibuffer;
   char     * obuffer;
@@ -13,7 +13,7 @@ struct _RoyShell {
 };
 
 // RoyShell: A simulated shell with simple function.
-typedef struct _RoyShell RoyShell;
+typedef struct RoyShell_ RoyShell;
 
 // Returns a pointer to a newly build RoyShell.
 RoyShell * roy_shell_new(void);

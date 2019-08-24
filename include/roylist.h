@@ -3,15 +3,15 @@
 
 #include "royinit.h"
 
-struct _RoyList {
+struct RoyList_ {
   void            * data;
-  struct _RoyList * next;
-  struct _RoyList * prev;
+  struct RoyList_ * next;
+  struct RoyList_ * prev;
 };
 
 // RoyList: a container implemented as a double-linked list which supports fast insertion and removal from anywhere in the container.
 // Fast random access is not supported.
-typedef struct _RoyList RoyList;
+typedef struct RoyList_ RoyList;
 
 /* CONSTRUCTION AND DESTRUCTION */
 

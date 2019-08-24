@@ -3,7 +3,7 @@
 
 #include "royarray.h"
 
-struct _RoyStack {
+struct RoyStack_ {
   void   * data;
   size_t   size;
   size_t   capacity;
@@ -13,7 +13,7 @@ struct _RoyStack {
 /* CONSTRUCTION AND DESTRUCTION */
 
 // RoyStack: a container adapter that gives the functionality of a LIFO data structure.
-typedef struct _RoyStack RoyStack;
+typedef struct RoyStack_ RoyStack;
 
 
 // Allocates sufficient memory for an RoyStack and returns a pointer to it.

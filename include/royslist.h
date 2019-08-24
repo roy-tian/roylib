@@ -3,14 +3,14 @@
 
 #include "royinit.h"
 
-struct _RoySList {
+struct RoySList_ {
   void             * data;
-  struct _RoySList * next;
+  struct RoySList_ * next;
 };
 
 // RoySList: a container implemented as a singly-linked list which supports fast insertion and removal
 // from anywhere in the container. Fast random access is not supported.
-typedef struct _RoySList RoySList;
+typedef struct RoySList_ RoySList;
 
 /* CONSTRUCTION AND DESTRUCTION */
 

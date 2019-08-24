@@ -3,7 +3,7 @@
 
 #include "roylist.h"
 
-struct _RoyDeque {
+struct RoyDeque_ {
   RoyList * head;
   RoyList * tail;
   size_t    size;
@@ -12,7 +12,7 @@ struct _RoyDeque {
 
 // RoyDeque: a double ended queue powered by a RoyDeque inside,
 // which supports fast insertion and removal from both end of the queue.
-typedef struct _RoyDeque RoyDeque;
+typedef struct RoyDeque_ RoyDeque;
 
 /* CONSTRUCTION AND DESTRUCTION */
 

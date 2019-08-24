@@ -3,7 +3,7 @@
 
 #include "royarray.h"
 
-struct _RoyQueue {
+struct RoyQueue_ {
   void   * data;
   size_t   size;
   size_t   capacity;
@@ -16,7 +16,7 @@ struct _RoyQueue {
 
 // RoyQueue: a container adapter that gives the functionality of a FIFO data structure,
 // which inplemented as an cycled linear list.
-typedef struct _RoyQueue RoyQueue;
+typedef struct RoyQueue_ RoyQueue;
 
 
 // Allocates sufficient memory for an RoyQueue and returns a pointer to it.

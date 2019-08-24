@@ -4,12 +4,12 @@
 
 #include "royinit.h"
 
-struct _RoyString {
+struct RoyString_ {
   char * str;
 };
 
 // RoyString: stores and manipulates sequences of chars, offering common string operations.
-typedef struct _RoyString RoyString;
+typedef struct RoyString_ RoyString;
 
 /* CONSTRUCTION AND DESTRUCTION */
 

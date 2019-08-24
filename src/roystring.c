@@ -4,7 +4,7 @@
 
 RoyString *
 roy_string_new(void) {
-  RoyString * ret = (RoyString *)malloc(sizeof(struct _RoyString));
+  RoyString * ret = (RoyString *)malloc(sizeof(RoyString));
   ret->str = NULL;
   return ret;
 }

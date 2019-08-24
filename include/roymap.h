@@ -4,7 +4,7 @@
 #include "royinit.h"
 #include "royset.h"
 
-struct _RoyMap {
+struct RoyMap_ {
   RoySet * root;
   size_t   key_size;
   size_t   value_size;
@@ -13,7 +13,7 @@ struct _RoyMap {
 
 // RoyMap: an associative container that contains a sorted map of unique objects of type Key.
 // Sorting is done using the key comparison function 'compare'. Search, removal, and insertion operations have logarithmic complexity.
-typedef struct _RoyMap RoyMap;
+typedef struct RoyMap_ RoyMap;
 
 /* CONSTRUCTION AND DESTRUCTION */
 

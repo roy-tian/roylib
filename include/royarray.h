@@ -3,7 +3,7 @@
 
 #include "royinit.h"
 
-struct _RoyArray {
+struct RoyArray_ {
   void   * data;
   size_t   size;
   size_t   capacity;
@@ -11,7 +11,7 @@ struct _RoyArray {
 };
 
 // RoyArray: a container that encapsulates fixed size arrays.
-typedef struct _RoyArray RoyArray;
+typedef struct RoyArray_ RoyArray;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
