@@ -3,12 +3,14 @@
 
 #include "royinit.h"
 #include "royvector.h"
+#include <stdint.h>
 
 struct RoyUSet_ {
-  size_t   (* hash)(const void * elem, size_t capacity, size_t element_size);
-  bool     (* equal)(const void * elem1, const void * elem2, size_t element_size);
+  size_t   (* hash)(const void * key, size_t key_size, uint64_t seed);
+  bool     (* equal)(const void * key1, const void * key2, size_t key_size);
   size_t      capacity;
   size_t      element_size;
+  uint64_t    hash_seed;
   RoyVector * table;
 };
 
@@ -19,7 +21,7 @@ struct RoyUSet_ {
 // Do not modify any elements, or it's hash could be changed and the container could be corrupted.
 typedef struct RoyUSet_ RoyUSet;
 
-RoyUSet * roy_uset_new(size_t capacity, size_t element_size, size_t(* hash)(const void *, size_t, size_t),bool(* equal)(const void *, const void *, size_t));
+RoyUSet * roy_uset_new(size_t capacity, size_t element_size, uint64_t hash_seed, size_t(* hash)(const void *, size_t, uint64_t), bool(* equal)(const void *, const void *, size_t));
 
 void roy_uset_delete(RoyUSet * uset);
 
