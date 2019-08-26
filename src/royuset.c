@@ -10,30 +10,44 @@ static size_t next_prime(size_t capacity);
 RoyUSet *
 roy_uset_new(size_t     capacity,
              size_t     element_size,
-             uint64_t   hash_seed,
+             uint64_t   seed,
              size_t  (* hash)(const void *, size_t, size_t),
              bool    (* equal)(const void *, const void *, size_t)) {
   RoyUSet * ret     = ROY_USET(malloc(sizeof(RoyUSet)));
   ret->capacity     = next_prime(capacity);
   ret->element_size = element_size;
-  ret->hash_seed    = hash_seed;
+  ret->size         = 0;
+  ret->seed         = seed;
   ret->hash         = hash ? hash : MurmurHash64A;
   ret->equal        = equal ? equal : default_equal;
-  ret->table        = roy_vector_new(ret->capacity, sizeof(RoySList**));
+  ret->table        = (RoySList **)calloc(ret->capacity, sizeof(RoySList*));
   return ret;
 }
 
 void roy_uset_delete(RoyUSet * uset) {
-  for (size_t i = 0; i != roy_vector_size(uset->table); i++) {
-    if (*roy_vector_at(uset->table, RoySList*, i)) {
-      roy_slist_delete(*roy_vector_at(uset->table, RoySList*, i));
-    }
+  for (size_t i = 0; i != uset->capacity; i++) {
+    roy_slist_delete(uset->table[i]);
   }
-  roy_vector_delete(uset->table);
+  free(uset->table);
   free(uset);
 }
 
-
+RoyUSet *
+roy_uset_insert(RoyUSet    * uset,
+                const void * data) {
+  RoySList * node = // slist chosen to insert
+  uset->table[uset->hash(data, uset->element_size, uset->seed) % uset->capacity];
+  if (node == NULL) {
+    node = roy_slist_new();
+  }
+  for (RoySList * iter = roy_slist_cbegin(node); iter; iter = iter->next) {
+    if (uset->equal(data, iter->data, uset->element_size)) {
+      return uset;
+    }
+  }
+  roy_slist_push_front(node, data, uset->element_size);
+  return uset;
+}
 
 /* PRIVATE FUNCTIONS */
 
@@ -68,7 +82,7 @@ MurmurHash64A ( const void * key, size_t key_size, uint64_t seed ) {
   const int r = 47;
 
   uint64_t h = seed ^ (key_size * m);
-
+  
   const uint64_t * data = (const uint64_t *)key;
   const uint64_t * end = data + (key_size / 8);
 
