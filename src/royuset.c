@@ -8,11 +8,11 @@ static bool prime(size_t number);
 static size_t next_prime(size_t capacity);
 
 RoyUSet *
-roy_uset_new(size_t     capacity,
-             size_t     element_size,
-             uint64_t   seed,
-             size_t  (* hash)(const void *, size_t, size_t),
-             bool    (* equal)(const void *, const void *, size_t)) {
+roy_uset_new(size_t      capacity,
+             size_t      element_size,
+             uint64_t    seed,
+             uint64_t (* hash)(const void *, size_t, uint64_t),
+             bool     (* equal)(const void *, const void *, size_t)) {
   RoyUSet * ret     = ROY_USET(malloc(sizeof(RoyUSet)));
   ret->capacity     = next_prime(capacity);
   ret->element_size = element_size;
@@ -35,25 +35,35 @@ void roy_uset_delete(RoyUSet * uset) {
 RoyUSet *
 roy_uset_insert(RoyUSet    * uset,
                 const void * data) {
-  RoySList * node = // slist chosen to insert
-  uset->table[uset->hash(data, uset->element_size, uset->seed) % uset->capacity];
-  if (node == NULL) {
-    node = roy_slist_new();
+  RoySList ** node = // slist chosen to insert
+  &uset->table[uset->hash(data, uset->element_size, uset->seed) % uset->capacity];
+  if (*node == NULL) {
+    *node = roy_slist_new();
   }
-  for (RoySList * iter = roy_slist_cbegin(node); iter; iter = iter->next) {
+  for (RoySList * iter = roy_slist_begin(*node); iter; iter = iter->next) {
     if (uset->equal(data, iter->data, uset->element_size)) {
       return uset;
     }
   }
-  roy_slist_push_front(node, data, uset->element_size);
+  roy_slist_push_front(*node, data, uset->element_size);
+  uset->size++;
   return uset;
+}
+
+void roy_uset_for_each(RoyUSet * uset,
+                       void   (* operate)(void * data)) {
+  for (size_t i = 0; i != uset->capacity; i++) {
+    if (uset->table[i] && !roy_slist_empty(uset->table[i])) {
+      roy_slist_for_each(uset->table[i], operate);
+    }
+  }
 }
 
 /* PRIVATE FUNCTIONS */
 
 static bool
 prime(size_t number) {
-  if (number < 2 || number != 2 && number % 2 == 0) {
+  if (number < 2 || (number != 2 && number % 2 == 0)) {
     return false;
   }
   for (size_t i = 3; i <= (size_t)sqrt((double)number); i += 2) {
