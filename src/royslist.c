@@ -27,6 +27,29 @@ const RoySList *
 roy_slist_cbegin(const RoySList *slist) {
   return slist->next;
 }
+RoySList *
+roy_slist_iterator(RoySList * slist,
+                   int        position) {
+  int cur_position = 0;
+  RoySList * iter = slist;
+  while (iter->next && cur_position <= position) {
+    iter = iter->next;
+    cur_position++;
+  }
+  return iter;
+}
+
+const RoySList *
+roy_slist_const_iterator(const RoySList * slist,
+                         int              position) {
+  int cur_position = 0;
+  const RoySList * iter = slist;
+  while (iter->next && cur_position <= position) {
+    iter = iter->next;
+    cur_position++;
+  }
+  return iter;
+}
 
 size_t
 roy_slist_size(const RoySList * slist) {

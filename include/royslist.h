@@ -30,6 +30,14 @@ RoySList * roy_slist_begin(RoySList * slist);
 // Returns a const iterator to the first element.
 const RoySList * roy_slist_cbegin(const RoySList * slist);
 
+// Returns an iterator to 'position' in 'slist' where the element takes place.
+// (Returns the head of 'list' if position is negative, NULL if position exceeds.)
+RoySList * roy_slist_iterator(RoySList * slist, int position);
+
+// Returns a const iterator to 'position' in 'slist' where the element takes place.
+// (Returns the head of 'list' if position is negative, NULL if position exceeds.)
+const RoySList * roy_slist_const_iterator(const RoySList * slist, int position);
+
 /* CAPACITY */
 
 // Returns the number of elements in 'slist'.
