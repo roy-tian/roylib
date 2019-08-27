@@ -55,7 +55,7 @@ const RoyList * roy_list_crbegin(const RoyList *list_tail);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)
-void * roy_list_element(void * dest, size_t element_size, const RoyList * list_head, int position);
+void * roy_list_element(void * dest, const RoyList * list_head, size_t element_size, int position);
 
 // Returns a typed pointer to the element at 'position', NULL if position exceeds.
 #define roy_list_at(list_head, element_type, position) ((element_type *)(roy_list_iterator((list_head), (position))->data))

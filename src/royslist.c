@@ -54,8 +54,8 @@ roy_slist_const_iterator(const RoySList * slist,
 
 void *
 roy_slist_element(void           * dest,
-                  size_t           element_size,
                   const RoySList * slist,
+                  size_t           element_size,
                   int              position) {
   return
   position >= 0 && position < roy_slist_size(slist)                           ?

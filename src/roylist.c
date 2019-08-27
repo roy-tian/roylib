@@ -91,8 +91,8 @@ roy_list_crbegin(const RoyList * list_tail) {
 
 void *
 roy_list_element(void *          dest,
-                 size_t          element_size,
                  const RoyList * list,
+                 size_t          element_size,
                  int             position) {
   return
   position >= 0 && position < roy_list_size(list)                           ?
