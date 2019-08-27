@@ -85,16 +85,6 @@ RoyDeque * roy_deque_pop_back(RoyDeque * deque);
 // Removes all the element from 'deque'.
 RoyDeque * roy_deque_clear(RoyDeque * deque);
 
-/* LIST OPERATIONS */
-
-RoyDeque * roy_deque_remove_if(RoyDeque * deque, bool (* condition)(const void *));
-
-RoyDeque * roy_deque_reverse(RoyDeque * deque);
-
-RoyDeque * roy_deque_unique(RoyDeque * deque, int (* compare)(const void *, const void *));
-
-RoyDeque * roy_deque_sort(RoyDeque * deque, int (* compare)(const void *, const void *));
-
 /* TRAVERSE */
 
 // Traverses all elements in 'deque' using 'operate'.

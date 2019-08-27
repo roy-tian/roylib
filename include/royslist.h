@@ -51,6 +51,9 @@ RoySList * roy_slist_clear(RoySList * slist);
 
 /* LIST OPERATIONS */
 
+// Removes all elements in 'slist' equal to 'data'.
+RoySList * roy_slist_remove(RoySList, const void * data, size_t element_size);
+
 // Removes all elements in 'slist' which meet 'condition'.
 RoySList * roy_slist_remove_if(RoySList * slist, bool (* condition)(const void *));
 
