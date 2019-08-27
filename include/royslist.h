@@ -38,6 +38,13 @@ RoySList * roy_slist_iterator(RoySList * slist, int position);
 // (Returns the head of 'list' if position is negative, NULL if position exceeds.)
 const RoySList * roy_slist_const_iterator(const RoySList * slist, int position);
 
+// Returns a copy of the element at 'position'. (With boundary check)
+// (The behavior is undefined if 'dest' is uninitialized.)
+void * roy_slist_element(void * dest, size_t element_size, const RoySList * slist, int position);
+
+// Returns a typed pointer to the element at 'position', NULL if position exceeds.
+#define roy_slist_at(slist, element_type, position) ((element_type *)(roy_slist_iterator((list_head), (position))->data))
+
 /* CAPACITY */
 
 // Returns the number of elements in 'slist'.

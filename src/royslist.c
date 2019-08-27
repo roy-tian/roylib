@@ -27,6 +27,7 @@ const RoySList *
 roy_slist_cbegin(const RoySList *slist) {
   return slist->next;
 }
+
 RoySList *
 roy_slist_iterator(RoySList * slist,
                    int        position) {
@@ -49,6 +50,17 @@ roy_slist_const_iterator(const RoySList * slist,
     cur_position++;
   }
   return iter;
+}
+
+void *
+roy_slist_element(void           * dest,
+                  size_t           element_size,
+                  const RoySList * slist,
+                  int              position) {
+  return
+  position >= 0 && position < roy_slist_size(slist)                           ?
+  memcpy(dest, roy_slist_const_iterator(slist, position)->data, element_size) :
+  NULL;
 }
 
 size_t

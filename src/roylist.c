@@ -94,10 +94,10 @@ roy_list_element(void *          dest,
                  size_t          element_size,
                  const RoyList * list,
                  int             position) {
-  memcpy(dest,
-         roy_list_const_iterator(list, position)->data,
-         element_size);
-  return dest;   
+  return
+  position >= 0 && position < roy_list_size(list)                           ?
+  memcpy(dest, roy_list_const_iterator(list, position)->data, element_size) :
+  NULL;
 }
 
 size_t
