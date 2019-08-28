@@ -209,6 +209,21 @@ roy_list_clear(RoyList * list) {
   return list;
 }
 
+RoyList *
+roy_list_remove(RoyList    * list,
+                const void * data,
+                int       (* compare)(const void *, const void *)) {
+  RoyList * temp = list;
+  while (!roy_list_empty(temp)) {
+    if (compare(temp->data, data) == 0) {
+      roy_list_pop_front(temp);
+    } else {
+      temp = temp->next;
+    }
+  }
+  return list;
+}
+
 void
 roy_list_for_each(RoyList * list,
                   void   (* operate)(void *)) {

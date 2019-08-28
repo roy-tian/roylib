@@ -100,9 +100,30 @@ roy_slist_pop_front(RoySList * slist) {
 }
 
 RoySList *
+roy_slist_erase(RoySList * slist,
+                int        position) {
+  return roy_slist_pop_front(roy_slist_iterator(slist, position - 1));
+}
+
+RoySList *
 roy_slist_clear(RoySList * slist) {
   while (!roy_slist_empty(slist)) {
     roy_slist_pop_front(slist);
+  }
+  return slist;
+}
+
+RoySList *
+roy_slist_remove(RoySList   * slist,
+                 const void * data,
+                 int       (* compare)(const void *, const void *)) {
+  RoySList * temp = slist;
+  while (!roy_slist_empty(temp)) {
+    if (compare(temp->data, data) == 0) {
+      roy_slist_pop_front(temp);
+    } else {
+      temp = temp->next;
+    }
   }
   return slist;
 }

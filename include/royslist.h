@@ -61,13 +61,16 @@ RoySList * roy_slist_push_front(RoySList * slist, const void * data, size_t elem
 // Removes the first element from 'slist'.
 RoySList * roy_slist_pop_front(RoySList * slist);
 
+// Removes the 'position'-th element from 'slist'.
+RoySList * roy_slist_erase(RoySList * slist, int position);
+
 // Removes all the elements from 'slist'.
 RoySList * roy_slist_clear(RoySList * slist);
 
 /* LIST OPERATIONS */
 
-// Removes all elements in 'slist' equal to 'data'.
-RoySList * roy_slist_remove(RoySList, const void * data, size_t element_size);
+// Removes all elements in 'slist' equivalent to data.
+RoySList * roy_slist_remove(RoySList * slist, const void * data, int (* compare)(const void *, const void *));
 
 // Removes all elements in 'slist' which meet 'condition'.
 RoySList * roy_slist_remove_if(RoySList * slist, bool (* condition)(const void *));

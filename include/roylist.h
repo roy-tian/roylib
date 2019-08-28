@@ -99,8 +99,8 @@ RoyList * roy_list_clear(RoyList * list_head);
 
 /* LIST OPERATIONS */
 
-// Removes all elements in 'list' equal to 'data'.
-RoyList * roy_list_remove(RoyList * list, const void * data, size_t element_size);
+// Removes all elements in 'list' equivalent to data.
+RoyList * roy_list_remove(RoyList * list, const void * data, int (* compare)(const void *, const void *));
 
 // Removes all elements in 'list' which meet 'condition'.
 RoyList * roy_list_remove_if(RoyList * list, bool (* condition)(const void *));
