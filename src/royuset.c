@@ -1,47 +1,82 @@
 #include "../include/royuset.h"
-#include "../include/royslist.h"
 #include <math.h>
 
 static uint64_t MurmurHash64A(const void * key, size_t key_size, uint64_t seed);
-static bool default_equal(const void * elem1, const void * elem2, size_t element_size);
-static bool prime(size_t number);
-static size_t next_prime(size_t capacity);
+static bool     prime(size_t number);
+static size_t   next_prime(size_t number);
+static bool     valid_bucket_index(const RoyUSet * uset, int bucket_index);
 
 RoyUSet *
-roy_uset_new(size_t      capacity,
+roy_uset_new(size_t      bucket_count,
              size_t      element_size,
              uint64_t    seed,
              uint64_t (* hash)(const void *, size_t, uint64_t),
-             bool     (* equal)(const void *, const void *, size_t)) {
+             int      (* compare)(const void *, const void *)) {
   RoyUSet * ret     = ROY_USET(malloc(sizeof(RoyUSet)));
-  ret->capacity     = next_prime(capacity);
+  ret->bucket_count = next_prime(bucket_count);
   ret->element_size = element_size;
   ret->size         = 0;
   ret->seed         = seed;
   ret->hash         = hash ? hash : MurmurHash64A;
-  ret->equal        = equal ? equal : default_equal;
-  ret->table        = (RoySList **)calloc(ret->capacity, sizeof(RoySList*));
+  ret->compare      = compare;
+  ret->buckets      = (RoySList **)calloc(roy_uset_bucket_count(ret),
+                                          sizeof(RoySList*));
+  for (size_t i = 0; i != roy_uset_bucket_count(ret); i++) {
+    ret->buckets[i] = roy_slist_new();
+  }
   return ret;
 }
 
-void roy_uset_delete(RoyUSet * uset) {
-  for (size_t i = 0; i != uset->capacity; i++) {
-    roy_slist_delete(uset->table[i]);
+void
+roy_uset_delete(RoyUSet * uset) {
+  for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
+    roy_slist_delete(uset->buckets[i]);
   }
-  free(uset->table);
+  free(uset->buckets);
   free(uset);
+}
+
+const void *
+roy_uset_const_pointer(const RoyUSet * uset,
+                       int             bucket_index,
+                       int             bucket_position) {
+  if (!valid_bucket_index(uset, bucket_index)) {
+    return NULL;
+  }
+  const RoySList * iter =
+  roy_slist_const_iterator(uset->buckets[bucket_index], bucket_position);
+  return iter ? iter->data : NULL;
+}
+
+void *
+roy_uset_element(void    * dest,
+                 RoyUSet * uset,
+                 int       bucket_index,
+                 int       bucket_position) {
+  return valid_bucket_index(uset, bucket_index)         ?
+         roy_slist_element(dest,
+                           uset->buckets[bucket_index],
+                           uset->element_size,
+                           bucket_position)             :
+         NULL;
+}
+
+size_t
+roy_uset_size(const RoyUSet * uset) {
+  return uset->size;
+}
+
+bool
+roy_uset_empty(const RoyUSet * uset) {
+  return uset->size == 0;
 }
 
 RoyUSet *
 roy_uset_insert(RoyUSet    * uset,
                 const void * data) {
-  RoySList ** node = // slist chosen to insert
-  &uset->table[uset->hash(data, uset->element_size, uset->seed) % uset->capacity];
-  if (*node == NULL) {
-    *node = roy_slist_new();
-  }
+  RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data)];
   for (RoySList * iter = roy_slist_begin(*node); iter; iter = iter->next) {
-    if (uset->equal(data, iter->data, uset->element_size)) {
+    if (uset->compare(data, iter->data) == 0) {
       return uset;
     }
   }
@@ -50,11 +85,93 @@ roy_uset_insert(RoyUSet    * uset,
   return uset;
 }
 
-void roy_uset_for_each(RoyUSet * uset,
-                       void   (* operate)(void * data)) {
-  for (size_t i = 0; i != uset->capacity; i++) {
-    if (uset->table[i] && !roy_slist_empty(uset->table[i])) {
-      roy_slist_for_each(uset->table[i], operate);
+RoyUSet *
+roy_uset_erase(RoyUSet * uset,
+               int       bucket_index,
+               int       bucket_position) {
+  if (!valid_bucket_index(uset, bucket_index)) {
+    return uset;
+  }
+  RoySList ** node = &uset->buckets[bucket_index];
+  size_t size = roy_slist_size(*node);
+  roy_slist_erase(*node, bucket_position);
+  size -= roy_slist_size(*node);
+  uset->size -= size;
+  return uset;
+}
+
+RoyUSet *
+roy_uset_remove(RoyUSet * uset, const void * data) {
+  RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data)];
+  size_t size = roy_slist_size(*node);
+  roy_slist_remove(*node, data, uset->compare);
+  size -= roy_slist_size(*node);
+  uset->size -= size;
+  return uset;
+}
+
+const void *
+roy_uset_find(const RoyUSet * uset,
+              const void    * data) {
+  RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data)];
+  for (RoySList * iter = roy_slist_begin(*node); iter; iter = iter->next) {
+    if (uset->compare(data, iter->data) == 0) {
+      return iter->data;
+    }
+  }
+  return NULL;
+}
+
+RoyUSet *
+roy_uset_clear(RoyUSet * uset) {
+  for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
+    roy_slist_clear(uset->buckets[i]);
+  }
+  return uset;
+}
+
+size_t
+roy_uset_bucket_count(const RoyUSet * uset) {
+  return uset->bucket_count;
+}
+
+size_t
+roy_uset_bucket_size(const RoyUSet * uset, int bucket_index) {
+  return roy_slist_size(uset->buckets[bucket_index]);
+}
+
+int64_t
+roy_uset_bucket(const RoyUSet * uset, const void * data) {
+  return uset->hash(data, uset->element_size, uset->seed) %
+         roy_uset_bucket_count(uset);
+}
+
+double
+roy_uset_load_factor(const RoyUSet * uset) {
+  return (double)roy_uset_size(uset) / (double)roy_uset_bucket_count(uset);
+}
+
+RoyUSet * roy_uset_rehash(RoyUSet * uset, size_t bucket_count, uint64_t seed) {
+  return uset;
+}
+
+void
+roy_uset_for_each(RoyUSet * uset,
+                  void   (* operate)(void * data)) {
+  for (size_t i = 0; i != uset->bucket_count; i++) {
+    if (uset->buckets[i] && !roy_slist_empty(uset->buckets[i])) {
+      roy_slist_for_each(uset->buckets[i], operate);
+    }
+  }
+}
+
+void
+roy_uset_for_which(RoyUSet * uset,
+                   bool   (* condition)(const void *),
+                   void   (* operate)(void *)) {
+  for (size_t i = 0; i != uset->bucket_count; i++) {
+    if (uset->buckets[i] && !roy_slist_empty(uset->buckets[i])) {
+      roy_slist_for_which(uset->buckets[i], condition, operate);
     }
   }
 }
@@ -75,11 +192,11 @@ prime(size_t number) {
 }
 
 static size_t
-next_prime(size_t capacity) {
-  while (!prime(capacity)) {
-    capacity++;
+next_prime(size_t number) {
+  while (!prime(number)) {
+    number++;
   }
-  return capacity;
+  return number;
 }
 
 // MurmurHash2, 64-bit versions, by Austin Appleby
@@ -128,13 +245,7 @@ MurmurHash64A ( const void * key, size_t key_size, uint64_t seed ) {
 } 
 
 static bool
-default_equal(const void * key1, const void * key2, size_t key_size) {
-  const char * pkey1 = key1;
-  const char * pkey2 = key2;
-  while (key_size-- != 0) {
-    if (*pkey1++ != *pkey2++) {
-      return false;
-    }
-  }
-  return true;
+valid_bucket_index(const RoyUSet * uset,
+                   int             bucket_index) {
+  return bucket_index >= 0 && bucket_index < roy_uset_bucket_count(uset);
 }

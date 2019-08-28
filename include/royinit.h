@@ -41,6 +41,7 @@ enum BinaryWidths {
 #define ROY_MAP(map)       (RoyMap *)(map)
 #define ROY_MMAP(mmap)     (RoyMMap *)(mmap)
 #define ROY_USET(uset)     (RoyUSet *)(uset)
+#define ROY_UMSET(umset)   (RoyUMSet *)(umset)
 
 
 #endif // ROYINIT_H
