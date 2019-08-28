@@ -10,7 +10,7 @@ roy_mmap_new(size_t   key_size,
   ret->root       = NULL;
   ret->key_size   = key_size;
   ret->value_size = value_size;
-  ret->compare       = compare;
+  ret->compare    = compare;
   return ret;
 }
 
@@ -54,9 +54,9 @@ roy_mmap_insert(RoyMMap    * mmap,
                 const void * value) {
   void * pair = pair_new(key, mmap->key_size, value, mmap->value_size);
   mmap->root = roy_mset_insert(&mmap->root,
-                             pair,
-                             mmap->key_size + mmap->value_size,
-                             mmap->compare);
+                               pair,
+                               mmap->key_size + mmap->value_size,
+                               mmap->compare);
   free(pair);
   return mmap;
 }
