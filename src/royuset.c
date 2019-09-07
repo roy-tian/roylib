@@ -205,14 +205,12 @@ next_prime(size_t number) {
 // 64-bit hash for 64-bit platforms
 static uint64_t
 MurmurHash64A ( const void * key, size_t key_size, uint64_t seed ) {
-  const uint64_t m = 0xc6a4a7935bd1e995ULL;
-  const int r = 47;
-
-  uint64_t h = seed ^ (key_size * m);
-  
   const uint64_t * data = (const uint64_t *)key;
   const uint64_t * end = data + (key_size / 8);
-
+  const uint64_t m = 0xc6a4a7935bd1e995ULL;
+  const uint64_t r = 47;
+  uint64_t h = seed ^ (key_size * m);
+  
   while (data != end) {
     uint64_t k = *data++;
 
@@ -226,13 +224,13 @@ MurmurHash64A ( const void * key, size_t key_size, uint64_t seed ) {
 
   const unsigned char * data2 = (const unsigned char*)data;
 
-  switch(key_size & 7) {
-  case 7: h ^= (uint64_t)(data2[6]) << 48;
-  case 6: h ^= (uint64_t)(data2[5]) << 40;
-  case 5: h ^= (uint64_t)(data2[4]) << 32;
-  case 4: h ^= (uint64_t)(data2[3]) << 24;
-  case 3: h ^= (uint64_t)(data2[2]) << 16;
-  case 2: h ^= (uint64_t)(data2[1]) << 8;
+  switch(key_size & 7ULL) {
+  case 7: h ^= (uint64_t)(data2[6]) << 48ULL;
+  case 6: h ^= (uint64_t)(data2[5]) << 40ULL;
+  case 5: h ^= (uint64_t)(data2[4]) << 32ULL;
+  case 4: h ^= (uint64_t)(data2[3]) << 24ULL;
+  case 3: h ^= (uint64_t)(data2[2]) << 16ULL;
+  case 2: h ^= (uint64_t)(data2[1]) << 8ULL;
   case 1: h ^= (uint64_t)(data2[0]);
           h *= m;
   };
