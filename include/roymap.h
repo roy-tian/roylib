@@ -20,7 +20,7 @@ typedef struct RoyMap_ RoyMap;
 // Returns a pointer to a newly build RoyMap. 
 RoyMap * roy_map_new(size_t key_size, size_t value_size, int (* compare)(const void *, const void *));
 
-// Deallocates all the memory allocated.
+// De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'map', or memory leak will occur.)
 void roy_map_delete(RoyMap * map);
 

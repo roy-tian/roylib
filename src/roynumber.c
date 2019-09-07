@@ -25,9 +25,9 @@ roy_parse_binary(const char * str) {
   STR_TRIM_LEFT(str)
   size_t len = strspn(str, "01");
   for (size_t i = 0 ; i != len; i++) {
-    result <<= 1;
+    result <<= 1ULL;
     if (*(str + i) == '1') {
-      result += 1;
+      result += 1ULL;
     }
   }
   return result;
@@ -40,7 +40,7 @@ roy_parse_octal(const char * str) {
   STR_INC("0", str)
   size_t len = strspn(str, "01234567");
   for (size_t i = 0; i != len; i++) {
-    result <<= 3;
+    result <<= 3ULL;
     result += *(str + i) - '0';
   }
   return result; 
@@ -55,7 +55,7 @@ roy_parse_hexadecimal(const char * str) {
   }
   size_t len = strspn(str, "0123456789ABCDEFabcdef");
   for (size_t i = 0; i != len; i++) {
-    result <<= 4;
+    result <<= 4ULL;
     int cur_chr = *(str + i);
     if (isdigit(cur_chr)) {
       result += cur_chr - '0';
@@ -89,7 +89,7 @@ roy_parse_double(const char * str) {
   const char * pstr = str;
   double expo = 1.0;
   STR_TO_INT(result, str)
-  expo /= pow(10, str - pstr);
+  expo /= pow(10.0, (double)(str - pstr));
   STR_INC("eE", str)
   int pn_expo = (*str == '-' ? -1 : 1);
   STR_INC("+-", str)
@@ -100,11 +100,11 @@ roy_parse_double(const char * str) {
 }
 
 char *
-roy_llong_to_string(char      * dest,
-                    long long   number,
-                    size_t      base,
-                    size_t      width,
-                    bool        fill_zero) {
+roy_llong_to_string(char    * dest,
+                    int64_t   number,
+                    size_t    base,
+                    size_t    width,
+                    bool      fill_zero) {
   bool pn = true, llong_min = false;
   if (number == LLONG_MIN) {
     llong_min = true;
@@ -116,7 +116,7 @@ roy_llong_to_string(char      * dest,
   }
   char * pdest = dest;
   do {
-    int cur_digit = number % base;
+    int cur_digit = (int)(number % base);
     *pdest++ = cur_digit + (cur_digit <= 9 ? '0' : 'A' - 10);
   } while ((number /= base) > 0);
   if (!pn) {
@@ -134,14 +134,14 @@ roy_llong_to_string(char      * dest,
 }
 
 char *
-roy_ullong_to_string(char               * dest,
+roy_ullong_to_string(char     * dest,
                      uint64_t   number,
-                     size_t               base,
-                     size_t               width,
-                     bool                 fill_zero) {
+                     size_t     base,
+                     size_t     width,
+                     bool       fill_zero) {
   char * pdest = dest;
   do {
-    int cur_digit = number % base;
+    int cur_digit = (int)(number % base);
     *pdest++ = cur_digit + (cur_digit <= 9 ? '0' : 'A' - 10);
   } while ((number /= base) > 0); 
   size_t dest_width = pdest - dest;
@@ -154,24 +154,24 @@ roy_ullong_to_string(char               * dest,
 
 uint64_t
 roy_ullong_set_bits(uint64_t * dest,
-                    int                  position,
-                    size_t               count,
+                    size_t     position,
+                    size_t     count,
                     uint64_t   src) {
   return *dest = (*dest & ~(~(~0ULL << count) << (position + 1 - count))) |
                  ( src  &   ~(~0ULL << count) << (position + 1 - count));
 }
 
 uint64_t
-roy_ullong_invert(long long * number,
-                  int         position,
-                  size_t      count) {
+roy_ullong_invert(uint64_t * number,
+                  size_t     position,
+                  size_t     count) {
   return *number = *number ^ ~(~0ULL << count) << (position + 1 - count);
 }
 
 uint64_t
 roy_ullong_rotate_right(uint64_t * number,
-                        int                  steps,
-                        size_t               width) {
+                        size_t     steps,
+                        size_t     width) {
   uint64_t right = (*number & ~(~0ULL << steps)) << (width - steps);
   *number >>= steps;
   *number |= right;
@@ -180,8 +180,8 @@ roy_ullong_rotate_right(uint64_t * number,
 
 uint64_t
 roy_ullong_rotate_left(uint64_t * number,
-                       int                  steps,
-                       size_t               width) {
+                       size_t     steps,
+                       size_t     width) {
   uint64_t right = (*number & ~(~0ULL << (width - steps))) << steps;
   *number >>= width - steps;
   *number |= right;

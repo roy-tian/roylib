@@ -6,7 +6,7 @@ static RoySList * back(RoySList * slist);
 
 RoySList *
 roy_slist_new(void) {
-  RoySList * ret = ROY_SLIST(malloc(sizeof(RoySList)));
+  RoySList * ret = (RoySList *)malloc(sizeof(RoySList));
   ret->data = NULL;
   ret->next = NULL;
   return ret;
@@ -30,7 +30,7 @@ roy_slist_cbegin(const RoySList *slist) {
 
 RoySList *
 roy_slist_iterator(RoySList * slist,
-                   int        position) {
+                   size_t     position) {
   int cur_position = 0;
   RoySList * iter = slist;
   while (iter->next && cur_position <= position) {
@@ -42,7 +42,7 @@ roy_slist_iterator(RoySList * slist,
 
 const RoySList *
 roy_slist_const_iterator(const RoySList * slist,
-                         int              position) {
+                         size_t           position) {
   int cur_position = 0;
   const RoySList * iter = slist;
   while (iter->next && cur_position <= position) {
@@ -56,7 +56,7 @@ void *
 roy_slist_element(void           * dest,
                   const RoySList * slist,
                   size_t           element_size,
-                  int              position) {
+                  size_t           position) {
   return
   position >= 0 && position < roy_slist_size(slist)                           ?
   memcpy(dest, roy_slist_const_iterator(slist, position)->data, element_size) :
@@ -101,7 +101,7 @@ roy_slist_pop_front(RoySList * slist) {
 
 RoySList *
 roy_slist_erase(RoySList * slist,
-                int        position) {
+                size_t     position) {
   return roy_slist_pop_front(roy_slist_iterator(slist, position - 1));
 }
 
@@ -198,8 +198,8 @@ void roy_slist_for_which(RoySList * slist,
 
 static RoySList *
 node_new(const void * data,
-         size_t       element_size) {
-  RoySList * ret = ROY_SLIST(malloc(sizeof(void *) + sizeof(RoySList *)));
+         size_t    element_size) {
+  RoySList * ret = (RoySList *)malloc(sizeof(void *) + sizeof(RoySList *));
   ret->data = malloc(element_size);
   memcpy(ret->data, data, element_size);
   ret->next = NULL;

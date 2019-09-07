@@ -1,11 +1,11 @@
 #include "../include/royarray.h"
 
-static bool position_valid(const RoyArray * array, int position, bool right_included);
+static bool position_valid(const RoyArray * array, size_t position, bool right_included);
 
 RoyArray *
 roy_array_new(size_t capacity,
               size_t element_size) {
-  RoyArray * ret    = ROY_ARRAY(malloc(sizeof(RoyArray)));
+  RoyArray * ret    = (RoyArray *)malloc(sizeof(RoyArray));
   ret->data         = calloc(capacity, element_size);
   ret->size         = 0;
   ret->capacity     = capacity;
@@ -21,20 +21,20 @@ roy_array_delete(RoyArray * array) {
 
 void *
 roy_array_pointer(RoyArray * array,
-                  int        position) {
+                  size_t     position) {
   return array->data + array->element_size * position;
 }
 
 const void *
 roy_array_const_pointer(const RoyArray * array,
-                        int              position) {
+                        size_t           position) {
   return array->data + array->element_size * position;
 }
 
 void *
 roy_array_element(void           * dest,
                   const RoyArray * array,
-                  int              position) {
+                  size_t           position) {
   return
   position >= 0 && position < roy_array_size(array)                           ?
   memcpy(dest, roy_array_const_pointer(array, position), array->element_size) :
@@ -63,7 +63,7 @@ roy_array_full(const RoyArray * array) {
 
 RoyArray *
 roy_array_insert(RoyArray   * array,
-                 int          position,
+                 size_t       position,
                  const void * data) {
   if (position_valid(array, position, true) && !roy_array_full(array)) {
     for (size_t i = roy_array_size(array); i > position; i--) {
@@ -93,7 +93,7 @@ roy_array_push_back(RoyArray   * array,
 
 RoyArray *
 roy_array_erase(RoyArray * array,
-                int        position) {
+                size_t     position) {
   if (position_valid(array, position, false) && !roy_array_empty(array)) {
     for (size_t i = position; i != roy_array_size(array) - 1; i++) {
       memcpy(roy_array_pointer(array, i),
@@ -107,7 +107,7 @@ roy_array_erase(RoyArray * array,
 
 RoyArray *
 roy_array_erase_fast(RoyArray * array,
-                     int        position) {
+                     size_t     position) {
   if (position_valid(array, position, false) && !roy_array_empty(array)) {
     memcpy(roy_array_pointer(array, position),
            roy_array_const_pointer(array, array->size - 1),
@@ -156,7 +156,7 @@ roy_array_for_which(RoyArray * array,
 
 static bool
 position_valid(const RoyArray * array,
-               int              position,
+               size_t           position,
                bool             right_included) {
   if (position < 0) {
     return false;

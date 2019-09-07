@@ -8,7 +8,7 @@ static bool need_shrink(const RoyVector * vector);
 RoyVector *
 roy_vector_new(size_t capacity,
                size_t element_size) {
-  RoyVector * ret    = ROY_VECTOR(malloc(sizeof(RoyVector)));
+  RoyVector * ret    = (RoyVector *)malloc(sizeof(RoyVector));
   ret->data          = calloc(capacity, element_size);
   ret->size          = 0;
   ret->capacity      = capacity;
@@ -19,51 +19,51 @@ roy_vector_new(size_t capacity,
 
 void
 roy_vector_delete(RoyVector * vector) {
-  roy_array_delete(ROY_ARRAY(vector));
+  roy_array_delete((RoyArray *)vector);
 }
 
 void *
 roy_vector_pointer(RoyVector * vector,
-                   int         position) {
-  return roy_array_pointer(ROY_ARRAY(vector), position);
+                   size_t      position) {
+  return roy_array_pointer((RoyArray *)vector, position);
 }
 
 const void *
 roy_vector_const_pointer(const RoyVector * vector,
-                         int               position) {
-  return roy_array_const_pointer(ROY_ARRAY(vector), position);
+                         size_t            position) {
+  return roy_array_const_pointer((RoyArray *)vector, position);
 }
 
 void *
 roy_vector_element(void            * dest,
                    const RoyVector * vector,
-                   int               position) {
-  return roy_array_element(dest, ROY_ARRAY(vector), position);
+                   size_t            position) {
+  return roy_array_element(dest, (RoyArray *)vector, position);
 }
 
 size_t
 roy_vector_size(const RoyVector * vector) {
-  return roy_array_size(ROY_ARRAY(vector));
+  return roy_array_size((RoyArray *)vector);
 }
 
 size_t
 roy_vector_capacity(const RoyVector * vector) {
-  return roy_array_capacity(ROY_ARRAY(vector));
+  return roy_array_capacity((RoyArray *)vector);
 }
 
 bool
 roy_vector_empty(const RoyVector * vector) {
-  return roy_array_empty(ROY_ARRAY(vector));
+  return roy_array_empty((RoyArray *)vector);
 }
 
 RoyVector *
 roy_vector_insert(RoyVector  * vector,
-                  int          position,
+                  size_t       position,
                   const void * data) {
   if (need_expand(vector)) {
     expand(vector);
   }
-  roy_array_insert(ROY_ARRAY(vector), position, data);
+  roy_array_insert((RoyArray *)vector, position, data);
   return vector;
 }
 
@@ -73,14 +73,14 @@ roy_vector_push_back(RoyVector  * vector,
   if (need_expand(vector)) {
     expand(vector);
   }
-  roy_array_push_back(ROY_ARRAY(vector), data);
+  roy_array_push_back((RoyArray *)vector, data);
   return vector;
 }
 
 RoyVector *
 roy_vector_erase(RoyVector * vector,
-                 int         position) {
-  roy_array_erase(ROY_ARRAY(vector), position);
+                 size_t      position) {
+  roy_array_erase((RoyArray *)vector, position);
   if (need_shrink(vector)) {
     shrink(vector);
   }
@@ -89,8 +89,8 @@ roy_vector_erase(RoyVector * vector,
 
 RoyVector *
 roy_vector_erase_fast(RoyVector * vector,
-                      int         position) {
-  roy_array_erase_fast(ROY_ARRAY(vector), position);
+                      size_t      position) {
+  roy_array_erase_fast((RoyArray *)vector, position);
   if (need_shrink(vector)) {
     shrink(vector);
   }
@@ -99,7 +99,7 @@ roy_vector_erase_fast(RoyVector * vector,
 
 RoyVector *
 roy_vector_pop_back(RoyVector * vector) {
-  roy_array_pop_back(ROY_ARRAY(vector));
+  roy_array_pop_back((RoyArray *)vector);
   if (need_shrink(vector)) {
     shrink(vector);
   }
@@ -117,14 +117,14 @@ roy_vector_clear(RoyVector * vector) {
 void
 roy_vector_for_each(RoyVector * vector,
                     void     (* operate) (void *)) {
-  roy_array_for_each(ROY_ARRAY(vector), operate);
+  roy_array_for_each((RoyArray *)vector, operate);
 }
 
 void
 roy_vector_for_which(RoyVector * vector,
                      bool     (* condition) (const void *),
                      void     (* operate)         (void *)) {
-  roy_array_for_which(ROY_ARRAY(vector), condition, operate);
+  roy_array_for_which((RoyArray *)vector, condition, operate);
 }
 
 /* PRIVATE FUNCTIONS BELOW */

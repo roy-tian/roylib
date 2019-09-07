@@ -3,7 +3,7 @@
 RoyQueue *
 roy_queue_new(size_t capacity,
               size_t element_size) {
-  RoyQueue * ret    = ROY_QUEUE(malloc(sizeof(RoyQueue)));
+  RoyQueue * ret    = (RoyQueue *)malloc(sizeof(RoyQueue));
   ret->data         = calloc(capacity, element_size);
   ret->size         = 0;
   ret->capacity     = capacity;
@@ -15,34 +15,34 @@ roy_queue_new(size_t capacity,
 
 void
 roy_queue_delete(RoyQueue * queue) {
-  roy_array_delete(ROY_ARRAY(queue));
+  roy_array_delete((RoyArray *)queue);
 }
 
 size_t
 roy_queue_size(const RoyQueue * queue) {
-  return roy_array_size(ROY_ARRAY(queue));
+  return roy_array_size((RoyArray *)queue);
 }
 
 size_t
 roy_queue_capacity(const RoyQueue * queue) {
-  return roy_array_capacity(ROY_ARRAY(queue));
+  return roy_array_capacity((RoyArray *)queue);
 }
 
 bool
 roy_queue_empty(const RoyQueue * queue) {
-  return roy_array_empty(ROY_ARRAY(queue));
+  return roy_array_empty((RoyArray *)queue);
 }
 
 bool
 roy_queue_full(const RoyQueue * queue) {
-  return roy_array_full(ROY_ARRAY(queue));
+  return roy_array_full((RoyArray *)queue);
 }
 
 RoyQueue *
 roy_queue_push(RoyQueue   * queue,
                const void * data) {
   if (!roy_queue_full(queue)) {
-    roy_array_insert(ROY_ARRAY(queue), queue->back_index++, data);
+    roy_array_insert((RoyArray *)queue, queue->back_index++, data);
     if (queue->back_index == roy_queue_capacity(queue)) {
       queue->back_index = 0;
     }

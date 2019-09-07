@@ -20,21 +20,21 @@ typedef struct RoyArray_ RoyArray;
 // (Operations on un-newed RoyArrays will cause undefined behavior.)
 RoyArray * roy_array_new(size_t capacity, size_t element_size);
 
-// Deallocates the memory allocated by 'roy_array_new'.
+// De-allocates the memory allocated by 'roy_array_new'.
 // (Always call this function after the work is done by the given 'array', or memory leak will occur.)。
 void roy_array_delete(RoyArray * array);
 
 /* ELEMENT ACCESS */
 
 // Returns a void pointer to the element at 'position'. (No boundary check)
-void * roy_array_pointer(RoyArray * array, int position);
+void * roy_array_pointer(RoyArray * array, size_t position);
 
 // Returns a const void pointer to the element at 'position'. (No boundary check)
-const void * roy_array_const_pointer(const RoyArray * array, int position);
+const void * roy_array_const_pointer(const RoyArray * array, size_t position);
 
 // Returns a copy of the element at 'position', or NULL if 'position' is invalid.
 // (The behavior is undefined if 'dest' is uninitialized.)
-void * roy_array_element(void * dest, const RoyArray * array, int position);
+void * roy_array_element(void * dest, const RoyArray * array, size_t position);
 
 // Returns a typed pointer to the element at 'position', or NULL if 'position' is invalid.
 #define roy_array_at(array, element_type, position) \
@@ -59,7 +59,7 @@ bool roy_array_full(const RoyArray * array);
 // Adds an element named 'data' into 'array' at 'position', or does nothing if 'array' is full.
 // (does nothing if 'position' is negative or exceeds.)
 // (The behavior is undefined if 'data' is uninitialized.)
-RoyArray * roy_array_insert(RoyArray * array, int position, const void * data);
+RoyArray * roy_array_insert(RoyArray * array, size_t position, const void * data);
 
 // Adds an element named 'data' into 'array' next to the last element, or does nothing if 'array' is full.
 // (The behavior is undefined if 'data' is uninitialized.)
@@ -67,13 +67,13 @@ RoyArray * roy_array_push_back(RoyArray * array, const void * data);
 
 // Removes an element at 'position', and fill the empty position with its next recursively.
 // (The first element will be removed if 'position' is negative, or the last if 'position' exceeds.)
-// (Deprecated: slower when 'position' near head and lenth of array is huge.)
-RoyArray * roy_array_erase(RoyArray * array, int position);
+// (Deprecated: slower when 'position' near head and length of array is huge.)
+RoyArray * roy_array_erase(RoyArray * array, size_t position);
 
 // Removes an element at 'position', and fill the empty position with the last element.
 // (The first element will be removed if 'position' is negative, or the last if 'position' exceeds.)
 // (Recommended when element order is irrelevant.)
-RoyArray * roy_array_erase_fast(RoyArray * array, int position);
+RoyArray * roy_array_erase_fast(RoyArray * array, size_t position);
 
 // Removes the last element of 'array'.
 RoyArray * roy_array_pop_back(RoyArray * array);

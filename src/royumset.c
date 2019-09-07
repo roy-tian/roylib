@@ -7,12 +7,12 @@ static size_t   next_prime(size_t number);
 static bool     valid_bucket_index(const RoyUMSet * umset, int bucket_index);
 
 RoyUMSet *
-roy_umset_new(size_t     bucket_count,
+roy_umset_new(size_t      bucket_count,
               size_t      element_size,
               uint64_t    seed,
               uint64_t (* hash)(const void *, size_t, uint64_t),
               int      (* compare)(const void *, const void *)) {
-  RoyUMSet * ret    = ROY_UMSET(malloc(sizeof(RoyUMSet)));
+  RoyUMSet * ret    = (RoyUMSet *)malloc(sizeof(RoyUMSet));
   ret->bucket_count = next_prime(bucket_count);
   ret->element_size = element_size;
   ret->size         = 0;
@@ -71,7 +71,7 @@ roy_umset_empty(const RoyUMSet * umset) {
 }
 
 RoyUMSet *
-roy_umset_insert(RoyUMSet    * umset,
+roy_umset_insert(RoyUMSet  * umset,
                 const void * data) {
   RoySList ** node = &umset->buckets[roy_umset_bucket(umset, data)];
   roy_slist_push_front(*node, data, umset->element_size);
@@ -95,7 +95,8 @@ roy_umset_erase(RoyUMSet * umset,
 }
 
 RoyUMSet *
-roy_umset_remove(RoyUMSet * umset, const void * data) {
+roy_umset_remove(RoyUMSet   * umset,
+                 const void * data) {
   RoySList ** node = &umset->buckets[roy_umset_bucket(umset, data)];
   size_t size = roy_slist_size(*node);
   roy_slist_remove(*node, data, umset->compare);
@@ -106,7 +107,7 @@ roy_umset_remove(RoyUMSet * umset, const void * data) {
 
 const void *
 roy_umset_find(const RoyUMSet * umset,
-              const void    * data) {
+               const void     * data) {
   RoySList ** node = &umset->buckets[roy_umset_bucket(umset, data)];
   for (RoySList * iter = roy_slist_begin(*node); iter; iter = iter->next) {
     if (umset->compare(data, iter->data) == 0) {
@@ -130,12 +131,14 @@ roy_umset_bucket_count(const RoyUMSet * umset) {
 }
 
 size_t
-roy_umset_bucket_size(const RoyUMSet * umset, int bucket_index) {
+roy_umset_bucket_size(const RoyUMSet * umset,
+                      int              bucket_index) {
   return roy_slist_size(umset->buckets[bucket_index]);
 }
 
 int64_t
-roy_umset_bucket(const RoyUMSet * umset, const void * data) {
+roy_umset_bucket(const RoyUMSet * umset,
+                 const void     * data) {
   return umset->hash(data, umset->element_size, umset->seed) %
          roy_umset_bucket_count(umset);
 }
@@ -145,13 +148,16 @@ roy_umset_load_factor(const RoyUMSet * umset) {
   return (double)roy_umset_size(umset) / (double)roy_umset_bucket_count(umset);
 }
 
-RoyUMSet * roy_umset_rehash(RoyUMSet * umset, size_t bucket_count, uint64_t seed) {
+// TODO
+RoyUMSet * roy_umset_rehash(RoyUMSet * umset,
+                            size_t     bucket_count,
+                            uint64_t   seed) {
   return umset;
 }
 
 void
 roy_umset_for_each(RoyUMSet * umset,
-                  void   (* operate)(void * data)) {
+                   void    (* operate)(void * data)) {
   for (size_t i = 0; i != umset->bucket_count; i++) {
     if (umset->buckets[i] && !roy_slist_empty(umset->buckets[i])) {
       roy_slist_for_each(umset->buckets[i], operate);
@@ -161,8 +167,8 @@ roy_umset_for_each(RoyUMSet * umset,
 
 void
 roy_umset_for_which(RoyUMSet * umset,
-                   bool   (* condition)(const void *),
-                   void   (* operate)(void *)) {
+                    bool    (* condition)(const void *),
+                    void    (* operate)(void *)) {
   for (size_t i = 0; i != umset->bucket_count; i++) {
     if (umset->buckets[i] && !roy_slist_empty(umset->buckets[i])) {
       roy_slist_for_which(umset->buckets[i], condition, operate);
@@ -199,13 +205,11 @@ next_prime(size_t number) {
 // 64-bit hash for 64-bit platforms
 static uint64_t
 MurmurHash64A ( const void * key, size_t key_size, uint64_t seed ) {
-  const uint64_t m = 0xc6a4a7935bd1e995ULL;
-  const int r = 47;
-
-  uint64_t h = seed ^ (key_size * m);
-  
+  const uint64_t m = 0Xc6a4a7935bd1e995ULL;
+  const uint64_t r = 47ULL;
   const uint64_t * data = (const uint64_t *)key;
   const uint64_t * end = data + (key_size / 8);
+  uint64_t h = seed ^ (key_size * m);
 
   while (data != end) {
     uint64_t k = *data++;
@@ -220,13 +224,13 @@ MurmurHash64A ( const void * key, size_t key_size, uint64_t seed ) {
 
   const unsigned char * data2 = (const unsigned char*)data;
 
-  switch(key_size & 7) {
-  case 7: h ^= (uint64_t)(data2[6]) << 48;
-  case 6: h ^= (uint64_t)(data2[5]) << 40;
-  case 5: h ^= (uint64_t)(data2[4]) << 32;
-  case 4: h ^= (uint64_t)(data2[3]) << 24;
-  case 3: h ^= (uint64_t)(data2[2]) << 16;
-  case 2: h ^= (uint64_t)(data2[1]) << 8;
+  switch(key_size & 7ULL) {
+  case 7: h ^= (uint64_t)(data2[6]) << 48ULL;
+  case 6: h ^= (uint64_t)(data2[5]) << 40ULL;
+  case 5: h ^= (uint64_t)(data2[4]) << 32ULL;
+  case 4: h ^= (uint64_t)(data2[3]) << 24ULL;
+  case 3: h ^= (uint64_t)(data2[2]) << 16ULL;
+  case 2: h ^= (uint64_t)(data2[1]) << 8ULL;
   case 1: h ^= (uint64_t)(data2[0]);
           h *= m;
   };
@@ -240,6 +244,6 @@ MurmurHash64A ( const void * key, size_t key_size, uint64_t seed ) {
 
 static bool
 valid_bucket_index(const RoyUMSet * umset,
-                   int             bucket_index) {
+                   int              bucket_index) {
   return bucket_index >= 0 && bucket_index < roy_umset_bucket_count(umset);
 }

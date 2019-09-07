@@ -2,7 +2,7 @@
 
 RoyDeque *
 roy_deque_new(size_t element_size) {
-  RoyDeque * ret    = ROY_DEQUE(malloc(sizeof(RoyDeque)));
+  RoyDeque * ret    = (RoyDeque *)malloc(sizeof(RoyDeque));
   ret->head         = roy_list_new();
   ret->tail         = ret->head->next;
   ret->size         = 0;
@@ -18,13 +18,13 @@ roy_deque_delete(RoyDeque * deque) {
 
 void *
 roy_deque_pointer(RoyDeque * deque,
-                 int         position) {
+                  size_t     position) {
   RoyList * pnode;
   if (position <= deque->size / 2) { // smaller half
     pnode = roy_list_iterator(deque->head, position);
   } else { // bigger half
     pnode = roy_list_reverse_iterator(deque->tail,
-                                      deque->size - position - 1);
+                                      roy_deque_size(deque) - position - 1);
   }
   return pnode ? pnode->data : NULL;
 }
@@ -43,7 +43,7 @@ roy_deque_back(RoyDeque * deque) {
 
 const void *
 roy_deque_const_pointer(const RoyDeque * deque,
-                        int              position) {
+                        size_t           position) {
   const RoyList * pnode;
   if (position <= deque->size / 2) { // smaller half
     pnode = roy_list_const_iterator(deque->head, position);
@@ -69,7 +69,7 @@ roy_deque_const_back(const RoyDeque * deque) {
 void *
 roy_deque_element(void           * dest,
                   const RoyDeque * deque,
-                  int              position) {
+                  size_t           position) {
   memcpy(dest,
          roy_deque_const_pointer(deque, position),
          deque->element_size);
@@ -88,7 +88,7 @@ roy_deque_empty(const RoyDeque * deque) {
 
 RoyDeque *
 roy_deque_insert(RoyDeque   * deque,
-                 int          position,
+                 size_t       position,
                  const void * data) {
   if (position <= deque->size / 2) { // smaller half
     roy_list_insert(deque->head, position, data, deque->element_size);
@@ -119,7 +119,7 @@ roy_deque_push_back(RoyDeque   * deque,
 
 RoyDeque *
 roy_deque_erase(RoyDeque * deque,
-                int        position) {
+                size_t     position) {
   if (position <= deque->size / 2) { // smaller half
     roy_list_erase(deque->head, position);
   } else { // bigger half

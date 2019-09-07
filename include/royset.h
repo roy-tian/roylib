@@ -48,7 +48,7 @@ RoySet * roy_set_clear(RoySet * set);
 
 /* LOOKUP */
 
-// Finds an element equivalent to 'key' using compare funcion 'compare'.
+// Finds an element equivalent to 'key' using compare function 'compare'.
 RoySet * roy_set_find(RoySet * set, const void * key, int (* compare)(const void *, const void *));
 
 /* TRAVERSE */

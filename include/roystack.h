@@ -21,7 +21,7 @@ typedef struct RoyStack_ RoyStack;
 // (Operations on un-newed RoyStacks will cause undefined behavior.)
 RoyStack * roy_stack_new(size_t capacity, size_t element_size);
 
-// Deallocates the memory allocated by 'roy_stack_new'.
+// De-allocates the memory allocated by 'roy_stack_new'.
 // (Always call this function after the work is done by the given 'stack', or memory leak will occur.)
 void roy_stack_delete(RoyStack * stack);
 

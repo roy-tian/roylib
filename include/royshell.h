@@ -18,7 +18,7 @@ typedef struct RoyShell_ RoyShell;
 // Returns a pointer to a newly build RoyShell.
 RoyShell * roy_shell_new(void);
 
-// Deallocates the memory allocated by 'roy_shell_new'.
+// De-allocates the memory allocated by 'roy_shell_new'.
 void roy_shell_delete(RoyShell * shell);
 
 // Starts a simulation.
@@ -28,8 +28,10 @@ void roy_shell_start(RoyShell * shell);
 // A RoyShell must have at least a default command "" (empty string) in order to perform 'roy_shell_start'.
 RoyShell * roy_shell_command_add(RoyShell * shell, const char * cmd, void (* operate)(RoyShell *));
 
+// A convenient #define for 'roy_shell_command_add'.
 #define roy_shell_add(shell, cmd) roy_shell_command_add(shell, #cmd, cmd)
 
+// A convenient #define for 'roy_shell_command_add' replaces roy_shell_command_add(shell, "", cmd).
 #define roy_shell_default(shell, cmd) roy_shell_command_add(shell, "", cmd)
 
 // Sets the shell prompt to any string you like, "> " by default.
@@ -39,7 +41,7 @@ RoyShell * roy_shell_set_prompt_text(RoyShell * shell, const char * prompt);
 size_t roy_shell_argument_count(const RoyShell * shell);
 
 // Returns the text of the 'position'-th arguments.
-const char * roy_shell_argument_at(const RoyShell * shell, int position);
+const char * roy_shell_argument_at(const RoyShell * shell, size_t position);
 
 // Returns whether the current command line has any argument matches 'regex' or not.
 int roy_shell_argument_find(const RoyShell * shell, const char * regex);
@@ -54,7 +56,7 @@ RoyShell * roy_shell_log_append(RoyShell * shell, const char * format, ...);
 size_t roy_shell_history_count(const RoyShell * shell);
 
 // Shows input history anytime you like, position < 0 will show reversely.
-const char * roy_shell_ihistory_at(const RoyShell * shell, int position);
+const char * roy_shell_ihistory_at(const RoyShell * shell, size_t position);
 
 // Shows output history anytime you like, position < 0 will show reversely.
-const char * roy_shell_ohistory_at(const RoyShell * shell, int position);
+const char * roy_shell_ohistory_at(const RoyShell * shell, size_t position);

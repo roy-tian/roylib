@@ -88,8 +88,8 @@ roy_str_replace_all(char       * str,
 
 char *
 roy_str_replace_index(char       * str,
-                      size_t       old_sub_pos,
-                      size_t       old_sub_len,
+                      size_t    old_sub_pos,
+                      size_t    old_sub_len,
                       const char * new_sub) {
   ROY_STR(temp_str, strlen(str) + strlen(new_sub) - old_sub_len)
   strncpy(temp_str, str, old_sub_pos);
@@ -110,9 +110,9 @@ roy_str_replace_between(char       * str,
     if (flag == true) {
       char * ptail = strstr(phead, pattern_tail);
       roy_str_replace_index(str,
-                               phead - str,
-                               ptail - phead + strlen(pattern_tail),
-                               new_sub);
+                            phead - str,
+                            ptail - phead + strlen(pattern_tail),
+                            new_sub);
       flag = false;  
     } else {
       flag = true;
@@ -152,7 +152,7 @@ roy_str_replace_all_char_if(char  * str,
 char *
 roy_str_line(char       * line_content,
              const char * str,
-             size_t       line_number) {
+             size_t    line_number) {
   while ((line_number-- > 1) && strchr(str, '\n')) {
     str = strchr(str, '\n') + 1; // excludes the '\n' right before the line.
   }
@@ -178,7 +178,7 @@ roy_str_trim_line(char * str) {
 char *
 roy_str_trim(char * str) {
   ROY_STR(temp_str, strlen(str))
-  for (int i = 1; i <= roy_str_count_line(str); i++) {
+  for (size_t i = 1; i <= roy_str_count_line(str); i++) {
     ROY_STR(cur_line, roy_str_line_length(str, i))
     roy_str_line(cur_line, str, i);
     roy_str_trim_line(cur_line);
@@ -203,6 +203,7 @@ roy_str_fill_char(char   * dest,
   return dest;
 }
 
+// TODO
 char *
 roy_str_fill_sequence(char       * dest,
                       const char * pattern) {
@@ -383,7 +384,7 @@ roy_str_count_word(const char * str) {
 
 size_t
 roy_str_count_word_if(const char * str,
-                      size_t       length) {
+                      size_t    length) {
   bool flag = false;
   size_t length_cur = 0;
   size_t count_cur = 0;
@@ -420,7 +421,7 @@ roy_str_count_line(const char * str) {
 
 size_t
 roy_str_line_length(const char * str,
-                    size_t       line_number) {
+                    size_t    line_number) {
   while ((line_number-- > 1) && strchr(str, '\n')) {
     str = strchr(str, '\n') + 1; // excludes the '\n' right before the line.
   }

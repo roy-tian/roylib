@@ -9,7 +9,7 @@ struct RoyMSet_ {
   void            * key;
 };
 
-// RoyMSet [Multi Set]: an associative container that contains a sorted set of objects of type Key, duplicated objects is allowed.
+// RoyMSet [aka Multi-Set]: an associative container that contains a sorted set of objects of type Key, duplicated objects is allowed.
 // Sorting is done using the key comparison function 'compare'. Search, removal, and insertion operations have logarithmic complexity.
 typedef struct RoyMSet_ RoyMSet;
 

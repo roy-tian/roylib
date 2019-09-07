@@ -64,7 +64,7 @@ roy_set_empty(const RoySet * set) {
 RoySet *
 roy_set_insert(RoySet     ** set,
                const void *  key,
-               size_t        key_size,
+               size_t     key_size,
                int       (*  compare)(const void *, const void *)) {
   if (!*set) {
     *set = node_new(key, key_size);
@@ -79,7 +79,7 @@ roy_set_insert(RoySet     ** set,
 RoySet *
 roy_set_erase(RoySet     ** set,
               const void *  key,
-              size_t        key_size,
+              size_t     key_size,
               int       (*  compare)(const void *, const void *)) {
   if (!*set) {
     return NULL;
@@ -158,8 +158,8 @@ roy_set_for_which(RoySet * set,
 
 static RoySet *
 node_new(const void * key,
-         size_t       key_size) {
-  RoySet * ret = ROY_SET(malloc(sizeof(RoySet)));
+         size_t    key_size) {
+  RoySet * ret = (RoySet *)malloc(sizeof(RoySet));
   ret->left    = NULL;
   ret->right   = NULL;
   ret->key     = malloc(key_size);

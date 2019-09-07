@@ -96,7 +96,7 @@ roy_shell_argument_count(const RoyShell * shell) {
 
 const char *
 roy_shell_argument_at(const RoyShell * shell,
-                      int              position) {
+                      size_t           position) {
   return (const char *)roy_deque_const_pointer(shell->argv, position);
 }
 
@@ -134,7 +134,7 @@ roy_shell_log_append(RoyShell   * shell,
 
 const char *
 roy_shell_ihistory_at(const RoyShell * shell,
-                      int              position) {
+                      size_t           position) {
   if (position < 0) {
     position += roy_deque_size(shell->ihistory);
   }
@@ -143,7 +143,7 @@ roy_shell_ihistory_at(const RoyShell * shell,
 
 const char *
 roy_shell_ohistory_at(const RoyShell * shell,
-                      int              position) {
+                      size_t           position) {
   if (position < 0) {
     position += roy_deque_size(shell->ohistory);
   }

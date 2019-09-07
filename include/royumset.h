@@ -28,7 +28,7 @@ typedef struct RoyUMSet_ RoyUMSet;
 // using a hash seed, a hash function and a compare function(NULL if you want to use default versions).
 RoyUMSet * roy_umset_new(size_t bucket_count, size_t element_size, uint64_t seed, uint64_t(* hash)(const void *, size_t, uint64_t), int(* compare)(const void *, const void *));
 
-// Deallocates all the memory allocated.
+// De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'umset', or memory leak will occur.)
 void roy_umset_delete(RoyUMSet * umset);
 

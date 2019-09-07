@@ -6,7 +6,7 @@ RoyMMap *
 roy_mmap_new(size_t   key_size,
              size_t   value_size,
              int   (* compare)(const void *, const void *)) {
-  RoyMMap * ret   = ROY_MMAP(malloc(sizeof(RoyMMap)));
+  RoyMMap * ret   = (RoyMMap *)malloc(sizeof(RoyMMap));
   ret->root       = NULL;
   ret->key_size   = key_size;
   ret->value_size = value_size;
@@ -90,9 +90,9 @@ roy_mmap_for_which(RoyMMap * mmap,
 // pair must be freed when it's done.
 static void *
 pair_new(const void * key,
-         size_t       key_size,
+         size_t    key_size,
          const void * value,
-         size_t       value_size) {
+         size_t    value_size) {
   void * pair = malloc(key_size + value_size);
   memcpy(pair, key, key_size);
   memcpy(pair + key_size, value, value_size);

@@ -32,15 +32,15 @@ const RoySList * roy_slist_cbegin(const RoySList * slist);
 
 // Returns an iterator to 'position' in 'slist' where the element takes place.
 // (Returns the head of 'list' if position is negative, NULL if position exceeds.)
-RoySList * roy_slist_iterator(RoySList * slist, int position);
+RoySList * roy_slist_iterator(RoySList * slist, size_t position);
 
 // Returns a const iterator to 'position' in 'slist' where the element takes place.
 // (Returns the head of 'list' if position is negative, NULL if position exceeds.)
-const RoySList * roy_slist_const_iterator(const RoySList * slist, int position);
+const RoySList * roy_slist_const_iterator(const RoySList * slist, size_t position);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)
-void * roy_slist_element(void * dest, const RoySList * slist, size_t element_size, int position);
+void * roy_slist_element(void * dest, const RoySList * slist, size_t element_size, size_t position);
 
 // Returns a typed pointer to the element at 'position', NULL if position exceeds.
 #define roy_slist_at(slist, element_type, position) ((element_type *)(roy_slist_iterator((list_head), (position))->data))
@@ -62,7 +62,7 @@ RoySList * roy_slist_push_front(RoySList * slist, const void * data, size_t elem
 RoySList * roy_slist_pop_front(RoySList * slist);
 
 // Removes the 'position'-th element from 'slist'.
-RoySList * roy_slist_erase(RoySList * slist, int position);
+RoySList * roy_slist_erase(RoySList * slist, size_t position);
 
 // Removes all the elements from 'slist'.
 RoySList * roy_slist_clear(RoySList * slist);

@@ -15,7 +15,7 @@ struct RoyQueue_ {
 /* CONSTRUCTION AND DESTRUCTION */
 
 // RoyQueue: a container adapter that gives the functionality of a FIFO data structure,
-// which inplemented as an cycled linear list.
+// which implemented as an cycled linear list.
 typedef struct RoyQueue_ RoyQueue;
 
 
@@ -24,7 +24,7 @@ typedef struct RoyQueue_ RoyQueue;
 // (Operations on un-newed RoyQueues will cause undefined behavior.)
 RoyQueue * roy_queue_new(size_t capacity, size_t element_size);
 
-// Deallocates the memory allocated by 'roy_queue_new'.
+// De-allocates the memory allocated by 'roy_queue_new'.
 // (Always call this function after the work is done by the given 'queue', or memory leak will occur.)
 void roy_queue_delete(RoyQueue * queue);
 

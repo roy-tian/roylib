@@ -4,7 +4,7 @@ struct RoyPointer_ {
   void * pointer;
 };
 
-// RoyPointer: encapsulates any kinds of pointers in order to transfer the underlaying objects.
+// RoyPointer: encapsulates any kinds of pointers in order to transfer the underlying objects.
 // useful for transporting functions pointers.
 typedef struct RoyPointer_ RoyPointer;
 

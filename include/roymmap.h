@@ -6,12 +6,12 @@
 
 struct RoyMMap_ {
   RoyMSet * root;
-  size_t   key_size;
-  size_t   value_size;
+  size_t    key_size;
+  size_t    value_size;
   int   (* compare)(const void *, const void *);
 };
 
-// RoyMMap: an associative container that contains a sorted multi map of unique objects of type Key.
+// RoyMMap[aka Multi-Map]: an associative container that contains a sorted multi map of unique objects of type Key.
 // Sorting is done using the key comparison function 'compare'. Search, removal, and insertion operations have logarithmic complexity.
 typedef struct RoyMMap_ RoyMMap;
 
@@ -20,7 +20,7 @@ typedef struct RoyMMap_ RoyMMap;
 // Returns a pointer to a newly build RoyMMap. 
 RoyMMap * roy_mmap_new(size_t key_size, size_t value_size, int (* compare)(const void *, const void *));
 
-// Deallocates all the memory allocated.
+// De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'mmap', or memory leak will occur.)
 void roy_mmap_delete(RoyMMap * mmap);
 

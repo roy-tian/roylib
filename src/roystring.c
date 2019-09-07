@@ -1,5 +1,4 @@
 #include "../include/roystring.h"
-#include "../include/roystr.h"
 #include <pcre.h>
 
 RoyString *
@@ -87,7 +86,7 @@ roy_string_insert(RoyString       * string,
 RoyString *
 roy_string_erase(RoyString * string,
                  int         index,
-                 size_t      count) {
+                 size_t   count) {
   ROY_STR(temp, roy_string_size(string) - count + 1)
   memcpy(temp, string->str, index);
   strncat(temp, string->str + index + count,
@@ -114,7 +113,7 @@ RoyString *
 roy_string_replace_str(RoyString  * string,
                        const char * substr,
                        int          index,
-                       size_t       count) {
+                       size_t    count) {
   ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
   strncpy(temp, string->str, index);
   strcat(temp, substr);
@@ -126,7 +125,7 @@ RoyString *
 roy_string_replace(RoyString       * string,
                    const RoyString * substring,
                    int               index, 
-                   size_t            count) {
+                   size_t         count) {
   return roy_string_replace_str(string,
                                 roy_string_cstr(substring),
                                 index,
@@ -137,7 +136,7 @@ RoyString *
 roy_string_substring(RoyString * string,
                      RoyString * substring,
                      int         index,
-                     size_t      count) {
+                     size_t   count) {
   ROY_STR(temp, count + 1)
   strncpy(temp, string->str + index, count);
   return substring = roy_string_assign(substring, temp);
