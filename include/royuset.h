@@ -3,7 +3,6 @@
 
 #include "royinit.h"
 #include "royslist.h"
-#include <stdint.h>
 
 struct RoyUSet_ {
   size_t      bucket_count;
