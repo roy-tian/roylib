@@ -1,4 +1,4 @@
-#include "../include/roydeque.h"
+#include "roydeque.h"
 
 RoyDeque *
 roy_deque_new(size_t element_size) {

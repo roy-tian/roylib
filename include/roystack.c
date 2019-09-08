@@ -1,4 +1,4 @@
-#include "../include/roystack.h"
+#include "roystack.h"
 
 static void swap_elements(void * data1, void * data2, size_t size);
 

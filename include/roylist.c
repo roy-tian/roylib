@@ -1,4 +1,4 @@
-#include "../include/roylist.h"
+#include "roylist.h"
 
 static RoyList * node_new(const void * data, size_t element_size);
 static void node_delete(RoyList * list);

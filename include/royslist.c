@@ -1,4 +1,4 @@
-#include "../include/royslist.h"
+#include "royslist.h"
 
 static RoySList * node_new(const void * data, size_t element_size);
 static void       node_delete(RoySList * slist);
@@ -169,6 +169,7 @@ roy_slist_unique(RoySList * slist,
   return slist;
 }
 
+// TODO
 RoySList *
 roy_slist_sort(RoySList * slist,
                int     (* compare)(const void *, const void *)) {

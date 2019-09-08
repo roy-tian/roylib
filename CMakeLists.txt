@@ -4,27 +4,31 @@ project(roylib VERSION 0.1.0)
 set(CMAKE_C_STANDARD 11)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-include_directories(/usr/local/include)
+include_directories(
+  /usr/local/include
+  C:/Apps/MSYS/mingw64/x86_64-w64-mingw32/include
+)
 
 add_library(roylib
-  include/royinit.h    roy.h
-  include/roystr.h     src/roystr.c
-  include/roystring.h  src/roystring.c
-  include/roynumber.h  src/roynumber.c
-  include/royshell.h   src/royshell.c
-  include/roypointer.h src/roypointer.c
-  include/royarray.h   src/royarray.c
-  include/royvector.h  src/royvector.c
-  include/roystack.h   src/roystack.c
-  include/royqueue.h   src/royqueue.c
-  include/royslist.h   src/royslist.c
-  include/roylist.h    src/roylist.c
-  include/roydeque.h   src/roydeque.c
-  include/royset.h     src/royset.c
-  include/roymset.h    src/roymset.c
-  include/roymap.h     src/roymap.c
-  include/roymmap.h    src/roymmap.c
-  include/royuset.h    src/royuset.c
-  include/royumset.h    src/royumset.c)
+  roy.h                include/royinit.h
+  include/roystr.h     include/roystr.c
+  include/roystring.h  include/roystring.c
+  include/roynumber.h  include/roynumber.c
+  include/royshell.h   include/royshell.c
+  include/roypointer.h include/roypointer.c
+  include/royarray.h   include/royarray.c
+  include/royvector.h  include/royvector.c
+  include/roystack.h   include/roystack.c
+  include/royqueue.h   include/royqueue.c
+  include/royslist.h   include/royslist.c
+  include/roylist.h    include/roylist.c
+  include/roydeque.h   include/roydeque.c
+  include/royset.h     include/royset.c
+  include/roymset.h    include/roymset.c
+  include/roymap.h     include/roymap.c
+  include/roymmap.h    include/roymmap.c
+  include/royuset.h    include/royuset.c
+  include/royumset.h   include/royumset.c
+)
 
 target_link_libraries(roylib pcre)

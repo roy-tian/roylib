@@ -1,4 +1,4 @@
-#include "../include/royuset.h"
+#include "royuset.h"
 #include <math.h>
 
 static uint64_t MurmurHash64A(const void * key, size_t key_size, uint64_t seed);
@@ -7,8 +7,8 @@ static size_t   next_prime(size_t number);
 static bool     valid_bucket_index(const RoyUSet * uset, int bucket_index);
 
 RoyUSet *
-roy_uset_new(size_t   bucket_count,
-             size_t   element_size,
+roy_uset_new(size_t      bucket_count,
+             size_t      element_size,
              uint64_t    seed,
              uint64_t (* hash)(const void *, size_t, uint64_t),
              int      (* compare)(const void *, const void *)) {
@@ -68,7 +68,7 @@ roy_uset_size(const RoyUSet * uset) {
 
 bool
 roy_uset_empty(const RoyUSet * uset) {
-  return uset->size == 0;
+  return roy_uset_size(uset) == 0;
 }
 
 RoyUSet *
@@ -136,12 +136,14 @@ roy_uset_bucket_count(const RoyUSet * uset) {
 }
 
 size_t
-roy_uset_bucket_size(const RoyUSet * uset, int bucket_index) {
+roy_uset_bucket_size(const RoyUSet * uset,
+                     int             bucket_index) {
   return roy_slist_size(uset->buckets[bucket_index]);
 }
 
 int64_t
-roy_uset_bucket(const RoyUSet * uset, const void * data) {
+roy_uset_bucket(const RoyUSet * uset,
+                const void    * data) {
   return uset->hash(data, uset->element_size, uset->seed) %
          roy_uset_bucket_count(uset);
 }
@@ -151,14 +153,17 @@ roy_uset_load_factor(const RoyUSet * uset) {
   return (double)roy_uset_size(uset) / (double)roy_uset_bucket_count(uset);
 }
 
-RoyUSet * roy_uset_rehash(RoyUSet * uset, size_t bucket_count, uint64_t seed) {
+// TODO
+RoyUSet * roy_uset_rehash(RoyUSet * uset,
+                          size_t    bucket_count,
+                          uint64_t  seed) {
   return uset;
 }
 
 void
 roy_uset_for_each(RoyUSet * uset,
-                  void   (* operate)(void * data)) {
-  for (size_t i = 0; i != uset->bucket_count; i++) {
+                  void   (* operate)(void *)) {
+  for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
     if (uset->buckets[i] && !roy_slist_empty(uset->buckets[i])) {
       roy_slist_for_each(uset->buckets[i], operate);
     }
@@ -168,8 +173,8 @@ roy_uset_for_each(RoyUSet * uset,
 void
 roy_uset_for_which(RoyUSet * uset,
                    bool   (* condition)(const void *),
-                   void   (* operate)(void *)) {
-  for (size_t i = 0; i != uset->bucket_count; i++) {
+                   void   (* operate)        (void *)) {
+  for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
     if (uset->buckets[i] && !roy_slist_empty(uset->buckets[i])) {
       roy_slist_for_which(uset->buckets[i], condition, operate);
     }

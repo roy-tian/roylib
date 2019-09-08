@@ -1,4 +1,4 @@
-#include "../include/royset.h"
+#include "royset.h"
 
 static RoySet * node_new(const void * key, size_t key_size);
 static void     node_delete(RoySet * set);

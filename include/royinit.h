@@ -1,6 +1,7 @@
 #ifndef ROYINIT_H
 #define ROYINIT_H
 
+#include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +9,8 @@
 #include <stdbool.h>
 #include <stdarg.h>
 #include <string.h>
+
+#define NDEBUG
 
 enum NumeralSystem {
   ROY_BINARY     = 2,

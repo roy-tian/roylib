@@ -1,5 +1,5 @@
-#include "../include/royset.h"
-#include "../include/roymset.h"
+#include "royset.h"
+#include "roymset.h"
 
 static RoyMSet * node_new(const void * key, size_t key_size);
 static void      node_delete(RoyMSet * mset);

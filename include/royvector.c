@@ -1,4 +1,4 @@
-#include "../include/royvector.h"
+#include "royvector.h"
 
 static RoyVector * expand(RoyVector * vector);
 static RoyVector * shrink(RoyVector * vector);

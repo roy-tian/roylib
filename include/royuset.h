@@ -22,7 +22,7 @@ struct RoyUSet_ {
 // Do not modify any elements, or it's hash could be changed and the container could be corrupted.
 typedef struct RoyUSet_ RoyUSet;
 
-/* CONSTRUCTION & DESTRCUTION */
+/* CONSTRUCTION & DESTRUCTION */
 
 // Returns a pointer to a newly build RoyUSet.
 // using a hash seed, a hash function and a compare function(NULL if you want to use default versions).

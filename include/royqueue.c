@@ -1,4 +1,4 @@
-#include "../include/royqueue.h"
+#include "royqueue.h"
 
 RoyQueue *
 roy_queue_new(size_t capacity,

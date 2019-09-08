@@ -1,4 +1,4 @@
-#include "../include/roystring.h"
+#include "roystring.h"
 #include <pcre.h>
 
 RoyString *
