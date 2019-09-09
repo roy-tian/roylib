@@ -11,8 +11,6 @@
 #include <stdint.h>
 #include <string.h>
 
-#define NDEBUG
-
 enum NumeralSystem {
   ROY_BINARY     = 2,
   ROY_OCTAL      = 8,
