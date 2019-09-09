@@ -10,7 +10,7 @@ include_directories(
 )
 
 add_library(roylib
-  roy.h                include/royinit.h
+  include/roy.h        include/royinit.h
   include/roystr.h     include/roystr.c
   include/roystring.h  include/roystring.c
   include/roynumber.h  include/roynumber.c
