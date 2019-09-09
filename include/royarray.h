@@ -21,15 +21,15 @@ typedef struct RoyArray_ RoyArray;
 RoyArray * roy_array_new(size_t capacity, size_t element_size);
 
 // De-allocates the memory allocated by 'roy_array_new'.
-// (Always call this function after the work is done by the given 'array', or memory leak will occur.)。
+// (Always call this function after the work is done by the given 'array', or memory leak will occur.)
 void roy_array_delete(RoyArray * array);
 
 /* ELEMENT ACCESS */
 
-// Returns a void pointer to the element at 'position'. (No boundary check)
+// Returns a void pointer to the element at 'position', or NULL if 'position' is invalid.
 void * roy_array_pointer(RoyArray * array, size_t position);
 
-// Returns a const void pointer to the element at 'position'. (No boundary check)
+// Returns a const void pointer to the element at 'position', or NULL if 'position' is invalid.
 const void * roy_array_const_pointer(const RoyArray * array, size_t position);
 
 // Returns a copy of the element at 'position', or NULL if 'position' is invalid.
@@ -60,6 +60,12 @@ bool roy_array_full(const RoyArray * array);
 // (does nothing if 'position' is negative or exceeds.)
 // (The behavior is undefined if 'data' is uninitialized.)
 RoyArray * roy_array_insert(RoyArray * array, size_t position, const void * data);
+
+// Adds an element named 'data' into 'array' at 'position', or does nothing if 'array' is full.
+// (does nothing if 'position' is negative or exceeds.)
+// (The behavior is undefined if 'data' is uninitialized.)
+// (Recommended when element order is irrelevant.)
+RoyArray * roy_array_insert_fast(RoyArray * array, size_t position, const void * data);
 
 // Adds an element named 'data' into 'array' next to the last element, or does nothing if 'array' is full.
 // (The behavior is undefined if 'data' is uninitialized.)

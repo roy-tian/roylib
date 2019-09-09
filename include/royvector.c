@@ -43,6 +43,7 @@ roy_vector_element(void            * dest,
 
 size_t
 roy_vector_size(const RoyVector * vector) {
+  assert(vector != NULL);
   return roy_array_size((RoyArray *)vector);
 }
 
