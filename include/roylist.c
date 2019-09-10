@@ -6,7 +6,9 @@ static void node_delete(RoyList * list);
 RoyList *
 roy_list_new(void) {
   RoyList * head = (RoyList *)malloc(sizeof(RoyList));
+  assert(head != NULL);
   RoyList * tail = (RoyList *)malloc(sizeof(RoyList));
+  assert(tail != NULL);
   head->data = tail->data = NULL;
   head->next = tail;
   head->prev = NULL;
@@ -24,6 +26,8 @@ roy_list_delete(RoyList * list) {
 RoyList *
 roy_list_iterator(RoyList * list_head,
                   size_t    position) {
+  assert(list_head != NULL);
+  assert(position < roy_list_size(list_head));
   int cur_position = 0;
   RoyList * iter = list_head;
   while (iter->next->next && cur_position <= position) {
@@ -36,6 +40,8 @@ roy_list_iterator(RoyList * list_head,
 const RoyList *
 roy_list_const_iterator(const RoyList * list_head,
                         size_t          position) {
+  assert(list_head != NULL);
+  assert(position < roy_list_size(list_head));
   int cur_position = 0;
   const RoyList * iter = list_head;
   while (iter->next->next && cur_position <= position) {
@@ -48,6 +54,7 @@ roy_list_const_iterator(const RoyList * list_head,
 RoyList *
 roy_list_reverse_iterator(RoyList * list_tail,
                           size_t    reverse_position) {
+  assert(list_tail != NULL);
   int cur_position = 0;
   RoyList * riter = list_tail;
   while (riter->prev->prev && cur_position <= reverse_position) {
@@ -60,6 +67,7 @@ roy_list_reverse_iterator(RoyList * list_tail,
 const RoyList *
 roy_list_const_reverse_iterator(const RoyList * list_tail,
                                 size_t          reverse_position) {
+  assert(list_tail != NULL);
   int cur_position = 0;
   const RoyList * riter = list_tail;
   while (riter->prev->prev && cur_position <= reverse_position) {
