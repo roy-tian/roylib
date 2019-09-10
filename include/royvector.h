@@ -60,6 +60,10 @@ bool roy_vector_empty(const RoyVector * vector);
 // (The behavior is undefined if 'data' is uninitialized.)
 RoyVector * roy_vector_insert(RoyVector * vector, size_t position, const void * data);
 
+// Moves the element at 'position' to the tail of the vector, and put 'data' there.
+// (Recommended when element order is irrelevant.)
+RoyVector * roy_vector_insert_fast(RoyVector * vector, size_t position, const void * data);
+
 // Adds an element named 'data' into 'vector' next to the last element.
 // ('vector' will be extended automatically if it's full.)
 // (The behavior is undefined if 'data' is uninitialized.)

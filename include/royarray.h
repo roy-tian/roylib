@@ -26,14 +26,13 @@ void roy_array_delete(RoyArray * array);
 
 /* ELEMENT ACCESS */
 
-// Returns a void pointer to the element at 'position', or NULL if 'position' is invalid.
+// Returns a void pointer to the element at 'position'.
 void * roy_array_pointer(RoyArray * array, size_t position);
 
-// Returns a const void pointer to the element at 'position', or NULL if 'position' is invalid.
+// Returns a const void pointer to the element at 'position'.
 const void * roy_array_const_pointer(const RoyArray * array, size_t position);
 
-// Returns a copy of the element at 'position', or NULL if 'position' is invalid.
-// (The behavior is undefined if 'dest' is uninitialized.)
+// Returns a copy of the element at 'position'.
 void * roy_array_element(void * dest, const RoyArray * array, size_t position);
 
 // Returns a typed pointer to the element at 'position', or NULL if 'position' is invalid.
@@ -72,12 +71,10 @@ RoyArray * roy_array_insert_fast(RoyArray * array, size_t position, const void *
 RoyArray * roy_array_push_back(RoyArray * array, const void * data);
 
 // Removes an element at 'position', and fill the empty position with its next recursively.
-// (The first element will be removed if 'position' is negative, or the last if 'position' exceeds.)
 // (Deprecated: slower when 'position' near head and length of array is huge.)
 RoyArray * roy_array_erase(RoyArray * array, size_t position);
 
 // Removes an element at 'position', and fill the empty position with the last element.
-// (The first element will be removed if 'position' is negative, or the last if 'position' exceeds.)
 // (Recommended when element order is irrelevant.)
 RoyArray * roy_array_erase_fast(RoyArray * array, size_t position);
 

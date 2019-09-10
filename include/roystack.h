@@ -55,9 +55,6 @@ RoyStack * roy_stack_push(RoyStack * stack, const void * data);
 // (The behavior is undefined if 'data' is uninitialized.)
 RoyStack * roy_stack_duplicate_top(RoyStack * stack);
 
-// Swaps the top two elements of 'stack'.
-RoyStack * roy_stack_swap_top_two(RoyStack * stack);
-
 // Removes the first element.
 RoyStack * roy_stack_pop(RoyStack * stack);
 

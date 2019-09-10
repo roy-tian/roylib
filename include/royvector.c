@@ -9,7 +9,9 @@ RoyVector *
 roy_vector_new(size_t capacity,
                size_t element_size) {
   RoyVector * ret    = (RoyVector *)malloc(sizeof(RoyVector));
+  assert(ret != NULL);
   ret->data          = calloc(capacity, element_size);
+  assert(ret->data != NULL);
   ret->size          = 0;
   ret->capacity      = capacity;
   ret->element_size  = element_size;
@@ -19,18 +21,23 @@ roy_vector_new(size_t capacity,
 
 void
 roy_vector_delete(RoyVector * vector) {
+  assert(vector != NULL);
   roy_array_delete((RoyArray *)vector);
 }
 
 void *
 roy_vector_pointer(RoyVector * vector,
                    size_t      position) {
+  assert(vector != NULL);
+  assert(position <= roy_vector_size(vector));
   return roy_array_pointer((RoyArray *)vector, position);
 }
 
 const void *
 roy_vector_const_pointer(const RoyVector * vector,
                          size_t            position) {
+  assert(vector != NULL);
+  assert(position <= roy_vector_size(vector));
   return roy_array_const_pointer((RoyArray *)vector, position);
 }
 
@@ -38,6 +45,9 @@ void *
 roy_vector_element(void            * dest,
                    const RoyVector * vector,
                    size_t            position) {
+  assert(dest != NULL);
+  assert(vector != NULL);
+  assert(position <= roy_vector_size(vector));
   return roy_array_element(dest, (RoyArray *)vector, position);
 }
 
@@ -49,11 +59,13 @@ roy_vector_size(const RoyVector * vector) {
 
 size_t
 roy_vector_capacity(const RoyVector * vector) {
+  assert(vector != NULL);
   return roy_array_capacity((RoyArray *)vector);
 }
 
 bool
 roy_vector_empty(const RoyVector * vector) {
+  assert(vector != NULL);
   return roy_array_empty((RoyArray *)vector);
 }
 
@@ -61,26 +73,45 @@ RoyVector *
 roy_vector_insert(RoyVector  * vector,
                   size_t       position,
                   const void * data) {
+  assert(vector != NULL);
+  assert(position <= roy_vector_size(vector));
+  assert(data != NULL);
   if (need_expand(vector)) {
     expand(vector);
   }
-  roy_array_insert((RoyArray *)vector, position, data);
-  return vector;
+  return (RoyVector *)roy_array_insert((RoyArray *)vector, position, data);
 }
+
+RoyVector *
+roy_vector_insert_fast(RoyVector  * vector,
+                       size_t       position,
+                       const void * data) {
+  assert(vector != NULL);
+  assert(position <= roy_vector_size(vector));
+  assert(data != NULL);
+  if (need_expand(vector)) {
+    expand(vector);
+  }
+  return (RoyVector *)roy_array_insert_fast((RoyArray *)vector, position, data);
+}
+
 
 RoyVector *
 roy_vector_push_back(RoyVector  * vector,
                      const void * data) {
+  assert(vector != NULL);
+  assert(data != NULL);
   if (need_expand(vector)) {
     expand(vector);
   }
-  roy_array_push_back((RoyArray *)vector, data);
-  return vector;
+  return (RoyVector *)roy_array_push_back((RoyArray *)vector, data);
 }
 
 RoyVector *
 roy_vector_erase(RoyVector * vector,
                  size_t      position) {
+  assert(vector != NULL);
+  assert(position < roy_vector_size(vector));
   roy_array_erase((RoyArray *)vector, position);
   if (need_shrink(vector)) {
     shrink(vector);
@@ -91,6 +122,8 @@ roy_vector_erase(RoyVector * vector,
 RoyVector *
 roy_vector_erase_fast(RoyVector * vector,
                       size_t      position) {
+  assert(vector != NULL);
+  assert(position < roy_vector_size(vector));
   roy_array_erase_fast((RoyArray *)vector, position);
   if (need_shrink(vector)) {
     shrink(vector);
@@ -100,6 +133,7 @@ roy_vector_erase_fast(RoyVector * vector,
 
 RoyVector *
 roy_vector_pop_back(RoyVector * vector) {
+  assert(vector != NULL);
   roy_array_pop_back((RoyArray *)vector);
   if (need_shrink(vector)) {
     shrink(vector);
@@ -109,6 +143,7 @@ roy_vector_pop_back(RoyVector * vector) {
 
 RoyVector *
 roy_vector_clear(RoyVector * vector) {
+  assert(vector != NULL);
   size_t capacity = vector->capacity_base;
   size_t element_size = vector->element_size;
   roy_vector_delete(vector);
@@ -118,6 +153,8 @@ roy_vector_clear(RoyVector * vector) {
 void
 roy_vector_for_each(RoyVector * vector,
                     void     (* operate) (void *)) {
+  assert(vector != NULL);
+  assert(operate != NULL);
   roy_array_for_each((RoyArray *)vector, operate);
 }
 
@@ -125,6 +162,9 @@ void
 roy_vector_for_which(RoyVector * vector,
                      bool     (* condition) (const void *),
                      void     (* operate)         (void *)) {
+  assert(vector != NULL);
+  assert(condition != NULL);
+  assert(operate != NULL);
   roy_array_for_which((RoyArray *)vector, condition, operate);
 }
 
