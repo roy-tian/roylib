@@ -60,12 +60,10 @@ roy_str_unique_char(char * str,
   return str;
 }
 
-// TODO: the function needs to be character insensible.
 char *
 roy_str_replace_all(char       * str,
                     const char * old_sub,
-                    const char * new_sub,
-                    bool         sensibility) {
+                    const char * new_sub) {
   // temp_str: a temporary-stored string.
   ROY_STR(temp_str, strlen(str))
   // a pointer to the real temp_str.

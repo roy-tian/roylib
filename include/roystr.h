@@ -18,7 +18,7 @@ char * roy_str_unique_char(char * str, int ch);
 
 // Replaces all 'old_sub' with 'new_sub'.
 // (The behavior is undefined if the length of 'str' grows out of its capacity.)
-char * roy_str_replace_all(char * str, const char * old_sub, const char * new_sub, bool sensibility);
+char * roy_str_replace_all(char * str, const char * old_sub, const char * new_sub);
 
 // Replaces 'old_sub'(starts at str[old_sub_pos], and is 'old_sub_len' character long) with 'new_sub'.
 // (The behavior is undefined if 'str' and 'new_sub' are cascaded.)
