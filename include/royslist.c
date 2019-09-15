@@ -35,7 +35,7 @@ RoySList *
 roy_slist_iterator(RoySList * slist,
                    size_t     position) {
   assert(slist != NULL);
-  assert(position < roy_slist_size(slist));
+  assert(position <= roy_slist_size(slist));
   size_t cur_position = 0;
   RoySList * iter = slist;
   while (iter->next && cur_position <= position) {
@@ -49,7 +49,7 @@ const RoySList *
 roy_slist_const_iterator(const RoySList * slist,
                          size_t           position) {
   assert(slist != NULL);
-  assert(position < roy_slist_size(slist));
+  assert(position <= roy_slist_size(slist));
   int cur_position = 0;
   const RoySList * iter = slist;
   while (iter->next && cur_position <= position) {

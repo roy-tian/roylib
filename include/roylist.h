@@ -62,12 +62,17 @@ void * roy_list_element(void * dest, const RoyList * list_head, size_t element_s
 
 /* CAPACITY */
 
-// Returns the number of elements in 'list'.
-size_t roy_list_size(const RoyList * list);
+// Returns the number of elements in 'list_head'.
+size_t roy_list_size(const RoyList * list_head);
+
+// Returns the number of elements in 'list_tail'.
+size_t roy_list_rsize(const RoyList * list_tail);
 
 // Returns whether there is any elements in 'list'.
 bool roy_list_empty(const RoyList * list);
 
+// Returns whether there is any elements in 'list'.
+bool roy_list_rempty(const RoyList * list);
 /* MODIFIERS */
 
 // Adds an 'element_size'-sized element named 'data' into 'list' at 'position'.

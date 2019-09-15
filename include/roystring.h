@@ -23,7 +23,7 @@ void roy_string_delete(RoyString * string);
 
 /* CHARACTER ACCESS */
 
-int roy_string_at(const RoyString * string, int index);
+int roy_string_at(const RoyString * string, size_t position);
 
 char * roy_string_str(RoyString * string);
 
@@ -39,31 +39,31 @@ size_t roy_string_size(const RoyString * string);
 
 RoyString * roy_string_clear(RoyString * string);
 
-RoyString * roy_string_insert_str(RoyString * string, const char * substr, int index);
+RoyString * roy_string_insert_str(RoyString * string, const char * substr, size_t position);
 
-RoyString * roy_string_insert(RoyString * string, const RoyString * substring, int index);
+RoyString * roy_string_insert(RoyString * string, const RoyString * substring, size_t position);
 
-RoyString * roy_string_erase(RoyString * string, int index, size_t count);
+RoyString * roy_string_erase(RoyString * string, size_t position, size_t count);
 
 RoyString * roy_string_append_str(RoyString * string, const char * substr);
 
 RoyString * roy_string_append(RoyString * string, const RoyString * substring);
 
-RoyString * roy_string_replace_str(RoyString * string, const char * substr, int index, size_t count);
+RoyString * roy_string_replace_str(RoyString * string, const char * substr, size_t position, size_t count);
 
-RoyString * roy_string_replace(RoyString * string, const RoyString * substr, int index, size_t count);
+RoyString * roy_string_replace(RoyString * string, const RoyString * substr, size_t position, size_t count);
 
-RoyString * roy_string_substring(RoyString * string, RoyString * substring, int index, size_t count);
+RoyString * roy_string_substring(RoyString * string, RoyString * substring, size_t position, size_t count);
 
 /* SEARCH */
 
-int roy_string_find_str(const RoyString * string, const char * substr, int index);
+int roy_string_find_str(const RoyString * string, const char * substr, size_t position);
 
-int roy_string_find(const RoyString * string, const RoyString * substr, int index);
+int roy_string_find(const RoyString * string, const RoyString * substr, size_t position);
 
-int roy_string_find_regex(const RoyString * string, const char * regex, int index);
+int roy_string_find_regex(const RoyString * string, const char * regex, size_t position);
 
-char * roy_string_regex(char * dest, const RoyString * string, const char * regex, int index);
+char * roy_string_regex(char * dest, const RoyString * string, const char * regex, size_t position);
 
 bool roy_string_match(const RoyString * string, const char * regex);
 
