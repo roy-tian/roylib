@@ -49,16 +49,16 @@ bool roy_stack_full(const RoyStack * stack);
 
 // Adds an element named 'data' into 'stack' next to the last element, or does nothing if 'stack' if full.
 // (The behavior is undefined if 'data' is uninitialized.)
-RoyStack * roy_stack_push(RoyStack * stack, const void * data);
+bool roy_stack_push(RoyStack * stack, const void * data);
 
 // Adds an element same as top into 'stack' next to the last element, or does nothing if 'stack' if full.
 // (The behavior is undefined if 'data' is uninitialized.)
-RoyStack * roy_stack_duplicate_top(RoyStack * stack);
+bool roy_stack_duplicate_top(RoyStack * stack);
 
 // Removes the first element.
-RoyStack * roy_stack_pop(RoyStack * stack);
+bool roy_stack_pop(RoyStack * stack);
 
 // Removes all the elements in 'stack'.
-RoyStack * roy_stack_clear(RoyStack * stack);
+void roy_stack_clear(RoyStack * stack);
 
 #endif // ROYSTACK_H

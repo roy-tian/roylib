@@ -56,16 +56,16 @@ bool roy_slist_empty(const RoySList * slist);
 /* MODIFIERS */
 
 // Adds an 'element_size'-sized element named 'data' at the beginning of 'slist'.
-RoySList * roy_slist_push_front(RoySList * slist, const void * data, size_t element_size);
+void roy_slist_push_front(RoySList * slist, const void * data, size_t element_size);
 
 // Removes the first element from 'slist'.
-RoySList * roy_slist_pop_front(RoySList * slist);
+bool roy_slist_pop_front(RoySList * slist);
 
 // Removes the 'position'-th element from 'slist'.
-RoySList * roy_slist_erase(RoySList * slist, size_t position);
+bool roy_slist_erase(RoySList * slist, size_t position);
 
 // Removes all the elements from 'slist'.
-RoySList * roy_slist_clear(RoySList * slist);
+void roy_slist_clear(RoySList * slist);
 
 /* LIST OPERATIONS */
 

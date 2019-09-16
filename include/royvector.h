@@ -58,36 +58,36 @@ bool roy_vector_empty(const RoyVector * vector);
 // ('vector' will be extended automatically if it's full.)
 // ('data' will not be pushed into 'vector' if 'position' exceeds.)
 // (The behavior is undefined if 'data' is uninitialized.)
-RoyVector * roy_vector_insert(RoyVector * vector, size_t position, const void * data);
+bool roy_vector_insert(RoyVector * vector, size_t position, const void * data);
 
 // Moves the element at 'position' to the tail of the vector, and put 'data' there.
 // (Recommended when element order is irrelevant.)
-RoyVector * roy_vector_insert_fast(RoyVector * vector, size_t position, const void * data);
+bool roy_vector_insert_fast(RoyVector * vector, size_t position, const void * data);
 
 // Adds an element named 'data' into 'vector' next to the last element.
 // ('vector' will be extended automatically if it's full.)
 // (The behavior is undefined if 'data' is uninitialized.)
-RoyVector * roy_vector_push_back(RoyVector * vector, const void * data);
+bool roy_vector_push_back(RoyVector * vector, const void * data);
 
 // Removes an element at 'position', and fill the empty position with its next recursively.
 // ('vector' will be shrunk to fit all elements automatically whenever it could.)
 // (The first element will be removed if 'position' is negative, or the last if 'position' exceeds.)
 // (Deprecated: slower when 'position' near head and length of vector is huge.)
-RoyVector * roy_vector_erase(RoyVector * vector, size_t position);
+bool roy_vector_erase(RoyVector * vector, size_t position);
 
 // Removes an element at 'position', and fill the empty position with the last element.
 // ('vector' will be shrunk to fit all elements automatically whenever it could.)
 // (The first element will be removed if 'position' is negative, or the last if 'position' exceeds.)
 // (Recommended when element order is irrelevant.)
-RoyVector * roy_vector_erase_fast(RoyVector * vector, size_t position);
+bool roy_vector_erase_fast(RoyVector * vector, size_t position);
 
 // Removes the last element.
 // ('vector' will be shrunk to fit all elements whenever it could.)
-RoyVector * roy_vector_pop_back(RoyVector * vector);
+bool roy_vector_pop_back(RoyVector * vector);
 
 // Removes all the elements in 'vector'.
 // (The capacity of 'vector' will be reset.)
-RoyVector * roy_vector_clear(RoyVector * vector);
+void roy_vector_clear(RoyVector * vector);
 
 /* TRAVERSE */
 

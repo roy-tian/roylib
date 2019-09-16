@@ -8,8 +8,8 @@ struct RoyQueue_ {
   size_t   size;
   size_t   capacity;
   size_t   element_size;
-  int      front_index;
-  int      back_index;
+  size_t   front_index;
+  size_t   back_index;
 };
 
 /* CONSTRUCTION AND DESTRUCTION */
@@ -51,12 +51,12 @@ bool roy_queue_full(const RoyQueue * queue);
 
 // Adds an element named 'data' into 'queue' next to the last element.
 // (The behavior is undefined if 'data' is uninitialized.)
-RoyQueue * roy_queue_push(RoyQueue * queue, const void * data);
+bool roy_queue_push(RoyQueue * queue, const void * data);
 
 // Removes the first element.
-RoyQueue * roy_queue_pop(RoyQueue * queue);
+bool roy_queue_pop(RoyQueue * queue);
 
 // Removes all the elements in 'queue'.
-RoyQueue * roy_queue_clear(RoyQueue * queue);
+void roy_queue_clear(RoyQueue * queue);
 
 #endif // ROYQUEUE_H

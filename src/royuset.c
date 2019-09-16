@@ -1,4 +1,4 @@
-#include "royuset.h"
+#include "../include/royuset.h"
 #include <math.h>
 
 static uint64_t MurmurHash64A(const void * key, size_t key_size, uint64_t seed);

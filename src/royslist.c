@@ -1,4 +1,4 @@
-#include "royslist.h"
+#include "../include/royslist.h"
 
 static RoySList * node_new(const void * data, size_t element_size);
 static void       node_delete(RoySList * slist);
@@ -7,7 +7,6 @@ static RoySList * back(RoySList * slist);
 RoySList *
 roy_slist_new(void) {
   RoySList * ret = (RoySList *)malloc(sizeof(RoySList));
-  assert(ret != NULL);
   ret->data = NULL;
   ret->next = NULL;
   return ret;
@@ -21,21 +20,17 @@ roy_slist_delete(RoySList * slist) {
 
 RoySList *
 roy_slist_begin(RoySList * slist) {
-  assert(slist != NULL);
   return slist->next;
 }
 
 const RoySList *
 roy_slist_cbegin(const RoySList *slist) {
-  assert(slist != NULL);
   return slist->next;
 }
 
 RoySList *
 roy_slist_iterator(RoySList * slist,
                    size_t     position) {
-  assert(slist != NULL);
-  assert(position <= roy_slist_size(slist));
   size_t cur_position = 0;
   RoySList * iter = slist;
   while (iter->next && cur_position <= position) {
@@ -48,9 +43,7 @@ roy_slist_iterator(RoySList * slist,
 const RoySList *
 roy_slist_const_iterator(const RoySList * slist,
                          size_t           position) {
-  assert(slist != NULL);
-  assert(position <= roy_slist_size(slist));
-  int cur_position = 0;
+  size_t cur_position = 0;
   const RoySList * iter = slist;
   while (iter->next && cur_position <= position) {
     iter = iter->next;
@@ -64,9 +57,6 @@ roy_slist_element(void           * dest,
                   const RoySList * slist,
                   size_t           element_size,
                   size_t           position) {
-  assert(dest != NULL);
-  assert(slist != NULL);
-  assert(position < roy_slist_size(slist));
   return memcpy(dest,
                 roy_slist_const_iterator(slist, position)->data,
                 element_size);
@@ -74,7 +64,6 @@ roy_slist_element(void           * dest,
 
 size_t
 roy_slist_size(const RoySList * slist) {
-  assert(slist != NULL);
   const RoySList * iter = slist;
   size_t count = 0;
   while (iter->next) {
@@ -86,57 +75,46 @@ roy_slist_size(const RoySList * slist) {
 
 bool
 roy_slist_empty(const RoySList * slist) {
-  assert(slist != NULL);
   return roy_slist_cbegin(slist) == NULL;
 }
 
-RoySList *
+void
 roy_slist_push_front(RoySList   * slist,
                      const void * data,
                      size_t       element_size) {
-  assert(slist != NULL);
-  assert(data != NULL);
   RoySList * elem = node_new(data, element_size);
   elem->next      = slist->next;
   slist->next     = elem;
-  return slist;
 }
 
-RoySList *
+bool
 roy_slist_pop_front(RoySList * slist) {
-  assert(slist != NULL);
   if (!roy_slist_empty(slist)) {
     RoySList * to_erase = roy_slist_begin(slist);
     slist->next = to_erase->next;
     node_delete(to_erase);
+    return true;
   }
-  return slist;
+  return false;
 }
 
-RoySList *
+bool
 roy_slist_erase(RoySList * slist,
                 size_t     position) {
-  assert(slist != NULL);
-  assert(position < roy_slist_size(slist));
   return roy_slist_pop_front(roy_slist_iterator(slist, position - 1));
 }
 
-RoySList *
+void
 roy_slist_clear(RoySList * slist) {
-  assert(slist != NULL);
   while (!roy_slist_empty(slist)) {
     roy_slist_pop_front(slist);
   }
-  return slist;
 }
 
 RoySList *
 roy_slist_remove(RoySList   * slist,
                  const void * data,
                  int       (* compare)(const void *, const void *)) {
-  assert(slist != NULL);
-  assert(data != NULL);
-  assert(compare != NULL);
   RoySList * temp = slist;
   while (!roy_slist_empty(temp)) {
     if (compare(temp->data, data) == 0) {
@@ -151,8 +129,6 @@ roy_slist_remove(RoySList   * slist,
 RoySList *
 roy_slist_remove_if(RoySList * slist,
                     bool    (* condition)(const void *)) {
-  assert(slist != NULL);
-  assert(condition != NULL);
   RoySList * temp = slist;
   while (!roy_slist_empty(temp)) {
     if (condition(temp->data)) {
@@ -166,7 +142,6 @@ roy_slist_remove_if(RoySList * slist,
 
 RoySList *
 roy_slist_reverse(RoySList * slist) {
-  assert(slist != NULL);
   RoySList * pback = back(slist);
   while (roy_slist_cbegin(slist) != pback) {
     RoySList * first = roy_slist_begin(slist);
@@ -180,8 +155,6 @@ roy_slist_reverse(RoySList * slist) {
 RoySList *
 roy_slist_unique(RoySList * slist,
                  int     (* compare)(const void *, const void *)) {
-  assert(slist != NULL);
-  assert(compare != NULL);
   RoySList * temp = slist;
   while (!roy_slist_empty(temp) && !roy_slist_empty(temp->next)) {
     if (compare(roy_slist_cbegin(temp)->data,
@@ -205,8 +178,6 @@ roy_slist_sort(RoySList * slist,
 void
 roy_slist_for_each(RoySList * slist,
                    void    (* operate)(void *)) {
-  assert(slist != NULL);
-  assert(operate != NULL);
   for (RoySList * iter = roy_slist_begin(slist); iter; iter = iter->next) {
     operate(iter->data);
   }
@@ -215,9 +186,6 @@ roy_slist_for_each(RoySList * slist,
 void roy_slist_for_which(RoySList * slist,
                          bool    (* condition)(const void *),
                          void    (* operate)        (void *)) {
-  assert(slist != NULL);
-  assert(condition != NULL);
-  assert(operate != NULL);
   for (RoySList * iter = roy_slist_begin(slist); iter; iter = iter->next) {
     if (condition(iter->data)) {
       operate(iter->data);
@@ -230,7 +198,7 @@ void roy_slist_for_which(RoySList * slist,
 static RoySList *
 node_new(const void * data,
          size_t       element_size) {
-  RoySList * ret = (RoySList *)malloc(sizeof(void *) + sizeof(RoySList *));
+  RoySList * ret = (RoySList *)malloc(sizeof(RoySList));
   ret->data = malloc(element_size);
   memcpy(ret->data, data, element_size);
   ret->next = NULL;

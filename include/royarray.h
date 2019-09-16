@@ -58,31 +58,31 @@ bool roy_array_full(const RoyArray * array);
 // Adds an element named 'data' into 'array' at 'position', or does nothing if 'array' is full.
 // (does nothing if 'position' is negative or exceeds.)
 // (The behavior is undefined if 'data' is uninitialized.)
-RoyArray * roy_array_insert(RoyArray * array, size_t position, const void * data);
+bool roy_array_insert(RoyArray * array, size_t position, const void * data);
 
 // Adds an element named 'data' into 'array' at 'position', or does nothing if 'array' is full.
 // (does nothing if 'position' is negative or exceeds.)
 // (The behavior is undefined if 'data' is uninitialized.)
 // (Recommended when element order is irrelevant.)
-RoyArray * roy_array_insert_fast(RoyArray * array, size_t position, const void * data);
+bool roy_array_insert_fast(RoyArray * array, size_t position, const void * data);
 
 // Adds an element named 'data' into 'array' next to the last element, or does nothing if 'array' is full.
 // (The behavior is undefined if 'data' is uninitialized.)
-RoyArray * roy_array_push_back(RoyArray * array, const void * data);
+bool roy_array_push_back(RoyArray * array, const void * data);
 
 // Removes an element at 'position', and fill the empty position with its next recursively.
 // (Deprecated: slower when 'position' near head and length of array is huge.)
-RoyArray * roy_array_erase(RoyArray * array, size_t position);
+bool roy_array_erase(RoyArray * array, size_t position);
 
 // Removes an element at 'position', and fill the empty position with the last element.
 // (Recommended when element order is irrelevant.)
-RoyArray * roy_array_erase_fast(RoyArray * array, size_t position);
+bool roy_array_erase_fast(RoyArray * array, size_t position);
 
 // Removes the last element of 'array'.
-RoyArray * roy_array_pop_back(RoyArray * array);
+bool roy_array_pop_back(RoyArray * array);
 
 // Removes all the elements in 'array'.
-RoyArray * roy_array_clear(RoyArray * array);
+void roy_array_clear(RoyArray * array);
 
 /* TRAVERSE */
 

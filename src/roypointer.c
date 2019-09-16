@@ -1,4 +1,4 @@
-#include "roypointer.h"
+#include "../include/roypointer.h"
 
 RoyPointer *
 roy_pointer_set(RoyPointer * pointer,

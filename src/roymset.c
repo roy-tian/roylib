@@ -1,5 +1,5 @@
-#include "royset.h"
-#include "roymset.h"
+#include "../include/royset.h"
+#include "../include/roymset.h"
 
 static RoyMSet * node_new(const void * key, size_t key_size);
 static void      node_delete(RoyMSet * mset);
@@ -38,7 +38,7 @@ roy_mset_insert(RoyMSet    ** mset,
                 const void *  key,
                 size_t        key_size,
                 int       (*  compare)(const void *, const void *)) {
-  assert(compare != NULL);
+
   if (!*mset) {
     *mset = node_new(key, key_size);
   } else if (compare(key, (*mset)->key) > 0) {
@@ -54,7 +54,7 @@ roy_mset_erase(RoyMSet    ** mset,
                const void *  key,
                size_t        key_size,
                int       (*  compare)(const void *, const void *)) {
-  assert(compare != NULL);
+
   if (!*mset) {
     return NULL;
   }
@@ -89,7 +89,7 @@ size_t
 roy_mset_count(const RoyMSet * mset,
                const void    * key,
                int          (* compare)(const void *, const void *)) {
-  assert(compare != NULL);
+
   if (!mset) {
     return 0;
   } else {
@@ -104,7 +104,7 @@ RoyMSet *
 roy_mset_lower_bound(const RoyMSet * mset,
                      const void    * key,
                      int          (* compare)(const void *, const void *)) {
-  assert(compare != NULL);
+
   return (RoyMSet *)roy_set_find((RoySet *)mset, key, compare);
 }
 
@@ -113,7 +113,7 @@ RoyMSet *
 roy_mset_upper_bound(const RoyMSet * mset,
                      const void    * key,
                      int          (* compare)(const void *, const void *)) {
-  assert(compare != NULL);
+
   return NULL;
 }
 
@@ -121,7 +121,7 @@ roy_mset_upper_bound(const RoyMSet * mset,
 void
 roy_mset_for_each(RoyMSet * mset,
                   void   (* operate)(void *)) {
-  assert(operate != NULL);
+
   roy_set_for_each((RoySet *)mset, operate);
 }
 
@@ -129,8 +129,8 @@ void
 roy_mset_for_which(RoyMSet * mset,
                    bool   (* condition)(const void *),
                    void   (* operate)        (void *)) {
-  assert(condition != NULL);
-  assert(operate != NULL);
+
+
   roy_set_for_which((RoySet *)mset, condition, operate);
 }
 
@@ -140,12 +140,12 @@ static RoyMSet *
 node_new(const void * key,
          size_t    key_size) {
   RoyMSet * ret = (RoyMSet *)malloc(sizeof(RoyMSet));
-  assert(ret != NULL);
+
   ret->left     = NULL;
   ret->right    = NULL;
   ret->key      = malloc(key_size);
   memcpy(ret->key, key, key_size);
-  assert(ret->key != NULL);
+
   return ret;
 }
 

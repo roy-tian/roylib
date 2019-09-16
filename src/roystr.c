@@ -1,4 +1,4 @@
-#include "roystr.h"
+#include "../include/roystr.h"
 
 
 enum {STRING_CAPACITY = 1023};
