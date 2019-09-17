@@ -100,7 +100,12 @@ roy_slist_pop_front(RoySList * slist) {
 bool
 roy_slist_erase(RoySList * slist,
                 size_t     position) {
-  return roy_slist_pop_front(roy_slist_iterator(slist, position - 1));
+  RoySList * iter = slist;
+  while (iter->next && position > 0) {
+    iter = iter->next;
+    position--;
+  }
+  return roy_slist_pop_front(iter);
 }
 
 void
@@ -114,10 +119,10 @@ size_t
 roy_slist_remove(RoySList   * slist,
                  const void * data,
                  int       (* compare)(const void *, const void *)) {
-  RoySList * iter = roy_slist_begin(slist);
+  RoySList * iter = slist;
   size_t count = 0;
-  while (iter) {
-    if (compare(iter->data, data) == 0) {
+  while (!roy_slist_empty(iter)) {
+    if (compare(roy_slist_cbegin(iter)->data, data) == 0) {
       roy_slist_pop_front(iter);
       count++;
     } else {
@@ -130,10 +135,10 @@ roy_slist_remove(RoySList   * slist,
 size_t
 roy_slist_remove_if(RoySList * slist,
                     bool    (* condition)(const void *)) {
-  RoySList * iter = roy_slist_begin(slist);
+  RoySList * iter = slist;
   size_t count = 0;
-  while (iter) {
-    if (condition(iter->data)) {
+  while (!roy_slist_empty(iter)) {
+    if (condition(roy_slist_cbegin(iter)->data)) {
       roy_slist_pop_front(iter);
       count++;
     } else {
