@@ -16,6 +16,7 @@ void
 roy_slist_delete(RoySList * slist) {
   roy_slist_clear(slist);
   free(slist);
+  slist = NULL;
 }
 
 RoySList *
@@ -31,11 +32,10 @@ roy_slist_cbegin(const RoySList *slist) {
 RoySList *
 roy_slist_iterator(RoySList * slist,
                    size_t     position) {
-  size_t cur_position = 0;
   RoySList * iter = slist;
-  while (iter->next && cur_position <= position) {
+  while (iter->next && position >= 0) {
     iter = iter->next;
-    cur_position++;
+    position--;
   }
   return iter;
 }
@@ -43,11 +43,10 @@ roy_slist_iterator(RoySList * slist,
 const RoySList *
 roy_slist_const_iterator(const RoySList * slist,
                          size_t           position) {
-  size_t cur_position = 0;
   const RoySList * iter = slist;
-  while (iter->next && cur_position <= position) {
+  while (iter->next && position >= 0) {
     iter = iter->next;
-    cur_position++;
+    position--;
   }
   return iter;
 }
@@ -111,36 +110,40 @@ roy_slist_clear(RoySList * slist) {
   }
 }
 
-RoySList *
+size_t
 roy_slist_remove(RoySList   * slist,
                  const void * data,
                  int       (* compare)(const void *, const void *)) {
-  RoySList * temp = slist;
-  while (!roy_slist_empty(temp)) {
-    if (compare(temp->data, data) == 0) {
-      roy_slist_pop_front(temp);
+  RoySList * iter = roy_slist_begin(slist);
+  size_t count = 0;
+  while (iter) {
+    if (compare(iter->data, data) == 0) {
+      roy_slist_pop_front(iter);
+      count++;
     } else {
-      temp = temp->next;
+      iter = iter->next;
     }
   }
-  return slist;
+  return count;
 }
 
-RoySList *
+size_t
 roy_slist_remove_if(RoySList * slist,
                     bool    (* condition)(const void *)) {
-  RoySList * temp = slist;
-  while (!roy_slist_empty(temp)) {
-    if (condition(temp->data)) {
-      roy_slist_pop_front(temp);
+  RoySList * iter = roy_slist_begin(slist);
+  size_t count = 0;
+  while (iter) {
+    if (condition(iter->data)) {
+      roy_slist_pop_front(iter);
+      count++;
     } else {
-      temp = temp->next;
+      iter = iter->next;
     }
   }
-  return slist;
+  return count;
 }
 
-RoySList *
+void
 roy_slist_reverse(RoySList * slist) {
   RoySList * pback = back(slist);
   while (roy_slist_cbegin(slist) != pback) {
@@ -149,10 +152,9 @@ roy_slist_reverse(RoySList * slist) {
     first->next = pback->next;
     pback->next = first;
   }
-  return slist;
 }
 
-RoySList *
+void
 roy_slist_unique(RoySList * slist,
                  int     (* compare)(const void *, const void *)) {
   RoySList * temp = slist;
@@ -164,14 +166,12 @@ roy_slist_unique(RoySList * slist,
       temp = temp->next;
     }
   }
-  return slist;
 }
 
 // TODO
-RoySList *
+void
 roy_slist_sort(RoySList * slist,
                int     (* compare)(const void *, const void *)) {
-  return slist;
 }
 
 
@@ -209,6 +209,7 @@ static void
 node_delete(RoySList * slist) {
   free(slist->data);
   free(slist);
+  slist = NULL;
 }
 
 static RoySList *

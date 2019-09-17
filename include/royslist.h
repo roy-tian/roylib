@@ -70,19 +70,19 @@ void roy_slist_clear(RoySList * slist);
 /* LIST OPERATIONS */
 
 // Removes all elements in 'slist' equivalent to data.
-RoySList * roy_slist_remove(RoySList * slist, const void * data, int (* compare)(const void *, const void *));
+size_t roy_slist_remove(RoySList * slist, const void * data, int (* compare)(const void *, const void *));
 
 // Removes all elements in 'slist' which meet 'condition'.
-RoySList * roy_slist_remove_if(RoySList * slist, bool (* condition)(const void *));
+size_t roy_slist_remove_if(RoySList * slist, bool (* condition)(const void *));
 
 // Reverses the order of the elements in 'slist'.
-RoySList * roy_slist_reverse(RoySList * slist);
+void roy_slist_reverse(RoySList * slist);
 
 // Removes all consecutive duplicate elements from 'slist', only the first element in each group of equal elements is left. 
-RoySList * roy_slist_unique(RoySList *slist, int (* compare)(const void *, const void *));
+void roy_slist_unique(RoySList *slist, int (* compare)(const void *, const void *));
 
 // Sorts the elements in ascending order, using quick sort strategy.
-RoySList * roy_slist_sort(RoySList *slist, int (* compare)(const void *, const void *));
+void roy_slist_sort(RoySList *slist, int (* compare)(const void *, const void *));
 
 /* TRAVERSE */
 
