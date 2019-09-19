@@ -200,7 +200,7 @@ roy_ullong_count_bit(uint64_t number) {
 
 
 bool
-roy_ullong_prime(size_t number) {
+roy_ullong_prime(uint64_t number) {
   if (number < 2 || (number != 2 && number % 2 == 0)) {
     return false;
   }
@@ -212,8 +212,8 @@ roy_ullong_prime(size_t number) {
   return true;
 }
 
-size_t
-roy_ullong_next_prime(size_t number) {
+uint64_t
+roy_ullong_next_prime(uint64_t number) {
   while (!roy_ullong_prime(number)) {
     number++;
   }
