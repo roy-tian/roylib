@@ -18,7 +18,7 @@ typedef struct RoyVector_ RoyVector;
 
 // Allocates sufficient memory for an RoyVector and returns a pointer to it.
 // The vector can store 'capacity' elements with each size 'element_size'.
-// (Operations on un-newed RoyVectors will cause undefined behavior.)
+// (Operations on un-newed RoyVectors can cause undefined behavior.)
 RoyVector * roy_vector_new(size_t capacity, size_t element_size);
 
 // De-allocates the memory allocated by 'roy_vector_new'.
@@ -54,34 +54,37 @@ bool roy_vector_empty(const RoyVector * vector);
 
 /* MODIFIERS */
 
-// Adds an element named 'data' into 'vector' at 'position'.
-// ('vector' will be extended automatically if it's full.)
-// ('data' will not be pushed into 'vector' if 'position' exceeds.)
-// (The behavior is undefined if 'data' is uninitialized.)
+// Inserts an element named 'data' into 'vector' at 'position', returns whether the insertion is successful.
+// (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
+// (Fails if 'position' exceeds.)
+// (Deprecated when 'vector' is huge and 'position' is small, can be very slow.)
 bool roy_vector_insert(RoyVector * vector, size_t position, const void * data);
 
-// Moves the element at 'position' to the tail of the vector, and put 'data' there.
+// Moves the element at 'position' to the back of 'vector', puts 'data' there, returns whether the operation is successful.
+// (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
+// (Fails if 'position' exceeds.)
 // (Recommended when element order is irrelevant.)
 bool roy_vector_insert_fast(RoyVector * vector, size_t position, const void * data);
 
-// Adds an element named 'data' into 'vector' next to the last element.
-// ('vector' will be extended automatically if it's full.)
-// (The behavior is undefined if 'data' is uninitialized.)
+// Adds an element named 'data' to the back of 'array', returns whether the operation is successful.
+// (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
+// ('vector' will be extended automatically whenever it's full.)
 bool roy_vector_push_back(RoyVector * vector, const void * data);
 
-// Removes an element at 'position', and fill the empty position with its next recursively.
+// Removes an element at 'position', and fill the empty position with its next recursively, return whether the operation is successful.
+// (Fails if 'position' exceeds, or 'vector' is empty.)
 // ('vector' will be shrunk to fit all elements automatically whenever it could.)
-// (The first element will be removed if 'position' is negative, or the last if 'position' exceeds.)
-// (Deprecated: slower when 'position' near head and length of vector is huge.)
+// (Deprecated when 'vector' is huge and 'position' is small, can be very slow.)
 bool roy_vector_erase(RoyVector * vector, size_t position);
 
-// Removes an element at 'position', and fill the empty position with the last element.
+// Removes an element at 'position', and fill the empty position with the last element, returns whether the operation is successful.
+// (Fails if 'position' exceeds, or 'vector' is empty.)
 // ('vector' will be shrunk to fit all elements automatically whenever it could.)
-// (The first element will be removed if 'position' is negative, or the last if 'position' exceeds.)
 // (Recommended when element order is irrelevant.)
 bool roy_vector_erase_fast(RoyVector * vector, size_t position);
 
-// Removes the last element.
+// Removes the last element, returns whether the operation is successful.
+// (Fails if 'vector' is empty.)
 // ('vector' will be shrunk to fit all elements whenever it could.)
 bool roy_vector_pop_back(RoyVector * vector);
 
