@@ -35,11 +35,11 @@ void roy_uset_delete(RoyUSet * uset);
 
 // Returns an pointer to the element which is the 'bucket_position'-th one on 'bucket_index'-th buckets.
 // (Returns NULL if position is out of range.)
-const void * roy_uset_const_pointer(const RoyUSet * uset, int bucket_index, int bucket_position);
+const void * roy_uset_cpointer(const RoyUSet * uset, size_t bucket_index, size_t bucket_position);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)
-void * roy_uset_element(void * dest, RoyUSet * uset, int bucket_index, int bucket_position);
+void * roy_uset_element(void * dest, RoyUSet * uset, size_t bucket_index, size_t bucket_position);
 
 
 // Returns an typed pointer to the element which is the 'bucket_position'-th one on 'bucket_index'-th buckets.
@@ -58,16 +58,16 @@ bool roy_uset_empty(const RoyUSet * uset);
 /* MODIFIERS */
 
 // Hashes an element named 'data' into 'uset'.
-RoyUSet * roy_uset_insert(RoyUSet * uset, const void * data);
+bool roy_uset_insert(RoyUSet * uset, const void * data);
 
 // Removes an element which is the 'bucket_position'-th one on 'bucket_index'-th buckets of 'uset'.
-RoyUSet * roy_uset_erase(RoyUSet * uset, int bucket_index, int bucket_position);
+bool roy_uset_erase(RoyUSet * uset, size_t bucket_index, size_t bucket_position);
 
 // Removes all elements in 'uset' equal to 'data'.
-RoyUSet * roy_uset_remove(RoyUSet * uset, const void * data);
+size_t roy_uset_remove(RoyUSet * uset, const void * data);
 
 // Removes all elements from 'uset'.
-RoyUSet * roy_uset_clear(RoyUSet * uset);
+void roy_uset_clear(RoyUSet * uset);
 
 /* LOOKUPS */
 
@@ -80,7 +80,7 @@ const void * roy_uset_find(const RoyUSet * uset, const void * data);
 size_t roy_uset_bucket_count(const RoyUSet * uset);
 
 // Returns the number of elements in the buckets with index 'bucket_index'.
-size_t roy_uset_bucket_size(const RoyUSet * uset, int bucket_index);
+size_t roy_uset_bucket_size(const RoyUSet * uset, size_t bucket_index);
 
 // Returns the index of the buckets for key 'data' calculated by hash function of 'uset'.
 int64_t roy_uset_bucket(const RoyUSet * uset, const void * data);

@@ -39,13 +39,13 @@ void * roy_deque_back(RoyDeque * deque);
 // Returns an iterator to 'position' in 'deque' where the element takes place.
 // (If 'position' is in small half of the deque, iteration will start at head, and vice versa.)
 // (Returns NULL if position is out of range.)
-const void * roy_deque_const_pointer(const RoyDeque * deque, size_t position);
+const void * roy_deque_cpointer(const RoyDeque * deque, size_t position);
 
 // Returns an const iterator to the element at front end.
-const void * roy_deque_const_front(const RoyDeque * deque);
+const void * roy_deque_cfront(const RoyDeque * deque);
 
 // Returns an const iterator to the element at back end.
-const void * roy_deque_const_back(const RoyDeque * deque);
+const void * roy_deque_cback(const RoyDeque * deque);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)
@@ -65,25 +65,25 @@ bool roy_deque_empty(const RoyDeque * deque);
 /* MODIFIERS */
 
 // Add an element named 'data' into 'deque' at 'position'.
-RoyDeque * roy_deque_insert(RoyDeque * deque, size_t position, const void * data);
+bool roy_deque_insert(RoyDeque * deque, size_t position, const void * data);
 
 // Adds an element named 'data' at the beginning of 'deque'.
-RoyDeque * roy_deque_push_front(RoyDeque * deque, const void * data);
+void roy_deque_push_front(RoyDeque * deque, const void * data);
 
 // Adds an element named 'data' at the end of 'deque'.
-RoyDeque * roy_deque_push_back(RoyDeque * deque, const void * data);
+void roy_deque_push_back(RoyDeque * deque, const void * data);
 
 // Removes an element from 'deque' at 'position'.
-RoyDeque * roy_deque_erase(RoyDeque * deque, size_t position);
+bool roy_deque_erase(RoyDeque * deque, size_t position);
 
 // Removes the first element from 'deque'.
-RoyDeque * roy_deque_pop_front(RoyDeque * deque);
+bool roy_deque_pop_front(RoyDeque * deque);
 
 // Removes the last element from 'deque'.
-RoyDeque * roy_deque_pop_back(RoyDeque * deque);
+bool roy_deque_pop_back(RoyDeque * deque);
 
 // Removes all the element from 'deque'.
-RoyDeque * roy_deque_clear(RoyDeque * deque);
+void roy_deque_clear(RoyDeque * deque);
 
 /* TRAVERSE */
 

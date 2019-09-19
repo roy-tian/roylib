@@ -22,10 +22,10 @@ RoySet * roy_set_min(RoySet *set);
 RoySet * roy_set_max(RoySet *set);
 
 // Returns a const iterator to the minimum element of 'set'.
-const RoySet * roy_set_const_min(const RoySet *set);
+const RoySet * roy_set_cmin(const RoySet *set);
 
 // Returns a const iterator to the maximum element of 'set'.
-const RoySet * roy_set_const_max(const RoySet *set);
+const RoySet * roy_set_cmax(const RoySet *set);
 
 /* CAPACITY */
 
@@ -44,11 +44,11 @@ RoySet * roy_set_insert(RoySet ** set, const void * key, size_t key_size, int (*
 RoySet * roy_set_erase(RoySet ** set, const void * key, size_t key_size, int (* compare)(const void *, const void *));
 
 // Removes all the element from 'set'.
-RoySet * roy_set_clear(RoySet * set);
+void roy_set_clear(RoySet * set);
 
 /* LOOKUP */
 
-// Finds an element equivalent to 'key' using compare function 'compare'.
+// Finds an element equivalent to 'key' using compare function 'compare', returns an iterator to it.
 RoySet * roy_set_find(RoySet * set, const void * key, int (* compare)(const void *, const void *));
 
 /* TRAVERSE */

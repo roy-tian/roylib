@@ -16,29 +16,29 @@ roy_map_new(size_t   key_size,
 
 void
 roy_map_delete(RoyMap * map) {
-  map = roy_map_clear(map);
+  roy_map_clear(map);
   free(map);
 }
 
 void *
-roy_map_pmin(RoyMap * map) {
+roy_map_min(RoyMap * map) {
   RoySet * pnode = roy_set_min(map->root);
   return pnode ? pnode->key + map->key_size : NULL;
 }
 
-void * roy_map_pmax(RoyMap * map) {
+void * roy_map_max(RoyMap * map) {
   RoySet * pnode = roy_set_max(map->root);
   return pnode ? pnode->key + map->key_size : NULL;
 }
 
 const void *
-roy_map_const_pmin(const RoyMap * map) {
+roy_map_cmin(const RoyMap * map) {
   const RoySet * pnode = roy_set_min(map->root);
   return pnode ? pnode->key + map->key_size: NULL;
 }
 
 const void *
-roy_map_const_pmax(const RoyMap * map) {
+roy_map_cmax(const RoyMap * map) {
   const RoySet * pnode = roy_set_max(map->root);
   return pnode ? pnode->key + map->key_size : NULL;
 }
@@ -72,10 +72,9 @@ roy_map_erase(RoyMap     * map,
   return map;
 }
 
-RoyMap *
+void
 roy_map_clear(RoyMap * map) {
-  map->root = roy_set_clear(map->root);
-  return map;
+  roy_set_clear(map->root);
 }
 
 void *
@@ -101,9 +100,9 @@ roy_map_for_which(RoyMap * map,
 // pair must be freed when it's done.
 void *
 pair_new(const void * key,
-         size_t    key_size,
+         size_t       key_size,
          const void * value,
-         size_t    value_size) {
+         size_t       value_size) {
   void * pair = malloc(key_size + value_size);
   memcpy(pair, key, key_size);
   memcpy(pair + key_size, value, value_size);

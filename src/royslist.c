@@ -41,8 +41,8 @@ roy_slist_iterator(RoySList * slist,
 }
 
 const RoySList *
-roy_slist_const_iterator(const RoySList * slist,
-                         size_t           position) {
+roy_slist_citerator(const RoySList * slist,
+                    size_t           position) {
   const RoySList * iter = slist;
   while (iter->next && position >= 0) {
     iter = iter->next;
@@ -57,7 +57,7 @@ roy_slist_element(void           * dest,
                   size_t           element_size,
                   size_t           position) {
   return memcpy(dest,
-                roy_slist_const_iterator(slist, position)->data,
+                roy_slist_citerator(slist, position)->data,
                 element_size);
 }
 
@@ -163,9 +163,9 @@ void
 roy_slist_unique(RoySList * slist,
                  int     (* compare)(const void *, const void *)) {
   RoySList * temp = slist;
-  while (!roy_slist_empty(temp) && !roy_slist_empty(temp->next)) {
+  while (temp->next && temp->next->next) {
     if (compare(roy_slist_cbegin(temp)->data,
-             roy_slist_cbegin(temp->next)->data) == 0) {
+                roy_slist_cbegin(temp->next)->data) == 0) {
       roy_slist_pop_front(temp);
     } else {
       temp = temp->next;

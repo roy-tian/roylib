@@ -23,13 +23,13 @@ roy_vector_delete(RoyVector * vector) {
 void *
 roy_vector_pointer(RoyVector * vector,
                    size_t      position) {
-  return roy_array_pointer((RoyArray *)vector, position);
+  return roy_array_pointer((RoyArray *) vector, position);
 }
 
 const void *
-roy_vector_const_pointer(const RoyVector * vector,
-                         size_t            position) {
-  return roy_array_const_pointer((RoyArray *)vector, position);
+roy_vector_cpointer(const RoyVector * vector,
+                    size_t            position) {
+  return roy_array_cpointer((RoyArray *) vector, position);
 }
 
 void *

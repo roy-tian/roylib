@@ -15,13 +15,13 @@ roy_mset_max(RoyMSet *mset) {
 }
 
 const RoyMSet *
-roy_mset_const_min(const RoyMSet *mset) {
-  return (RoyMSet *)roy_set_const_min((RoySet *)mset);
+roy_mset_cmin(const RoyMSet *mset) {
+  return (RoyMSet *)roy_set_cmin((RoySet *) mset);
 }
 
 const RoyMSet *
-roy_mset_const_max(const RoyMSet *mset) {
-  return (RoyMSet *)roy_set_const_max((RoySet *)mset);
+roy_mset_cmax(const RoyMSet *mset) {
+  return (RoyMSet *)roy_set_cmax((RoySet *) mset);
 }
 
 size_t
@@ -38,7 +38,6 @@ roy_mset_insert(RoyMSet    ** mset,
                 const void *  key,
                 size_t        key_size,
                 int       (*  compare)(const void *, const void *)) {
-
   if (!*mset) {
     *mset = node_new(key, key_size);
   } else if (compare(key, (*mset)->key) > 0) {
@@ -54,7 +53,6 @@ roy_mset_erase(RoyMSet    ** mset,
                const void *  key,
                size_t        key_size,
                int       (*  compare)(const void *, const void *)) {
-
   if (!*mset) {
     return NULL;
   }
@@ -66,7 +64,7 @@ roy_mset_erase(RoyMSet    ** mset,
   } else /* ((*mset)->key == key), match found */ {
     RoyMSet * temp = (*mset);
     if ((*mset)->left && (*mset)->right) {
-      memcpy((*mset)->key, roy_mset_const_min((*mset)->right)->key, key_size);
+      memcpy((*mset)->key, roy_mset_cmin((*mset)->right)->key, key_size);
       (*mset)->right = roy_mset_erase(mset, key, key_size, compare);
     } else
     if ((*mset)->left && !(*mset)->right) {
@@ -80,16 +78,15 @@ roy_mset_erase(RoyMSet    ** mset,
   return *mset;
 }
 
-RoyMSet *
+void
 roy_mset_clear(RoyMSet * mset) {
-  return (RoyMSet *)roy_set_clear((RoySet *)mset);
+  roy_set_clear((RoySet *)mset);
 }
 
 size_t
 roy_mset_count(const RoyMSet * mset,
                const void    * key,
                int          (* compare)(const void *, const void *)) {
-
   if (!mset) {
     return 0;
   } else {
@@ -104,7 +101,6 @@ RoyMSet *
 roy_mset_lower_bound(const RoyMSet * mset,
                      const void    * key,
                      int          (* compare)(const void *, const void *)) {
-
   return (RoyMSet *)roy_set_find((RoySet *)mset, key, compare);
 }
 
@@ -113,7 +109,6 @@ RoyMSet *
 roy_mset_upper_bound(const RoyMSet * mset,
                      const void    * key,
                      int          (* compare)(const void *, const void *)) {
-
   return NULL;
 }
 
@@ -121,7 +116,6 @@ roy_mset_upper_bound(const RoyMSet * mset,
 void
 roy_mset_for_each(RoyMSet * mset,
                   void   (* operate)(void *)) {
-
   roy_set_for_each((RoySet *)mset, operate);
 }
 
@@ -129,8 +123,6 @@ void
 roy_mset_for_which(RoyMSet * mset,
                    bool   (* condition)(const void *),
                    void   (* operate)        (void *)) {
-
-
   roy_set_for_which((RoySet *)mset, condition, operate);
 }
 
@@ -140,12 +132,10 @@ static RoyMSet *
 node_new(const void * key,
          size_t    key_size) {
   RoyMSet * ret = (RoyMSet *)malloc(sizeof(RoyMSet));
-
   ret->left     = NULL;
   ret->right    = NULL;
   ret->key      = malloc(key_size);
   memcpy(ret->key, key, key_size);
-
   return ret;
 }
 

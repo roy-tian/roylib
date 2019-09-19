@@ -1,7 +1,7 @@
 #include "../include/roylist.h"
 
 static RoyList * node_new(const void * data, size_t element_size);
-static void node_delete(RoyList * list);
+static void      node_delete(RoyList * list);
 
 RoyList *
 roy_list_new(void) {
@@ -25,8 +25,8 @@ roy_list_delete(RoyList * list) {
 RoyList *
 roy_list_iterator(RoyList * list_head,
                   size_t    position) {
-  RoyList * iter = list_head;
-  while (iter->next->next && position >= 0) {
+  RoyList * iter = roy_list_begin(list_head);
+  while (iter->next && position > 0) {
     iter = iter->next;
     position--;
   }
@@ -34,10 +34,10 @@ roy_list_iterator(RoyList * list_head,
 }
 
 const RoyList *
-roy_list_const_iterator(const RoyList * list_head,
-                        size_t          position) {
-  const RoyList * iter = list_head;
-  while (iter->next->next && position >= 0) {
+roy_list_citerator(const RoyList * list_head,
+                   size_t          position) {
+  const RoyList * iter = roy_list_cbegin(list_head);
+  while (iter->next && position > 0) {
     iter = iter->next;
     position--;
   }
@@ -45,23 +45,23 @@ roy_list_const_iterator(const RoyList * list_head,
 }
 
 RoyList *
-roy_list_reverse_iterator(RoyList * list_tail,
-                          size_t    reverse_position) {
-  RoyList * riter = list_tail;
-  while (riter->prev->prev && reverse_position >= 0) {
+roy_list_riterator(RoyList * list_tail,
+                   size_t    rposition) {
+  RoyList * riter = roy_list_rbegin(list_tail);
+  while (riter->prev && rposition > 0) {
     riter = riter->prev;
-    reverse_position--;
+    rposition--;
   }
   return riter;
 }
 
 const RoyList *
-roy_list_const_reverse_iterator(const RoyList * list_tail,
-                                size_t          reverse_position) {
-  const RoyList * riter = list_tail;
-  while (riter->prev->prev && reverse_position >= 0) {
+roy_list_criterator(const RoyList * list_tail,
+                    size_t          rposition) {
+  const RoyList * riter = roy_list_crbegin(list_tail);
+  while (riter->prev && rposition > 0) {
     riter = riter->prev;
-    reverse_position--;
+    rposition--;
   }
   return riter;
 }
@@ -92,7 +92,7 @@ roy_list_element(void *          dest,
                  size_t          element_size,
                  size_t          position) {
   return memcpy(dest,
-                roy_list_const_iterator(list, position)->data,
+                roy_list_citerator(list, position)->data,
                 element_size);
 }
 
@@ -100,7 +100,7 @@ size_t
 roy_list_size(const RoyList * list_head) {
   const RoyList * iter = list_head;
   size_t count = 0;
-  while (iter->next->next) {
+  while (iter->next && iter->next->next) {
     iter = iter->next;
     count++;
   }
@@ -111,13 +111,12 @@ size_t
 roy_list_rsize(const RoyList * list_tail) {
   const RoyList * iter = list_tail;
   size_t count = 0;
-  while (iter->prev->prev) {
+  while (iter->prev && iter->prev->prev) {
     iter = iter->prev;
     count++;
   }
   return count;
 }
-
 
 bool
 roy_list_empty(const RoyList * list_head) {
@@ -144,10 +143,10 @@ roy_list_insert(RoyList    * list_head,
 
 bool
 roy_list_insert_reverse(RoyList    * list_tail,
-                        size_t       reverse_position,
+                        size_t       rposition,
                         const void * data,
                         size_t       element_size) {
-  RoyList * iter = roy_list_reverse_iterator(list_tail, reverse_position);
+  RoyList * iter = roy_list_riterator(list_tail, rposition);
   if (iter) {
     roy_list_push_back(iter->next, data, element_size);
     return true;
@@ -187,18 +186,18 @@ roy_list_erase(RoyList * list_head,
 
 bool
 roy_list_erase_reverse(RoyList * list_tail,
-                       size_t    reverse_position) {
+                       size_t    rposition) {
   return
-  roy_list_pop_back(roy_list_reverse_iterator(list_tail, reverse_position)->next);
+  roy_list_pop_back(roy_list_riterator(list_tail, rposition)->next);
 }
 
 bool
 roy_list_pop_front(RoyList * list_head) {
   if (!roy_list_empty(list_head)) {
-    RoyList * to_erase = roy_list_begin(list_head);
+    RoyList * to_erase  = roy_list_begin(list_head);
     RoyList * next_elem = to_erase->next;
-    list_head->next = next_elem;
-    next_elem->prev = list_head;
+    list_head->next     = next_elem;
+    next_elem->prev     = list_head;
     node_delete(to_erase);
     return true;
   }
@@ -208,10 +207,10 @@ roy_list_pop_front(RoyList * list_head) {
 bool
 roy_list_pop_back(RoyList * list_tail) {
   if (!roy_list_rempty(list_tail)) {
-    RoyList * to_erase = roy_list_rbegin(list_tail);
+    RoyList * to_erase  = roy_list_rbegin(list_tail);
     RoyList * prev_elem = to_erase->prev;
-    list_tail->prev = prev_elem;
-    prev_elem->next = list_tail;
+    list_tail->prev     = prev_elem;
+    prev_elem->next     = list_tail;
     node_delete(to_erase);
     return true;
   }
@@ -225,19 +224,71 @@ roy_list_clear(RoyList * list) {
   }
 }
 
-RoyList *
+size_t
 roy_list_remove(RoyList    * list,
                 const void * data,
                 int       (* compare)(const void *, const void *)) {
-  RoyList * temp = list;
-  while (!roy_list_empty(temp)) {
-    if (compare(temp->data, data) == 0) {
+  RoyList * iter = list;
+  size_t count = 0;
+  while (!roy_list_empty(iter)) {
+    if (compare(roy_list_cbegin(list)->data, data) == 0) {
+      roy_list_pop_front(iter);
+      count++;
+    } else {
+      iter = iter->next;
+    }
+  }
+  return count;
+}
+
+size_t
+roy_list_remove_if(RoyList * list,
+                   bool   (* condition)(const void *)) {
+  RoyList * iter = list;
+  size_t count = 0;
+  while (!roy_list_empty(iter)) {
+    if (condition(roy_list_cbegin(list)->data)) {
+      roy_list_pop_front(iter);
+      count++;
+    } else {
+      iter = iter->next;
+    }
+  }
+  return count;
+}
+
+void
+roy_list_reverse(RoyList ** list) {
+  RoyList * iter = *list;
+  while (iter) {
+    RoyList * temp = iter->next;
+    iter->next = iter->prev;
+    iter->prev = temp;
+    iter = temp;
+  }
+  while ((*list)->prev) {
+    *list = (*list)->prev;
+  }
+}
+
+void
+roy_list_unique(RoyList * list,
+                int    (* compare)(const void *, const void *)) {
+    RoyList * temp = list;
+    while (temp->next && temp->next->next && temp->next->next->next) {
+    if (compare(roy_list_cbegin(temp)->data,
+                roy_list_cbegin(temp->next)->data) == 0) {
       roy_list_pop_front(temp);
     } else {
       temp = temp->next;
     }
   }
-  return list;
+}
+
+// TODO
+void
+roy_list_sort(RoyList * list,
+              int (* compare)(const void *, const void *)) {
 }
 
 void

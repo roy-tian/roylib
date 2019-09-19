@@ -35,7 +35,7 @@ void roy_umset_delete(RoyUMSet * umset);
 
 // Returns an pointer to the element which is the 'bucket_position'-th one on 'bucket_index'-th buckets.
 // (Returns NULL if position is out of range.)
-const void * roy_umset_const_pointer(const RoyUMSet * umset, int bucket_index, int bucket_position);
+const void * roy_umset_cpointer(const RoyUMSet * umset, int bucket_index, int bucket_position);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)
@@ -58,16 +58,16 @@ bool roy_umset_empty(const RoyUMSet * umset);
 /* MODIFIERS */
 
 // Hashes an element named 'data' into 'umset'.
-RoyUMSet * roy_umset_insert(RoyUMSet * umset, const void * data);
+void roy_umset_insert(RoyUMSet * umset, const void * data);
 
 // Removes an element which is the 'bucket_position'-th one on 'bucket_index'-th buckets of 'umset'.
-RoyUMSet * roy_umset_erase(RoyUMSet * umset, int bucket_index, int bucket_position);
+bool roy_umset_erase(RoyUMSet * umset, int bucket_index, int bucket_position);
 
 // Removes all elements in 'umset' equal to 'data'.
-RoyUMSet * roy_umset_remove(RoyUMSet * umset, const void * data);
+size_t roy_umset_remove(RoyUMSet * umset, const void * data);
 
 // Removes all elements from 'umset'.
-RoyUMSet * roy_umset_clear(RoyUMSet * umset);
+void roy_umset_clear(RoyUMSet * umset);
 
 /* LOOKUPS */
 

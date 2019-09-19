@@ -36,7 +36,7 @@ RoySList * roy_slist_iterator(RoySList * slist, size_t position);
 
 // Returns a const iterator to 'position' in 'slist' where the element takes place.
 // (Returns the head of 'list' if position is negative, NULL if position exceeds.)
-const RoySList * roy_slist_const_iterator(const RoySList * slist, size_t position);
+const RoySList * roy_slist_citerator(const RoySList * slist, size_t position);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)

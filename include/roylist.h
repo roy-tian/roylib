@@ -31,7 +31,7 @@ RoyList * roy_list_iterator(RoyList * list_head, size_t position);
 
 // Returns an reversed iterator to 'position' right most in 'list' where the element takes place.
 // (Returns the tail of 'list' if position is negative, NULL if position exceeds.)
-RoyList * roy_list_reverse_iterator(RoyList * list_tail, size_t reverse_position);
+RoyList * roy_list_riterator(RoyList * list_tail, size_t rposition);
 
 // Returns an iterator to the first element.
 RoyList * roy_list_begin(RoyList * list_head);
@@ -41,11 +41,11 @@ RoyList * roy_list_rbegin(RoyList * list_tail);
 
 // Returns a const iterator to 'position' in 'list' where the element takes place.
 // (Returns the head of 'list' if position is negative, NULL if position exceeds.)
-const RoyList * roy_list_const_iterator(const RoyList * list_head, size_t position);
+const RoyList * roy_list_citerator(const RoyList * list_head, size_t position);
 
 // Returns an const reversed iterator to 'position' right most in 'list' where the element takes place.
 // (Returns the tail of 'list' if position is negative, NULL if position exceeds.)
-const RoyList * roy_list_const_reverse_iterator(const RoyList * list_tail, size_t reverse_position);
+const RoyList * roy_list_criterator(const RoyList * list_tail, size_t rposition);
 
 // Returns a const iterator to the first element.
 const RoyList * roy_list_cbegin(const RoyList *list_head);
@@ -79,8 +79,8 @@ bool roy_list_rempty(const RoyList * list_tail);
 // Adds an 'element_size'-sized element named 'data' into 'list' at 'position'.
 bool roy_list_insert(RoyList * list_head, size_t position, const void * data, size_t element_size);
 
-// Adds an 'element_size'-sized element named 'data' into 'list_tail' at 'reverse_position' rightmost.
-bool roy_list_insert_reverse(RoyList * list_tail, size_t reverse_position, const void * data, size_t element_size);
+// Adds an 'element_size'-sized element named 'data' into 'list_tail' at 'rposition' rightmost.
+bool roy_list_insert_reverse(RoyList * list_tail, size_t rposition, const void * data, size_t element_size);
 
 // Adds an 'element_size'-sized element named 'data' at the beginning of the list.
 void roy_list_push_front(RoyList * list_head, const void * data, size_t element_size);
@@ -91,8 +91,8 @@ void roy_list_push_back(RoyList * list_tail, const void * data, size_t element_s
 // Removes an element from 'list_head' at 'position'.
 bool roy_list_erase(RoyList * list_head, size_t position);
 
-// Removes an element from 'list_tail' at 'reverse_position'.
-bool roy_list_erase_reverse(RoyList * list_tail, size_t reverse_position);
+// Removes an element from 'list_tail' at 'rposition'.
+bool roy_list_erase_reverse(RoyList * list_tail, size_t rposition);
 
 // Removes the first element from 'list_head'.
 bool roy_list_pop_front(RoyList * list_head);
@@ -106,19 +106,19 @@ void roy_list_clear(RoyList * list_head);
 /* LIST OPERATIONS */
 
 // Removes all elements in 'list' equivalent to data.
-RoyList * roy_list_remove(RoyList * list, const void * data, int (* compare)(const void *, const void *));
+size_t roy_list_remove(RoyList * list, const void * data, int (* compare)(const void *, const void *));
 
 // Removes all elements in 'list' which meet 'condition'.
-RoyList * roy_list_remove_if(RoyList * list, bool (* condition)(const void *));
+size_t roy_list_remove_if(RoyList * list, bool (* condition)(const void *));
 
 // Reverses the order of the elements in 'list'.
-RoyList * roy_list_reverse(RoyList * list);
+void roy_list_reverse(RoyList ** list);
 
 // Removes all consecutive duplicate elements from 'list', only the first element in each group of equal elements is left. 
-RoyList * roy_list_unique(RoyList * list, int (* compare)(const void *, const void *));
+void roy_list_unique(RoyList * list, int (* compare)(const void *, const void *));
 
 // Sorts the elements in ascending order, using quick sort strategy.
-RoyList * roy_list_sort(RoyList * list, int (* compare)(const void *, const void *));
+void roy_list_sort(RoyList * list, int (* compare)(const void *, const void *));
 
 /* TRAVERSE */
 

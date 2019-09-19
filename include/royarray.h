@@ -30,7 +30,7 @@ void roy_array_delete(RoyArray * array);
 void * roy_array_pointer(RoyArray * array, size_t position);
 
 // Returns a const void pointer to the element at 'position'.
-const void * roy_array_const_pointer(const RoyArray * array, size_t position);
+const void * roy_array_cpointer(const RoyArray * array, size_t position);
 
 // Returns a copy of the element at 'position'.
 void * roy_array_element(void * dest, const RoyArray * array, size_t position);

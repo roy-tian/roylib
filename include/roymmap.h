@@ -27,16 +27,16 @@ void roy_mmap_delete(RoyMMap * mmap);
 /* ELEMENT ACCESS */
 
 // Returns an pointer to the value of the minimum element of 'mmap'.
-void * roy_mmap_pmin(RoyMMap * mmap);
+void * roy_mmap_min(RoyMMap * mmap);
 
 // Returns an pointer to the value of the maximum element of 'mmap'.
-void * roy_mmap_pmax(RoyMMap * mmap);
+void * roy_mmap_max(RoyMMap * mmap);
 
 // Returns a const pointer to the value of the minimum element of 'mmap'.
-const void * roy_mmap_const_pmin(const RoyMMap * mmap);
+const void * roy_mmap_cmin(const RoyMMap * mmap);
 
 // Returns a const pointer to the value of the maximum element of 'mmap'.
-const void * roy_mmap_const_pmax(const RoyMMap * mmap);
+const void * roy_mmap_cmax(const RoyMMap * mmap);
 
 #define roy_mmap_at(mmap, value_type, key)    \
         ((value_type *)((roy_mmap_find((mmap), (key))) ? (roy_mmap_find((mmap), (key))) : NULL))
@@ -58,7 +58,7 @@ RoyMMap * roy_mmap_insert(RoyMMap * mmap, const void * key, const void * value);
 RoyMMap * roy_mmap_erase(RoyMMap * mmap, const void * key);
 
 // Removes all the element from 'mmap'.
-RoyMMap * roy_mmap_clear(RoyMMap * mmap);
+void roy_mmap_clear(RoyMMap * mmap);
 
 /* LOOKUP */
 

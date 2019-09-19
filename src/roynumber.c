@@ -20,7 +20,7 @@
         str += strspn(str, " \t");
 
 uint64_t
-roy_parse_binary(const char * str) {
+roy_parse_bin(const char * str) {
   uint64_t result = 0ULL;
   STR_TRIM_LEFT(str)
   size_t len = strspn(str, "01");
@@ -34,7 +34,7 @@ roy_parse_binary(const char * str) {
 }
 
 uint64_t
-roy_parse_octal(const char * str) {
+roy_parse_oct(const char * str) {
   uint64_t result = 0ULL;
   STR_TRIM_LEFT(str)
   STR_INC("0", str)
@@ -47,7 +47,7 @@ roy_parse_octal(const char * str) {
 }
 
 uint64_t
-roy_parse_hexadecimal(const char * str) {
+roy_parse_hex(const char * str) {
   uint64_t result = 0ULL;
   STR_TRIM_LEFT(str)
   if (strstr(str, "0X") == str || strstr(str, "0x") == str) {
@@ -69,7 +69,7 @@ roy_parse_hexadecimal(const char * str) {
 }
 
 long long
-roy_parse_integer(const char * str) {
+roy_parse_int(const char * str) {
   long long result = 0LL;
   STR_TRIM_LEFT(str)
   int pn = *str == '-' ? -1 : 1;
@@ -100,11 +100,11 @@ roy_parse_double(const char * str) {
 }
 
 char *
-roy_llong_to_string(char    * dest,
-                    int64_t   number,
-                    size_t    base,
-                    size_t    width,
-                    bool      fill_zero) {
+roy_llong_to_str(char    * dest,
+                 int64_t   number,
+                 size_t    base,
+                 size_t    width,
+                 bool      fill_zero) {
   bool pn = true, llong_min = false;
   if (number == LLONG_MIN) {
     llong_min = true;
@@ -134,11 +134,11 @@ roy_llong_to_string(char    * dest,
 }
 
 char *
-roy_ullong_to_string(char     * dest,
-                     uint64_t   number,
-                     size_t     base,
-                     size_t     width,
-                     bool       fill_zero) {
+roy_ullong_to_str(char     * dest,
+                  uint64_t   number,
+                  size_t     base,
+                  size_t     width,
+                  bool       fill_zero) {
   char * pdest = dest;
   do {
     int cur_digit = (int)(number % base);
@@ -169,9 +169,9 @@ roy_ullong_invert(uint64_t * number,
 }
 
 uint64_t
-roy_ullong_rotate_right(uint64_t * number,
-                        size_t     steps,
-                        size_t     width) {
+roy_ullong_ror(uint64_t * number,
+               size_t     steps,
+               size_t     width) {
   uint64_t right = (*number & ~(~0ULL << steps)) << (width - steps);
   *number >>= steps;
   *number |= right;
@@ -179,9 +179,9 @@ roy_ullong_rotate_right(uint64_t * number,
 }
 
 uint64_t
-roy_ullong_rotate_left(uint64_t * number,
-                       size_t     steps,
-                       size_t     width) {
+roy_ullong_rol(uint64_t * number,
+               size_t     steps,
+               size_t     width) {
   uint64_t right = (*number & ~(~0ULL << (width - steps))) << steps;
   *number >>= width - steps;
   *number |= right;
@@ -196,4 +196,67 @@ roy_ullong_count_bit(uint64_t number) {
     count++;
   }
   return count;
+}
+
+
+bool
+roy_ullong_prime(size_t number) {
+  if (number < 2 || (number != 2 && number % 2 == 0)) {
+    return false;
+  }
+  for (size_t i = 3; i <= (size_t)sqrt((double)number); i += 2) {
+    if (number % i == 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+size_t
+roy_ullong_next_prime(size_t number) {
+  while (!roy_ullong_prime(number)) {
+    number++;
+  }
+  return number;
+}
+
+uint64_t
+MurmurHash64A(const void * key,
+              size_t       key_size,
+              uint64_t     seed) {
+  const uint64_t m = 0Xc6a4a7935bd1e995ULL;
+  const uint64_t r = 47ULL;
+  const uint64_t * data = (const uint64_t *)key;
+  const uint64_t * end = data + (key_size / 8);
+  uint64_t h = seed ^ (key_size * m);
+
+  while (data != end) {
+    uint64_t k = *data++;
+
+    k *= m;
+    k ^= k >> r;
+    k *= m;
+
+    h ^= k;
+    h *= m;
+  }
+
+  const unsigned char * data2 = (const unsigned char*)data;
+
+  switch(key_size & 7ULL) {
+    case 7: h ^= (uint64_t)(data2[6]) << 48ULL;
+    case 6: h ^= (uint64_t)(data2[5]) << 40ULL;
+    case 5: h ^= (uint64_t)(data2[4]) << 32ULL;
+    case 4: h ^= (uint64_t)(data2[3]) << 24ULL;
+    case 3: h ^= (uint64_t)(data2[2]) << 16ULL;
+    case 2: h ^= (uint64_t)(data2[1]) << 8ULL;
+    case 1: h ^= (uint64_t)(data2[0]);
+      h *= m;
+  };
+
+  h ^= h >> r;
+  h *= m;
+  h ^= h >> r;
+
+  return h;
 }

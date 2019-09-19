@@ -58,8 +58,8 @@ roy_shell_start(RoyShell * shell) {
       parse(shell, shell->ibuffer);
       void (* func)(RoyShell *) = 
       roy_pointer_get(roy_map_at(shell->dict,
-                      RoyPointer,
-                      roy_shell_argument_at(shell, 0)));
+                                 RoyPointer,
+                                 roy_shell_argument_at(shell, 0)));
       if (func) {
         roy_shell_log_clear(shell);
         func(shell);
@@ -97,7 +97,7 @@ roy_shell_argument_count(const RoyShell * shell) {
 const char *
 roy_shell_argument_at(const RoyShell * shell,
                       size_t           position) {
-  return (const char *)roy_deque_const_pointer(shell->argv, position);
+  return (const char *) roy_deque_cpointer(shell->argv, position);
 }
 
 int
@@ -138,7 +138,7 @@ roy_shell_ihistory_at(const RoyShell * shell,
   if (position < 0) {
     position += roy_deque_size(shell->ihistory);
   }
-  return (const char *)roy_deque_const_pointer(shell->ihistory, position);
+  return (const char *) roy_deque_cpointer(shell->ihistory, position);
 }
 
 const char *
@@ -147,7 +147,7 @@ roy_shell_ohistory_at(const RoyShell * shell,
   if (position < 0) {
     position += roy_deque_size(shell->ohistory);
   }
-  return (const char *)roy_deque_const_pointer(shell->ohistory, position);
+  return (const char *) roy_deque_cpointer(shell->ohistory, position);
 }
 
 /* PRIVATE FUNCTIONS */

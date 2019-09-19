@@ -27,8 +27,8 @@ roy_array_pointer(RoyArray * array,
 }
 
 const void *
-roy_array_const_pointer(const RoyArray * array,
-                        size_t           position) {
+roy_array_cpointer(const RoyArray * array,
+                   size_t           position) {
   return (position <= roy_array_size(array))          ?
          array->data + array->element_size * position :
          NULL;
@@ -39,8 +39,8 @@ roy_array_element(void           * dest,
                   const RoyArray * array,
                   size_t           position) {
   return
-  (position <= roy_array_size(array))                                         ?
-  memcpy(dest, roy_array_const_pointer(array, position), array->element_size) :
+  (position <= roy_array_size(array)) ?
+  memcpy(dest, roy_array_cpointer(array, position), array->element_size) :
   NULL;
 }
 
@@ -71,7 +71,7 @@ roy_array_insert(RoyArray   * array,
   if (position <= roy_array_size(array) && !roy_array_full(array)) {
     for (size_t i = roy_array_size(array); i > position; i--) {
       memcpy(roy_array_pointer(array, i),
-             roy_array_const_pointer(array, (i - 1)),
+             roy_array_cpointer(array, (i - 1)),
              array->element_size);
     }
     memcpy(roy_array_pointer(array, position),
@@ -89,7 +89,7 @@ roy_array_insert_fast(RoyArray   * array,
                       const void * data) {
   if (position <= roy_array_size(array) && !roy_array_full(array)) {
     memcpy(roy_array_pointer(array, roy_array_size(array)),
-           roy_array_const_pointer(array, position),
+           roy_array_cpointer(array, position),
            array->element_size);
     memcpy(roy_array_pointer(array, position),
            data,
@@ -119,7 +119,7 @@ roy_array_erase(RoyArray * array,
   if (position < roy_array_size(array) && !roy_array_empty(array)) {
     for (size_t i = position; i < roy_array_size(array); i++) {
       memcpy(roy_array_pointer(array, i),
-             roy_array_const_pointer(array, i + 1),
+             roy_array_cpointer(array, i + 1),
              array->element_size);
     }
     array->size--;
@@ -133,7 +133,7 @@ roy_array_erase_fast(RoyArray * array,
                      size_t     position) {
   if (position < roy_array_size(array) && !roy_array_empty(array)) {
     memcpy(roy_array_pointer(array, position),
-           roy_array_const_pointer(array, roy_array_size(array) - 1),
+           roy_array_cpointer(array, roy_array_size(array) - 1),
            array->element_size);
     array->size--;
     return true;
@@ -168,9 +168,8 @@ roy_array_for_which(RoyArray * array,
                     bool    (* condition) (const void *),
                     void    (* operate)         (void *)) {
   for (size_t i = 0; i != roy_array_size(array); i++) {
-    if (condition(roy_array_const_pointer(array, i))) {
+    if (condition(roy_array_cpointer(array, i))) {
       operate(roy_array_pointer(array, i));
     }
   }
 }
-
