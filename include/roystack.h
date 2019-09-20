@@ -27,7 +27,7 @@ void roy_stack_delete(RoyStack * stack);
 
 /* ELEMENT ACCESS */
 
-// Returns a typed pointer to the first element of 'stack'.
+// Returns a typed pointer to the first element of 'stack', or NULL if 'stack' is empty.
 #define roy_stack_top(stack, element_type)  \
         (element_type*)(roy_stack_empty(stack) ? NULL : roy_array_pointer(ROY_ARRAY(stack), (roy_stack_size(stack) - 1)))
 
@@ -47,15 +47,17 @@ bool roy_stack_full(const RoyStack * stack);
 
 /* MODIFIERS */
 
-// Adds an element named 'data' into 'stack' next to the last element, or does nothing if 'stack' if full.
-// (The behavior is undefined if 'data' is uninitialized.)
+// Adds an element named 'data' into 'stack' next to the last element, returns whether the insertion is successful.
+// (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
+// (Fails if 'position' exceeds, or 'stack' is full.)
 bool roy_stack_push(RoyStack * stack, const void * data);
 
-// Adds an element same as top into 'stack' next to the last element, or does nothing if 'stack' if full.
-// (The behavior is undefined if 'data' is uninitialized.)
+// Adds an element same as top into 'stack' next to the last element, returns whether the insertion is successful.
+// (Fails if 'stack' is full.)
 bool roy_stack_duplicate_top(RoyStack * stack);
 
-// Removes the first element.
+// Removes the first element, returns whether the insertion is successful.
+// (Fails if 'stack' is empty)
 bool roy_stack_pop(RoyStack * stack);
 
 // Removes all the elements in 'stack'.

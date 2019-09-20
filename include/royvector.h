@@ -27,17 +27,17 @@ void roy_vector_delete(RoyVector * vector);
 
 /* ELEMENT ACCESS */
 
-// Returns a pointer to the element at 'position'. (No boundary check)）
+// Returns a pointer to the element at 'position', or NULL if position exceeds.
 void * roy_vector_pointer(RoyVector * vector, size_t position);
 
-// Returns a const pointer to the element at 'position'. (No boundary check)
+// Returns a const pointer to the element at 'position', or NULL if position exceeds.
 const void * roy_vector_cpointer(const RoyVector * vector, size_t position);
 
-// Returns a copy of the element at 'position', or NULL if 'position' is invalid.
+// Returns a copy of the element at 'position', or NULL if 'position' exceeds.
 // (The behavior is undefined if 'dest' is uninitialized.)
 void * roy_vector_element(void * dest, const RoyVector * vector, size_t position);
 
-// Returns a typed pointer to the element at 'position', or NULL if 'position' is invalid.
+// Returns a typed pointer to the element at 'position', or NULL if 'position' exceeds or 'vector' is empty.
 #define roy_vector_at(vector, element_type, position) \
         ((element_type *)((position) >= 0 && (position) < ((vector)->size) ? roy_vector_pointer((vector), (position)) : NULL))
 

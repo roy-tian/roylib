@@ -21,6 +21,7 @@ roy_array_delete(RoyArray * array) {
 void *
 roy_array_pointer(RoyArray * array,
                   size_t     position) {
+  // position E [0, size], aka begin .. end
   return (position <= roy_array_size(array))          ?
          array->data + array->element_size * position :
          NULL;

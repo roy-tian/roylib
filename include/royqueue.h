@@ -18,7 +18,6 @@ struct RoyQueue_ {
 // which implemented as an cycled linear list.
 typedef struct RoyQueue_ RoyQueue;
 
-
 // Allocates sufficient memory for an RoyQueue and returns a pointer to it.
 // The queue can store 'capacity' elements with each size 'element_size' .
 // (Operations on un-newed RoyQueues will cause undefined behavior.)

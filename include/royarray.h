@@ -35,7 +35,7 @@ const void * roy_array_cpointer(const RoyArray * array, size_t position);
 // Returns a copy of the element at 'position', or NULL if 'position' exceeds.
 void * roy_array_element(void * dest, const RoyArray * array, size_t position);
 
-// Returns a typed pointer to the element at 'position', or NULL if 'position' exceeds.
+// Returns a typed pointer to the element at 'position', or NULL if 'position' exceeds or 'array' is empty.
 #define roy_array_at(array, element_type, position) \
         ((element_type*)((position) >= 0 && (position) < ((array)->size) ? roy_array_pointer((array), (position)) : NULL))
 
@@ -69,10 +69,10 @@ bool roy_array_insert_fast(RoyArray * array, size_t position, const void * data)
 
 // Adds an element named 'data' to the back of 'array', returns whether the operation is successful.
 // (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
-// (The operation fails if 'array' is full.)
+// (Fails if 'array' is full.)
 bool roy_array_push_back(RoyArray * array, const void * data);
 
-// Removes an element at 'position', and fill the empty position with its next recursively, returns whether the operation is successful.
+// Removes an element at 'position', and fill with its next recursively, returns whether the operation is successful.
 // (Fails if 'position' exceeds, or 'array' is empty.)
 // (Deprecated when 'array' is huge and 'position' is small, can be very slow.)
 bool roy_array_erase(RoyArray * array, size_t position);

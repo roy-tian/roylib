@@ -24,17 +24,17 @@ void roy_slist_delete(RoySList * slist);
 
 /* ELEMENT ACCESS */
 
-// Returns an iterator to the first element.
-RoySList * roy_slist_begin(RoySList * slist);
-
-// Returns a const iterator to the first element.
-const RoySList * roy_slist_cbegin(const RoySList * slist);
-
 // Returns an iterator to 'position' in 'slist' where the element takes place, or NULL if 'position' exceeds.
 RoySList * roy_slist_iterator(RoySList * slist, size_t position);
 
+// Returns an iterator to the first element.
+RoySList * roy_slist_begin(RoySList * slist);
+
 // Returns a const iterator to 'position' in 'slist' where the element takes place, or NULL if 'position' exceeds.
 const RoySList * roy_slist_citerator(const RoySList * slist, size_t position);
+
+// Returns a const iterator to the first element.
+const RoySList * roy_slist_cbegin(const RoySList * slist);
 
 // Returns a copy of the element at 'position', or NULL if 'position' exceeds.
 // (The behavior is undefined if 'dest' is uninitialized, or mis-sized.)
@@ -78,7 +78,7 @@ size_t roy_slist_remove_if(RoySList * slist, bool (* condition)(const void *));
 // Reverses the order of the elements in 'slist'.
 void roy_slist_reverse(RoySList * slist);
 
-// Removes all consecutive duplicate elements from 'slist', only the first element in each group of equal elements is left. 
+// Removes all consecutive duplicate elements from 'slist', only left the first element in each group of equal elements is left.
 void roy_slist_unique(RoySList *slist, int (* compare)(const void *, const void *));
 
 // Sorts the elements in ascending order, using quick sort strategy.
