@@ -33,7 +33,7 @@ RoySList *
 roy_slist_iterator(RoySList * slist,
                    size_t     position) {
   RoySList * iter = slist;
-  while (iter->next && position >= 0) {
+  while (iter->next) {
     iter = iter->next;
     position--;
   }
@@ -44,7 +44,7 @@ const RoySList *
 roy_slist_citerator(const RoySList * slist,
                     size_t           position) {
   const RoySList * iter = slist;
-  while (iter->next && position >= 0) {
+  while (iter->next) {
     iter = iter->next;
     position--;
   }

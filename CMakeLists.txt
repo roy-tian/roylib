@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(roylib VERSION 0.1.0)
 
 set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS "-Wall -Wextra")
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 include_directories(
@@ -10,7 +11,7 @@ include_directories(
 )
 
 add_library(roylib
-        roy.h include/royinit.h
+  roy.h include/royinit.h
   include/roystr.h src/roystr.c
   include/roystring.h src/roystring.c
   include/roynumber.h src/roynumber.c
@@ -29,6 +30,6 @@ add_library(roylib
   include/roymmap.h src/roymmap.c
   include/royuset.h src/royuset.c
   include/royumset.h src/royumset.c
-        include/royumap.h include/royummap.h)
+  include/royumap.h include/royummap.h)
 
 target_link_libraries(roylib pcre)

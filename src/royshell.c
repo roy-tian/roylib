@@ -104,7 +104,7 @@ int
 roy_shell_argument_find(const RoyShell * shell,
                         const char     * regex) {
   RoyString * arg = roy_string_new();
-  for (int i = 0; i != roy_shell_argument_count(shell); i++) {
+  for (size_t i = 0; i != roy_shell_argument_count(shell); i++) {
     roy_string_assign(arg, roy_shell_argument_at(shell, i));
     if (roy_string_match(arg, regex)) {
       roy_string_delete(arg);
@@ -135,18 +135,12 @@ roy_shell_log_append(RoyShell   * shell,
 const char *
 roy_shell_ihistory_at(const RoyShell * shell,
                       size_t           position) {
-  if (position < 0) {
-    position += roy_deque_size(shell->ihistory);
-  }
   return (const char *) roy_deque_cpointer(shell->ihistory, position);
 }
 
 const char *
 roy_shell_ohistory_at(const RoyShell * shell,
                       size_t           position) {
-  if (position < 0) {
-    position += roy_deque_size(shell->ohistory);
-  }
   return (const char *) roy_deque_cpointer(shell->ohistory, position);
 }
 

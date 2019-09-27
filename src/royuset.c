@@ -2,7 +2,7 @@
 #include "../include/roynumber.h"
 #include <math.h>
 
-static bool valid_bucket_index(const RoyUSet * uset, int bucket_index);
+static bool valid_bucket_index(const RoyUSet * uset, size_t bucket_index);
 
 RoyUSet *
 roy_uset_new(size_t      bucket_count,
@@ -182,6 +182,6 @@ roy_uset_for_which(RoyUSet * uset,
 
 static bool
 valid_bucket_index(const RoyUSet * uset,
-                   int             bucket_index) {
-  return bucket_index >= 0 && bucket_index < roy_uset_bucket_count(uset);
+                   size_t          bucket_index) {
+  return bucket_index < roy_uset_bucket_count(uset);
 }
