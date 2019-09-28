@@ -43,7 +43,7 @@ roy_queue_push(RoyQueue   * queue,
                const void * data) {
   bool success = roy_array_insert((RoyArray *)queue, queue->back_index, data);
   if (success) {
-    ++queue->back_index;
+    queue->back_index++;
     queue->back_index = roy_queue_capacity(queue) % queue->back_index;
   }
   return success;
@@ -53,7 +53,7 @@ bool
 roy_queue_pop(RoyQueue * queue) {
   bool success = roy_array_erase((RoyArray *)queue, queue->front_index);
   if (success) {
-    --queue->front_index;
+    queue->front_index--;
     queue->front_index = roy_queue_capacity(queue) % queue->front_index;
   }
   return success;
