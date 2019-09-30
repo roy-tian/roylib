@@ -1,6 +1,8 @@
 #include "../include/roystring.h"
 #include <pcre.h>
 
+static bool pcre_ovector(int * dest_ovector, const RoyString * string, const char * regex, size_t position);
+
 RoyString *
 roy_string_new(void) {
   RoyString * ret = (RoyString *)malloc(sizeof(RoyString));
@@ -80,9 +82,6 @@ RoyString *
 roy_string_insert(RoyString       * string,
                   const RoyString * substring,
                   size_t            position) {
-
-
-
   return roy_string_insert_str(string, roy_string_cstr(substring), position);
 }
 
@@ -167,26 +166,11 @@ int
 roy_string_find_regex(const RoyString * string,
                       const char      * regex,
                       size_t            position) {
-  const char * err_info;
-  int err_offset;
-  pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
-  pcre_extra * rex = pcre_study(re, 0, &err_info);
-  enum { OVECSIZE = 30 };
-  int ovector[OVECSIZE];
-  int ret = PCRE_ERROR_NOMATCH;
-  if (pcre_exec(re,
-                rex,
-                roy_string_cstr(string),
-                roy_string_size(string),
-                position,
-                0,
-                ovector,
-                OVECSIZE) != PCRE_ERROR_NOMATCH) {
-    ret = ovector[0];
-  };
-  free(re);
-  free(rex);
-  return ret;
+  int ret;
+  if (pcre_ovector(&ret, string, regex, position)) {
+    return ret;
+  }
+  return PCRE_ERROR_NOMATCH;
 }
 
 char *
@@ -194,27 +178,14 @@ roy_string_regex(char            * dest,
                  const RoyString * string,
                  const char      * regex,
                  size_t            position) {
-  const char * err_info;
-  int err_offset;
-  pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
-  pcre_extra * rex = pcre_study(re, 0, &err_info);
-  enum { OVECSIZE = 30 };
-  int ovector[OVECSIZE];
-  if (pcre_exec(re,
-                rex,
-                roy_string_cstr(string),
-                roy_string_size(string),
-                position,
-                0,
-                ovector,
-                OVECSIZE) != PCRE_ERROR_NOMATCH) {
+  enum { OVECSIZE = 3 };
+  int ovector[OVECSIZE] = {0};
+  if (pcre_ovector(ovector, string, regex, position)) {
     strncpy(dest,
             roy_string_cstr(string) + ovector[0],
             ovector[1] - ovector[0]);
     *(dest + strlen(dest)) = '\0';
-  };
-  free(re);
-  free(rex);
+  }
   return dest;
 }
 
@@ -227,4 +198,22 @@ roy_string_match(const RoyString * string,
   strcat(re, regex);
   strcat(re, "$");
   return roy_string_find_regex(string, re, 0) == 0;
+}
+
+static bool
+pcre_ovector(int             * dest_ovector,       
+             const RoyString * string,
+             const char      * regex,
+             size_t            position) {
+  enum { OVECSIZE = 3 };
+  const char * err_info;
+  int err_offset;
+  pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
+  pcre_extra * rex = pcre_study(re, 0, &err_info);
+  int found =
+  pcre_exec(re, rex, roy_string_cstr(string), roy_string_size(string),
+            position, 0, dest_ovector, OVECSIZE);
+  free(rex);
+  free(re);
+  return found != PCRE_ERROR_NOMATCH;
 }
