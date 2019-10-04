@@ -24,8 +24,9 @@ enum BinaryWidths {
   ROY_QWORD = 64
 };
 
-#define ROY_OPERATE(operate)     (void(*)(void *))(operate)
-#define ROY_CONDITION(condition) (bool(*)(const void *))(condition)
-#define ROY_COMPARE(compare)     (int (*)(const void *, const void *))(compare)
+typedef void     (* ROperate)  (void *);
+typedef bool     (* RCondition)(const void *);
+typedef int      (* RCompare)  (const void *, const void *);
+typedef uint64_t (* RHash)     (const void *, size_t, uint64_t);
 
 #endif // ROYINIT_H

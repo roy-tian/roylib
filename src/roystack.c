@@ -40,9 +40,8 @@ roy_stack_push(RoyStack   * stack,
 bool
 roy_stack_duplicate_top(RoyStack * stack) {
   return
-  roy_stack_push(stack,
-                 roy_array_cpointer((RoyArray *) stack,
-                                    roy_stack_size(stack) - 1));
+  roy_stack_push(stack, roy_array_cpointer((RoyArray *) stack,
+                                           roy_stack_size(stack) - 1));
 }
 
 bool

@@ -5,10 +5,10 @@
 #include "royset.h"
 
 struct RoyMap_ {
-  RoySet * root;
-  size_t   key_size;
-  size_t   value_size;
-  int   (* compare)(const void *, const void *);
+  RoySet   * root;
+  size_t     key_size;
+  size_t     value_size;
+  RCompare   compare;
 };
 
 // RoyMap: an associative container that contains a sorted map of unique objects of type Key.
@@ -18,7 +18,7 @@ typedef struct RoyMap_ RoyMap;
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Returns a pointer to a newly build RoyMap. 
-RoyMap * roy_map_new(size_t key_size, size_t value_size, int (* compare)(const void *, const void *));
+RoyMap * roy_map_new(size_t key_size, size_t value_size, RCompare compare);
 
 // De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'map', or memory leak will occur.)
@@ -66,9 +66,9 @@ void * roy_map_find(RoyMap * map, const void * key);
 /* TRAVERSE */
 
 // Traverses all elements in 'map' using 'operate'.
-void roy_map_for_each(RoyMap * map, void (* operate)(void *));
+void roy_map_for_each(RoyMap * map, ROperate operate);
 
 // Traverses all elements whichever meets 'condition' in 'map' using 'operate'.
-void roy_map_for_which(RoyMap * map, bool (* condition)(const void *), void (* operate)(void *));
+void roy_map_for_which(RoyMap * map, RCondition condition, ROperate operate);
 
 #endif // ROYMAP_H

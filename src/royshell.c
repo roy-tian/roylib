@@ -18,7 +18,7 @@ roy_shell_new(void) {
   ret->obuffer   = (char *)calloc(MAX_LEN + 1, sizeof(char));
   ret->dict      = roy_map_new(sizeof(char) * (ARG_LEN + 1),
                                sizeof(RoyPointer),
-                               ROY_COMPARE(strcmp));
+                               (RCompare)strcmp);
   ret->argv      = roy_deque_new(sizeof(char) * (ARG_LEN + 1));
   ret->ihistory  = roy_deque_new(sizeof(char) * (MAX_LEN + 1));
   ret->ohistory  = roy_deque_new(sizeof(char) * (MAX_LEN + 1));

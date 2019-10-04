@@ -91,9 +91,7 @@ roy_list_element(void *          dest,
                  const RoyList * list,
                  size_t          element_size,
                  size_t          position) {
-  return memcpy(dest,
-                roy_list_citerator(list, position)->data,
-                element_size);
+  return memcpy(dest, roy_list_citerator(list, position)->data, element_size);
 }
 
 size_t
@@ -187,8 +185,7 @@ roy_list_erase(RoyList * list_head,
 bool
 roy_list_erase_reverse(RoyList * list_tail,
                        size_t    rposition) {
-  return
-  roy_list_pop_back(roy_list_riterator(list_tail, rposition)->next);
+  return roy_list_pop_back(roy_list_riterator(list_tail, rposition)->next);
 }
 
 bool
@@ -227,7 +224,7 @@ roy_list_clear(RoyList * list) {
 size_t
 roy_list_remove(RoyList    * list,
                 const void * data,
-                int       (* compare)(const void *, const void *)) {
+                RCompare     compare) {
   RoyList * iter = list;
   size_t count = 0;
   while (!roy_list_empty(iter)) {
@@ -242,8 +239,8 @@ roy_list_remove(RoyList    * list,
 }
 
 size_t
-roy_list_remove_if(RoyList * list,
-                   bool   (* condition)(const void *)) {
+roy_list_remove_if(RoyList    * list,
+                   RCondition   condition) {
   RoyList * iter = list;
   size_t count = 0;
   while (!roy_list_empty(iter)) {
@@ -273,7 +270,7 @@ roy_list_reverse(RoyList ** list) {
 
 void
 roy_list_unique(RoyList * list,
-                int    (* compare)(const void *, const void *)) {
+                RCompare  compare) {
     RoyList * temp = list;
     while (temp->next && temp->next->next && temp->next->next->next) {
     if (compare(roy_list_cbegin(temp)->data,
@@ -288,12 +285,12 @@ roy_list_unique(RoyList * list,
 // TODO
 void
 roy_list_sort(RoyList * list,
-              int (* compare)(const void *, const void *)) {
+              RCompare compare) {
 }
 
 void
-roy_list_for_each(RoyList * list,
-                  void   (* operate)(void *)) {
+roy_list_for_each(RoyList  * list,
+                  ROperate   operate) {
   for (RoyList * iter = roy_list_begin(list);
        iter && iter->next;
        iter = iter->next) {
@@ -301,9 +298,9 @@ roy_list_for_each(RoyList * list,
   }
 }
 
-void roy_list_for_which(RoyList * list,
-                        bool   (* condition)(const void *),
-                        void   (* operate)(void *)) {
+void roy_list_for_which(RoyList    * list,
+                        RCondition   condition,
+                        ROperate     operate) {
   for (RoyList * iter = roy_list_begin(list);
        iter && iter->next;
        iter = iter->next) {

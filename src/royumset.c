@@ -4,11 +4,11 @@
 #include <math.h>
 
 RoyUMSet *
-roy_umset_new(size_t      bucket_count,
-              size_t      element_size,
-              uint64_t    seed,
-              uint64_t (* hash)(const void *, size_t, uint64_t),
-              int      (* compare)(const void *, const void *)) {
+roy_umset_new(size_t   bucket_count,
+              size_t   element_size,
+              uint64_t seed,
+              RHash    hash,
+              RCompare compare) {
   RoyUMSet * ret    = (RoyUMSet *)malloc(sizeof(RoyUMSet));
   ret->bucket_count = roy_ullong_next_prime(bucket_count);
   ret->element_size = element_size;
@@ -37,10 +37,10 @@ roy_umset_cpointer(const RoyUMSet * umset,
 }
 
 void *
-roy_umset_element(void    * dest,
-                 RoyUMSet * umset,
-                 int        bucket_index,
-                 int        bucket_position) {
+roy_umset_element(void     * dest,
+                  RoyUMSet * umset,
+                  int        bucket_index,
+                  int        bucket_position) {
   return
   roy_uset_element(dest, (RoyUSet *)umset, bucket_index, bucket_position);
 }
@@ -57,7 +57,7 @@ roy_umset_empty(const RoyUMSet * umset) {
 
 void
 roy_umset_insert(RoyUMSet  * umset,
-                const void * data) {
+                 const void * data) {
   RoySList ** node = &umset->buckets[roy_umset_bucket(umset, data)];
   roy_slist_push_front(*node, data, umset->element_size);
   umset->size++;
@@ -117,13 +117,13 @@ RoyUMSet * roy_umset_rehash(RoyUMSet * umset,
 
 void
 roy_umset_for_each(RoyUMSet * umset,
-                   void    (* operate)(void *)) {
+                   ROperate   operate) {
   roy_uset_for_each((RoyUSet *)umset, operate);
 }
 
 void
-roy_umset_for_which(RoyUMSet * umset,
-                    bool    (* condition)(const void *),
-                    void    (* operate)        (void *)) {
+roy_umset_for_which(RoyUMSet   * umset,
+                    RCondition   condition,
+                    ROperate     operate) {
   roy_uset_for_which((RoyUSet *)umset, condition, operate);
 }
