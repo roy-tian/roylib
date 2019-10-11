@@ -75,9 +75,7 @@ roy_array_insert(RoyArray   * array,
              roy_array_cpointer(array, (i - 1)),
              array->element_size);
     }
-    memcpy(roy_array_pointer(array, position),
-           data,
-           array->element_size);
+    memcpy(roy_array_pointer(array, position), data, array->element_size);
     array->size++;
     return true;
   }
@@ -158,16 +156,16 @@ roy_array_clear(RoyArray * array) {
 
 void
 roy_array_for_each(RoyArray * array,
-                   void    (* operate) (void *)) {
+                   ROperate   operate) {
   for (size_t i = 0; i != roy_array_size(array); i++) {
     operate(roy_array_pointer(array, i));
   }
 }
 
 void
-roy_array_for_which(RoyArray * array,
-                    bool    (* condition) (const void *),
-                    void    (* operate)         (void *)) {
+roy_array_for_which(RoyArray   * array,
+                    RCondition   condition,
+                    ROperate     operate) {
   for (size_t i = 0; i != roy_array_size(array); i++) {
     if (condition(roy_array_cpointer(array, i))) {
       operate(roy_array_pointer(array, i));

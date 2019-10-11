@@ -5,7 +5,7 @@ static void * pair_new(const void * key, size_t key_size, const void * value, si
 RoyMMap *
 roy_mmap_new(size_t   key_size,
              size_t   value_size,
-             int   (* compare)(const void *, const void *)) {
+             RCompare compare) {
   RoyMMap * ret   = (RoyMMap *)malloc(sizeof(RoyMMap));
   ret->root       = NULL;
   ret->key_size   = key_size;
@@ -18,6 +18,7 @@ void
 roy_mmap_delete(RoyMMap * mmap) {
   roy_mmap_clear(mmap);
   free(mmap);
+  mmap = NULL;
 }
 
 void *
@@ -78,15 +79,15 @@ roy_mmap_clear(RoyMMap * mmap) {
 }
 
 void
-roy_mmap_for_each(RoyMMap * mmap,
-                  void   (* operate)(void *)) {
+roy_mmap_for_each(RoyMMap  * mmap,
+                  ROperate   operate) {
   roy_mset_for_each(mmap->root, operate);
 }
 
 void
-roy_mmap_for_which(RoyMMap * mmap,
-                  bool    (* condition)(const void *),
-                  void    (* operate)        (void *)) {
+roy_mmap_for_which(RoyMMap    * mmap,
+                   RCondition   condition,
+                   ROperate     operate) {
   roy_mset_for_which(mmap->root, condition, operate);
 }
 

@@ -1,6 +1,5 @@
 #include "../include/roystr.h"
 
-
 enum {STRING_CAPACITY = 1023};
 
 char *
@@ -202,15 +201,44 @@ roy_str_fill_char(char   * dest,
   return dest;
 }
 
-// TODO
+static char *
+sequence(char * dest,
+         int    front_ch,
+         int    back_ch) {
+  char * pdest = dest;
+  while (front_ch <= back_ch) {
+    *pdest++ = front_ch++;
+  }
+  *pdest = '\0';
+  return dest;
+}
+
 char *
 roy_str_fill_sequence(char       * dest,
                       const char * pattern) {
-  bool flag = false; // is current char in sequence
+  enum Flag { LEFT, MIDDLE, RIGHT };
+  enum Flag flag = 0;
+  char * pdest = dest;
   while (*pattern != '\0') {
+    if (flag == LEFT && isprint(*pattern)) {
+      flag = MIDDLE;
+    } else if (flag == MIDDLE && *pattern == '-') {
+      flag = RIGHT;
+    } else if (flag == RIGHT && isprint(*pattern)) {
+      char buf[STRING_CAPACITY + 1] = "\0";
+      strcat(dest, sequence(buf, *(pattern - 2), *pattern));
+      pdest += strlen(buf);
+      flag = LEFT;
+    } else if (flag == MIDDLE && isprint(*pattern)) {
+      *pdest++ = *(pattern - 1);
+    }
     pattern++;
   }
-  return "";
+  while (flag > 0) {
+    *pdest++ = *(pattern - flag--);
+  }
+  *pdest = '\0';
+  return dest;
 }
 
 char *
@@ -383,7 +411,7 @@ roy_str_count_word(const char * str) {
 
 size_t
 roy_str_count_word_if(const char * str,
-                      size_t    length) {
+                      size_t       length) {
   bool flag = false;
   size_t length_cur = 0;
   size_t count_cur = 0;

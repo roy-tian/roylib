@@ -92,9 +92,9 @@ void roy_array_clear(RoyArray * array);
 /* TRAVERSE */
 
 // Traverses all elements in 'array' using 'operate' sequentially.
-void roy_array_for_each(RoyArray * array, void (* operate)(void *));
+void roy_array_for_each(RoyArray * array, ROperate operate);
 
 // Traverses all elements whichever meets 'condition' in 'array' using 'operate'.
-void roy_array_for_which(RoyArray * array, bool (* condition)(const void *), void (* operate)(void *));
+void roy_array_for_which(RoyArray * array, RCondition condition, ROperate operate);
 
 #endif // ROYARRAY_H

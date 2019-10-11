@@ -118,7 +118,7 @@ roy_slist_clear(RoySList * slist) {
 size_t
 roy_slist_remove(RoySList   * slist,
                  const void * data,
-                 int       (* compare)(const void *, const void *)) {
+                 RCompare     compare) {
   RoySList * iter = slist;
   size_t count = 0;
   while (!roy_slist_empty(iter)) {
@@ -133,8 +133,8 @@ roy_slist_remove(RoySList   * slist,
 }
 
 size_t
-roy_slist_remove_if(RoySList * slist,
-                    bool    (* condition)(const void *)) {
+roy_slist_remove_if(RoySList   * slist,
+                    RCondition   condition) {
   RoySList * iter = slist;
   size_t count = 0;
   while (!roy_slist_empty(iter)) {
@@ -161,7 +161,7 @@ roy_slist_reverse(RoySList * slist) {
 
 void
 roy_slist_unique(RoySList * slist,
-                 int     (* compare)(const void *, const void *)) {
+                 RCompare   compare) {
   RoySList * temp = slist;
   while (temp->next && temp->next->next) {
     if (compare(roy_slist_cbegin(temp)->data,
@@ -176,21 +176,21 @@ roy_slist_unique(RoySList * slist,
 // TODO
 void
 roy_slist_sort(RoySList * slist,
-               int     (* compare)(const void *, const void *)) {
+               RCompare   compare) {
 }
 
 
 void
 roy_slist_for_each(RoySList * slist,
-                   void    (* operate)(void *)) {
+                   ROperate   operate) {
   for (RoySList * iter = roy_slist_begin(slist); iter; iter = iter->next) {
     operate(iter->data);
   }
 }
 
-void roy_slist_for_which(RoySList * slist,
-                         bool    (* condition)(const void *),
-                         void    (* operate)        (void *)) {
+void roy_slist_for_which(RoySList   * slist,
+                         RCondition   condition,
+                         ROperate     operate) {
   for (RoySList * iter = roy_slist_begin(slist); iter; iter = iter->next) {
     if (condition(iter->data)) {
       operate(iter->data);

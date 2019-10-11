@@ -21,8 +21,8 @@ void *
 roy_deque_pointer(RoyDeque * deque,
                   size_t     position) {
   RoyList * pnode =
-    (position <= deque->size / 2)                                        ?
-    roy_list_iterator(deque->head, position)                             :
+    (position <= deque->size / 2)            ?
+    roy_list_iterator(deque->head, position) :
     roy_list_riterator(deque->tail, roy_deque_size(deque) - position - 1);
   return pnode ? pnode->data : NULL;
 }
@@ -65,9 +65,7 @@ void *
 roy_deque_element(void           * dest,
                   const RoyDeque * deque,
                   size_t           position) {
-  memcpy(dest,
-         roy_deque_cpointer(deque, position),
-         deque->element_size);
+  memcpy(dest, roy_deque_cpointer(deque, position), deque->element_size);
   return dest;   
 }
 
@@ -142,13 +140,13 @@ roy_deque_clear(RoyDeque * deque) {
 
 void
 roy_deque_for_each(RoyDeque * deque,
-                   void    (* operate)(void *)) {
+                   ROperate   operate) {
   roy_list_for_each(deque->head, operate);
 }
 
 void
-roy_deque_for_which(RoyDeque * deque,
-                    bool    (* condition)(const void *),
-                    void    (* operate)(void *)) {
+roy_deque_for_which(RoyDeque   * deque,
+                    RCondition   condition,
+                    ROperate     operate) {
   roy_list_for_which(deque->head, condition, operate);
 }

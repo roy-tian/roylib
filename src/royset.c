@@ -4,7 +4,7 @@ static RoySet * node_new(const void * key, size_t key_size);
 static void     node_delete(RoySet * set);
 
 RoySet *
-roy_set_min(RoySet *set) {
+roy_set_min(RoySet * set) {
   if (!set) {
     return NULL;
   } else if (!set->left) {
@@ -15,7 +15,7 @@ roy_set_min(RoySet *set) {
 }
 
 RoySet *
-roy_set_max(RoySet *set) {
+roy_set_max(RoySet * set) {
   if (!set) {
     return NULL;
   } else if (!set->right) {
@@ -26,7 +26,7 @@ roy_set_max(RoySet *set) {
 }
 
 const RoySet *
-roy_set_cmin(const RoySet *set) {
+roy_set_cmin(const RoySet * set) {
   if (!set) {
     return NULL;
   } else if (!set->left) {
@@ -37,7 +37,7 @@ roy_set_cmin(const RoySet *set) {
 }
 
 const RoySet *
-roy_set_cmax(const RoySet *set) {
+roy_set_cmax(const RoySet * set) {
   if (!set) {
     return NULL;
   } else if (!set->right) {
@@ -65,7 +65,7 @@ RoySet *
 roy_set_insert(RoySet     ** set,
                const void *  key,
                size_t        key_size,
-               int       (*  compare)(const void *, const void *)) {
+               RCompare      compare) {
   if (!*set) {
     *set = node_new(key, key_size);
   } else if (compare(key, (*set)->key) < 0) {
@@ -80,7 +80,7 @@ RoySet *
 roy_set_erase(RoySet     ** set,
               const void *  key,
               size_t        key_size,
-              int       (*  compare)(const void *, const void *)) {
+              RCompare      compare) {
   if (!*set) {
     return NULL;
   }
@@ -117,7 +117,7 @@ roy_set_clear(RoySet * set) {
 RoySet *
 roy_set_find(RoySet     * set,
              const void * key, 
-             int       (* compare)(const void *, const void *)) {
+             RCompare     compare) {
   if (!set) {
     return NULL;
   } else if (compare(key, set->key) < 0) {
@@ -130,8 +130,8 @@ roy_set_find(RoySet     * set,
 }
 
 void
-roy_set_for_each(RoySet * set,
-                 void  (* operate)(void *)) {
+roy_set_for_each(RoySet   * set,
+                 ROperate   operate) {
   if (set) {
     roy_set_for_each(set->left, operate);
     operate(set->key);
@@ -140,9 +140,9 @@ roy_set_for_each(RoySet * set,
 }
 
 void
-roy_set_for_which(RoySet * set,
-                  bool  (* condition)(const void *),
-                  void  (* operate)        (void *)) {
+roy_set_for_which(RoySet     * set,
+                  RCondition   condition,
+                  ROperate     operate) {
   if (set) {
     roy_set_for_which(set->left, condition, operate);
     if (condition(set->key)) {
@@ -169,4 +169,5 @@ static void
 node_delete(RoySet * set) {
   free(set->key);
   free(set);
+  set = NULL;
 }

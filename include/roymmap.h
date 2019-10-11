@@ -5,10 +5,10 @@
 #include "roymset.h"
 
 struct RoyMMap_ {
-  RoyMSet * root;
-  size_t    key_size;
-  size_t    value_size;
-  int   (* compare)(const void *, const void *);
+  RoyMSet  * root;
+  size_t     key_size;
+  size_t     value_size;
+  RCompare   compare;
 };
 
 // RoyMMap[aka Multi-Map]: an associative container that contains a sorted multi map of unique objects of type Key.
@@ -18,7 +18,7 @@ typedef struct RoyMMap_ RoyMMap;
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Returns a pointer to a newly build RoyMMap. 
-RoyMMap * roy_mmap_new(size_t key_size, size_t value_size, int (* compare)(const void *, const void *));
+RoyMMap * roy_mmap_new(size_t key_size, size_t value_size, RCompare compare);
 
 // De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'mmap', or memory leak will occur.)
@@ -62,18 +62,18 @@ void roy_mmap_clear(RoyMMap * mmap);
 
 /* LOOKUP */
 
-size_t roy_mmap_count(const RoyMSet * mset, const void * key, int (* compare)(const void *, const void *));
+size_t roy_mmap_count(const RoyMSet * mset, const void * key, RCompare compare);
 
-RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key, int (* compare)(const void *, const void *));
+RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key, RCompare compare);
 
-RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key, int (* compare)(const void *, const void *));
+RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key, RCompare compare);
 
 /* TRAVERSE */
 
 // Traverses all elements in 'mmap' using 'operate'.
-void roy_mmap_for_each(RoyMMap * mmap, void (* operate)(void *));
+void roy_mmap_for_each(RoyMMap * mmap, ROperate operate);
 
 // Traverses all elements whichever meets 'condition' in 'mmap' using 'operate'.
-void roy_mmap_for_which(RoyMMap * mmap, bool (* condition)(const void *), void (* operate)(void *));
+void roy_mmap_for_which(RoyMMap * mmap, RCondition condition, ROperate operate);
 
 #endif // ROYMMAP_H

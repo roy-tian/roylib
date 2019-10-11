@@ -110,14 +110,14 @@ roy_vector_clear(RoyVector * vector) {
 
 void
 roy_vector_for_each(RoyVector * vector,
-                    void     (* operate) (void *)) {
+                    ROperate    operate) {
   roy_array_for_each((RoyArray *)vector, operate);
 }
 
 void
-roy_vector_for_which(RoyVector * vector,
-                     bool     (* condition) (const void *),
-                     void     (* operate)         (void *)) {
+roy_vector_for_which(RoyVector  * vector,
+                     RCondition   condition,
+                     ROperate     operate) {
   roy_array_for_which((RoyArray *)vector, condition, operate);
 }
 

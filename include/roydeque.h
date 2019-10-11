@@ -88,9 +88,9 @@ void roy_deque_clear(RoyDeque * deque);
 /* TRAVERSE */
 
 // Traverses all elements in 'deque' using 'operate'.
-void roy_deque_for_each(RoyDeque * deque, void (* operate)(void *));
+void roy_deque_for_each(RoyDeque * deque, ROperate operate);
 
 // Traverses all elements whichever meets 'condition' in 'deque' using 'operate'.
-void roy_deque_for_which(RoyDeque * deque, bool (* condition)(const void *), void (* operate)(void *));
+void roy_deque_for_which(RoyDeque * deque, RCondition condition, ROperate operate);
 
 #endif // ROYDEQUE_H

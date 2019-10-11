@@ -1,4 +1,5 @@
 #include "../include/roystring.h"
+#include "../include/roystr.h"
 #include <pcre.h>
 
 static bool pcre_ovector(int * dest_ovector, const RoyString * string, const char * regex, size_t position);
