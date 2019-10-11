@@ -35,6 +35,7 @@ roy_shell_delete(RoyShell * shell) {
   roy_deque_delete(shell->ihistory);
   roy_deque_delete(shell->ohistory);
   free(shell);
+  shell = NULL;
 }
 
 static bool str_all_space(const char * str) {
