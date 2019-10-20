@@ -5,6 +5,8 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_FLAGS "-Wall -Wextra")
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
+include_directories(/usr/local/include)
+
 add_library(roylib
   include/royinit.h    roy.h
   include/roystr.h     src/roystr.c
