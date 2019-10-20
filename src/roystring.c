@@ -160,7 +160,7 @@ roy_string_substring(RoyString * string,
 
 void
 roy_string_print(const RoyString * string) {
-  printf(roy_string_cstr(string));
+  printf("%s", roy_string_cstr(string));
 }
 
 void
@@ -250,4 +250,16 @@ roy_string_match(const RoyString * string,
   strcat(re, regex);
   strcat(re, "$");
   return roy_string_find_regex(string, re, 0) == 0;
+}
+
+bool
+roy_string_equal(const RoyString * string1,
+                 const RoyString * string2) {
+  return strcmp(roy_string_cstr(string1), roy_string_cstr(string2)) == 0;
+}
+
+bool
+roy_string_equal_str(const RoyString * string,
+                     const char * str) {
+  return strcmp(roy_string_cstr(string), str) == 0;
 }

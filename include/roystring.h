@@ -75,4 +75,8 @@ char * roy_string_regex(char * dest, const RoyString * string, const char * rege
 
 bool roy_string_match(const RoyString * string, const char * regex);
 
+bool roy_string_equal(const RoyString * string1, const RoyString * string2);
+
+bool roy_string_equal_str(const RoyString * string, const char * str);
+
 #endif // RoyString *_H
