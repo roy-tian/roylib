@@ -1,8 +1,6 @@
-#include "../include/roystring.h"
 #include "../include/roystr.h"
+#include "../include/roystring.h"
 #include <pcre.h>
-
-static bool pcre_ovector(int * dest_ovector, const RoyString * string, const char * regex, size_t position);
 
 RoyString *
 roy_string_new(void) {
@@ -71,7 +69,7 @@ roy_string_clear(RoyString * string) {
 RoyString *
 roy_string_insert_str(RoyString  * string,
                       const char * substr,
-                      size_t position) {
+                      size_t       position) {
   ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
   memcpy(temp, string->str, position);
   strcat(temp, substr);
@@ -95,6 +93,21 @@ roy_string_erase(RoyString * string,
   strncat(temp, string->str + position + count,
           roy_string_size(string) - position - count);
   return string = roy_string_assign(string, temp);
+}
+
+RoyString *
+roy_string_prepend_str(RoyString * string,
+                      const char * substr) {
+  ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1);
+  memcpy(temp, substr, strlen(substr) + 1);
+  strcat(temp, string->str);
+  return string = roy_string_assign(string, temp);
+}
+
+RoyString *
+roy_string_prepend(RoyString      * string,
+                  const RoyString * substring) {
+  return roy_string_prepend_str(string, roy_string_cstr(substring));
 }
 
 RoyString *
@@ -145,6 +158,16 @@ roy_string_substring(RoyString * string,
   return substring = roy_string_assign(substring, temp);
 }
 
+void
+roy_string_print(const RoyString * string) {
+  printf("%s", roy_string_cstr(string));
+}
+
+void
+roy_string_println(const RoyString * string) {
+  puts(roy_string_cstr(string));
+}
+
 /* SEARCH */
 
 int
@@ -167,11 +190,26 @@ int
 roy_string_find_regex(const RoyString * string,
                       const char      * regex,
                       size_t            position) {
-  int ret;
-  if (pcre_ovector(&ret, string, regex, position)) {
-    return ret;
-  }
-  return PCRE_ERROR_NOMATCH;
+  const char * err_info;
+  int err_offset;
+  pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
+  pcre_extra * rex = pcre_study(re, 0, &err_info);
+  enum { OVECSIZE = 30 };
+  int ovector[OVECSIZE];
+  int ret = PCRE_ERROR_NOMATCH;
+  if (pcre_exec(re,
+                rex,
+                roy_string_cstr(string),
+                roy_string_size(string),
+                position,
+                0,
+                ovector,
+                OVECSIZE) != PCRE_ERROR_NOMATCH) {
+    ret = ovector[0];
+  };
+  free(re);
+  free(rex);
+  return ret;
 }
 
 char *
@@ -179,14 +217,27 @@ roy_string_regex(char            * dest,
                  const RoyString * string,
                  const char      * regex,
                  size_t            position) {
-  enum { OVECSIZE = 3 };
-  int ovector[OVECSIZE] = {0};
-  if (pcre_ovector(ovector, string, regex, position)) {
+  const char * err_info;
+  int err_offset;
+  pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
+  pcre_extra * rex = pcre_study(re, 0, &err_info);
+  enum { OVECSIZE = 30 };
+  int ovector[OVECSIZE];
+  if (pcre_exec(re,
+                rex,
+                roy_string_cstr(string),
+                roy_string_size(string),
+                position,
+                0,
+                ovector,
+                OVECSIZE) != PCRE_ERROR_NOMATCH) {
     strncpy(dest,
             roy_string_cstr(string) + ovector[0],
             ovector[1] - ovector[0]);
     *(dest + strlen(dest)) = '\0';
-  }
+  };
+  free(re);
+  free(rex);
   return dest;
 }
 
@@ -201,20 +252,14 @@ roy_string_match(const RoyString * string,
   return roy_string_find_regex(string, re, 0) == 0;
 }
 
-static bool
-pcre_ovector(int             * dest_ovector,       
-             const RoyString * string,
-             const char      * regex,
-             size_t            position) {
-  enum { OVECSIZE = 3 };
-  const char * err_info;
-  int err_offset;
-  pcre * re = pcre_compile(regex, 0, &err_info, &err_offset, NULL);
-  pcre_extra * rex = pcre_study(re, 0, &err_info);
-  int found =
-  pcre_exec(re, rex, roy_string_cstr(string), roy_string_size(string),
-            position, 0, dest_ovector, OVECSIZE);
-  free(rex);
-  free(re);
-  return found != PCRE_ERROR_NOMATCH;
+bool
+roy_string_equal(const RoyString * string1,
+                 const RoyString * string2) {
+  return strcmp(roy_string_cstr(string1), roy_string_cstr(string2)) == 0;
+}
+
+bool
+roy_string_equal_str(const RoyString * string,
+                     const char * str) {
+  return strcmp(roy_string_cstr(string), str) == 0;
 }

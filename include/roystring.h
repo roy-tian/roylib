@@ -45,6 +45,10 @@ RoyString * roy_string_insert(RoyString * string, const RoyString * substring, s
 
 RoyString * roy_string_erase(RoyString * string, size_t position, size_t count);
 
+RoyString * roy_string_prepend_str(RoyString * string, const char * substr);
+
+RoyString * roy_string_prepend(RoyString * string, const RoyString * substring);
+
 RoyString * roy_string_append_str(RoyString * string, const char * substr);
 
 RoyString * roy_string_append(RoyString * string, const RoyString * substring);
@@ -54,6 +58,10 @@ RoyString * roy_string_replace_str(RoyString * string, const char * substr, size
 RoyString * roy_string_replace(RoyString * string, const RoyString * substr, size_t position, size_t count);
 
 RoyString * roy_string_substring(RoyString * string, RoyString * substring, size_t position, size_t count);
+
+void roy_string_print(const RoyString * string);
+
+void roy_string_println(const RoyString * string);
 
 /* SEARCH */
 
@@ -66,5 +74,9 @@ int roy_string_find_regex(const RoyString * string, const char * regex, size_t p
 char * roy_string_regex(char * dest, const RoyString * string, const char * regex, size_t position);
 
 bool roy_string_match(const RoyString * string, const char * regex);
+
+bool roy_string_equal(const RoyString * string1, const RoyString * string2);
+
+bool roy_string_equal_str(const RoyString * string, const char * str);
 
 #endif // RoyString *_H
