@@ -56,7 +56,7 @@ RoyShell * roy_shell_log_append(RoyShell * shell, const char * format, ...);
 size_t roy_shell_history_count(const RoyShell * shell);
 
 // Shows input history anytime you like, position < 0 will show reversely.
-const char * roy_shell_ihistory_at(const RoyShell * shell, size_t position);
+const char * roy_shell_ihistory_at(const RoyShell * shell, int position);
 
 // Shows output history anytime you like, position < 0 will show reversely.
-const char * roy_shell_ohistory_at(const RoyShell * shell, size_t position);
+const char * roy_shell_ohistory_at(const RoyShell * shell, int position);

@@ -133,15 +133,26 @@ roy_shell_log_append(RoyShell   * shell,
   return shell;
 }
 
+size_t
+roy_shell_history_count(const RoyShell * shell) {
+  return roy_deque_size(shell->ihistory);
+}
+
 const char *
 roy_shell_ihistory_at(const RoyShell * shell,
-                      size_t           position) {
+                      int              position) {
+  if (position < 0) {
+    position = roy_deque_size(shell->ihistory) + position;
+  }
   return (const char *) roy_deque_cpointer(shell->ihistory, position);
 }
 
 const char *
 roy_shell_ohistory_at(const RoyShell * shell,
-                      size_t           position) {
+                      int              position) {
+  if (position < 0) {
+    position = roy_deque_size(shell->ohistory) + position;
+  }
   return (const char *) roy_deque_cpointer(shell->ohistory, position);
 }
 
