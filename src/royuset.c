@@ -1,4 +1,5 @@
 #include "../include/royuset.h"
+#include "../include/royhash.h"
 #include "../include/roynumber.h"
 #include <math.h>
 

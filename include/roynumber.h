@@ -55,8 +55,5 @@ bool roy_ullong_prime(uint64_t number);
 // Returns the next prime number nearest to the given 'number'.
 uint64_t roy_ullong_next_prime(uint64_t number);
 
-// MurmurHash2, 64-bit versions, by Austin Appleby
-// beware of alignment and endianness issues if used across multiple platforms.
-uint64_t MurmurHash64A(const void * key, size_t key_size, uint64_t seed);
 
 #endif // ROYNUMBER_H

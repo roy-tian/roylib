@@ -12,6 +12,7 @@ add_library(roylib
   include/roystr.h     src/roystr.c
   include/roystring.h  src/roystring.c
   include/roynumber.h  src/roynumber.c
+  include/royhash.h    src/royhash.c
   include/royshell.h   src/royshell.c
   include/roypointer.h src/roypointer.c
   include/royarray.h   src/royarray.c

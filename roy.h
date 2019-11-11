@@ -21,5 +21,6 @@
 #include "include/roystring.h"
 #include "include/royshell.h"
 #include "include/roypointer.h"
+#include "include/royhash.h"
 
 #endif // ROY_H
