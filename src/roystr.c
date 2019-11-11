@@ -86,8 +86,8 @@ roy_str_replace_all(char       * str,
 
 char *
 roy_str_replace_index(char       * str,
-                      size_t    old_sub_pos,
-                      size_t    old_sub_len,
+                      size_t       old_sub_pos,
+                      size_t       old_sub_len,
                       const char * new_sub) {
   ROY_STR(temp_str, strlen(str) + strlen(new_sub) - old_sub_len)
   strncpy(temp_str, str, old_sub_pos);
@@ -135,8 +135,8 @@ roy_str_replace_all_char(char * str,
 
 char *
 roy_str_replace_all_char_if(char  * str,
-                               int  (* condition)(int),
-                               int     new_ch) {
+                            int  (* condition)(int),
+                            int     new_ch) {
   char * pstr = str;
   while (*pstr != '\0') {
     if (condition(*pstr)) {
@@ -150,7 +150,7 @@ roy_str_replace_all_char_if(char  * str,
 char *
 roy_str_line(char       * line_content,
              const char * str,
-             size_t    line_number) {
+             size_t       line_number) {
   while ((line_number-- > 1) && strchr(str, '\n')) {
     str = strchr(str, '\n') + 1; // excludes the '\n' right before the line.
   }
@@ -448,7 +448,7 @@ roy_str_count_line(const char * str) {
 
 size_t
 roy_str_line_length(const char * str,
-                    size_t    line_number) {
+                    size_t       line_number) {
   while ((line_number-- > 1) && strchr(str, '\n')) {
     str = strchr(str, '\n') + 1; // excludes the '\n' right before the line.
   }
