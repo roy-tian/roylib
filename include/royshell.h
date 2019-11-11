@@ -49,7 +49,7 @@ int roy_shell_argument_find(const RoyShell * shell, const char * regex);
 // Clears the log buffer for a new info to be logged.
 RoyShell * roy_shell_log_clear(RoyShell * shell);
 
-// Adds new info to the info flow, at the end of each round, all info will be print to console and push into 'ohistory' in one time.
+// Adds new log to the information flow, at the end of each round, the info will be printed to console and push into 'ohistory' in one time.
 RoyShell * roy_shell_log_append(RoyShell * shell, const char * format, ...);
 
 // Returns the number of input/output operations.
