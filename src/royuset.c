@@ -12,7 +12,7 @@ roy_uset_new(size_t   bucket_count,
              RHash    hash,
              RCompare compare) {
   RoyUSet * ret     = (RoyUSet *)malloc(sizeof(RoyUSet));
-  ret->bucket_count = roy_ullong_next_prime(bucket_count);
+  ret->bucket_count = roy_uint64_next_prime(bucket_count);
   ret->element_size = element_size;
   ret->size         = 0;
   ret->seed         = seed;

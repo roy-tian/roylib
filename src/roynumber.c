@@ -100,14 +100,14 @@ roy_parse_double(const char * str) {
 }
 
 char *
-roy_llong_to_str(char    * dest,
+roy_int64_to_str(char    * dest,
                  int64_t   number,
                  size_t    base,
                  size_t    width,
                  bool      fill_zero) {
-  bool pn = true, llong_min = false;
+  bool pn = true, int64_min = false;
   if (number == LLONG_MIN) {
-    llong_min = true;
+    int64_min = true;
     number++;
   }
   if (number < 0) {
@@ -122,7 +122,7 @@ roy_llong_to_str(char    * dest,
   if (!pn) {
     *pdest++ = '-';
   }
-  if (llong_min) {
+  if (int64_min) {
     (*dest)++;
   }
   size_t dest_width = pdest - dest;
@@ -134,7 +134,7 @@ roy_llong_to_str(char    * dest,
 }
 
 char *
-roy_ullong_to_str(char     * dest,
+roy_uint64_to_str(char     * dest,
                   uint64_t   number,
                   size_t     base,
                   size_t     width,
@@ -153,7 +153,7 @@ roy_ullong_to_str(char     * dest,
 }
 
 uint64_t
-roy_ullong_set_bits(uint64_t * dest,
+roy_uint64_set_bits(uint64_t * dest,
                     size_t     position,
                     size_t     count,
                     uint64_t   src) {
@@ -162,14 +162,14 @@ roy_ullong_set_bits(uint64_t * dest,
 }
 
 uint64_t
-roy_ullong_invert(uint64_t * number,
+roy_uint64_invert(uint64_t * number,
                   size_t     position,
                   size_t     count) {
   return *number = *number ^ ~(~0ULL << count) << (position + 1 - count);
 }
 
 uint64_t
-roy_ullong_ror(uint64_t * number,
+roy_uint64_ror(uint64_t * number,
                size_t     steps,
                size_t     width) {
   uint64_t right = (*number & ~(~0ULL << steps)) << (width - steps);
@@ -179,7 +179,7 @@ roy_ullong_ror(uint64_t * number,
 }
 
 uint64_t
-roy_ullong_rol(uint64_t * number,
+roy_uint64_rol(uint64_t * number,
                size_t     steps,
                size_t     width) {
   uint64_t right = (*number & ~(~0ULL << (width - steps))) << steps;
@@ -189,7 +189,7 @@ roy_ullong_rol(uint64_t * number,
 }
 
 size_t
-roy_ullong_count_bit(uint64_t number) {
+roy_uint64_count_bit(uint64_t number) {
   size_t count = 0;
   // 'n & n - 1' deletes the rightmost '1' of n.
   for (; number != 0; number &= number - 1) { 
@@ -200,7 +200,7 @@ roy_ullong_count_bit(uint64_t number) {
 
 
 bool
-roy_ullong_prime(uint64_t number) {
+roy_uint64_prime(uint64_t number) {
   if (number < 2 || (number != 2 && number % 2 == 0)) {
     return false;
   }
@@ -213,8 +213,8 @@ roy_ullong_prime(uint64_t number) {
 }
 
 uint64_t
-roy_ullong_next_prime(uint64_t number) {
-  while (!roy_ullong_prime(number)) {
+roy_uint64_next_prime(uint64_t number) {
+  while (!roy_uint64_prime(number)) {
     number++;
   }
   return number;
