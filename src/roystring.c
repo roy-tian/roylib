@@ -10,7 +10,7 @@ roy_string_new(void) {
 }
 
 RoyString *
-roy_string_new_with_content(const char * str) {
+roy_string_new_with_str(const char * str) {
   return roy_string_assign(roy_string_new(), str);
 }
 
@@ -113,7 +113,7 @@ roy_string_prepend(RoyString      * string,
 RoyString *
 roy_string_append_str(RoyString  * string,
                       const char * substr) {
-  ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1);
+  ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
   memcpy(temp, string->str, roy_string_size(string) + 1);
   strcat(temp, substr);
   return string = roy_string_assign(string, temp);

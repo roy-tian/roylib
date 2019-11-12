@@ -15,7 +15,7 @@ typedef struct RoyString_ RoyString;
 
 RoyString * roy_string_new(void);
 
-RoyString * roy_string_new_with_content(const char * str);
+RoyString * roy_string_new_with_str(const char * str);
 
 RoyString * roy_string_assign(RoyString * string, const char * str);
 
