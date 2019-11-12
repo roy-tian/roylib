@@ -16,7 +16,7 @@ roy_uset_new(size_t   bucket_count,
   ret->element_size = element_size;
   ret->size         = 0;
   ret->seed         = seed;
-  ret->hash         = hash ? hash : MurmurHash64A;
+  ret->hash         = hash ? hash : MurmurHash2;
   ret->compare      = compare;
   ret->buckets      = (RoySList **)calloc(roy_uset_bucket_count(ret),
                                           sizeof(RoySList*));

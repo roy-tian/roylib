@@ -2,9 +2,9 @@
 
 
 uint64_t
-MurmurHash64A(const void * key,
-              size_t       key_size,
-              uint64_t     seed) {
+MurmurHash2(const void * key,
+            size_t       key_size,
+            uint64_t     seed) {
   const uint64_t m = 0Xc6a4a7935bd1e995ULL;
   const uint64_t r = 47ULL;
   const uint64_t * data = (const uint64_t *)key;
