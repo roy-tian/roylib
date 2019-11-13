@@ -34,7 +34,7 @@ void * roy_vector_pointer(RoyVector * vector, size_t position);
 const void * roy_vector_cpointer(const RoyVector * vector, size_t position);
 
 // Returns a typed pointer to the element at 'position', or NULL if 'position' exceeds or 'vector' is empty.
-#define roy_vector_at(vector, element_type, position) \
+#define roy_vector_at(vector, position, element_type) \
         ((element_type *)((position) >= 0 && (position) < ((vector)->size) ? roy_vector_pointer((vector), (position)) : NULL))
 
 /* CAPACITY */
