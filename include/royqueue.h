@@ -4,11 +4,12 @@
 #include "royarray.h"
 
 struct RoyQueue_ {
-  void   * data;
-  size_t   capacity;
-  size_t   size;
-  size_t   front_index;
-  size_t   back_index;
+  void     ** data;
+  ROperate    deleter;
+  size_t      capacity;
+  size_t      size;
+  size_t      front_index;
+  size_t      back_index;
 };
 
 /* CONSTRUCTION AND DESTRUCTION */
@@ -20,11 +21,11 @@ typedef struct RoyQueue_ RoyQueue;
 // Allocates sufficient memory for an RoyQueue and returns a pointer to it.
 // The queue can store 'capacity' elements with each size 'element_size' .
 // (Operations on un-newed RoyQueues will cause undefined behavior.)
-RoyQueue * roy_queue_new(size_t capacity);
+RoyQueue * roy_queue_new(size_t capacity, ROperate deleter);
 
 // De-allocates the memory allocated by 'roy_queue_new'.
 // (Always call this function after the work is done by the given 'queue', or memory leak will occur.)
-void roy_queue_delete(RoyQueue * queue, ROperate deleter);
+void roy_queue_delete(RoyQueue * queue);
 
 /* ELEMENT ACCESS */
 

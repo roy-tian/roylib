@@ -1,22 +1,20 @@
 #include "../include/royarray.h"
 
+static bool valid_position(const RoyArray * array, size_t position);
+
 RoyArray *
-roy_array_new(size_t capacity) {
+roy_array_new(size_t capacity, ROperate deleter) {
   RoyArray * ret = (RoyArray *)malloc(sizeof(RoyArray));
   ret->data      = (void **)calloc(capacity, PTR_SIZE);
+  ret->deleter   = deleter;
   ret->capacity  = capacity;
   ret->size      = 0;
   return ret;
 }
 
-static bool valid_position(const RoyArray * array, size_t position);
-
 void
-roy_array_delete(RoyArray * array,
-                 ROperate   deleter) {
-  if (deleter) {
-    roy_array_for_each(array, deleter);
-  }
+roy_array_delete(RoyArray * array) {
+  roy_array_for_each(array, array->deleter);
   free(array->data);
   free(array);
   array = NULL;
@@ -99,6 +97,7 @@ bool
 roy_array_erase(RoyArray * array,
                 size_t     position) {
   if (position < roy_array_size(array) && !roy_array_empty(array)) {
+    array->deleter(array->data[position]);
     for (size_t i = position; i < roy_array_size(array); i++) {
       array->data[i] = array->data[i + 1];
     }
@@ -112,6 +111,7 @@ bool
 roy_array_erase_fast(RoyArray * array,
                      size_t     position) {
   if (position < roy_array_size(array) && !roy_array_empty(array)) {
+    array->deleter(array->data[position]);
     array->data[position] = array->data[roy_array_size(array) - 1];
     array->size--;
     return true;
@@ -122,6 +122,7 @@ roy_array_erase_fast(RoyArray * array,
 bool
 roy_array_pop_back(RoyArray * array) {
   if (!roy_array_empty(array)) {
+    array->deleter(array->data[roy_array_size(array) - 1]);
     array->size--;
     return true;
   }
@@ -130,6 +131,7 @@ roy_array_pop_back(RoyArray * array) {
 
 void
 roy_array_clear(RoyArray * array) {
+  roy_array_for_each(array, array->deleter);
   array->size = 0;
 }
 

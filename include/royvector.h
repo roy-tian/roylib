@@ -4,10 +4,11 @@
 #include "royarray.h"
 
 struct RoyVector_ {
-  void   ** data;
-  size_t    capacity;
-  size_t    size;
-  size_t    capacity_base;
+  void     ** data;
+  ROperate    deleter;
+  size_t      capacity;
+  size_t      size;
+  size_t      capacity_base;
 };
 
 // RoyVector: a container that encapsulates scalable size vectors.
@@ -18,11 +19,11 @@ typedef struct RoyVector_ RoyVector;
 // Allocates sufficient memory for an RoyVector and returns a pointer to it.
 // The vector can store 'capacity' elements with each size 'element_size'.
 // (Operations on un-newed RoyVectors can cause undefined behavior.)
-RoyVector * roy_vector_new(size_t capacity);
+RoyVector * roy_vector_new(size_t capacity, ROperate deleter);
 
 // De-allocates the memory allocated by 'roy_vector_new'.
 // (Always call this function after the work is done by the given 'vector', or memory leak will occur.)
-void roy_vector_delete(RoyVector * vector, ROperate deleter);
+void roy_vector_delete(RoyVector * vector);
 
 /* ELEMENT ACCESS */
 

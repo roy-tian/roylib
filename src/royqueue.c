@@ -1,20 +1,20 @@
 #include "../include/royqueue.h"
 
 RoyQueue *
-roy_queue_new(size_t capacity) {
-  RoyQueue * ret    = (RoyQueue *)malloc(sizeof(RoyQueue));
-  ret->data         = (void **)calloc(capacity, PTR_SIZE);
-  ret->capacity     = capacity;
-  ret->size         = 0;
-  ret->front_index  = 0;
-  ret->back_index   = 0;
+roy_queue_new(size_t capacity, ROperate deleter) {
+  RoyQueue * ret   = (RoyQueue *)malloc(sizeof(RoyQueue));
+  ret->data        = (void **)calloc(capacity, PTR_SIZE);
+  ret->deleter     = deleter; 
+  ret->capacity    = capacity;
+  ret->size        = 0;
+  ret->front_index = 0;
+  ret->back_index  = 0;
   return ret;
 }
 
 void
-roy_queue_delete(RoyQueue * queue,
-                 ROperate deleter) {
-  roy_array_delete((RoyArray *)queue, deleter);
+roy_queue_delete(RoyQueue * queue) {
+  roy_array_delete((RoyArray *)queue);
 }
 
 size_t

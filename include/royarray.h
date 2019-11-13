@@ -4,9 +4,10 @@
 #include "royinit.h"
 
 struct RoyArray_ {
-  void   ** data;
-  size_t    capacity;
-  size_t    size;
+  void     ** data;
+  ROperate    deleter;
+  size_t      capacity;
+  size_t      size;
 };
 
 // RoyArray: a container that encapsulates fixed size arrays.
@@ -17,19 +18,18 @@ typedef struct RoyArray_ RoyArray;
 // Creates an RoyArray and allocates sufficient memory for it.
 // [PARAMETERS]
 //   capacity - how many elements the new array can store.
+//    deleter - a function to release elements.
 // [RETURN VALUE]
 //   The newly build RoyArray.
 // [NOTES]
 //   The behavior is undefined if any immature RoyArrays are operated.
-RoyArray * roy_array_new(size_t capacity);
+RoyArray * roy_array_new(size_t capacity, ROperate deleter);
 
 // Releases all the elements and destroies the RoyArray - 'array' itself.
-// [PARAMETERS]
-//   deleter - a function to release elements.
 // [NOTES]
 //   Always call this function after the work is done by the given 'array',
 //   otherwise memory leak will occur.
-void roy_array_delete(RoyArray * array, ROperate deleter);
+void roy_array_delete(RoyArray * array);
 
 /* ELEMENT ACCESS */
 

@@ -6,9 +6,11 @@ static void expand(RoyVector * vector);
 static void shrink(RoyVector * vector);
 
 RoyVector *
-roy_vector_new(size_t capacity) {
+roy_vector_new(size_t   capacity,
+               ROperate deleter) {
   RoyVector * ret    = (RoyVector *)malloc(sizeof(RoyVector));
   ret->data          = (void **)calloc(capacity, PTR_SIZE);
+  ret->deleter       = deleter;
   ret->capacity      = capacity;
   ret->size          = 0;
   ret->capacity_base = capacity;
@@ -16,8 +18,8 @@ roy_vector_new(size_t capacity) {
 }
 
 void
-roy_vector_delete(RoyVector * vector, ROperate deleter) {
-  roy_array_delete((RoyArray *)vector, deleter);
+roy_vector_delete(RoyVector * vector) {
+  roy_array_delete((RoyArray *)vector);
 }
 
 void *
@@ -101,6 +103,7 @@ roy_vector_pop_back(RoyVector * vector) {
 
 void
 roy_vector_clear(RoyVector * vector) {
+  roy_vector_for_each(vector, vector->deleter);
   vector->capacity = vector->capacity_base;
   vector->size = 0;
   vector->data = (void **)realloc(vector->data,

@@ -4,9 +4,10 @@
 #include "royarray.h"
 
 struct RoyStack_ {
-  void   ** data;
-  size_t    capacity;
-  size_t    size;
+  void     ** data;
+  ROperate    deleter;
+  size_t      capacity;
+  size_t      size;
 };
 
 /* CONSTRUCTION AND DESTRUCTION */
@@ -18,11 +19,11 @@ typedef struct RoyStack_ RoyStack;
 // Allocates sufficient memory for an RoyStack and returns a pointer to it.
 // The stack can store 'capacity' elements with each size 'element_size' .
 // (Operations on un-newed RoyStacks will cause undefined behavior.)
-RoyStack * roy_stack_new(size_t capacity);
+RoyStack * roy_stack_new(size_t capacity, ROperate deleter);
 
 // De-allocates the memory allocated by 'roy_stack_new'.
 // (Always call this function after the work is done by the given 'stack', or memory leak will occur.)
-void roy_stack_delete(RoyStack * stack, ROperate deleter);
+void roy_stack_delete(RoyStack * stack);
 
 /* ELEMENT ACCESS */
 

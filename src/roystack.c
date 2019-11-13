@@ -1,14 +1,13 @@
 #include "../include/roystack.h"
 
 RoyStack *
-roy_stack_new(size_t capacity) {
-  return (RoyStack *)roy_array_new(capacity);
+roy_stack_new(size_t capacity, ROperate deleter) {
+  return (RoyStack *)roy_array_new(capacity, deleter);
 }
 
 void
-roy_stack_delete(RoyStack * stack,
-                 ROperate   deleter) {
-  roy_array_delete((RoyArray *)stack, deleter);
+roy_stack_delete(RoyStack * stack) {
+  roy_array_delete((RoyArray *)stack);
 }
 
 size_t
