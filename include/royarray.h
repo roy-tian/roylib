@@ -4,9 +4,9 @@
 #include "royinit.h"
 
 struct RoyArray_ {
+  void   ** data;
   size_t    capacity;
   size_t    size;
-  void   ** data;
 };
 
 // RoyArray: a container that encapsulates fixed size arrays.
@@ -14,42 +14,34 @@ typedef struct RoyArray_ RoyArray;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
-/**
- * Creates an RoyArray and allocates sufficient memory for it.
- * [PARAMETERS]
- *   capacity - how many elements the new array can store.
- * [RETURN VALUE]
- *   The newly build RoyArray.
- * [NOTES]
- *   The behavior is undefined if any immature RoyArrays are operated.
- */
+// Creates an RoyArray and allocates sufficient memory for it.
+// [PARAMETERS]
+//   capacity - how many elements the new array can store.
+// [RETURN VALUE]
+//   The newly build RoyArray.
+// [NOTES]
+//   The behavior is undefined if any immature RoyArrays are operated.
 RoyArray * roy_array_new(size_t capacity);
 
-/**
- * Releases all the elements and destroies the RoyArray - 'array' itself.
- * [PARAMETERS]
- *   deleter - a function to release elements.
- * [NOTES]
- *   Always call this function after the work is done by the given 'array',
- *   otherwise memory leak will occur.
- */
+// Releases all the elements and destroies the RoyArray - 'array' itself.
+// [PARAMETERS]
+//   deleter - a function to release elements.
+// [NOTES]
+//   Always call this function after the work is done by the given 'array',
+//   otherwise memory leak will occur.
 void roy_array_delete(RoyArray * array, ROperate deleter);
 
 /* ELEMENT ACCESS */
 
-/**
- * Returns a pointer to the element at 'position' in 'array'.
- * [NOTES]
- *   Returns NULL if 'position' exceeds.
- */
-RData roy_array_pointer(RoyArray * array, size_t position);
+// Returns a pointer to the element at 'position' in 'array'.
+// [NOTES]
+//   Returns NULL if 'position' exceeds.
+void * roy_array_pointer(RoyArray * array, size_t position);
 
-/**
- * Returns a const pointer to the element at 'position' in 'array'.
- * [NOTES]
- *   Returns NULL if 'position' exceeds.
- */
-RCData roy_array_cpointer(const RoyArray * array, size_t position);
+// Returns a const pointer to the element at 'position' in 'array'.
+// [NOTES]
+//   Returns NULL if 'position' exceeds.
+const void * roy_array_cpointer(const RoyArray * array, size_t position);
 
 // Returns a typed pointer to the element at 'position', or NULL if 'position' exceeds or 'array' is empty.
 #define roy_array_at(array, position, element_type) \
@@ -75,18 +67,18 @@ bool roy_array_full(const RoyArray * array);
 // (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
 // (Fails if 'position' exceeds, or 'array' is full.)
 // (Deprecated when 'array' is huge and 'position' is small, can be very slow.)
-bool roy_array_insert(RoyArray * array, size_t position, RCData data);
+bool roy_array_insert(RoyArray * array, size_t position, void * data);
 
 // Moves the element at 'position' to the back of 'array', puts 'data' there, returns whether the operation is successful.
 // (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
 // (Fails if 'position' exceeds, or 'array' is full.)
 // (Recommended when element order is irrelevant.)
-bool roy_array_insert_fast(RoyArray * array, size_t position, RCData data);
+bool roy_array_insert_fast(RoyArray * array, size_t position, void * data);
 
 // Adds an element named 'data' to the back of 'array', returns whether the operation is successful.
 // (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
 // (Fails if 'array' is full.)
-bool roy_array_push_back(RoyArray * array, RCData data);
+bool roy_array_push_back(RoyArray * array, void * data);
 
 // Removes an element at 'position', and fill with its next recursively, returns whether the operation is successful.
 // (Fails if 'position' exceeds, or 'array' is empty.)

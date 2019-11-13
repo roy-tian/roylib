@@ -1,6 +1,6 @@
 #include "../include/roymap.h"
 
-RData pair_new(RCData key, size_t key_size, RCData value, size_t value_size);
+void * pair_new(const void * key, size_t key_size, const void * value, size_t value_size);
 
 RoyMap *
 roy_map_new(size_t   key_size,
@@ -21,24 +21,24 @@ roy_map_delete(RoyMap * map) {
   map = NULL;
 }
 
-RData
+void *
 roy_map_min(RoyMap * map) {
   RoySet * pnode = roy_set_min(map->root);
   return pnode ? pnode->key + map->key_size : NULL;
 }
 
-RData roy_map_max(RoyMap * map) {
+void * roy_map_max(RoyMap * map) {
   RoySet * pnode = roy_set_max(map->root);
   return pnode ? pnode->key + map->key_size : NULL;
 }
 
-RCData
+const void *
 roy_map_cmin(const RoyMap * map) {
   const RoySet * pnode = roy_set_min(map->root);
   return pnode ? pnode->key + map->key_size: NULL;
 }
 
-RCData
+const void *
 roy_map_cmax(const RoyMap * map) {
   const RoySet * pnode = roy_set_max(map->root);
   return pnode ? pnode->key + map->key_size : NULL;
@@ -55,9 +55,9 @@ bool roy_map_empty(const RoyMap * map) {
 
 RoyMap *
 roy_map_insert(RoyMap     * map,
-               RCData key,
-               RCData value) {
-  RData pair = pair_new(key, map->key_size, value, map->value_size);
+               const void * key,
+               const void * value) {
+  void * pair = pair_new(key, map->key_size, value, map->value_size);
   map->root = roy_set_insert(&map->root,
                              pair,
                              map->key_size + map->value_size,
@@ -68,7 +68,7 @@ roy_map_insert(RoyMap     * map,
 
 RoyMap *
 roy_map_erase(RoyMap     * map,
-              RCData key) {
+              const void * key) {
   map->root = roy_set_erase(&map->root, key, map->key_size, map->compare);
   return map;
 }
@@ -78,9 +78,9 @@ roy_map_clear(RoyMap * map) {
   roy_set_clear(map->root);
 }
 
-RData
+void *
 roy_map_find(RoyMap     * map,
-             RCData key) {
+             const void * key) {
   RoySet * pnode = roy_set_find(map->root, key, map->compare);
   return pnode ? pnode->key + map->key_size : NULL;
 }
@@ -99,12 +99,12 @@ roy_map_for_which(RoyMap     * map,
 }
 
 // pair must be freed when it's done.
-RData
-pair_new(RCData key,
+void *
+pair_new(const void * key,
          size_t       key_size,
-         RCData value,
+         const void * value,
          size_t       value_size) {
-  RData pair = malloc(key_size + value_size);
+  void * pair = malloc(key_size + value_size);
   memcpy(pair, key, key_size);
   memcpy(pair + key_size, value, value_size);
   return pair;

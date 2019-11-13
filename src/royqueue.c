@@ -1,21 +1,20 @@
 #include "../include/royqueue.h"
 
 RoyQueue *
-roy_queue_new(size_t capacity,
-              size_t element_size) {
+roy_queue_new(size_t capacity) {
   RoyQueue * ret    = (RoyQueue *)malloc(sizeof(RoyQueue));
-  ret->data         = calloc(capacity, element_size);
-  ret->size         = 0;
+  ret->data         = (void **)calloc(capacity, PTR_SIZE);
   ret->capacity     = capacity;
-  ret->element_size = element_size;
+  ret->size         = 0;
   ret->front_index  = 0;
   ret->back_index   = 0;
   return ret;
 }
 
 void
-roy_queue_delete(RoyQueue * queue) {
-  roy_array_delete((RoyArray *)queue);
+roy_queue_delete(RoyQueue * queue,
+                 ROperate deleter) {
+  roy_array_delete((RoyArray *)queue, deleter);
 }
 
 size_t
@@ -39,14 +38,14 @@ roy_queue_full(const RoyQueue * queue) {
 }
 
 bool
-roy_queue_push(RoyQueue   * queue,
-               RCData data) {
-  bool success = roy_array_insert((RoyArray *)queue, queue->back_index, data);
-  if (success) {
+roy_queue_push(RoyQueue * queue,
+               void     * data) {
+  if (roy_array_insert((RoyArray *)queue, queue->back_index, data)) {
     queue->back_index++;
     queue->back_index = roy_queue_capacity(queue) % queue->back_index;
+    return true;
   }
-  return success;
+  return false;
 }
 
 bool

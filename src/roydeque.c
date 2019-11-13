@@ -17,7 +17,7 @@ roy_deque_delete(RoyDeque * deque) {
   deque = NULL;
 }
 
-RData
+void *
 roy_deque_pointer(RoyDeque * deque,
                   size_t     position) {
   RoyList * pnode =
@@ -27,7 +27,7 @@ roy_deque_pointer(RoyDeque * deque,
   return pnode ? pnode->data : NULL;
 }
 
-RCData
+const void *
 roy_deque_cpointer(const RoyDeque * deque,
                    size_t           position) {
   const RoyList * pnode =
@@ -37,31 +37,31 @@ roy_deque_cpointer(const RoyDeque * deque,
   return pnode ? pnode->data : NULL;
 }
 
-RData
+void *
 roy_deque_front(RoyDeque * deque) {
   RoyList * pnode = roy_list_begin(deque->head);
   return pnode ? pnode->data : NULL;
 }
 
-RCData
+const void *
 roy_deque_cfront(const RoyDeque * deque) {
   const RoyList * pnode = roy_list_cbegin(deque->head);
   return pnode ? pnode->data : NULL;
 }
 
-RData
+void *
 roy_deque_back(RoyDeque * deque) {
   RoyList * pnode = roy_list_rbegin(deque->tail);
   return pnode ? pnode->data : NULL;
 }
 
-RCData
+const void *
 roy_deque_cback(const RoyDeque * deque) {
   const RoyList * pnode = roy_list_crbegin(deque->tail);
   return pnode ? pnode->data : NULL;
 }
 
-RData
+void *
 roy_deque_element(void           * dest,
                   const RoyDeque * deque,
                   size_t           position) {
@@ -82,7 +82,7 @@ roy_deque_empty(const RoyDeque * deque) {
 bool
 roy_deque_insert(RoyDeque   * deque,
                  size_t       position,
-                 RCData data) {
+                 const void * data) {
   return (position <= deque->size / 2)                                     ?
          roy_list_insert(deque->head, position, data, deque->element_size) :
          roy_list_insert_reverse(deque->tail,
@@ -93,14 +93,14 @@ roy_deque_insert(RoyDeque   * deque,
 
 void
 roy_deque_push_front(RoyDeque   * deque,
-                     RCData data) {
+                     const void * data) {
   roy_list_push_front(deque->head, data, deque->element_size);
   deque->size++;
 }
 
 void
 roy_deque_push_back(RoyDeque   * deque,
-                    RCData data) {
+                    const void * data) {
   roy_list_push_back(deque->tail, data, deque->element_size);
   deque->size++;
 }

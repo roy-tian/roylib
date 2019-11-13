@@ -1,6 +1,6 @@
 #include "../include/royslist.h"
 
-static RoySList * node_new(RCData data, size_t element_size);
+static RoySList * node_new(const void * data, size_t element_size);
 static void       node_delete(RoySList * slist);
 static RoySList * back(RoySList * slist);
 
@@ -51,7 +51,7 @@ roy_slist_citerator(const RoySList * slist,
   return iter;
 }
 
-RData
+void *
 roy_slist_element(void           * dest,
                   const RoySList * slist,
                   size_t           element_size,
@@ -79,7 +79,7 @@ roy_slist_empty(const RoySList * slist) {
 
 void
 roy_slist_push_front(RoySList   * slist,
-                     RCData data,
+                     const void * data,
                      size_t       element_size) {
   RoySList * elem = node_new(data, element_size);
   elem->next      = slist->next;
@@ -117,7 +117,7 @@ roy_slist_clear(RoySList * slist) {
 
 size_t
 roy_slist_remove(RoySList   * slist,
-                 RCData data,
+                 const void * data,
                  RCompare     compare) {
   RoySList * iter = slist;
   size_t count = 0;
@@ -201,7 +201,7 @@ void roy_slist_for_which(RoySList   * slist,
 /* PRIVATE FUNCTIONS BELOW */
 
 static RoySList *
-node_new(RCData data,
+node_new(const void * data,
          size_t       element_size) {
   RoySList * ret = (RoySList *)malloc(sizeof(RoySList));
   ret->data = malloc(element_size);

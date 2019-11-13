@@ -38,7 +38,7 @@ const RoySList * roy_slist_cbegin(const RoySList * slist);
 
 // Returns a copy of the element at 'position', or NULL if 'position' exceeds.
 // (The behavior is undefined if 'dest' is uninitialized, or mis-sized.)
-RData roy_slist_element(RData dest, const RoySList * slist, size_t element_size, size_t position);
+void * roy_slist_element(void * dest, const RoySList * slist, size_t element_size, size_t position);
 
 // Returns a typed pointer to the element at 'position', NULL if position exceeds.
 #define roy_slist_at(slist, element_type, position) ((element_type *)(roy_slist_iterator((list_head), (position))->data))
@@ -54,7 +54,7 @@ bool roy_slist_empty(const RoySList * slist);
 /* MODIFIERS */
 
 // Adds an 'element_size'-sized element named 'data' at the beginning of 'slist'.
-void roy_slist_push_front(RoySList * slist, RCData data, size_t element_size);
+void roy_slist_push_front(RoySList * slist, const void * data, size_t element_size);
 
 // Removes the first element from 'slist', returns whether the operation is successful.
 // (Fails if 'slist' is empty.)
@@ -70,7 +70,7 @@ void roy_slist_clear(RoySList * slist);
 /* LIST OPERATIONS */
 
 // Removes all elements in 'slist' equivalent to data, returns how many elements are removed from 'slist'.
-size_t roy_slist_remove(RoySList * slist, RCData data, RCompare compare);
+size_t roy_slist_remove(RoySList * slist, const void * data, RCompare compare);
 
 // Removes all elements in 'slist' which meet 'condition', returns how many elements are removed from 'slist'.
 size_t roy_slist_remove_if(RoySList * slist, RCondition condition);

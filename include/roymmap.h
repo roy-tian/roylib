@@ -27,16 +27,16 @@ void roy_mmap_delete(RoyMMap * mmap);
 /* ELEMENT ACCESS */
 
 // Returns an pointer to the value of the minimum element of 'mmap'.
-RData roy_mmap_min(RoyMMap * mmap);
+void * roy_mmap_min(RoyMMap * mmap);
 
 // Returns an pointer to the value of the maximum element of 'mmap'.
-RData roy_mmap_max(RoyMMap * mmap);
+void * roy_mmap_max(RoyMMap * mmap);
 
 // Returns a const pointer to the value of the minimum element of 'mmap'.
-RCData roy_mmap_cmin(const RoyMMap * mmap);
+const void * roy_mmap_cmin(const RoyMMap * mmap);
 
 // Returns a const pointer to the value of the maximum element of 'mmap'.
-RCData roy_mmap_cmax(const RoyMMap * mmap);
+const void * roy_mmap_cmax(const RoyMMap * mmap);
 
 #define roy_mmap_at(mmap, value_type, key)    \
         ((value_type *)((roy_mmap_find((mmap), (key))) ? (roy_mmap_find((mmap), (key))) : NULL))
@@ -52,21 +52,21 @@ bool roy_mmap_empty(const RoyMMap * mmap);
 /* MODIFIERS */
 
 // Adds a 'key_size'-sized key contains a 'value_size'-sized value into 'mmap' by ascending order.
-RoyMMap * roy_mmap_insert(RoyMMap * mmap, RCData key, RCData value);
+RoyMMap * roy_mmap_insert(RoyMMap * mmap, const void * key, const void * value);
 
 // Removes the element equals to 'key' from 'mmap'.
-RoyMMap * roy_mmap_erase(RoyMMap * mmap, RCData key);
+RoyMMap * roy_mmap_erase(RoyMMap * mmap, const void * key);
 
 // Removes all the element from 'mmap'.
 void roy_mmap_clear(RoyMMap * mmap);
 
 /* LOOKUP */
 
-size_t roy_mmap_count(const RoyMSet * mset, RCData key, RCompare compare);
+size_t roy_mmap_count(const RoyMSet * mset, const void * key, RCompare compare);
 
-RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, RCData key, RCompare compare);
+RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key, RCompare compare);
 
-RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, RCData key, RCompare compare);
+RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key, RCompare compare);
 
 /* TRAVERSE */
 

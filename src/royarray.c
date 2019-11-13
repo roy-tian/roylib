@@ -2,10 +2,10 @@
 
 RoyArray *
 roy_array_new(size_t capacity) {
-  RoyArray * ret    = (RoyArray *)malloc(sizeof(RoyArray));
-  ret->capacity     = capacity;
-  ret->size         = 0;
-  ret->data         = calloc(capacity, PTR_SIZE);
+  RoyArray * ret = (RoyArray *)malloc(sizeof(RoyArray));
+  ret->data      = (void **)calloc(capacity, PTR_SIZE);
+  ret->capacity  = capacity;
+  ret->size      = 0;
   return ret;
 }
 
@@ -22,17 +22,18 @@ roy_array_delete(RoyArray * array,
   array = NULL;
 }
 
-RData
+void *
 roy_array_pointer(RoyArray * array,
                   size_t     position) {
   return
-  valid_position(array, position) ? array->data + PTR_SIZE * position : NULL;
+  valid_position(array, position) ? array->data[position] : NULL;
 }
 
-RCData
+const void *
 roy_array_cpointer(const RoyArray * array,
                    size_t           position) {
-  return roy_array_pointer(array, position);
+  return
+  valid_position(array, position) ? array->data[position] : NULL;
 }
 
 size_t
@@ -56,16 +57,14 @@ roy_array_full(const RoyArray * array) {
 }
 
 bool
-roy_array_insert(RoyArray   * array,
-                 size_t       position,
-                 RCData data) {
+roy_array_insert(RoyArray * array,
+                 size_t     position,
+                 void     * data) {
   if (valid_position(array, position) && !roy_array_full(array)) {
     for (size_t i = roy_array_size(array); i > position; i--) {
-      memcpy(roy_array_pointer(array, i),
-             roy_array_cpointer(array, (i - 1)),
-             PTR_SIZE);
+      array->data[i] = array->data[i - 1];
     }
-    memcpy(roy_array_pointer(array, position), data, PTR_SIZE);
+    array->data[position] = data;
     array->size++;
     return true;
   }
@@ -73,16 +72,12 @@ roy_array_insert(RoyArray   * array,
 }
 
 bool
-roy_array_insert_fast(RoyArray   * array,
-                      size_t       position,
-                      RCData data) {
+roy_array_insert_fast(RoyArray * array,
+                      size_t     position,
+                      void     * data) {
   if (valid_position(array, position) && !roy_array_full(array)) {
-    memcpy(roy_array_pointer(array, roy_array_size(array)),
-           roy_array_cpointer(array, position),
-           PTR_SIZE);
-    memcpy(roy_array_pointer(array, position),
-           data,
-           PTR_SIZE);
+    array->data[roy_array_size(array)] = array->data[position];
+    array->data[position] = data;
     array->size++;
     return true;
   }
@@ -90,12 +85,10 @@ roy_array_insert_fast(RoyArray   * array,
 }
 
 bool
-roy_array_push_back(RoyArray   * array,
-                    RCData data) {
+roy_array_push_back(RoyArray * array,
+                    void     * data) {
   if (!roy_array_full(array)) {
-    memcpy(roy_array_pointer(array, roy_array_size(array)),
-           data,
-           PTR_SIZE);
+    array->data[roy_array_size(array)] = data;
     array->size++;
     return true;
   }
@@ -107,9 +100,7 @@ roy_array_erase(RoyArray * array,
                 size_t     position) {
   if (position < roy_array_size(array) && !roy_array_empty(array)) {
     for (size_t i = position; i < roy_array_size(array); i++) {
-      memcpy(roy_array_pointer(array, i),
-             roy_array_cpointer(array, i + 1),
-             PTR_SIZE);
+      array->data[i] = array->data[i + 1];
     }
     array->size--;
     return true;
@@ -121,9 +112,7 @@ bool
 roy_array_erase_fast(RoyArray * array,
                      size_t     position) {
   if (position < roy_array_size(array) && !roy_array_empty(array)) {
-    memcpy(roy_array_pointer(array, position),
-           roy_array_cpointer(array, roy_array_size(array) - 1),
-           PTR_SIZE);
+    array->data[position] = array->data[roy_array_size(array) - 1];
     array->size--;
     return true;
   }
@@ -163,7 +152,7 @@ roy_array_for_which(RoyArray   * array,
   }
 }
 
-// PRIVATE FUNCTIONS DOWN HERE
+/* PRIVATE FUNCTIONS DOWN HERE */
 
 static bool
 valid_position(const RoyArray * array,

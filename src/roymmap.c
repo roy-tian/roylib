@@ -1,6 +1,6 @@
 #include "../include/roymmap.h"
 
-static RData pair_new(RCData key, size_t key_size, RCData value, size_t value_size);
+static void * pair_new(const void * key, size_t key_size, const void * value, size_t value_size);
 
 RoyMMap *
 roy_mmap_new(size_t   key_size,
@@ -21,24 +21,24 @@ roy_mmap_delete(RoyMMap * mmap) {
   mmap = NULL;
 }
 
-RData
+void *
 roy_mmap_min(RoyMMap * mmap) {
   RoyMSet * pnode = roy_mset_min(mmap->root);
   return pnode ? pnode->key + mmap->key_size : NULL;
 }
 
-RData roy_mmap_max(RoyMMap * mmap) {
+void * roy_mmap_max(RoyMMap * mmap) {
   RoyMSet * pnode = roy_mset_max(mmap->root);
   return pnode ? pnode->key + mmap->key_size : NULL;
 }
 
-RCData
+const void *
 roy_mmap_cmin(const RoyMMap * mmap) {
   const RoyMSet * pnode = roy_mset_min(mmap->root);
   return pnode ? pnode->key + mmap->key_size : NULL;
 }
 
-RCData
+const void *
 roy_mmap_cmax(const RoyMMap * mmap) {
   const RoyMSet * pnode = roy_mset_max(mmap->root);
   return pnode ? pnode->key + mmap->key_size : NULL;
@@ -55,9 +55,9 @@ bool roy_mmap_empty(const RoyMMap * mmap) {
 
 RoyMMap *
 roy_mmap_insert(RoyMMap    * mmap,
-                RCData key,
-                RCData value) {
-  RData pair = pair_new(key, mmap->key_size, value, mmap->value_size);
+                const void * key,
+                const void * value) {
+  void * pair = pair_new(key, mmap->key_size, value, mmap->value_size);
   mmap->root = roy_mset_insert(&mmap->root,
                                pair,
                                mmap->key_size + mmap->value_size,
@@ -68,7 +68,7 @@ roy_mmap_insert(RoyMMap    * mmap,
 
 RoyMMap *
 roy_mmap_erase(RoyMMap    * mmap,
-               RCData key) {
+               const void * key) {
   mmap->root = roy_mset_erase(&mmap->root, key, mmap->key_size, mmap->compare);
   return mmap;
 }
@@ -92,12 +92,12 @@ roy_mmap_for_which(RoyMMap    * mmap,
 }
 
 // pair must be freed when it's done.
-static RData
-pair_new(RCData key,
+static void *
+pair_new(const void * key,
          size_t       key_size,
-         RCData value,
+         const void * value,
          size_t       value_size) {
-  RData pair = malloc(key_size + value_size);
+  void * pair = malloc(key_size + value_size);
   memcpy(pair, key, key_size);
   memcpy(pair + key_size, value, value_size);
   return pair;

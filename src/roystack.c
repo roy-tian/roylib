@@ -1,14 +1,14 @@
 #include "../include/roystack.h"
 
 RoyStack *
-roy_stack_new(size_t capacity,
-              size_t element_size) {
-  return (RoyStack *)roy_array_new(capacity, element_size);
+roy_stack_new(size_t capacity) {
+  return (RoyStack *)roy_array_new(capacity);
 }
 
 void
-roy_stack_delete(RoyStack * stack) {
-  roy_array_delete((RoyArray *)stack);
+roy_stack_delete(RoyStack * stack,
+                 ROperate   deleter) {
+  roy_array_delete((RoyArray *)stack, deleter);
 }
 
 size_t
@@ -32,16 +32,14 @@ roy_stack_full(const RoyStack * stack) {
 }
 
 bool
-roy_stack_push(RoyStack   * stack,
-               RCData data) {
+roy_stack_push(RoyStack * stack,
+               void     * data) {
   return roy_array_push_back((RoyArray *)stack, data);
 }
 
 bool
 roy_stack_duplicate_top(RoyStack * stack) {
-  return
-  roy_stack_push(stack, roy_array_cpointer((RoyArray *) stack,
-                                           roy_stack_size(stack) - 1));
+  return roy_stack_push(stack, roy_stack_top(stack, void));
 }
 
 bool

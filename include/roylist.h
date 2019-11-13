@@ -55,7 +55,7 @@ const RoyList * roy_list_crbegin(const RoyList *list_tail);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)
-RData roy_list_element(RData dest, const RoyList * list_head, size_t element_size, size_t position);
+void * roy_list_element(void * dest, const RoyList * list_head, size_t element_size, size_t position);
 
 // Returns a typed pointer to the element at 'position', NULL if position exceeds.
 #define roy_list_at(list_head, element_type, position) ((element_type *)(roy_list_iterator((list_head), (position))->data))
@@ -77,16 +77,16 @@ bool roy_list_rempty(const RoyList * list_tail);
 /* MODIFIERS */
 
 // Adds an 'element_size'-sized element named 'data' into 'list' at 'position'.
-bool roy_list_insert(RoyList * list_head, size_t position, RCData data, size_t element_size);
+bool roy_list_insert(RoyList * list_head, size_t position, const void * data, size_t element_size);
 
 // Adds an 'element_size'-sized element named 'data' into 'list_tail' at 'rposition' rightmost.
-bool roy_list_insert_reverse(RoyList * list_tail, size_t rposition, RCData data, size_t element_size);
+bool roy_list_insert_reverse(RoyList * list_tail, size_t rposition, const void * data, size_t element_size);
 
 // Adds an 'element_size'-sized element named 'data' at the beginning of the list.
-void roy_list_push_front(RoyList * list_head, RCData data, size_t element_size);
+void roy_list_push_front(RoyList * list_head, const void * data, size_t element_size);
 
 // Adds an 'element_size'-sized element named 'data' at the end of the list.
-void roy_list_push_back(RoyList * list_tail, RCData data, size_t element_size);
+void roy_list_push_back(RoyList * list_tail, const void * data, size_t element_size);
 
 // Removes an element from 'list_head' at 'position'.
 bool roy_list_erase(RoyList * list_head, size_t position);
@@ -106,7 +106,7 @@ void roy_list_clear(RoyList * list_head);
 /* LIST OPERATIONS */
 
 // Removes all elements in 'list' equivalent to data.
-size_t roy_list_remove(RoyList * list, RCData data, RCompare compare);
+size_t roy_list_remove(RoyList * list, const void * data, RCompare compare);
 
 // Removes all elements in 'list' which meet 'condition'.
 size_t roy_list_remove_if(RoyList * list, RCondition condition);

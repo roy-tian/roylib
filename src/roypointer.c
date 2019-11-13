@@ -7,7 +7,7 @@ roy_pointer_set(RoyPointer * pointer,
   return pointer;
 }
 
-RCData
+const void *
 roy_pointer_get(const RoyPointer * pointer) {
   return pointer ? pointer->pointer : NULL;
 }

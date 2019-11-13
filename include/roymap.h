@@ -27,16 +27,16 @@ void roy_map_delete(RoyMap * map);
 /* ELEMENT ACCESS */
 
 // Returns an pointer to the value of the minimum element of 'map'.
-RData roy_map_min(RoyMap * map);
+void * roy_map_min(RoyMap * map);
 
 // Returns an pointer to the value of the maximum element of 'map'.
-RData roy_map_max(RoyMap * map);
+void * roy_map_max(RoyMap * map);
 
 // Returns a const pointer to the value of the minimum element of 'map'.
-RCData roy_map_cmin(const RoyMap * map);
+const void * roy_map_cmin(const RoyMap * map);
 
 // Returns a const pointer to the value of the maximum element of 'map'.
-RCData roy_map_cmax(const RoyMap * map);
+const void * roy_map_cmax(const RoyMap * map);
 
 #define roy_map_at(map, value_type, key) (value_type *)roy_map_find((map), (key))
 
@@ -51,17 +51,17 @@ bool roy_map_empty(const RoyMap * map);
 /* MODIFIERS */
 
 // Adds a 'key_size'-sized key contains a 'value_size'-sized value into 'map' by ascending order.
-RoyMap * roy_map_insert(RoyMap * map, RCData key, RCData value);
+RoyMap * roy_map_insert(RoyMap * map, const void * key, const void * value);
 
 // Removes the element equals to 'key' from 'map'.
-RoyMap * roy_map_erase(RoyMap * map, RCData key);
+RoyMap * roy_map_erase(RoyMap * map, const void * key);
 
 // Removes all the element from 'map'.
 void roy_map_clear(RoyMap * map);
 
 /* LOOKUP */
 
-RData roy_map_find(RoyMap * map, RCData key);
+void * roy_map_find(RoyMap * map, const void * key);
 
 /* TRAVERSE */
 

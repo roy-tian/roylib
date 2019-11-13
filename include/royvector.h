@@ -4,11 +4,10 @@
 #include "royarray.h"
 
 struct RoyVector_ {
-  void   * data;
-  size_t   size;
-  size_t   capacity;
-  size_t   element_size;
-  size_t   capacity_base;
+  void   ** data;
+  size_t    capacity;
+  size_t    size;
+  size_t    capacity_base;
 };
 
 // RoyVector: a container that encapsulates scalable size vectors.
@@ -19,23 +18,19 @@ typedef struct RoyVector_ RoyVector;
 // Allocates sufficient memory for an RoyVector and returns a pointer to it.
 // The vector can store 'capacity' elements with each size 'element_size'.
 // (Operations on un-newed RoyVectors can cause undefined behavior.)
-RoyVector * roy_vector_new(size_t capacity, size_t element_size);
+RoyVector * roy_vector_new(size_t capacity);
 
 // De-allocates the memory allocated by 'roy_vector_new'.
 // (Always call this function after the work is done by the given 'vector', or memory leak will occur.)
-void roy_vector_delete(RoyVector * vector);
+void roy_vector_delete(RoyVector * vector, ROperate deleter);
 
 /* ELEMENT ACCESS */
 
 // Returns a pointer to the element at 'position', or NULL if position exceeds.
-RData roy_vector_pointer(RoyVector * vector, size_t position);
+void * roy_vector_pointer(RoyVector * vector, size_t position);
 
 // Returns a const pointer to the element at 'position', or NULL if position exceeds.
-RCData roy_vector_cpointer(const RoyVector * vector, size_t position);
-
-// Returns a copy of the element at 'position', or NULL if 'position' exceeds.
-// (The behavior is undefined if 'dest' is uninitialized.)
-RData roy_vector_element(RData dest, const RoyVector * vector, size_t position);
+const void * roy_vector_cpointer(const RoyVector * vector, size_t position);
 
 // Returns a typed pointer to the element at 'position', or NULL if 'position' exceeds or 'vector' is empty.
 #define roy_vector_at(vector, element_type, position) \
@@ -58,18 +53,18 @@ bool roy_vector_empty(const RoyVector * vector);
 // (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
 // (Fails if 'position' exceeds.)
 // (Deprecated when 'vector' is huge and 'position' is small, can be very slow.)
-bool roy_vector_insert(RoyVector * vector, size_t position, RCData data);
+bool roy_vector_insert(RoyVector * vector, size_t position, void * data);
 
 // Moves the element at 'position' to the back of 'vector', puts 'data' there, returns whether the operation is successful.
 // (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
 // (Fails if 'position' exceeds.)
 // (Recommended when element order is irrelevant.)
-bool roy_vector_insert_fast(RoyVector * vector, size_t position, RCData data);
+bool roy_vector_insert_fast(RoyVector * vector, size_t position, void * data);
 
 // Adds an element named 'data' to the back of 'array', returns whether the operation is successful.
 // (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
 // ('vector' will be extended automatically whenever it's full.)
-bool roy_vector_push_back(RoyVector * vector, RCData data);
+bool roy_vector_push_back(RoyVector * vector, void * data);
 
 // Removes an element at 'position', and fill the empty position with its next recursively, return whether the operation is successful.
 // (Fails if 'position' exceeds, or 'vector' is empty.)

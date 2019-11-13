@@ -9,8 +9,8 @@ struct RoyUSet_ {
   size_t      element_size;
   size_t      size;
   uint64_t    seed;
-  uint64_t (* hash)(RCData key, size_t key_size, uint64_t seed);
-  int      (* compare)(RCData key1, RCData key2);
+  uint64_t (* hash)(const void * key, size_t key_size, uint64_t seed);
+  int      (* compare)(const void * key1, const void * key2);
   RoySList ** buckets;
 };
 
@@ -25,7 +25,7 @@ typedef struct RoyUSet_ RoyUSet;
 
 // Returns a pointer to a newly build RoyUSet.
 // using a hash seed, a hash function and a compare function(NULL if you want to use default versions).
-RoyUSet * roy_uset_new(size_t bucket_count, size_t element_size, uint64_t seed, uint64_t(* hash)(RCData, size_t, uint64_t), int(* compare)(RCData, RCData));
+RoyUSet * roy_uset_new(size_t bucket_count, size_t element_size, uint64_t seed, uint64_t(* hash)(const void *, size_t, uint64_t), int(* compare)(const void *, const void *));
 
 // De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'uset', or memory leak will occur.)
@@ -35,11 +35,11 @@ void roy_uset_delete(RoyUSet * uset);
 
 // Returns an pointer to the element which is the 'bucket_position'-th one on 'bucket_index'-th buckets.
 // (Returns NULL if position is out of range.)
-RCData roy_uset_cpointer(const RoyUSet * uset, size_t bucket_index, size_t bucket_position);
+const void * roy_uset_cpointer(const RoyUSet * uset, size_t bucket_index, size_t bucket_position);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)
-RData roy_uset_element(RData dest, RoyUSet * uset, size_t bucket_index, size_t bucket_position);
+void * roy_uset_element(void * dest, RoyUSet * uset, size_t bucket_index, size_t bucket_position);
 
 
 // Returns an typed pointer to the element which is the 'bucket_position'-th one on 'bucket_index'-th buckets.
@@ -58,13 +58,13 @@ bool roy_uset_empty(const RoyUSet * uset);
 /* MODIFIERS */
 
 // Hashes an element named 'data' into 'uset'.
-bool roy_uset_insert(RoyUSet * uset, RCData data);
+bool roy_uset_insert(RoyUSet * uset, const void * data);
 
 // Removes an element which is the 'bucket_position'-th one on 'bucket_index'-th buckets of 'uset'.
 bool roy_uset_erase(RoyUSet * uset, size_t bucket_index, size_t bucket_position);
 
 // Removes all elements in 'uset' equal to 'data'.
-size_t roy_uset_remove(RoyUSet * uset, RCData data);
+size_t roy_uset_remove(RoyUSet * uset, const void * data);
 
 // Removes all elements from 'uset'.
 void roy_uset_clear(RoyUSet * uset);
@@ -72,7 +72,7 @@ void roy_uset_clear(RoyUSet * uset);
 /* LOOKUPS */
 
 // Finds an element equivalent to 'key'.
-RCData roy_uset_find(const RoyUSet * uset, RCData data);
+const void * roy_uset_find(const RoyUSet * uset, const void * data);
 
 /* HASH SET SPECIFIC */
 
@@ -83,7 +83,7 @@ size_t roy_uset_bucket_count(const RoyUSet * uset);
 size_t roy_uset_bucket_size(const RoyUSet * uset, size_t bucket_index);
 
 // Returns the index of the buckets for key 'data' calculated by hash function of 'uset'.
-int64_t roy_uset_bucket(const RoyUSet * uset, RCData data);
+int64_t roy_uset_bucket(const RoyUSet * uset, const void * data);
 
 // Returns the average number of elements per buckets.
 double roy_uset_load_factor(const RoyUSet * uset);
@@ -94,9 +94,9 @@ RoyUSet * roy_uset_rehash(RoyUSet * uset, size_t bucket_count, uint64_t seed);
 /* TRAVERSE */
 
 // Traverses all elements in 'uset' using 'operate'.
-void roy_uset_for_each(RoyUSet * uset, void (*oeprate)(RData));
+void roy_uset_for_each(RoyUSet * uset, void (*oeprate)(void *));
 
 // Traverses all elements whichever meets 'condition' in 'uset' using 'operate'.
-void roy_uset_for_which(RoyUSet * uset, bool (*condition)(RCData), void (*oeprate)(RData));
+void roy_uset_for_which(RoyUSet * uset, bool (*condition)(const void *), void (*oeprate)(void *));
 
 #endif // ROYUSET_H

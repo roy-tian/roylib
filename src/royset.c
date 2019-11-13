@@ -1,6 +1,6 @@
 #include "../include/royset.h"
 
-static RoySet * node_new(RCData key, size_t key_size);
+static RoySet * node_new(const void * key, size_t key_size);
 static void     node_delete(RoySet * set);
 
 RoySet *
@@ -63,7 +63,7 @@ roy_set_empty(const RoySet * set) {
 
 RoySet *
 roy_set_insert(RoySet     ** set,
-               RCData  key,
+               const void *  key,
                size_t        key_size,
                RCompare      compare) {
   if (!*set) {
@@ -78,7 +78,7 @@ roy_set_insert(RoySet     ** set,
 
 RoySet *
 roy_set_erase(RoySet     ** set,
-              RCData  key,
+              const void *  key,
               size_t        key_size,
               RCompare      compare) {
   if (!*set) {
@@ -116,7 +116,7 @@ roy_set_clear(RoySet * set) {
 
 RoySet *
 roy_set_find(RoySet     * set,
-             RCData key, 
+             const void * key, 
              RCompare     compare) {
   if (!set) {
     return NULL;
@@ -155,7 +155,7 @@ roy_set_for_which(RoySet     * set,
 /* PRIVATE FUNCTIONS BELOW */
 
 static RoySet *
-node_new(RCData key,
+node_new(const void * key,
          size_t       key_size) {
   RoySet * ret = (RoySet *)malloc(sizeof(RoySet));
   ret->left    = NULL;
