@@ -1,7 +1,7 @@
 #include "../include/royset.h"
 #include "../include/roymset.h"
 
-static RoyMSet * node_new(const void * key, size_t key_size);
+static RoyMSet * node_new(RCData key, size_t key_size);
 static void      node_delete(RoyMSet * mset);
 
 RoyMSet *
@@ -35,7 +35,7 @@ bool roy_mset_empty(const RoyMSet * mset) {
 
 RoyMSet *
 roy_mset_insert(RoyMSet    ** mset,
-                const void *  key,
+                RCData  key,
                 size_t        key_size,
                 RCompare      compare) {
   if (!*mset) {
@@ -50,7 +50,7 @@ roy_mset_insert(RoyMSet    ** mset,
 
 RoyMSet *
 roy_mset_erase(RoyMSet    ** mset,
-               const void *  key,
+               RCData  key,
                size_t        key_size,
                RCompare      compare) {
   if (!*mset) {
@@ -128,7 +128,7 @@ roy_mset_for_which(RoyMSet    * mset,
 /* PRIVATE FUNCTIONS BELOW */
 
 static RoyMSet *
-node_new(const void * key,
+node_new(RCData key,
          size_t       key_size) {
   RoyMSet * ret = (RoyMSet *)malloc(sizeof(RoyMSet));
   ret->left     = NULL;

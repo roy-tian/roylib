@@ -50,7 +50,7 @@ bool roy_stack_full(const RoyStack * stack);
 // Adds an element named 'data' into 'stack' next to the last element, returns whether the insertion is successful.
 // (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
 // (Fails if 'position' exceeds, or 'stack' is full.)
-bool roy_stack_push(RoyStack * stack, const void * data);
+bool roy_stack_push(RoyStack * stack, RCData data);
 
 // Adds an element same as top into 'stack' next to the last element, returns whether the insertion is successful.
 // (Fails if 'stack' is full.)

@@ -10,6 +10,10 @@
 #include <stdint.h>
 #include <string.h>
 
+enum {
+  PTR_SIZE = sizeof(RData)
+};
+
 enum NumeralSystem {
   ROY_BINARY     = 2,
   ROY_OCTAL      = 8,
@@ -24,9 +28,12 @@ enum BinaryWidths {
   ROY_QWORD = 64
 };
 
-typedef void     (* ROperate)  (void *);
-typedef bool     (* RCondition)(const void *);
-typedef int      (* RCompare)  (const void *, const void *);
-typedef uint64_t (* RHash)     (const void *, size_t, uint64_t);
+typedef       void * RData;
+typedef const void * RCData;
+
+typedef void     (* ROperate)   (RData);
+typedef bool     (* RCondition) (RCData);
+typedef int      (* RCompare)   (RCData, RCData);
+typedef uint64_t (* RHash)      (RCData, size_t, uint64_t);
 
 #endif // ROYINIT_H

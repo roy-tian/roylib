@@ -33,7 +33,7 @@ roy_stack_full(const RoyStack * stack) {
 
 bool
 roy_stack_push(RoyStack   * stack,
-               const void * data) {
+               RCData data) {
   return roy_array_push_back((RoyArray *)stack, data);
 }
 

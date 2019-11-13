@@ -35,11 +35,11 @@ void roy_umset_delete(RoyUMSet * umset);
 
 // Returns an pointer to the element which is the 'bucket_position'-th one on 'bucket_index'-th buckets.
 // (Returns NULL if position is out of range.)
-const void * roy_umset_cpointer(const RoyUMSet * umset, int bucket_index, int bucket_position);
+RCData roy_umset_cpointer(const RoyUMSet * umset, int bucket_index, int bucket_position);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)
-void * roy_umset_element(void * dest, RoyUMSet * umset, int bucket_index, int bucket_position);
+RData roy_umset_element(RData dest, RoyUMSet * umset, int bucket_index, int bucket_position);
 
 
 // Returns an typed pointer to the element which is the 'bucket_position'-th one on 'bucket_index'-th buckets.
@@ -58,13 +58,13 @@ bool roy_umset_empty(const RoyUMSet * umset);
 /* MODIFIERS */
 
 // Hashes an element named 'data' into 'umset'.
-void roy_umset_insert(RoyUMSet * umset, const void * data);
+void roy_umset_insert(RoyUMSet * umset, RCData data);
 
 // Removes an element which is the 'bucket_position'-th one on 'bucket_index'-th buckets of 'umset'.
 bool roy_umset_erase(RoyUMSet * umset, int bucket_index, int bucket_position);
 
 // Removes all elements in 'umset' equal to 'data'.
-size_t roy_umset_remove(RoyUMSet * umset, const void * data);
+size_t roy_umset_remove(RoyUMSet * umset, RCData data);
 
 // Removes all elements from 'umset'.
 void roy_umset_clear(RoyUMSet * umset);
@@ -72,7 +72,7 @@ void roy_umset_clear(RoyUMSet * umset);
 /* LOOKUPS */
 
 // Finds an element equivalent to 'key'.
-const void * roy_umset_find(const RoyUMSet * umset, const void * data);
+RCData roy_umset_find(const RoyUMSet * umset, RCData data);
 
 /* HASH SET SPECIFIC */
 
@@ -83,7 +83,7 @@ size_t roy_umset_bucket_count(const RoyUMSet * umset);
 size_t roy_umset_bucket_size(const RoyUMSet * umset, int bucket_index);
 
 // Returns the index of the buckets for key 'data' calculated by hash function of 'umset'.
-int64_t roy_umset_bucket(const RoyUMSet * umset, const void * data);
+int64_t roy_umset_bucket(const RoyUMSet * umset, RCData data);
 
 // Returns the average number of elements per buckets.
 double roy_umset_load_factor(const RoyUMSet * umset);
@@ -94,9 +94,9 @@ RoyUMSet * roy_umset_rehash(RoyUMSet * umset, size_t bucket_count, uint64_t seed
 /* TRAVERSE */
 
 // Traverses all elements in 'umset' using 'operate'.
-void roy_umset_for_each(RoyUMSet * umset, void (*oeprate)(void *));
+void roy_umset_for_each(RoyUMSet * umset, void (*oeprate)(RData));
 
 // Traverses all elements whichever meets 'condition' in 'umset' using 'operate'.
-void roy_umset_for_which(RoyUMSet * umset, bool (*condition)(const void *), void (*oeprate)(void *));
+void roy_umset_for_which(RoyUMSet * umset, bool (*condition)(RCData), void (*oeprate)(RData));
 
 #endif // ROYUMSET_H

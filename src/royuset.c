@@ -36,7 +36,7 @@ roy_uset_delete(RoyUSet * uset) {
   uset = NULL;
 }
 
-const void *
+RCData
 roy_uset_cpointer(const RoyUSet * uset,
                   size_t          bucket_index,
                   size_t          bucket_position) {
@@ -48,7 +48,7 @@ roy_uset_cpointer(const RoyUSet * uset,
   return iter ? iter->data : NULL;
 }
 
-void *
+RData
 roy_uset_element(void    * dest,
                  RoyUSet * uset,
                  size_t    bucket_index,
@@ -73,7 +73,7 @@ roy_uset_empty(const RoyUSet * uset) {
 
 bool
 roy_uset_insert(RoyUSet    * uset,
-                const void * data) {
+                RCData data) {
   RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data)];
   for (RoySList * iter = roy_slist_begin(*node); iter; iter = iter->next) {
     if (uset->compare(data, iter->data) == 0) {
@@ -102,14 +102,14 @@ roy_uset_erase(RoyUSet * uset,
 
 size_t
 roy_uset_remove(RoyUSet    * uset,
-                const void * data) {
+                RCData data) {
   RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data)];
   size_t remove_count = roy_slist_remove(*node, data, uset->compare);
   uset->size -= remove_count;
   return remove_count;
 }
 
-const void *
+RCData
 roy_uset_find(const RoyUSet * uset,
               const void    * data) {
   RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data)];

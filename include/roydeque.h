@@ -28,28 +28,28 @@ void roy_deque_delete(RoyDeque * deque);
 // Returns an iterator to 'position' in 'deque' where the element takes place.
 // (If 'position' is in small half of the deque, iteration will start at head, and vice versa.)
 // (Returns NULL if position is out of range.)
-void * roy_deque_pointer(RoyDeque * deque, size_t position);
+RData roy_deque_pointer(RoyDeque * deque, size_t position);
 
 // Returns an iterator to the element at front end.
-void * roy_deque_front(RoyDeque * deque);
+RData roy_deque_front(RoyDeque * deque);
 
 // Returns an iterator to the element at back end.
-void * roy_deque_back(RoyDeque * deque);
+RData roy_deque_back(RoyDeque * deque);
 
 // Returns an iterator to 'position' in 'deque' where the element takes place.
 // (If 'position' is in small half of the deque, iteration will start at head, and vice versa.)
 // (Returns NULL if position is out of range.)
-const void * roy_deque_cpointer(const RoyDeque * deque, size_t position);
+RCData roy_deque_cpointer(const RoyDeque * deque, size_t position);
 
 // Returns an const iterator to the element at front end.
-const void * roy_deque_cfront(const RoyDeque * deque);
+RCData roy_deque_cfront(const RoyDeque * deque);
 
 // Returns an const iterator to the element at back end.
-const void * roy_deque_cback(const RoyDeque * deque);
+RCData roy_deque_cback(const RoyDeque * deque);
 
 // Returns a copy of the element at 'position'. (With boundary check)
 // (The behavior is undefined if 'dest' is uninitialized.)
-void * roy_deque_element(void * dest, const RoyDeque * deque, size_t position);
+RData roy_deque_element(RData dest, const RoyDeque * deque, size_t position);
 
 // Returns a typed pointer to the element at 'position', NULL if position exceeds.
 #define roy_deque_at(deque, element_type, position) ((element_type *)(roy_deque_pointer((deque), (position))))
@@ -65,13 +65,13 @@ bool roy_deque_empty(const RoyDeque * deque);
 /* MODIFIERS */
 
 // Add an element named 'data' into 'deque' at 'position'.
-bool roy_deque_insert(RoyDeque * deque, size_t position, const void * data);
+bool roy_deque_insert(RoyDeque * deque, size_t position, RCData data);
 
 // Adds an element named 'data' at the beginning of 'deque'.
-void roy_deque_push_front(RoyDeque * deque, const void * data);
+void roy_deque_push_front(RoyDeque * deque, RCData data);
 
 // Adds an element named 'data' at the end of 'deque'.
-void roy_deque_push_back(RoyDeque * deque, const void * data);
+void roy_deque_push_back(RoyDeque * deque, RCData data);
 
 // Removes an element from 'deque' at 'position'.
 bool roy_deque_erase(RoyDeque * deque, size_t position);

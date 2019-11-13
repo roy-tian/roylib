@@ -9,6 +9,6 @@
 // and endian-ness issues if used across multiple platforms.
 //
 // 64-bit hash for 64-bit platforms
-uint64_t MurmurHash2(const void * key, size_t key_size, uint64_t seed);
+uint64_t MurmurHash2(RCData key, size_t key_size, uint64_t seed);
 
 #endif // ROYHASH_H

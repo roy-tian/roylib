@@ -30,14 +30,14 @@ roy_umset_delete(RoyUMSet * umset) {
   roy_uset_delete((RoyUSet *)umset);
 }
 
-const void *
+RCData
 roy_umset_cpointer(const RoyUMSet * umset,
                    int              bucket_index,
                    int              bucket_position) {
   return roy_uset_cpointer((RoyUSet *)umset, bucket_index, bucket_position);
 }
 
-void *
+RData
 roy_umset_element(void     * dest,
                   RoyUMSet * umset,
                   int        bucket_index,
@@ -58,7 +58,7 @@ roy_umset_empty(const RoyUMSet * umset) {
 
 void
 roy_umset_insert(RoyUMSet  * umset,
-                 const void * data) {
+                 RCData data) {
   RoySList ** node = &umset->buckets[roy_umset_bucket(umset, data)];
   roy_slist_push_front(*node, data, umset->element_size);
   umset->size++;
@@ -73,11 +73,11 @@ roy_umset_erase(RoyUMSet * umset,
 
 size_t
 roy_umset_remove(RoyUMSet   * umset,
-                 const void * data) {
+                 RCData data) {
   return roy_uset_remove((RoyUSet *)umset, data);
 }
 
-const void *
+RCData
 roy_umset_find(const RoyUMSet * umset,
                const void     * data) {
   return roy_uset_find((RoyUSet *)umset, data);

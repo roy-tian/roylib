@@ -50,7 +50,7 @@ bool roy_queue_full(const RoyQueue * queue);
 
 // Adds an element named 'data' into 'queue' next to the last element.
 // (The behavior is undefined if 'data' is uninitialized.)
-bool roy_queue_push(RoyQueue * queue, const void * data);
+bool roy_queue_push(RoyQueue * queue, RCData data);
 
 // Removes the first element.
 bool roy_queue_pop(RoyQueue * queue);

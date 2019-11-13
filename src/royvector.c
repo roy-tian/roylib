@@ -20,19 +20,19 @@ roy_vector_delete(RoyVector * vector) {
   roy_array_delete((RoyArray *)vector);
 }
 
-void *
+RData
 roy_vector_pointer(RoyVector * vector,
                    size_t      position) {
   return roy_array_pointer((RoyArray *) vector, position);
 }
 
-const void *
+RCData
 roy_vector_cpointer(const RoyVector * vector,
                     size_t            position) {
   return roy_array_cpointer((RoyArray *) vector, position);
 }
 
-void *
+RData
 roy_vector_element(void            * dest,
                    const RoyVector * vector,
                    size_t            position) {
@@ -57,7 +57,7 @@ roy_vector_empty(const RoyVector * vector) {
 bool
 roy_vector_insert(RoyVector  * vector,
                   size_t       position,
-                  const void * data) {
+                  RCData data) {
   expand(vector);
   return roy_array_insert((RoyArray *)vector, position, data);
 }
@@ -65,14 +65,14 @@ roy_vector_insert(RoyVector  * vector,
 bool
 roy_vector_insert_fast(RoyVector  * vector,
                        size_t       position,
-                       const void * data) {
+                       RCData data) {
   expand(vector);
   return roy_array_insert_fast((RoyArray *)vector, position, data);
 }
 
 bool
 roy_vector_push_back(RoyVector  * vector,
-                     const void * data) {
+                     RCData data) {
   expand(vector);
   return roy_array_push_back((RoyArray *)vector, data);
 }

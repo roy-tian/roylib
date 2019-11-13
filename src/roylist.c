@@ -1,6 +1,6 @@
 #include "../include/roylist.h"
 
-static RoyList * node_new(const void * data, size_t element_size);
+static RoyList * node_new(RCData data, size_t element_size);
 static void      node_delete(RoyList * list);
 
 RoyList *
@@ -86,8 +86,8 @@ roy_list_crbegin(const RoyList * list_tail) {
   return list_tail->prev;
 }
 
-void *
-roy_list_element(void *          dest,
+RData
+roy_list_element(RData          dest,
                  const RoyList * list,
                  size_t          element_size,
                  size_t          position) {
@@ -129,7 +129,7 @@ roy_list_rempty(const RoyList * list_tail) {
 bool
 roy_list_insert(RoyList    * list_head,
                 size_t       position,
-                const void * data,
+                RCData data,
                 size_t       element_size) {
   RoyList * iter = roy_list_iterator(list_head, position);
   if (iter) {
@@ -142,7 +142,7 @@ roy_list_insert(RoyList    * list_head,
 bool
 roy_list_insert_reverse(RoyList    * list_tail,
                         size_t       rposition,
-                        const void * data,
+                        RCData data,
                         size_t       element_size) {
   RoyList * iter = roy_list_riterator(list_tail, rposition);
   if (iter) {
@@ -154,7 +154,7 @@ roy_list_insert_reverse(RoyList    * list_tail,
 
 void
 roy_list_push_front(RoyList    * list_head,
-                    const void * data,
+                    RCData data,
                     size_t       element_size) {
   RoyList * elem  = node_new(data, element_size);
   RoyList * front = list_head->next;
@@ -166,7 +166,7 @@ roy_list_push_front(RoyList    * list_head,
 
 void
 roy_list_push_back(RoyList    * list_tail,
-                   const void * data,
+                   RCData data,
                    size_t       element_size) {
   RoyList * elem  = node_new(data, element_size);
   RoyList * back  = list_tail->prev;
@@ -223,7 +223,7 @@ roy_list_clear(RoyList * list) {
 
 size_t
 roy_list_remove(RoyList    * list,
-                const void * data,
+                RCData data,
                 RCompare     compare) {
   RoyList * iter = list;
   size_t count = 0;
@@ -313,7 +313,7 @@ void roy_list_for_which(RoyList    * list,
 /* PRIVATE FUNCTIONS BELOW */
 
 static RoyList *
-node_new(const void * data,
+node_new(RCData data,
          size_t       element_size) {
   RoyList * ret = (RoyList *)malloc(sizeof(RoyList));
   ret->data = malloc(element_size);

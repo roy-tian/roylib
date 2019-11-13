@@ -40,7 +40,7 @@ roy_queue_full(const RoyQueue * queue) {
 
 bool
 roy_queue_push(RoyQueue   * queue,
-               const void * data) {
+               RCData data) {
   bool success = roy_array_insert((RoyArray *)queue, queue->back_index, data);
   if (success) {
     queue->back_index++;
