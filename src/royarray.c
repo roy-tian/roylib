@@ -1,6 +1,9 @@
 #include "../include/royarray.h"
 
+// position E [0, size], aka [begin .. end]
 static bool valid_position(const RoyArray * array, size_t position);
+// position E [0, size), aka [begin .. end-1]
+static bool valid_data(const RoyArray * array, size_t position);
 
 RoyArray *
 roy_array_new(size_t capacity, ROperate deleter) {
@@ -24,14 +27,14 @@ void *
 roy_array_pointer(RoyArray * array,
                   size_t     position) {
   return
-  valid_position(array, position) ? array->data[position] : NULL;
+  valid_data(array, position) ? array->data[position] : NULL;
 }
 
 const void *
 roy_array_cpointer(const RoyArray * array,
                    size_t           position) {
   return
-  valid_position(array, position) ? array->data[position] : NULL;
+  valid_data(array, position) ? array->data[position] : NULL;
 }
 
 size_t
@@ -159,6 +162,11 @@ roy_array_for_which(RoyArray   * array,
 static bool
 valid_position(const RoyArray * array,
                size_t           position) {
-  // position E [0, size], aka begin .. end
   return position <= roy_array_size(array);
+}
+
+static bool
+valid_data(const RoyArray * array,
+           size_t           position) {
+  return position < roy_array_size(array) && !roy_array_empty(array);
 }
