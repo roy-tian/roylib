@@ -13,9 +13,7 @@ typedef struct RoyString_ RoyString;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
-RoyString * roy_string_new(void);
-
-RoyString * roy_string_new_with_str(const char * str);
+RoyString * roy_string_new(const char * str);
 
 RoyString * roy_string_assign(RoyString * string, const char * str);
 

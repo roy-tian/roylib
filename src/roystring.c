@@ -3,15 +3,11 @@
 #include <pcre.h>
 
 RoyString *
-roy_string_new(void) {
+roy_string_new(const char * str) {
   RoyString * ret = (RoyString *)malloc(sizeof(RoyString));
-  ret->str = NULL;
+  ret->str = (char *)calloc(strlen(str) + 1, sizeof(char));
+  memcpy(ret->str, str, strlen(str) + 1);
   return ret;
-}
-
-RoyString *
-roy_string_new_with_str(const char * str) {
-  return roy_string_assign(roy_string_new(), str);
 }
 
 void

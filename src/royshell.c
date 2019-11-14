@@ -104,7 +104,7 @@ roy_shell_argument_at(const RoyShell * shell,
 int
 roy_shell_argument_find(const RoyShell * shell,
                         const char     * regex) {
-  RoyString * arg = roy_string_new();
+  RoyString * arg = roy_string_new(NULL);
   for (size_t i = 0; i != roy_shell_argument_count(shell); i++) {
     roy_string_assign(arg, roy_shell_argument_at(shell, i));
     if (roy_string_match(arg, regex)) {
