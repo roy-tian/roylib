@@ -5,13 +5,13 @@
 #include "royslist.h"
 
 struct RoyUMSet_ {
-  size_t      bucket_count;
-  size_t      element_size;
-  size_t      size;
+  RoySList ** buckets;
   uint64_t    seed;
   RHash       hash;
   RCompare    compare;
-  RoySList ** buckets;
+  ROperate    deleter;
+  size_t      bucket_count;
+  size_t      size;
 };
 
 // RoyUMSet (aka 'Unordered Multi-Set' / 'Hash Multi-Set'): an associative container that contains a set of objects.
@@ -25,7 +25,7 @@ typedef struct RoyUMSet_ RoyUMSet;
 
 // Returns a pointer to a newly build RoyUMSet.
 // using a hash seed, a hash function and a compare function(NULL if you want to use default versions).
-RoyUMSet * roy_umset_new(size_t bucket_count, size_t element_size, uint64_t seed, RHash hash, RCompare compare);
+RoyUMSet * roy_umset_new(size_t bucket_count, uint64_t seed, RHash hash, RCompare compare, ROperate deleter);
 
 // De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'umset', or memory leak will occur.)
@@ -37,15 +37,10 @@ void roy_umset_delete(RoyUMSet * umset);
 // (Returns NULL if position is out of range.)
 const void * roy_umset_cpointer(const RoyUMSet * umset, int bucket_index, int bucket_position);
 
-// Returns a copy of the element at 'position'. (With boundary check)
-// (The behavior is undefined if 'dest' is uninitialized.)
-void * roy_umset_element(void * dest, RoyUMSet * umset, int bucket_index, int bucket_position);
-
-
 // Returns an typed pointer to the element which is the 'bucket_position'-th one on 'bucket_index'-th buckets.
 // (Returns NULL if position is out of range.)
 #define roy_umset_at(umset, element_type, bucket_index, bucket_position) \
-        ((element_type *)(roy_umset_const_pointer(umset, bucket_index, bucket_position)))
+        ((element_type *)(roy_umset_cpointer(umset, bucket_index, bucket_position)))
 
 /* CAPACITY */
 
@@ -58,13 +53,13 @@ bool roy_umset_empty(const RoyUMSet * umset);
 /* MODIFIERS */
 
 // Hashes an element named 'data' into 'umset'.
-void roy_umset_insert(RoyUMSet * umset, const void * data);
+void roy_umset_insert(RoyUMSet * umset, void * data, size_t data_size);
 
 // Removes an element which is the 'bucket_position'-th one on 'bucket_index'-th buckets of 'umset'.
 bool roy_umset_erase(RoyUMSet * umset, int bucket_index, int bucket_position);
 
 // Removes all elements in 'umset' equal to 'data'.
-size_t roy_umset_remove(RoyUMSet * umset, const void * data);
+size_t roy_umset_remove(RoyUMSet * umset, const void * data, size_t data_size);
 
 // Removes all elements from 'umset'.
 void roy_umset_clear(RoyUMSet * umset);
@@ -72,7 +67,7 @@ void roy_umset_clear(RoyUMSet * umset);
 /* LOOKUPS */
 
 // Finds an element equivalent to 'key'.
-const void * roy_umset_find(const RoyUMSet * umset, const void * data);
+const void * roy_umset_find(const RoyUMSet * umset, const void * data, size_t data_size);
 
 /* HASH SET SPECIFIC */
 
@@ -83,7 +78,7 @@ size_t roy_umset_bucket_count(const RoyUMSet * umset);
 size_t roy_umset_bucket_size(const RoyUMSet * umset, int bucket_index);
 
 // Returns the index of the buckets for key 'data' calculated by hash function of 'umset'.
-int64_t roy_umset_bucket(const RoyUMSet * umset, const void * data);
+int64_t roy_umset_bucket(const RoyUMSet * umset, const void * data, size_t data_size);
 
 // Returns the average number of elements per buckets.
 double roy_umset_load_factor(const RoyUMSet * umset);
@@ -94,9 +89,9 @@ RoyUMSet * roy_umset_rehash(RoyUMSet * umset, size_t bucket_count, uint64_t seed
 /* TRAVERSE */
 
 // Traverses all elements in 'umset' using 'operate'.
-void roy_umset_for_each(RoyUMSet * umset, void (*oeprate)(void *));
+void roy_umset_for_each(RoyUMSet * umset, ROperate oeprate);
 
 // Traverses all elements whichever meets 'condition' in 'umset' using 'operate'.
-void roy_umset_for_which(RoyUMSet * umset, bool (*condition)(const void *), void (*oeprate)(void *));
+void roy_umset_for_which(RoyUMSet * umset, RCondition condition, ROperate oeprate);
 
 #endif // ROYUMSET_H
