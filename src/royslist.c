@@ -1,7 +1,8 @@
 #include "../include/royslist.h"
 
-static void       node_delete(RoySList * slist, ROperate deleter);
+static void       delete_node(RoySList * slist, ROperate deleter);
 static RoySList * back(RoySList * slist);
+static int        gap(size_t slist_size);
 
 RoySList *
 roy_slist_new(void * data) {
@@ -81,7 +82,7 @@ roy_slist_pop_front(RoySList * slist,
   if (!roy_slist_empty(slist)) {
     RoySList * to_erase = roy_slist_begin(slist);
     slist->next = to_erase->next;
-    node_delete(to_erase, deleter);
+    delete_node(to_erase, deleter);
     return true;
   }
   return false;
@@ -168,10 +169,16 @@ roy_slist_unique(RoySList * slist,
   }
 }
 
-// TODO
+
 void
 roy_slist_sort(RoySList * slist,
                RCompare   compare) {
+  size_t size = roy_slist_size(slist);
+  for (int inc = gap(size); inc != 0; inc--) {
+    for (int i = inc; i != size; i++) {
+      RoySList * temp = roy_slist_iterator(slist, i);
+    }
+  }
 }
 
 
@@ -196,7 +203,7 @@ void roy_slist_for_which(RoySList   * slist,
 /* PRIVATE FUNCTIONS BELOW */
 
 static void
-node_delete(RoySList * slist,
+delete_node(RoySList * slist,
             ROperate   deleter) {
   deleter(slist->data);
   free(slist);
@@ -209,4 +216,13 @@ back(RoySList * slist) {
     slist = slist->next;
   }
   return slist;
+}
+
+static int
+gap(size_t slist_size) {
+  int index = 0;
+  while (!(GAPS[index] >= slist_size && GAPS[index + 1] <= slist_size)) {
+    index++;
+  }
+  return index;
 }
