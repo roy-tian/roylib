@@ -154,33 +154,46 @@ roy_slist_reverse(RoySList * slist) {
   }
 }
 
-void
+size_t
 roy_slist_unique(RoySList * slist,
                  RCompare   compare,
                  ROperate   deleter) {
   RoySList * temp = slist;
+  size_t count = 0;
   while (temp->next && temp->next->next) {
     if (compare(roy_slist_cbegin(temp)->data,
                 roy_slist_cbegin(temp->next)->data) == 0) {
       roy_slist_pop_front(temp, deleter);
+      count++;
     } else {
       temp = temp->next;
     }
   }
+  return count;
 }
-
 
 void
 roy_slist_sort(RoySList * slist,
                RCompare   compare) {
   size_t size = roy_slist_size(slist);
-  for (int inc = gap(size); inc != 0; inc--) {
-    for (int i = inc; i != size; i++) {
-      RoySList * temp = roy_slist_iterator(slist, i);
+  uint64_t i, j, k;
+  for (i = gap(size); i > 0; i --) {
+    uint64_t current_gap = GAPS[i];
+    for (j = current_gap; j < size; j++) {
+      RoySList * temp = roy_slist_iterator(slist, j);
+      for (k = j; k >= current_gap; k -= current_gap) {
+        if (compare(temp->data,
+                    roy_slist_citerator(slist, k - current_gap)->data) < 0) {
+          roy_slist_iterator(slist, k)->data =
+            roy_slist_citerator(slist, k - current_gap)->data;
+        } else {
+          break;
+        }
+      }
+      roy_slist_iterator(slist, k)->data = temp->data;
     }
   }
 }
-
 
 void
 roy_slist_for_each(RoySList * slist,

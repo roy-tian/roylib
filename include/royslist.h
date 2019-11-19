@@ -76,7 +76,7 @@ size_t roy_slist_remove_if(RoySList * slist, RCondition condition, ROperate dele
 void roy_slist_reverse(RoySList * slist);
 
 // Removes all consecutive duplicate elements from 'slist', only left the first element in each group of equal elements is left.
-void roy_slist_unique(RoySList *slist, RCompare compare, ROperate deleter);
+size_t roy_slist_unique(RoySList *slist, RCompare compare, ROperate deleter);
 
 // Sorts the elements in ascending order, using quick sort strategy.
 void roy_slist_sort(RoySList *slist, RCompare compare);
