@@ -33,7 +33,7 @@ enum BinaryWidths {
   ROY_QWORD = 64
 };
 
-const uint64_t GAPS[] = {
+static const uint64_t GAPS[] = {
              1,              5,             19,             41,            109,
            209,            505,            929,           2161,           3905,
           8929,          16001,          36289,          64769,         146305,
