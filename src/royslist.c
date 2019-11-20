@@ -2,7 +2,7 @@
 
 static void       delete_node(RoySList * slist, ROperate deleter);
 static RoySList * back(RoySList * slist);
-static int        gap(size_t slist_size);
+static int        gap_index(size_t slist_size);
 
 RoySList *
 roy_slist_new(void * data) {
@@ -34,7 +34,7 @@ RoySList *
 roy_slist_iterator(RoySList * slist,
                    size_t     position) {
   RoySList * iter = slist;
-  while (iter->next) {
+  while (iter->next && position < roy_slist_size(slist)) {
     iter = iter->next;
     position--;
   }
@@ -45,7 +45,7 @@ const RoySList *
 roy_slist_citerator(const RoySList * slist,
                     size_t           position) {
   const RoySList * iter = slist;
-  while (iter->next) {
+  while (iter->next && position < roy_slist_size(slist)) {
     iter = iter->next;
     position--;
   }
@@ -177,20 +177,19 @@ roy_slist_sort(RoySList * slist,
                RCompare   compare) {
   size_t size = roy_slist_size(slist);
   uint64_t i, j, k;
-  for (i = gap(size); i > 0; i --) {
-    uint64_t current_gap = GAPS[i];
-    for (j = current_gap; j < size; j++) {
-      RoySList * temp = roy_slist_iterator(slist, j);
-      for (k = j; k >= current_gap; k -= current_gap) {
-        if (compare(temp->data,
-                    roy_slist_citerator(slist, k - current_gap)->data) < 0) {
+  for (i = gap_index(size); i > 0; i--) {
+    uint64_t cur_gap = GAPS[i];
+    for (j = cur_gap; j < size; j++) {
+      void * temp = roy_slist_iterator(slist, j)->data;
+      for (k = j; k >= cur_gap; k -= cur_gap) {
+        if (compare(temp, roy_slist_citerator(slist, k - cur_gap)->data) < 0) {
           roy_slist_iterator(slist, k)->data =
-            roy_slist_citerator(slist, k - current_gap)->data;
+          roy_slist_citerator(slist, k - cur_gap)->data;
         } else {
           break;
         }
       }
-      roy_slist_iterator(slist, k)->data = temp->data;
+      roy_slist_iterator(slist, k)->data = temp;
     }
   }
 }
@@ -232,7 +231,7 @@ back(RoySList * slist) {
 }
 
 static int
-gap(size_t slist_size) {
+gap_index(size_t slist_size) {
   int index = 0;
   while (!(GAPS[index] >= slist_size && GAPS[index + 1] <= slist_size)) {
     index++;
