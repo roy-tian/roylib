@@ -180,16 +180,16 @@ roy_slist_sort(RoySList * slist,
   for (i = gap_index(size); i > 0; i--) {
     uint64_t cur_gap = GAPS[i];
     for (j = cur_gap; j < size; j++) {
-      void * temp = roy_slist_iterator(slist, j)->data;
+      void * tempj = roy_slist_iterator(slist, j)->data;
       for (k = j; k >= cur_gap; k -= cur_gap) {
-        if (compare(temp, roy_slist_citerator(slist, k - cur_gap)->data) < 0) {
-          roy_slist_iterator(slist, k)->data =
-          roy_slist_citerator(slist, k - cur_gap)->data;
+        void * tempk = roy_slist_citerator(slist, k - cur_gap)->data;
+        if (compare(tempj, tempk) < 0) {
+          roy_slist_iterator(slist, k)->data = tempk;
         } else {
           break;
         }
       }
-      roy_slist_iterator(slist, k)->data = temp;
+      roy_slist_iterator(slist, k)->data = tempj;
     }
   }
 }
