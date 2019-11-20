@@ -4,10 +4,10 @@
 #include "royinit.h"
 
 struct RoyArray_ {
-  void     ** data;
-  ROperate    deleter;
-  size_t      capacity;
-  size_t      size;
+  void     * data;
+  ROperate   deleter;
+  size_t     capacity;
+  size_t     size;
 };
 
 // RoyArray: a container that encapsulates fixed size arrays.

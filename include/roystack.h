@@ -4,10 +4,10 @@
 #include "royarray.h"
 
 struct RoyStack_ {
-  void     ** data;
-  ROperate    deleter;
-  size_t      capacity;
-  size_t      size;
+  void     * data;
+  ROperate   deleter;
+  size_t     capacity;
+  size_t     size;
 };
 
 /* CONSTRUCTION AND DESTRUCTION */

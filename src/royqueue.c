@@ -3,7 +3,7 @@
 RoyQueue *
 roy_queue_new(size_t capacity, ROperate deleter) {
   RoyQueue * ret   = (RoyQueue *)malloc(sizeof(RoyQueue));
-  ret->data        = (void **)calloc(capacity, PTR_SIZE);
+  ret->data        = (void *)calloc(capacity, PTR_SIZE);
   ret->deleter     = deleter; 
   ret->capacity    = capacity;
   ret->size        = 0;
@@ -50,12 +50,12 @@ roy_queue_push(RoyQueue * queue,
 
 bool
 roy_queue_pop(RoyQueue * queue) {
-  bool success = roy_array_erase((RoyArray *)queue, queue->front_index);
-  if (success) {
+  if (roy_array_erase((RoyArray *)queue, queue->front_index)) {
     queue->front_index--;
     queue->front_index = roy_queue_capacity(queue) % queue->front_index;
+    return true;
   }
-  return success;
+  return false;
 }
 
 void

@@ -4,12 +4,12 @@
 #include "royarray.h"
 
 struct RoyQueue_ {
-  void     ** data;
-  ROperate    deleter;
-  size_t      capacity;
-  size_t      size;
-  size_t      front_index;
-  size_t      back_index;
+  void     * data;
+  ROperate   deleter;
+  size_t     capacity;
+  size_t     size;
+  size_t     front_index;
+  size_t     back_index;
 };
 
 /* CONSTRUCTION AND DESTRUCTION */
