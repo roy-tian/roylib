@@ -16,7 +16,7 @@ typedef struct RoySList_ RoySList;
 
 // Returns a pointer to a newly build RoySList's head for navigating, it contains no data, 
 // the real data takes places from the 2nd element.
-RoySList * roy_slist_new(void * data);
+RoySList * roy_slist_new(void);
 
 // De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'slist', or memory leak will occur.)

@@ -19,7 +19,7 @@ roy_umset_new(size_t   bucket_count,
   ret->bucket_count = roy_uint64_next_prime(bucket_count);
   ret->size         = 0;
   for (size_t i = 0; i != roy_umset_bucket_count(ret); i++) {
-    ret->buckets[i] = roy_slist_new(NULL);
+    ret->buckets[i] = roy_slist_new();
   }
   return ret;
 }

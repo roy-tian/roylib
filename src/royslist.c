@@ -1,15 +1,13 @@
 #include "../include/royslist.h"
+#include "../include/shellsort.h"
 
-static void       delete_node(RoySList * slist, ROperate deleter);
+static RoySList * node_new(void * data);
+static void       node_delete(RoySList * slist, ROperate deleter);
 static RoySList * back(RoySList * slist);
-static int        gap_index(size_t slist_size);
 
 RoySList *
-roy_slist_new(void * data) {
-  RoySList * ret = (RoySList *)malloc(sizeof(RoySList));
-  ret->data = data;
-  ret->next = NULL;
-  return ret;
+roy_slist_new(void) {
+  return node_new(NULL);
 }
 
 void
@@ -71,7 +69,7 @@ roy_slist_empty(const RoySList * slist) {
 void
 roy_slist_push_front(RoySList * slist,
                      void     * data) {
-  RoySList * elem = roy_slist_new(data);
+  RoySList * elem = node_new(data);
   elem->next      = slist->next;
   slist->next     = elem;
 }
@@ -82,7 +80,7 @@ roy_slist_pop_front(RoySList * slist,
   if (!roy_slist_empty(slist)) {
     RoySList * to_erase = roy_slist_begin(slist);
     slist->next = to_erase->next;
-    delete_node(to_erase, deleter);
+    node_delete(to_erase, deleter);
     return true;
   }
   return false;
@@ -214,8 +212,16 @@ void roy_slist_for_which(RoySList   * slist,
 
 /* PRIVATE FUNCTIONS BELOW */
 
+static RoySList *
+node_new(void * data) {
+  RoySList * ret = (RoySList *)malloc(sizeof(RoySList));
+  ret->data = data;
+  ret->next = NULL;
+  return ret;
+}
+
 static void
-delete_node(RoySList * slist,
+node_delete(RoySList * slist,
             ROperate   deleter) {
   deleter(slist->data);
   free(slist);
@@ -228,13 +234,4 @@ back(RoySList * slist) {
     slist = slist->next;
   }
   return slist;
-}
-
-static int
-gap_index(size_t slist_size) {
-  int index = 0;
-  while (!(GAPS[index] >= slist_size && GAPS[index + 1] <= slist_size)) {
-    index++;
-  }
-  return index;
 }
