@@ -29,6 +29,8 @@ add_library(roylib
   include/royuset.h    src/royuset.c
   include/royumset.h   src/royumset.c
   include/royumap.h    src/royumap.c
-  include/royummap.h   src/royummap.c)
+  include/royummap.h   src/royummap.c
+  include/shellsort.h  src/shellsort.c)
+
 
 target_link_libraries(roylib pcre)
