@@ -1,18 +1,18 @@
 #include "../include/roydeque.h"
 
 RoyDeque *
-roy_deque_new(size_t element_size) {
-  RoyDeque * ret    = (RoyDeque *)malloc(sizeof(RoyDeque));
-  ret->head         = roy_list_new();
-  ret->tail         = ret->head->next;
-  ret->size         = 0;
-  ret->element_size = element_size;
+roy_deque_new(ROperate deleter) {
+  RoyDeque * ret = (RoyDeque *)malloc(sizeof(RoyDeque));
+  ret->head      = roy_list_new();
+  ret->tail      = ret->head->next;
+  ret->deleter   = deleter;
+  ret->size      = 0;
   return ret;
 }
 
 void
 roy_deque_delete(RoyDeque * deque) {
-  roy_list_delete(deque->head);
+  roy_list_delete(deque->head, deque->deleter);
   free(deque);
   deque = NULL;
 }
@@ -61,14 +61,6 @@ roy_deque_cback(const RoyDeque * deque) {
   return pnode ? pnode->data : NULL;
 }
 
-void *
-roy_deque_element(void           * dest,
-                  const RoyDeque * deque,
-                  size_t           position) {
-  memcpy(dest, roy_deque_cpointer(deque, position), deque->element_size);
-  return dest;   
-}
-
 size_t
 roy_deque_size(const RoyDeque * deque) {
   return deque->size;
@@ -82,26 +74,23 @@ roy_deque_empty(const RoyDeque * deque) {
 bool
 roy_deque_insert(RoyDeque   * deque,
                  size_t       position,
-                 const void * data) {
-  return (position <= deque->size / 2)                                     ?
-         roy_list_insert(deque->head, position, data, deque->element_size) :
-         roy_list_insert_reverse(deque->tail,
-                                 deque->size - position - 1,
-                                 data,
-                                 deque->element_size);
+                 void       * data) {
+  return (position <= deque->size / 2)                      ?
+         roy_list_insert(deque->head, position, data)       :
+         roy_list_insert_reverse(deque->tail, deque->size - position - 1, data);
 }
 
 void
 roy_deque_push_front(RoyDeque   * deque,
-                     const void * data) {
-  roy_list_push_front(deque->head, data, deque->element_size);
+                     void       * data) {
+  roy_list_push_front(deque->head, data);
   deque->size++;
 }
 
 void
 roy_deque_push_back(RoyDeque   * deque,
-                    const void * data) {
-  roy_list_push_back(deque->tail, data, deque->element_size);
+                    void       * data) {
+  roy_list_push_back(deque->tail, data);
   deque->size++;
 }
 
@@ -109,13 +98,15 @@ bool
 roy_deque_erase(RoyDeque * deque,
                 size_t     position) {
   return (position <= deque->size / 2)         ?
-         roy_list_erase(deque->head, position) :
-         roy_list_erase_reverse(deque->tail, deque->size - position - 1);
+         roy_list_erase(deque->head, position, deque->deleter) :
+         roy_list_erase_reverse(deque->tail,
+                                deque->size - position - 1,
+                                deque->deleter);
 }
 
 bool
 roy_deque_pop_front(RoyDeque * deque) {
-  if (roy_list_pop_front(deque->head)) {
+  if (roy_list_pop_front(deque->head, deque->deleter)) {
     deque->size--;
     return true;
   }
@@ -124,7 +115,7 @@ roy_deque_pop_front(RoyDeque * deque) {
 
 bool
 roy_deque_pop_back(RoyDeque * deque) {
-  if (roy_list_pop_back(deque->tail)) {
+  if (roy_list_pop_back(deque->tail, deque->deleter)) {
     deque->size--;
     return true;
   }
@@ -136,6 +127,35 @@ roy_deque_clear(RoyDeque * deque) {
   while (!roy_deque_empty(deque)) {
     roy_deque_pop_front(deque);
   }
+}
+
+size_t
+roy_deque_remove(RoyDeque   * deque,
+                 const void * data,
+                 RCompare     compare) {
+  return roy_list_remove(deque->head, data, compare, deque->deleter);
+}
+
+size_t roy_deque_remove_if(RoyDeque   * deque,
+                           RCondition   condition) {
+  return roy_list_remove_if(deque->head, condition, deque->deleter);
+}
+
+void
+roy_deque_reverse(RoyDeque * deque) {
+  roy_list_reverse(&deque->head);
+}
+
+size_t
+roy_deque_unique(RoyDeque * deque,
+                 RCompare   compare) {
+  return roy_list_unique(deque->head, compare, deque->deleter);
+}
+
+void
+roy_deque_sort(RoyDeque * deque,
+               RCompare   compare) {
+  roy_list_sort(deque->head, compare);
 }
 
 void

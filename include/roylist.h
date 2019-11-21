@@ -21,7 +21,7 @@ RoyList * roy_list_new(void);
 
 // De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'list', or memory leak will occur.)
-void roy_list_delete(RoyList * list);
+void roy_list_delete(RoyList * list, ROperate deleter);
 
 /* ELEMENT ACCESS */
 
@@ -53,12 +53,9 @@ const RoyList * roy_list_cbegin(const RoyList *list_head);
 // Returns a const reversed iterator to the last element.
 const RoyList * roy_list_crbegin(const RoyList *list_tail);
 
-// Returns a copy of the element at 'position'. (With boundary check)
-// (The behavior is undefined if 'dest' is uninitialized.)
-void * roy_list_element(void * dest, const RoyList * list_head, size_t element_size, size_t position);
-
 // Returns a typed pointer to the element at 'position', NULL if position exceeds.
-#define roy_list_at(list_head, element_type, position) ((element_type *)(roy_list_iterator((list_head), (position))->data))
+#define roy_list_at(list_head, position, element_type) \
+        ((element_type *)roy_list_iterator((list_head), (position))->data)
 
 /* CAPACITY */
 
@@ -77,45 +74,45 @@ bool roy_list_rempty(const RoyList * list_tail);
 /* MODIFIERS */
 
 // Adds an 'element_size'-sized element named 'data' into 'list' at 'position'.
-bool roy_list_insert(RoyList * list_head, size_t position, const void * data, size_t element_size);
+bool roy_list_insert(RoyList * list_head, size_t position, void * data);
 
 // Adds an 'element_size'-sized element named 'data' into 'list_tail' at 'rposition' rightmost.
-bool roy_list_insert_reverse(RoyList * list_tail, size_t rposition, const void * data, size_t element_size);
+bool roy_list_insert_reverse(RoyList * list_tail, size_t rposition, void * data);
 
 // Adds an 'element_size'-sized element named 'data' at the beginning of the list.
-void roy_list_push_front(RoyList * list_head, const void * data, size_t element_size);
+void roy_list_push_front(RoyList * list_head, void * data);
 
 // Adds an 'element_size'-sized element named 'data' at the end of the list.
-void roy_list_push_back(RoyList * list_tail, const void * data, size_t element_size);
+void roy_list_push_back(RoyList * list_tail, void * data);
 
 // Removes an element from 'list_head' at 'position'.
-bool roy_list_erase(RoyList * list_head, size_t position);
+bool roy_list_erase(RoyList * list_head, size_t position, ROperate deleter);
 
 // Removes an element from 'list_tail' at 'rposition'.
-bool roy_list_erase_reverse(RoyList * list_tail, size_t rposition);
+bool roy_list_erase_reverse(RoyList * list_tail, size_t rposition, ROperate deleter);
 
 // Removes the first element from 'list_head'.
-bool roy_list_pop_front(RoyList * list_head);
+bool roy_list_pop_front(RoyList * list_head, ROperate deleter);
 
 // Removes the last element from 'list_tail'.
-bool roy_list_pop_back(RoyList * list_tail);
+bool roy_list_pop_back(RoyList * list_tail, ROperate deleter);
 
 // Removes all the element from 'list'.
-void roy_list_clear(RoyList * list_head);
+void roy_list_clear(RoyList * list_head, ROperate deleter);
 
 /* LIST OPERATIONS */
 
 // Removes all elements in 'list' equivalent to data.
-size_t roy_list_remove(RoyList * list, const void * data, RCompare compare);
+size_t roy_list_remove(RoyList * list, const void * data, RCompare compare, ROperate deleter);
 
 // Removes all elements in 'list' which meet 'condition'.
-size_t roy_list_remove_if(RoyList * list, RCondition condition);
+size_t roy_list_remove_if(RoyList * list, RCondition condition, ROperate deleter);
 
 // Reverses the order of the elements in 'list'.
 void roy_list_reverse(RoyList ** list);
 
 // Removes all consecutive duplicate elements from 'list', only the first element in each group of equal elements is left. 
-void roy_list_unique(RoyList * list, RCompare compare);
+size_t roy_list_unique(RoyList * list, RCompare compare, ROperate deleter);
 
 // Sorts the elements in ascending order, using quick sort strategy.
 void roy_list_sort(RoyList * list, RCompare compare);
