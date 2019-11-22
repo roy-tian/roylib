@@ -6,9 +6,8 @@
 
 struct RoyMap_ {
   RoySet   * root;
-  size_t     key_size;
-  size_t     value_size;
   RCompare   compare;
+  ROperate   deleter;
 };
 
 // RoyMap: an associative container that contains a sorted map of unique objects of type Key.
@@ -18,7 +17,7 @@ typedef struct RoyMap_ RoyMap;
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Returns a pointer to a newly build RoyMap. 
-RoyMap * roy_map_new(size_t key_size, size_t value_size, RCompare compare);
+RoyMap * roy_map_new(RCompare compare, ROperate deleter);
 
 // De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'map', or memory leak will occur.)
@@ -38,7 +37,8 @@ const void * roy_map_cmin(const RoyMap * map);
 // Returns a const pointer to the value of the maximum element of 'map'.
 const void * roy_map_cmax(const RoyMap * map);
 
-#define roy_map_at(map, value_type, key) (value_type *)roy_map_find((map), (key))
+#define roy_map_at(map, key, value_type) \
+        (value_type *)roy_map_find((map), (key))
 
 /* CAPACITY */
 
@@ -51,7 +51,7 @@ bool roy_map_empty(const RoyMap * map);
 /* MODIFIERS */
 
 // Adds a 'key_size'-sized key contains a 'value_size'-sized value into 'map' by ascending order.
-RoyMap * roy_map_insert(RoyMap * map, const void * key, const void * value);
+RoyMap * roy_map_insert(RoyMap * map, void * key, void * value);
 
 // Removes the element equals to 'key' from 'map'.
 RoyMap * roy_map_erase(RoyMap * map, const void * key);
