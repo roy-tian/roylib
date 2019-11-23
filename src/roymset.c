@@ -1,26 +1,26 @@
 #include "../include/royset.h"
 #include "../include/roymset.h"
 
-static RoyMSet * node_new(const void * key, size_t key_size);
-static void      node_delete(RoyMSet * mset);
+static RoyMSet * node_new(void * key);
+static void      node_delete(RoyMSet * mset, ROperate deleter);
 
 RoyMSet *
-roy_mset_min(RoyMSet *mset) {
+roy_mset_min(RoyMSet * mset) {
   return (RoyMSet *)roy_set_min((RoySet *)mset);
 }
 
 RoyMSet *
-roy_mset_max(RoyMSet *mset) {
+roy_mset_max(RoyMSet * mset) {
   return (RoyMSet *)roy_set_max((RoySet *)mset);
 }
 
 const RoyMSet *
-roy_mset_cmin(const RoyMSet *mset) {
+roy_mset_cmin(const RoyMSet * mset) {
   return (RoyMSet *)roy_set_cmin((RoySet *) mset);
 }
 
 const RoyMSet *
-roy_mset_cmax(const RoyMSet *mset) {
+roy_mset_cmax(const RoyMSet * mset) {
   return (RoyMSet *)roy_set_cmax((RoySet *) mset);
 }
 
@@ -34,53 +34,52 @@ bool roy_mset_empty(const RoyMSet * mset) {
 }
 
 RoyMSet *
-roy_mset_insert(RoyMSet    ** mset,
-                const void *  key,
-                size_t        key_size,
-                RCompare      compare) {
+roy_mset_insert(RoyMSet  ** mset,
+                void     *  key,
+                RCompare    compare) {
   if (!*mset) {
-    *mset = node_new(key, key_size);
+    *mset = node_new(key);
   } else if (compare(key, (*mset)->key) > 0) {
-    (*mset)->right = roy_mset_insert(&(*mset)->right, key, key_size, compare);
+    (*mset)->right = roy_mset_insert(&(*mset)->right, key, compare);
   } else {
-    (*mset)->left = roy_mset_insert(&(*mset)->left, key, key_size, compare);
+    (*mset)->left = roy_mset_insert(&(*mset)->left, key, compare);
   }
-  return *mset;
+  return * mset;
 }
 
 RoyMSet *
 roy_mset_erase(RoyMSet    ** mset,
                const void *  key,
-               size_t        key_size,
-               RCompare      compare) {
+               RCompare      compare,
+               ROperate      deleter) {
   if (!*mset) {
     return NULL;
   }
   if (compare((*mset)->key, key) < 0) {
-    (*mset)->left = roy_mset_erase(&(*mset)->left, key, key_size, compare);
+    (*mset)->left = roy_mset_erase(&(*mset)->left, key, compare, deleter);
   } else
   if (compare((*mset)->key, key) > 0) {
-    (*mset)->right = roy_mset_erase(&(*mset)->right, key, key_size, compare);
+    (*mset)->right = roy_mset_erase(&(*mset)->right, key, compare, deleter);
   } else /* ((*mset)->key == key), match found */ {
     RoyMSet * temp = (*mset);
     if ((*mset)->left && (*mset)->right) {
-      memcpy((*mset)->key, roy_mset_cmin((*mset)->right)->key, key_size);
-      (*mset)->right = roy_mset_erase(mset, key, key_size, compare);
+      (*mset)->key = roy_mset_cmin((*mset)->right)->key;
+      (*mset)->right = roy_mset_erase(mset, key, compare, deleter);
     } else
     if ((*mset)->left && !(*mset)->right) {
-      *mset = (*mset)->left;
-      node_delete(temp);
+      * mset = (*mset)->left;
+      node_delete(temp, deleter);
     } else  { // !(*mset)->left && (*mset)->right || !(*mset)->left && !(*mset)->right
-      *mset = (*mset)->right;
-      node_delete(temp);
+      * mset = (*mset)->right;
+      node_delete(temp, deleter);
     }
   }
-  return *mset;
+  return * mset;
 }
 
 void
-roy_mset_clear(RoyMSet * mset) {
-  roy_set_clear((RoySet *)mset);
+roy_mset_clear(RoyMSet * mset, ROperate deleter) {
+  roy_set_clear((RoySet *)mset, deleter);
 }
 
 size_t
@@ -128,19 +127,18 @@ roy_mset_for_which(RoyMSet    * mset,
 /* PRIVATE FUNCTIONS BELOW */
 
 static RoyMSet *
-node_new(const void * key,
-         size_t       key_size) {
+node_new(void * key) {
   RoyMSet * ret = (RoyMSet *)malloc(sizeof(RoyMSet));
   ret->left     = NULL;
   ret->right    = NULL;
-  ret->key      = malloc(key_size);
-  memcpy(ret->key, key, key_size);
+  ret->key      = key;
   return ret;
 }
 
 static void
-node_delete(RoyMSet * mset) {
-  free(mset->key);
+node_delete(RoyMSet * mset,
+            ROperate  deleter) {
+  deleter(mset->key);
   free(mset);
   mset = NULL;
 }
