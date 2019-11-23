@@ -1,6 +1,6 @@
-#include "../include/royshell.h"
-#include "../include/roypointer.h"
-#include "../include/roystring.h"
+#include "royshell.h"
+#include "trivials/roypointer.h"
+#include "roystring.h"
 
 static void parse(RoyShell * shell, const char * line);
 

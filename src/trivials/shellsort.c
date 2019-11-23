@@ -1,4 +1,4 @@
-#include "../include/shellsort.h"
+#include "shellsort.h"
 
 int
 gap_index(size_t n_elements) {

@@ -1,4 +1,4 @@
-#include "../include/roystack.h"
+#include "roystack.h"
 
 RoyStack *
 roy_stack_new(size_t capacity, ROperate deleter) {

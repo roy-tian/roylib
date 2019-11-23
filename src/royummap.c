@@ -1,1 +1,1 @@
-#include "../include/royummap.h"
+#include "royummap.h"

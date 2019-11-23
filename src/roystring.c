@@ -1,5 +1,5 @@
-#include "../include/roystr.h"
-#include "../include/roystring.h"
+#include "trivials/roystr.h"
+#include "roystring.h"
 #include <pcre.h>
 
 RoyString *

@@ -1,7 +1,7 @@
 #ifndef ROYARRAY_H
 #define ROYARRAY_H
 
-#include "royinit.h"
+#include "trivials/royinit.h"
 
 struct RoyArray_ {
   void     * data;

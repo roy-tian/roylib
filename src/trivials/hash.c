@@ -1,4 +1,4 @@
-#include "../include/royhash.h"
+#include "hash.h"
 
 
 uint64_t

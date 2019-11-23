@@ -1,5 +1,5 @@
-#include "../include/roynumber.h"
-#include "../include/roystr.h"
+#include "roynumber.h"
+#include "roystr.h"
 #include <limits.h>
 #include <math.h>
 

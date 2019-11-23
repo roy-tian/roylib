@@ -1,4 +1,4 @@
-#include "../include/royvector.h"
+#include "royvector.h"
 
 static bool need_expand(const RoyVector * vector);
 static bool need_shrink(const RoyVector * vector);

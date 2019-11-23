@@ -1,4 +1,4 @@
-#include "../include/roymmap.h"
+#include "roymmap.h"
 
 static void * pair_new(const void * key, size_t key_size, const void * value, size_t value_size);
 

@@ -1,7 +1,7 @@
 #ifndef ROY_SHELL_SORT_H
 #define ROY_SHELL_SORT_H
 
-#include <stdint.h>
+#include "royinit.h"
 
 static const uint64_t GAPS[] = {
              0,              1,              5,             19,             41,

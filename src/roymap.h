@@ -1,7 +1,7 @@
 #ifndef ROYMAP_H
 #define ROYMAP_H
 
-#include "royinit.h"
+#include "trivials/royinit.h"
 #include "royset.h"
 
 struct RoyMap_ {

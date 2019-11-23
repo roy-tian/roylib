@@ -1,4 +1,4 @@
-#include "../include/roymap.h"
+#include "roymap.h"
 
 typedef struct Pair_ {
   void * key;

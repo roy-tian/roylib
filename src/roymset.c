@@ -1,5 +1,5 @@
-#include "../include/royset.h"
-#include "../include/roymset.h"
+#include "royset.h"
+#include "roymset.h"
 
 static RoyMSet * node_new(void * key);
 static void      node_delete(RoyMSet * mset, ROperate deleter);

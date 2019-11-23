@@ -1,4 +1,4 @@
-#include "../include/royarray.h"
+#include "royarray.h"
 
 // position E [0, size], aka [begin .. end]
 static bool valid_position(const RoyArray * array, size_t position);
