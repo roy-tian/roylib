@@ -1,16 +1,13 @@
 #include "roymmap.h"
-
-static void * pair_new(const void * key, size_t key_size, const void * value, size_t value_size);
+#include "trivials/roypair.h"
 
 RoyMMap *
-roy_mmap_new(size_t   key_size,
-             size_t   value_size,
-             RCompare compare) {
-  RoyMMap * ret   = (RoyMMap *)malloc(sizeof(RoyMMap));
-  ret->root       = NULL;
-  ret->key_size   = key_size;
-  ret->value_size = value_size;
-  ret->compare    = compare;
+roy_mmap_new(RCompare compare,
+             ROperate deleter) {
+  RoyMMap * ret = (RoyMMap *)malloc(sizeof(RoyMMap));
+  ret->root     = NULL;
+  ret->compare  = compare;
+  ret->deleter  = deleter;
   return ret;
 }
 
@@ -24,24 +21,24 @@ roy_mmap_delete(RoyMMap * mmap) {
 void *
 roy_mmap_min(RoyMMap * mmap) {
   RoyMSet * pnode = roy_mset_min(mmap->root);
-  return pnode ? pnode->key + mmap->key_size : NULL;
+  return pnode ? roy_pair_value(pnode->key) : NULL;
 }
 
 void * roy_mmap_max(RoyMMap * mmap) {
   RoyMSet * pnode = roy_mset_max(mmap->root);
-  return pnode ? pnode->key + mmap->key_size : NULL;
+  return pnode ? roy_pair_value(pnode->key) : NULL;
 }
 
 const void *
 roy_mmap_cmin(const RoyMMap * mmap) {
   const RoyMSet * pnode = roy_mset_min(mmap->root);
-  return pnode ? pnode->key + mmap->key_size : NULL;
+  return pnode ? roy_pair_value(pnode->key) : NULL;
 }
 
 const void *
 roy_mmap_cmax(const RoyMMap * mmap) {
   const RoyMSet * pnode = roy_mset_max(mmap->root);
-  return pnode ? pnode->key + mmap->key_size : NULL;
+  return pnode ? roy_pair_value(pnode->key) : NULL;
 }
 
 size_t
@@ -54,28 +51,25 @@ bool roy_mmap_empty(const RoyMMap * mmap) {
 }
 
 RoyMMap *
-roy_mmap_insert(RoyMMap    * mmap,
-                const void * key,
-                const void * value) {
-  void * pair = pair_new(key, mmap->key_size, value, mmap->value_size);
+roy_mmap_insert(RoyMMap * mmap,
+                void    * key,
+                void    * value) {
   mmap->root = roy_mset_insert(&mmap->root,
-                               pair,
-                               mmap->key_size + mmap->value_size,
+                               roy_pair_new(key, value),
                                mmap->compare);
-  free(pair);
   return mmap;
 }
 
 RoyMMap *
 roy_mmap_erase(RoyMMap    * mmap,
                const void * key) {
-  mmap->root = roy_mset_erase(&mmap->root, key, mmap->key_size, mmap->compare);
+  mmap->root = roy_mset_erase(&mmap->root, key, mmap->compare, mmap->deleter);
   return mmap;
 }
 
 void
 roy_mmap_clear(RoyMMap * mmap) {
-  roy_mset_clear(mmap->root);
+  roy_mset_clear(mmap->root, mmap->deleter);
 }
 
 void
@@ -90,16 +84,3 @@ roy_mmap_for_which(RoyMMap    * mmap,
                    ROperate     operate) {
   roy_mset_for_which(mmap->root, condition, operate);
 }
-
-// pair must be freed when it's done.
-static void *
-pair_new(const void * key,
-         size_t       key_size,
-         const void * value,
-         size_t       value_size) {
-  void * pair = malloc(key_size + value_size);
-  memcpy(pair, key, key_size);
-  memcpy(pair + key_size, value, value_size);
-  return pair;
-}
-

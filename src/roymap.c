@@ -1,13 +1,5 @@
 #include "roymap.h"
-
-typedef struct Pair_ {
-  void * key;
-  void * value;
-} Pair;
-
-static Pair * pair_new(void * key, void * value);
-static void * pair_value(Pair * pair);
-static ROperate pair_delete(Pair * pair, ROperate key_deleter, ROperate value_deleter);
+#include "trivials/roypair.h"
 
 RoyMap *
 roy_map_new(RCompare compare,
@@ -29,24 +21,24 @@ roy_map_delete(RoyMap * map) {
 void *
 roy_map_min(RoyMap * map) {
   RoySet * pnode = roy_set_min(map->root);
-  return pnode ? pair_value(pnode->key) : NULL;
+  return pnode ? roy_pair_value(pnode->key) : NULL;
 }
 
 void * roy_map_max(RoyMap * map) {
   RoySet * pnode = roy_set_max(map->root);
-  return pnode ? pair_value(pnode->key) : NULL;
+  return pnode ? roy_pair_value(pnode->key) : NULL;
 }
 
 const void *
 roy_map_cmin(const RoyMap * map) {
   const RoySet * pnode = roy_set_min(map->root);
-  return pnode ? pair_value(pnode->key) : NULL;
+  return pnode ? roy_pair_value(pnode->key) : NULL;
 }
 
 const void *
 roy_map_cmax(const RoyMap * map) {
   const RoySet * pnode = roy_set_max(map->root);
-  return pnode ? pair_value(pnode->key) : NULL;
+  return pnode ? roy_pair_value(pnode->key) : NULL;
 }
 
 size_t
@@ -62,8 +54,9 @@ RoyMap *
 roy_map_insert(RoyMap * map,
                void   * key,
                void   * value) {
-  Pair * pair = pair_new(key, value);
-  map->root = roy_set_insert(&map->root, pair, map->compare);
+  map->root = roy_set_insert(&map->root,
+                             roy_pair_new(key, value),
+                             map->compare);
   return map;
 }
 
@@ -83,7 +76,7 @@ void *
 roy_map_find(RoyMap     * map,
              const void * key) {
   RoySet * pnode = roy_set_find(map->root, key, map->compare);
-  return pnode ? pair_value(pnode->key) : NULL;
+  return pnode ? roy_pair_value(pnode->key) : NULL;
 }
 
 void
@@ -97,27 +90,4 @@ roy_map_for_which(RoyMap     * map,
                   RCondition   condition,
                   ROperate     operate) {
   roy_set_for_which(map->root, condition, operate);
-}
-
-/* PRIVATE FUNCTIONS DOWN HERE */
-
-static Pair *
-pair_new(void * key,
-         void * value) {
-  Pair * ret = (Pair *)malloc(sizeof(Pair));
-  ret->key   = key;
-  ret->value = value;
-  return ret;
-}
-
-static void *
-pair_value(Pair * pair) {
-  return pair->value;
-}
-
-static ROperate
-pair_delete(Pair     * pair,
-            ROperate   key_deleter,
-            ROperate   value_deleter) {
-  
 }

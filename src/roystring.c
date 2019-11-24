@@ -229,3 +229,9 @@ roy_string_equal_str(const RoyString * string,
                      const char * str) {
   return strcmp(roy_string_cstr(string), str) == 0;
 }
+
+int
+roy_string_compare(const RoyString * string1,
+                   const RoyString * string2) {
+  return strcmp(roy_string_cstr(string1), roy_string_cstr(string2));
+}

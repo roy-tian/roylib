@@ -6,9 +6,8 @@
 
 struct RoyMMap_ {
   RoyMSet  * root;
-  size_t     key_size;
-  size_t     value_size;
   RCompare   compare;
+  ROperate   deleter;
 };
 
 // RoyMMap[aka Multi-Map]: an associative container that contains a sorted multi map of unique objects of type Key.
@@ -18,7 +17,7 @@ typedef struct RoyMMap_ RoyMMap;
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Returns a pointer to a newly build RoyMMap. 
-RoyMMap * roy_mmap_new(size_t key_size, size_t value_size, RCompare compare);
+RoyMMap * roy_mmap_new(RCompare compare, ROperate deleter);
 
 // De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'mmap', or memory leak will occur.)
@@ -39,7 +38,7 @@ const void * roy_mmap_cmin(const RoyMMap * mmap);
 const void * roy_mmap_cmax(const RoyMMap * mmap);
 
 #define roy_mmap_at(mmap, value_type, key)    \
-        ((value_type *)((roy_mmap_find((mmap), (key))) ? (roy_mmap_find((mmap), (key))) : NULL))
+        (value_type *)(roy_mmap_find((mmap), (key)))
 
 /* CAPACITY */
 
@@ -52,7 +51,7 @@ bool roy_mmap_empty(const RoyMMap * mmap);
 /* MODIFIERS */
 
 // Adds a 'key_size'-sized key contains a 'value_size'-sized value into 'mmap' by ascending order.
-RoyMMap * roy_mmap_insert(RoyMMap * mmap, const void * key, const void * value);
+RoyMMap * roy_mmap_insert(RoyMMap * mmap, void * key, void * value);
 
 // Removes the element equals to 'key' from 'mmap'.
 RoyMMap * roy_mmap_erase(RoyMMap * mmap, const void * key);
@@ -62,11 +61,11 @@ void roy_mmap_clear(RoyMMap * mmap);
 
 /* LOOKUP */
 
-size_t roy_mmap_count(const RoyMSet * mset, const void * key, RCompare compare);
+size_t roy_mmap_count(const RoyMSet * mset, const void * key);
 
-RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key, RCompare compare);
+RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key);
 
-RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key, RCompare compare);
+RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key);
 
 /* TRAVERSE */
 

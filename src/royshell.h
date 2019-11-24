@@ -1,15 +1,16 @@
 #include "trivials/royinit.h"
 #include "roydeque.h"
 #include "roymap.h"
+#include "roystring.h"
 
 struct RoyShell_ {
-  char     * prompt;
-  char     * ibuffer;
-  char     * obuffer;
-  RoyMap   * dict;
-  RoyDeque * argv;
-  RoyDeque * ihistory;
-  RoyDeque * ohistory;
+  RoyString * prompt;
+  RoyString * ibuffer;
+  RoyString * obuffer;
+  RoyMap    * dict;
+  RoyDeque  * argv;
+  RoyDeque  * ihistory;
+  RoyDeque  * ohistory;
 };
 
 // RoyShell: A simulated shell with simple function.

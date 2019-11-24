@@ -77,4 +77,6 @@ bool roy_string_equal(const RoyString * string1, const RoyString * string2);
 
 bool roy_string_equal_str(const RoyString * string, const char * str);
 
+int roy_string_compare(const RoyString * string1, const RoyString * string2);
+
 #endif // RoyString *_H
