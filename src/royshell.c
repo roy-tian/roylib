@@ -5,8 +5,7 @@
 static void parse(RoyShell * shell);
 
 enum {
-  MAX_LEN = 255,
-  ARG_LEN = 63
+  MAX_LEN = 1023,
 };
 
 void pair_deleter(RoyPair * pair) {
@@ -31,10 +30,10 @@ roy_shell_new(void) {
 
 void
 roy_shell_delete(RoyShell * shell) {
+  roy_map_delete(shell->dict);
   roy_string_delete(shell->prompt);
   roy_string_delete(shell->ibuffer);
   roy_string_delete(shell->obuffer);
-  roy_map_delete(shell->dict);
   roy_deque_delete(shell->argv);
   roy_deque_delete(shell->ihistory);
   roy_deque_delete(shell->ohistory);
@@ -71,7 +70,7 @@ roy_shell_start(RoyShell * shell) {
 RoyShell *
 roy_shell_command_add(RoyShell   * shell,
                       const char * cmd,
-                      void      (* operate)(RoyShell *)) {
+                      ROperate     operate) {
   RoyPointer func;
   roy_map_insert(shell->dict,
                  roy_string_new(cmd),

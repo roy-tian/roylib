@@ -4,10 +4,10 @@
 #include "roystring.h"
 
 struct RoyShell_ {
+  RoyMap    * dict;
   RoyString * prompt;
   RoyString * ibuffer;
   RoyString * obuffer;
-  RoyMap    * dict;
   RoyDeque  * argv;
   RoyDeque  * ihistory;
   RoyDeque  * ohistory;
@@ -27,7 +27,7 @@ void roy_shell_start(RoyShell * shell);
 
 // Adds a new command 'cmd' with function 'operate' into command dictionary of 'shell'.
 // A RoyShell must have at least a default command "" (empty string) in order to perform 'roy_shell_start'.
-RoyShell * roy_shell_command_add(RoyShell * shell, const char * cmd, void (* operate)(RoyShell *));
+RoyShell * roy_shell_command_add(RoyShell * shell, const char * cmd, ROperate operate);
 
 // A convenient #define for 'roy_shell_command_add'.
 #define roy_shell_add(shell, cmd) roy_shell_command_add(shell, #cmd, cmd)
