@@ -102,12 +102,19 @@ roy_mset_lower_bound(const RoyMSet * mset,
   return (RoyMSet *)roy_set_find((RoySet *)mset, key, comparer);
 }
 
-// TODO
 RoyMSet *
 roy_mset_upper_bound(const RoyMSet * mset,
                      const void    * key,
                      RCompare        comparer) {
-  return NULL;
+  if (!mset) {
+    return NULL;
+  } else {
+    roy_mset_upper_bound(mset->left, key, comparer);
+    if (comparer(mset->key, key) > 0) {
+      return mset->key;
+    }
+    roy_mset_upper_bound(mset->left, key, comparer);
+  }
 }
 
 
