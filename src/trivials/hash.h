@@ -1,6 +1,10 @@
 #ifndef ROYHASH_H
 #define ROYHASH_H
 
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#endif
+
 #include "royinit.h"
 
 // MurmurHash2, 64-bit versions, by Austin Appleby
