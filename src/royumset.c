@@ -8,13 +8,14 @@ RoyUMSet *
 roy_umset_new(size_t   bucket_count,
               uint64_t seed,
               RHash    hash,
-              RCompare compare,
+              RCompare comparer,
               ROperate deleter) {
   RoyUMSet * ret    = (RoyUMSet *)malloc(sizeof(RoyUSet));
-  ret->buckets      = (RoySList **)calloc(roy_umset_bucket_count(ret), PTR_SIZE);
+  ret->buckets      = (RoySList **)calloc(roy_umset_bucket_count(ret),
+                                          R_PTR_SIZE);
   ret->seed         = seed;
   ret->hash         = hash ? hash : MurmurHash2;
-  ret->compare      = compare;
+  ret->comparer      = comparer;
   ret->deleter      = deleter;
   ret->bucket_count = roy_uint64_next_prime(bucket_count);
   ret->size         = 0;

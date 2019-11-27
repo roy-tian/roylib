@@ -103,7 +103,7 @@ void roy_list_clear(RoyList * list_head, ROperate deleter);
 /* LIST OPERATIONS */
 
 // Removes all elements in 'list' equivalent to data.
-size_t roy_list_remove(RoyList * list, const void * data, RCompare compare, ROperate deleter);
+size_t roy_list_remove(RoyList * list, const void * data, RCompare comparer, ROperate deleter);
 
 // Removes all elements in 'list' which meet 'condition'.
 size_t roy_list_remove_if(RoyList * list, RCondition condition, ROperate deleter);
@@ -112,10 +112,10 @@ size_t roy_list_remove_if(RoyList * list, RCondition condition, ROperate deleter
 void roy_list_reverse(RoyList ** list);
 
 // Removes all consecutive duplicate elements from 'list', only the first element in each group of equal elements is left. 
-size_t roy_list_unique(RoyList * list, RCompare compare, ROperate deleter);
+size_t roy_list_unique(RoyList * list, RCompare comparer, ROperate deleter);
 
 // Sorts the elements in ascending order, using quick sort strategy.
-void roy_list_sort(RoyList * list, RCompare compare);
+void roy_list_sort(RoyList * list, RCompare comparer);
 
 /* TRAVERSE */
 

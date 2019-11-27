@@ -224,12 +224,12 @@ roy_list_clear(RoyList  * list,
 size_t
 roy_list_remove(RoyList    * list,
                 const void * data,
-                RCompare     compare,
+                RCompare     comparer,
                 ROperate     deleter) {
   RoyList * iter = list;
   size_t count = 0;
   while (!roy_list_empty(iter)) {
-    if (compare(roy_list_cbegin(list)->data, data) == 0) {
+    if (comparer(roy_list_cbegin(list)->data, data) == 0) {
       roy_list_pop_front(iter, deleter);
       count++;
     } else {
@@ -272,12 +272,12 @@ roy_list_reverse(RoyList ** list) {
 
 size_t
 roy_list_unique(RoyList * list,
-                RCompare  compare,
+                RCompare  comparer,
                 ROperate  deleter) {
   RoyList * temp = list;
   size_t count = 0;
   while (temp->next && temp->next->next && temp->next->next->next) {
-    if (compare(roy_list_cbegin(temp)->data,
+    if (comparer(roy_list_cbegin(temp)->data,
                 roy_list_cbegin(temp->next)->data) == 0) {
       roy_list_pop_front(temp, deleter);
       count++;
@@ -290,7 +290,7 @@ roy_list_unique(RoyList * list,
 
 void
 roy_list_sort(RoyList  * list,
-              RCompare   compare) {
+              RCompare   comparer) {
   size_t size = roy_list_size(list);
   uint64_t i, j, k;
   for (i = gap_index(size); i > 0; i--) {
@@ -299,7 +299,7 @@ roy_list_sort(RoyList  * list,
       void * tempj = roy_list_iterator(list, j)->data;
       for (k = j; k >= cur_gap; k -= cur_gap) {
         void * tempk = roy_list_citerator(list, k - cur_gap)->data;
-        if (compare(tempj, tempk) < 0) {
+        if (comparer(tempj, tempk) < 0) {
           roy_list_iterator(list, k)->data = tempk;
         } else {
           break;

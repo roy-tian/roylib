@@ -4,10 +4,10 @@
 #include "roylist.h"
 
 struct RoyDeque_ {
-  RoyList * head;
-  RoyList * tail;
-  ROperate  deleter;
-  size_t    size;
+  RoyList  * head;
+  RoyList  * tail;
+  ROperate   deleter;
+  size_t     size;
 };
 
 // RoyDeque: a double ended queue powered by a RoyDeque inside,
@@ -85,7 +85,7 @@ void roy_deque_clear(RoyDeque * deque);
 /* LIST OPERATIONS */
 
 // Removes all elements in 'deque' equivalent to data.
-size_t roy_deque_remove(RoyDeque * deque, const void * data, RCompare compare);
+size_t roy_deque_remove(RoyDeque * deque, const void * data, RCompare comparer);
 
 // Removes all elements in 'deque' which meet 'condition'.
 size_t roy_deque_remove_if(RoyDeque * deque, RCondition condition);
@@ -94,10 +94,10 @@ size_t roy_deque_remove_if(RoyDeque * deque, RCondition condition);
 void roy_deque_reverse(RoyDeque * deque);
 
 // Removes all consecutive duplicate elements from 'deque', only the first element in each group of equal elements is left. 
-size_t roy_deque_unique(RoyDeque * deque, RCompare compare);
+size_t roy_deque_unique(RoyDeque * deque, RCompare comparer);
 
 // Sorts the elements in ascending order, using quick sort strategy.
-void roy_deque_sort(RoyDeque * deque, RCompare compare);
+void roy_deque_sort(RoyDeque * deque, RCompare comparer);
 
 /* TRAVERSE */
 

@@ -8,7 +8,7 @@ struct RoyUSet_ {
   RoySList ** buckets;
   uint64_t    seed;
   RHash       hash;
-  RCompare    compare;
+  RCompare    comparer;
   ROperate    deleter;
   size_t      bucket_count;
   size_t      size;
@@ -24,8 +24,8 @@ typedef struct RoyUSet_ RoyUSet;
 /* CONSTRUCTION & DESTRUCTION */
 
 // Returns a pointer to a newly build RoyUSet.
-// using a hash seed, a hash function and a compare function(NULL if you want to use default versions).
-RoyUSet * roy_uset_new(size_t bucket_count, uint64_t seed, RHash hash, RCompare compare, ROperate deleter);
+// using a hash seed, a hash function and a comparer function(NULL if you want to use default versions).
+RoyUSet * roy_uset_new(size_t bucket_count, uint64_t seed, RHash hash, RCompare comparer, ROperate deleter);
 
 // De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'uset', or memory leak will occur.)

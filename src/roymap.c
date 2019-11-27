@@ -2,11 +2,11 @@
 #include "trivials/roypair.h"
 
 RoyMap *
-roy_map_new(RCompare compare,
+roy_map_new(RCompare comparer,
             ROperate deleter) {
   RoyMap * ret = (RoyMap *)malloc(sizeof(RoyMap));
   ret->root    = NULL;
-  ret->compare = compare;
+  ret->comparer = comparer;
   ret->deleter = deleter;
   return ret;
 }
@@ -56,14 +56,14 @@ roy_map_insert(RoyMap * map,
                void   * value) {
   map->root = roy_set_insert(&map->root,
                              roy_pair_new(key, value),
-                             map->compare);
+                             map->comparer);
   return map;
 }
 
 RoyMap *
 roy_map_erase(RoyMap     * map,
               const void * key) {
-  map->root = roy_set_erase(&map->root, key, map->compare, map->deleter);
+  map->root = roy_set_erase(&map->root, key, map->comparer, map->deleter);
   return map;
 }
 
@@ -75,7 +75,7 @@ roy_map_clear(RoyMap * map) {
 void *
 roy_map_find(RoyMap     * map,
              const void * key) {
-  RoySet * pnode = roy_set_find(map->root, key, map->compare);
+  RoySet * pnode = roy_set_find(map->root, key, map->comparer);
   return pnode ? roy_pair_value(pnode->key) : NULL;
 }
 

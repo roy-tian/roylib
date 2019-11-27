@@ -2,11 +2,11 @@
 #include "trivials/roypair.h"
 
 RoyMMap *
-roy_mmap_new(RCompare compare,
+roy_mmap_new(RCompare comparer,
              ROperate deleter) {
   RoyMMap * ret = (RoyMMap *)malloc(sizeof(RoyMMap));
   ret->root     = NULL;
-  ret->compare  = compare;
+  ret->comparer  = comparer;
   ret->deleter  = deleter;
   return ret;
 }
@@ -56,14 +56,14 @@ roy_mmap_insert(RoyMMap * mmap,
                 void    * value) {
   mmap->root = roy_mset_insert(&mmap->root,
                                roy_pair_new(key, value),
-                               mmap->compare);
+                               mmap->comparer);
   return mmap;
 }
 
 RoyMMap *
 roy_mmap_erase(RoyMMap    * mmap,
                const void * key) {
-  mmap->root = roy_mset_erase(&mmap->root, key, mmap->compare, mmap->deleter);
+  mmap->root = roy_mset_erase(&mmap->root, key, mmap->comparer, mmap->deleter);
   return mmap;
 }
 

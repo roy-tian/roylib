@@ -9,13 +9,14 @@ RoyUSet *
 roy_uset_new(size_t   bucket_count,
              uint64_t seed,
              RHash    hash,
-             RCompare compare,
+             RCompare comparer,
              ROperate deleter) {
   RoyUSet * ret     = (RoyUSet *)malloc(sizeof(RoyUSet));
-  ret->buckets      = (RoySList **)calloc(roy_uset_bucket_count(ret), PTR_SIZE);
+  ret->buckets      = (RoySList **)calloc(roy_uset_bucket_count(ret),
+                                          R_PTR_SIZE);
   ret->seed         = seed;
   ret->hash         = hash ? hash : MurmurHash2;
-  ret->compare      = compare;
+  ret->comparer      = comparer;
   ret->deleter      = deleter;
   ret->bucket_count = roy_uint64_next_prime(bucket_count);
   ret->size         = 0;
@@ -63,7 +64,7 @@ roy_uset_insert(RoyUSet * uset,
                 size_t    data_size) {
   RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data, data_size)];
   for (RoySList * iter = roy_slist_begin(*node); iter; iter = iter->next) {
-    if (uset->compare(data, iter->data) == 0) {
+    if (uset->comparer(data, iter->data) == 0) {
       return false;
     }
   }
@@ -92,7 +93,7 @@ roy_uset_remove(RoyUSet    * uset,
                 const void * data,
                 size_t       data_size) {
   RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data, data_size)];
-  size_t remove_count = roy_slist_remove(*node, data, uset->compare, uset->deleter);
+  size_t remove_count = roy_slist_remove(*node, data, uset->comparer, uset->deleter);
   uset->size -= remove_count;
   return remove_count;
 }
@@ -103,7 +104,7 @@ roy_uset_find(const RoyUSet * uset,
               size_t          data_size) {
   RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data, data_size)];
   for (RoySList * iter = roy_slist_begin(*node); iter; iter = iter->next) {
-    if (uset->compare(data, iter->data) == 0) {
+    if (uset->comparer(data, iter->data) == 0) {
       return iter->data;
     }
   }

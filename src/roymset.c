@@ -36,13 +36,13 @@ bool roy_mset_empty(const RoyMSet * mset) {
 RoyMSet *
 roy_mset_insert(RoyMSet  ** mset,
                 void     *  key,
-                RCompare    compare) {
+                RCompare    comparer) {
   if (!*mset) {
     *mset = node_new(key);
-  } else if (compare(key, (*mset)->key) > 0) {
-    (*mset)->right = roy_mset_insert(&(*mset)->right, key, compare);
+  } else if (comparer(key, (*mset)->key) > 0) {
+    (*mset)->right = roy_mset_insert(&(*mset)->right, key, comparer);
   } else {
-    (*mset)->left = roy_mset_insert(&(*mset)->left, key, compare);
+    (*mset)->left = roy_mset_insert(&(*mset)->left, key, comparer);
   }
   return * mset;
 }
@@ -50,21 +50,21 @@ roy_mset_insert(RoyMSet  ** mset,
 RoyMSet *
 roy_mset_erase(RoyMSet    ** mset,
                const void *  key,
-               RCompare      compare,
+               RCompare      comparer,
                ROperate      deleter) {
   if (!*mset) {
     return NULL;
   }
-  if (compare((*mset)->key, key) < 0) {
-    (*mset)->left = roy_mset_erase(&(*mset)->left, key, compare, deleter);
+  if (comparer((*mset)->key, key) < 0) {
+    (*mset)->left = roy_mset_erase(&(*mset)->left, key, comparer, deleter);
   } else
-  if (compare((*mset)->key, key) > 0) {
-    (*mset)->right = roy_mset_erase(&(*mset)->right, key, compare, deleter);
+  if (comparer((*mset)->key, key) > 0) {
+    (*mset)->right = roy_mset_erase(&(*mset)->right, key, comparer, deleter);
   } else /* ((*mset)->key == key), match found */ {
     RoyMSet * temp = (*mset);
     if ((*mset)->left && (*mset)->right) {
       (*mset)->key = roy_mset_cmin((*mset)->right)->key;
-      (*mset)->right = roy_mset_erase(mset, key, compare, deleter);
+      (*mset)->right = roy_mset_erase(mset, key, comparer, deleter);
     } else
     if ((*mset)->left && !(*mset)->right) {
       * mset = (*mset)->left;
@@ -85,28 +85,28 @@ roy_mset_clear(RoyMSet * mset, ROperate deleter) {
 size_t
 roy_mset_count(const RoyMSet * mset,
                const void    * key,
-               RCompare        compare) {
+               RCompare        comparer) {
   if (!mset) {
     return 0;
   } else {
-    return (compare(key, mset->key) == 0 ? 1 : 0) +
-           roy_mset_count(mset->left, key, compare) +
-           roy_mset_count(mset->right, key, compare);
+    return (comparer(key, mset->key) == 0 ? 1 : 0) +
+           roy_mset_count(mset->left, key, comparer) +
+           roy_mset_count(mset->right, key, comparer);
   }
 }
 
 RoyMSet *
 roy_mset_lower_bound(const RoyMSet * mset,
                      const void    * key,
-                     RCompare        compare) {
-  return (RoyMSet *)roy_set_find((RoySet *)mset, key, compare);
+                     RCompare        comparer) {
+  return (RoyMSet *)roy_set_find((RoySet *)mset, key, comparer);
 }
 
 // TODO
 RoyMSet *
 roy_mset_upper_bound(const RoyMSet * mset,
                      const void    * key,
-                     RCompare        compare) {
+                     RCompare        comparer) {
   return NULL;
 }
 

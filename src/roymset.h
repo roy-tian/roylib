@@ -10,7 +10,7 @@ struct RoyMSet_ {
 };
 
 // RoyMSet [aka Multi-Set]: an associative container that contains a sorted set of objects of type Key, duplicated objects is allowed.
-// Sorting is done using the key comparison function 'compare'. Search, removal, and insertion operations have logarithmic complexity.
+// Sorting is done using the key comparison function 'comparer'. Search, removal, and insertion operations have logarithmic complexity.
 typedef struct RoyMSet_ RoyMSet;
 
 /* ELEMENT ACCESS */
@@ -38,21 +38,21 @@ bool roy_mset_empty(const RoyMSet * mset);
 /* MODIFIERS */
 
 // Adds an 'key_size'-sized key into 'mset' by ascending order.
-RoyMSet * roy_mset_insert(RoyMSet ** mset, void * key, RCompare compare);
+RoyMSet * roy_mset_insert(RoyMSet ** mset, void * key, RCompare comparer);
 
 // Removes the element equals to 'key' from 'mset'.
-RoyMSet * roy_mset_erase(RoyMSet ** mset, const void * key, RCompare compare, ROperate deleter);
+RoyMSet * roy_mset_erase(RoyMSet ** mset, const void * key, RCompare comparer, ROperate deleter);
 
 // Removes all the element from 'mset'.
 void roy_mset_clear(RoyMSet * mset, ROperate deleter);
 
 /* LOOKUP */
 
-size_t roy_mset_count(const RoyMSet * mset, const void * key, RCompare compare);
+size_t roy_mset_count(const RoyMSet * mset, const void * key, RCompare comparer);
 
-RoyMSet * roy_mset_lower_bound(const RoyMSet * mset, const void * key, RCompare compare);
+RoyMSet * roy_mset_lower_bound(const RoyMSet * mset, const void * key, RCompare comparer);
 
-RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, RCompare compare);
+RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, RCompare comparer);
 
 /* TRAVERSE */
 

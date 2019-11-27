@@ -64,13 +64,13 @@ roy_set_empty(const RoySet * set) {
 RoySet *
 roy_set_insert(RoySet   ** set,
                void     *  key,
-               RCompare    compare) {
+               RCompare    comparer) {
   if (!*set) {
     *set = node_new(key);
-  } else if (compare(key, (*set)->key) < 0) {
-    (*set)->left = roy_set_insert(&(*set)->left, key, compare);
-  } else if (compare(key, (*set)->key) > 0) {
-    (*set)->right = roy_set_insert(&(*set)->right, key, compare);
+  } else if (comparer(key, (*set)->key) < 0) {
+    (*set)->left = roy_set_insert(&(*set)->left, key, comparer);
+  } else if (comparer(key, (*set)->key) > 0) {
+    (*set)->right = roy_set_insert(&(*set)->right, key, comparer);
   } // if (set->key == key) does nothing
   return *set;
 }
@@ -78,20 +78,20 @@ roy_set_insert(RoySet   ** set,
 RoySet *
 roy_set_erase(RoySet     ** set,
               const void *  key,
-              RCompare      compare,
+              RCompare      comparer,
               ROperate      deleter) {
   if (!*set) {
     return NULL;
   }
-  if (compare(key, (*set)->key) < 0) {
-    (*set)->left =  roy_set_erase(&(*set)->left, key, compare, deleter);
-  } else if (compare(key, (*set)->key) > 0) {
-    (*set)->right = roy_set_erase(&(*set)->right, key, compare, deleter);
+  if (comparer(key, (*set)->key) < 0) {
+    (*set)->left =  roy_set_erase(&(*set)->left, key, comparer, deleter);
+  } else if (comparer(key, (*set)->key) > 0) {
+    (*set)->right = roy_set_erase(&(*set)->right, key, comparer, deleter);
   } else /* ((*set)->key == key), match found */ {
     RoySet * temp = (*set);
     if ((*set)->left && (*set)->right) {
       (*set)->key = roy_set_cmin((*set)->right)->key;
-      (*set)->right = roy_set_erase(set, key, compare, deleter);
+      (*set)->right = roy_set_erase(set, key, comparer, deleter);
     } else
     if ((*set)->left && !(*set)->right) {
       *set = (*set)->left;
@@ -117,13 +117,13 @@ roy_set_clear(RoySet   * set,
 RoySet *
 roy_set_find(RoySet     * set,
              const void * key, 
-             RCompare     compare) {
+             RCompare     comparer) {
   if (!set) {
     return NULL;
-  } else if (compare(key, set->key) < 0) {
-    return roy_set_find(set->left, key, compare);
-  } else if (compare(key, set->key) > 0) {
-    return roy_set_find(set->right, key, compare);
+  } else if (comparer(key, set->key) < 0) {
+    return roy_set_find(set->left, key, comparer);
+  } else if (comparer(key, set->key) > 0) {
+    return roy_set_find(set->right, key, comparer);
   } else {
     return set;
   }

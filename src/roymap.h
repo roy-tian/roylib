@@ -6,18 +6,18 @@
 
 struct RoyMap_ {
   RoySet   * root;
-  RCompare   compare;
+  RCompare   comparer;
   ROperate   deleter;
 };
 
 // RoyMap: an associative container that contains a sorted map of unique objects of type Key.
-// Sorting is done using the key comparison function 'compare'. Search, removal, and insertion operations have logarithmic complexity.
+// Sorting is done using the key comparison function 'comparer'. Search, removal, and insertion operations have logarithmic complexity.
 typedef struct RoyMap_ RoyMap;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
 // Returns a pointer to a newly build RoyMap. 
-RoyMap * roy_map_new(RCompare compare, ROperate deleter);
+RoyMap * roy_map_new(RCompare comparer, ROperate deleter);
 
 // De-allocates all the memory allocated.
 // (Always call this function after the work is done by the given 'map', or memory leak will occur.)

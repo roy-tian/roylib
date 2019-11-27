@@ -132,8 +132,8 @@ roy_deque_clear(RoyDeque * deque) {
 size_t
 roy_deque_remove(RoyDeque   * deque,
                  const void * data,
-                 RCompare     compare) {
-  return roy_list_remove(deque->head, data, compare, deque->deleter);
+                 RCompare     comparer) {
+  return roy_list_remove(deque->head, data, comparer, deque->deleter);
 }
 
 size_t roy_deque_remove_if(RoyDeque   * deque,
@@ -148,14 +148,14 @@ roy_deque_reverse(RoyDeque * deque) {
 
 size_t
 roy_deque_unique(RoyDeque * deque,
-                 RCompare   compare) {
-  return roy_list_unique(deque->head, compare, deque->deleter);
+                 RCompare   comparer) {
+  return roy_list_unique(deque->head, comparer, deque->deleter);
 }
 
 void
 roy_deque_sort(RoyDeque * deque,
-               RCompare   compare) {
-  roy_list_sort(deque->head, compare);
+               RCompare   comparer) {
+  roy_list_sort(deque->head, comparer);
 }
 
 void

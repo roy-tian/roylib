@@ -21,7 +21,7 @@ roy_shell_new(void) {
   ret->prompt    = roy_string_new("> ");
   ret->ibuffer   = roy_string_new("");
   ret->obuffer   = roy_string_new("");
-  ret->dict      = roy_map_new((RCompare)roy_string_compare, (ROperate)pair_deleter);
+  ret->dict      = roy_map_new((RCompare)roy_string_comparer, (ROperate)pair_deleter);
   ret->argv      = roy_deque_new((ROperate)roy_string_delete);
   ret->ihistory  = roy_deque_new((ROperate)roy_string_delete);
   ret->ohistory  = roy_deque_new((ROperate)roy_string_delete);

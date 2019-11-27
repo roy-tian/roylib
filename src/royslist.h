@@ -67,7 +67,7 @@ void roy_slist_clear(RoySList * slist, ROperate deleter);
 /* LIST OPERATIONS */
 
 // Removes all elements in 'slist' equivalent to data, returns how many elements are removed from 'slist'.
-size_t roy_slist_remove(RoySList * slist, const void * data, RCompare compare, ROperate deleter);
+size_t roy_slist_remove(RoySList * slist, const void * data, RCompare comparer, ROperate deleter);
 
 // Removes all elements in 'slist' which meet 'condition', returns how many elements are removed from 'slist'.
 size_t roy_slist_remove_if(RoySList * slist, RCondition condition, ROperate deleter);
@@ -76,10 +76,10 @@ size_t roy_slist_remove_if(RoySList * slist, RCondition condition, ROperate dele
 void roy_slist_reverse(RoySList * slist);
 
 // Removes all consecutive duplicate elements from 'slist', only left the first element in each group of equal elements is left.
-size_t roy_slist_unique(RoySList *slist, RCompare compare, ROperate deleter);
+size_t roy_slist_unique(RoySList *slist, RCompare comparer, ROperate deleter);
 
 // Sorts the elements in ascending order, using quick sort strategy.
-void roy_slist_sort(RoySList *slist, RCompare compare);
+void roy_slist_sort(RoySList *slist, RCompare comparer);
 
 /* TRAVERSE */
 
