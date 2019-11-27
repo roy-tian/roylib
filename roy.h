@@ -16,9 +16,9 @@
 #include "src/royumset.h"
 #include "src/royumap.h"
 #include "src/royummap.h"
-#include "src/trivials/roynumber.h"
 #include "src/roystring.h"
 #include "src/royshell.h"
 #include "src/trivials/roypointer.h"
+#include "src/trivials/roynumber.h"
 
 #endif // ROY_H

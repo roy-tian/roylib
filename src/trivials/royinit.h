@@ -16,22 +16,21 @@ typedef int      (* RCompare)   (const void *, const void *);
 typedef uint64_t (* RHash)      (const void *, size_t, uint64_t);
 
 enum CommonConstants {
-  PTR_SIZE = sizeof(void *)
+  R_PTR_SIZE = sizeof(void *)
 };
 
 enum NumeralSystem {
-  ROY_BINARY     = 2,
-  ROY_OCTAL      = 8,
-  ROY_DECIMAL    = 10,
-  ROY_HEXDECIMAL = 16
+  R_BINARY     = 2,
+  R_OCTAL      = 8,
+  R_DECIMAL    = 10,
+  R_HEXDECIMAL = 16
 };
 
 enum BinaryWidths {
-  ROY_BYTE  = 8,
-  ROY_WORD  = 16,
-  ROY_DWORD = 32,
-  ROY_QWORD = 64
+  R_BYTE  = 8,
+  R_WORD  = 16,
+  R_DWORD = 32,
+  R_QWORD = 64
 };
-
 
 #endif // ROYINIT_H
