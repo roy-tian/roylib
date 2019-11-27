@@ -3,7 +3,7 @@
 RoyQueue *
 roy_queue_new(size_t capacity, ROperate deleter) {
   RoyQueue * ret   = (RoyQueue *)malloc(sizeof(RoyQueue));
-  ret->data        = (void *)calloc(capacity, PTR_SIZE);
+  ret->data        = (void **)calloc(capacity, R_PTR_SIZE);
   ret->deleter     = deleter; 
   ret->capacity    = capacity;
   ret->size        = 0;

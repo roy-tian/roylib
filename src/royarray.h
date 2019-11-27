@@ -4,10 +4,10 @@
 #include "trivials/royinit.h"
 
 struct RoyArray_ {
-  void     * data;
-  ROperate   deleter;
-  size_t     capacity;
-  size_t     size;
+  void     ** data;
+  ROperate    deleter;
+  size_t      capacity;
+  size_t      size;
 };
 
 // RoyArray: a container that encapsulates fixed size arrays.
@@ -45,7 +45,7 @@ const void * roy_array_cpointer(const RoyArray * array, size_t position);
 
 // Returns a typed pointer to the element at 'position', or NULL if 'position' exceeds or 'array' is empty.
 #define roy_array_at(array, position, element_type) \
-        ((element_type*)(roy_array_pointer((array), (position))))
+        ((element_type*)roy_array_pointer((array), (position)))
 
 /* CAPACITY */
 

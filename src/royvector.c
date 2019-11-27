@@ -9,7 +9,7 @@ RoyVector *
 roy_vector_new(size_t   capacity,
                ROperate deleter) {
   RoyVector * ret    = (RoyVector *)malloc(sizeof(RoyVector));
-  ret->data          = (void *)calloc(capacity, PTR_SIZE);
+  ret->data          = (void **)calloc(capacity, R_PTR_SIZE);
   ret->deleter       = deleter;
   ret->capacity      = capacity;
   ret->size          = 0;
@@ -106,8 +106,8 @@ roy_vector_clear(RoyVector * vector) {
   roy_vector_for_each(vector, vector->deleter);
   vector->capacity = vector->capacity_base;
   vector->size = 0;
-  vector->data = (void *)realloc(vector->data,
-                                 roy_vector_capacity(vector) * PTR_SIZE);
+  vector->data =
+    (void **)realloc(vector->data, roy_vector_capacity(vector) * R_PTR_SIZE);
 }
 
 void
@@ -141,7 +141,7 @@ expand(RoyVector * vector) {
   if (need_expand(vector)) {
     vector->capacity += vector->capacity_base;
     vector->data =
-      (void *)realloc(vector->data, roy_vector_capacity(vector) * PTR_SIZE);
+      (void **)realloc(vector->data, roy_vector_capacity(vector) * R_PTR_SIZE);
   }
 }
 
@@ -150,6 +150,6 @@ shrink(RoyVector * vector) {
   if (need_shrink(vector)) {
     vector->capacity -= vector->capacity_base;
     vector->data =
-      (void *)realloc(vector->data, roy_vector_capacity(vector) * PTR_SIZE);
+      (void **)realloc(vector->data, roy_vector_capacity(vector) * R_PTR_SIZE);
   }
 }
