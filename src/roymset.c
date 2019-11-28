@@ -51,7 +51,7 @@ roy_mset_remove(RoyMSet    ** mset,
                 const void *  key,
                 RCompare      comparer,
                 ROperate      deleter) {
-  while (roy_mset_lower_bound(*mset, key, comparer)) {
+  while (roy_mset_find(*mset, key, comparer)) {
     roy_set_remove((RoySet **)mset, key, comparer, deleter);
   }
   return *mset;
@@ -76,27 +76,11 @@ roy_mset_count(const RoyMSet * mset,
 }
 
 RoyMSet *
-roy_mset_lower_bound(const RoyMSet * mset,
-                     const void    * key,
-                     RCompare        comparer) {
+roy_mset_find(const RoyMSet * mset,
+              const void    * key,
+              RCompare        comparer) {
   return (RoyMSet *)roy_set_find((RoySet *)mset, key, comparer);
 }
-
-RoyMSet *
-roy_mset_upper_bound(const RoyMSet * mset,
-                     const void    * key,
-                     RCompare        comparer) {
-  if (!mset) {
-    return NULL;
-  } else {
-    roy_mset_upper_bound(mset->left, key, comparer);
-    if (comparer(mset->key, key) > 0) {
-      return mset->key;
-    }
-    roy_mset_upper_bound(mset->left, key, comparer);
-  }
-}
-
 
 void
 roy_mset_for_each(RoyMSet * mset,

@@ -50,9 +50,7 @@ RoyMSet * roy_mset_remove(RoyMSet ** mset, const void * key, RCompare comparer, 
 
 size_t roy_mset_count(const RoyMSet * mset, const void * key, RCompare comparer);
 
-RoyMSet * roy_mset_lower_bound(const RoyMSet * mset, const void * key, RCompare comparer);
-
-RoyMSet * roy_mset_upper_bound(const RoyMSet * mset, const void * key, RCompare comparer);
+RoyMSet * roy_mset_find(const RoyMSet * mset, const void * key, RCompare comparer);
 
 /* TRAVERSE */
 
