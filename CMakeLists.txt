@@ -27,9 +27,10 @@ add_library(roylib
         src/royumap.h   src/royumap.c
         src/royummap.h  src/royummap.c
         src/trivials/hash.h       src/trivials/hash.c
+        src/trivials/shellsort.h  src/trivials/shellsort.c
         src/trivials/roystr.h     src/trivials/roystr.c
         src/trivials/roynumber.h  src/trivials/roynumber.c
         src/trivials/roypointer.h src/trivials/roypointer.c
-        src/trivials/shellsort.h  src/trivials/shellsort.c)
+        src/trivials/roypair.h src/trivials/roypair.c)
 
 target_link_libraries(roylib pcre)
