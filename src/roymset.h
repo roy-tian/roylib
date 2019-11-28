@@ -40,11 +40,11 @@ bool roy_mset_empty(const RoyMSet * mset);
 // Adds an 'key_size'-sized key into 'mset' by ascending order.
 RoyMSet * roy_mset_insert(RoyMSet ** mset, void * key, RCompare comparer);
 
-// Removes the element equals to 'key' from 'mset'.
-RoyMSet * roy_mset_erase(RoyMSet ** mset, const void * key, RCompare comparer, ROperate deleter);
-
-// Removes all the element from 'mset'.
+// Removes all elements from 'mset'.
 void roy_mset_clear(RoyMSet * mset, ROperate deleter);
+
+// Removes all elements equals to 'key' from 'mset'.
+RoyMSet * roy_mset_remove(RoyMSet ** mset, const void * key, RCompare comparer, ROperate deleter);
 
 /* LOOKUP */
 

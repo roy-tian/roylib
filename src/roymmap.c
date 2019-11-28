@@ -61,9 +61,9 @@ roy_mmap_insert(RoyMMap * mmap,
 }
 
 RoyMMap *
-roy_mmap_erase(RoyMMap    * mmap,
-               const void * key) {
-  mmap->root = roy_mset_erase(&mmap->root, key, mmap->comparer, mmap->deleter);
+roy_mmap_remove(RoyMMap    * mmap,
+                const void * key) {
+  mmap->root = roy_mset_remove(&mmap->root, key, mmap->comparer, mmap->deleter);
   return mmap;
 }
 

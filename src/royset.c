@@ -76,22 +76,22 @@ roy_set_insert(RoySet   ** set,
 }
 
 RoySet *
-roy_set_erase(RoySet     ** set,
-              const void *  key,
-              RCompare      comparer,
-              ROperate      deleter) {
+roy_set_remove(RoySet     ** set,
+               const void *  key,
+               RCompare      comparer,
+               ROperate      deleter) {
   if (!*set) {
     return NULL;
   }
   if (comparer(key, (*set)->key) < 0) {
-    (*set)->left =  roy_set_erase(&(*set)->left, key, comparer, deleter);
+    (*set)->left =  roy_set_remove(&(*set)->left, key, comparer, deleter);
   } else if (comparer(key, (*set)->key) > 0) {
-    (*set)->right = roy_set_erase(&(*set)->right, key, comparer, deleter);
+    (*set)->right = roy_set_remove(&(*set)->right, key, comparer, deleter);
   } else /* ((*set)->key == key), match found */ {
     RoySet * temp = (*set);
     if ((*set)->left && (*set)->right) {
       (*set)->key = roy_set_cmin((*set)->right)->key;
-      (*set)->right = roy_set_erase(set, key, comparer, deleter);
+      (*set)->right = roy_set_remove(set, key, comparer, deleter);
     } else
     if ((*set)->left && !(*set)->right) {
       *set = (*set)->left;
@@ -108,8 +108,8 @@ void
 roy_set_clear(RoySet   * set,
               ROperate   deleter) {
   if (set) {
-    roy_set_clear(set->left, deleter);
     roy_set_clear(set->right, deleter);
+    roy_set_clear(set->left, deleter);
     node_delete(set, deleter);
   }
 }

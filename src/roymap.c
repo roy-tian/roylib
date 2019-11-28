@@ -61,9 +61,9 @@ roy_map_insert(RoyMap * map,
 }
 
 RoyMap *
-roy_map_erase(RoyMap     * map,
-              const void * key) {
-  map->root = roy_set_erase(&map->root, key, map->comparer, map->deleter);
+roy_map_remove(RoyMap     * map,
+               const void * key) {
+  map->root = roy_set_remove(&map->root, key, map->comparer, map->deleter);
   return map;
 }
 
