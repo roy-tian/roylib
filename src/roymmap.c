@@ -6,7 +6,7 @@ roy_mmap_new(RCompare comparer,
              ROperate deleter) {
   RoyMMap * ret = (RoyMMap *)malloc(sizeof(RoyMMap));
   ret->root     = NULL;
-  ret->comparer  = comparer;
+  ret->comparer = comparer;
   ret->deleter  = deleter;
   return ret;
 }
@@ -20,25 +20,21 @@ roy_mmap_delete(RoyMMap * mmap) {
 
 void *
 roy_mmap_min(RoyMMap * mmap) {
-  RoyMSet * pnode = roy_mset_min(mmap->root);
-  return pnode ? roy_pair_value(pnode->key) : NULL;
+  return roy_pair_value(roy_mset_min(mmap->root)->key);
 }
 
 void * roy_mmap_max(RoyMMap * mmap) {
-  RoyMSet * pnode = roy_mset_max(mmap->root);
-  return pnode ? roy_pair_value(pnode->key) : NULL;
+  return roy_pair_value(roy_mset_max(mmap->root)->key);
 }
 
 const void *
 roy_mmap_cmin(const RoyMMap * mmap) {
-  const RoyMSet * pnode = roy_mset_min(mmap->root);
-  return pnode ? roy_pair_value(pnode->key) : NULL;
+  return roy_pair_value(roy_mset_cmin(mmap->root)->key);
 }
 
 const void *
 roy_mmap_cmax(const RoyMMap * mmap) {
-  const RoyMSet * pnode = roy_mset_max(mmap->root);
-  return pnode ? roy_pair_value(pnode->key) : NULL;
+  return roy_pair_value(roy_mset_cmax(mmap->root)->key);
 }
 
 size_t
@@ -54,9 +50,8 @@ RoyMMap *
 roy_mmap_insert(RoyMMap * mmap,
                 void    * key,
                 void    * value) {
-  mmap->root = roy_mset_insert(&mmap->root,
-                               roy_pair_new(key, value),
-                               mmap->comparer);
+  mmap->root =
+    roy_mset_insert(&mmap->root, roy_pair_new(key, value), mmap->comparer);
   return mmap;
 }
 

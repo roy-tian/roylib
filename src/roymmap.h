@@ -37,8 +37,8 @@ const void * roy_mmap_cmin(const RoyMMap * mmap);
 // Returns a const pointer to the value of the maximum element of 'mmap'.
 const void * roy_mmap_cmax(const RoyMMap * mmap);
 
-#define roy_mmap_at(mmap, value_type, key)    \
-        (value_type *)(roy_mmap_find((mmap), (key)))
+#define roy_mmap_at(mmap, value_type, key) \
+        ((value_type *)roy_mmap_find((mmap), (key)))
 
 /* CAPACITY */
 
@@ -63,9 +63,8 @@ void roy_mmap_clear(RoyMMap * mmap);
 
 size_t roy_mmap_count(const RoyMSet * mset, const void * key);
 
-RoyMMap * roy_mmap_lower_bound(RoyMMap * mmap, const void * key);
+RoyMMap * roy_mmap_find(RoyMMap * mmap, const void * key);
 
-RoyMMap * roy_mmap_upper_bound(RoyMMap * mmap, const void * key);
 
 /* TRAVERSE */
 

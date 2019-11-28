@@ -38,7 +38,7 @@ const void * roy_map_cmin(const RoyMap * map);
 const void * roy_map_cmax(const RoyMap * map);
 
 #define roy_map_at(map, key, value_type) \
-        (value_type *)roy_map_find((map), (key))
+        ((value_type *)roy_map_find((map), (key)))
 
 /* CAPACITY */
 

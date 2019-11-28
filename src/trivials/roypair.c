@@ -1,8 +1,8 @@
 #include "roypair.h"
 
 RoyPair *
-pair_new(void * key,
-         void * value) {
+roy_pair_new(void * key,
+             void * value) {
   RoyPair * ret = (RoyPair *)malloc(sizeof(RoyPair));
   ret->key      = key;
   ret->value    = value;
@@ -10,6 +10,6 @@ pair_new(void * key,
 }
 
 void *
-pair_value(RoyPair * pair) {
-  return pair->value;
+roy_pair_value(RoyPair * pair) {
+  return pair ? pair->value : NULL;
 }
