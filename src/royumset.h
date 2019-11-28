@@ -83,9 +83,6 @@ int64_t roy_umset_bucket(const RoyUMSet * umset, const void * data, size_t data_
 // Returns the average number of elements per buckets.
 double roy_umset_load_factor(const RoyUMSet * umset);
 
-// Sets the number of buckets to count and rehashes 'umset'.
-RoyUMSet * roy_umset_rehash(RoyUMSet * umset, size_t bucket_count, uint64_t seed);
-
 /* TRAVERSE */
 
 // Traverses all elements in 'umset' using 'operate'.

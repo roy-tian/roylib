@@ -83,9 +83,6 @@ int64_t roy_uset_bucket(const RoyUSet * uset, const void * data, size_t data_siz
 // Returns the average number of elements per buckets.
 double roy_uset_load_factor(const RoyUSet * uset);
 
-// Sets the number of buckets to count and rehashes 'uset'.
-RoyUSet * roy_uset_rehash(RoyUSet * uset, size_t bucket_count, uint64_t seed);
-
 /* TRAVERSE */
 
 // Traverses all elements in 'uset' using 'operate'.

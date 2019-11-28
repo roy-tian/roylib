@@ -142,13 +142,6 @@ roy_uset_load_factor(const RoyUSet * uset) {
   return (double)roy_uset_size(uset) / (double)roy_uset_bucket_count(uset);
 }
 
-// TODO
-RoyUSet * roy_uset_rehash(RoyUSet * uset,
-                          size_t    bucket_count,
-                          uint64_t  seed) {
-  return uset;
-}
-
 void
 roy_uset_for_each(RoyUSet * uset,
                   ROperate  operate) {

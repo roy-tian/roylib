@@ -105,12 +105,6 @@ roy_umset_load_factor(const RoyUMSet * umset) {
   return roy_uset_load_factor((RoyUSet *)umset);
 }
 
-RoyUMSet * roy_umset_rehash(RoyUMSet * umset,
-                            size_t     bucket_count,
-                            uint64_t   seed) {
-  return (RoyUMSet *)roy_uset_rehash((RoyUSet *)umset, bucket_count, seed);
-}
-
 void
 roy_umset_for_each(RoyUMSet * umset,
                    ROperate   operate) {
