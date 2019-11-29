@@ -89,6 +89,6 @@ double roy_uset_load_factor(const RoyUSet * uset);
 void roy_uset_for_each(RoyUSet * uset, ROperate oeprate);
 
 // Traverses all elements whichever meets 'condition' in 'uset' using 'operate'.
-void roy_uset_for_which(RoyUSet * uset, RCondition condition, ROperate oeprate);
+void roy_uset_for_which(RoyUSet * uset, RCondition condition, ROperate operate);
 
 #endif // ROYUSET_H
