@@ -10,6 +10,11 @@ roy_pair_new(void * key,
 }
 
 void *
+roy_pair_key(RoyPair * pair) {
+  return pair ? pair->key : NULL;
+}
+
+void *
 roy_pair_value(RoyPair * pair) {
   return pair ? pair->value : NULL;
 }
