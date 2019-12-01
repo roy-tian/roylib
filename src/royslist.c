@@ -197,7 +197,7 @@ roy_slist_find(RoySList   * slist,
                const void * key,
                RCompare     comparer) {
   for (RoySList * iter = roy_slist_begin(slist); iter; iter = iter->next) {
-    if (comparer(slist->data, key) == 0) {
+    if (comparer(iter->data, key) == 0) {
       return iter;
     }
   }
