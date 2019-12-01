@@ -63,14 +63,13 @@ roy_uset_insert(RoyUSet * uset,
                 void    * data,
                 size_t    data_size) {
   RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data, data_size)];
-  for (RoySList * iter = roy_slist_begin(*node); iter; iter = iter->next) {
-    if (uset->comparer(data, iter->data) == 0) {
-      return false;
-    }
+  if (roy_slist_find(*node, data, uset->comparer)) {
+    return false;
+  } else {
+    roy_slist_push_front(*node, data);
+    uset->size++;
+    return true;
   }
-  roy_slist_push_front(*node, data);
-  uset->size++;
-  return true;
 }
 
 bool
@@ -78,7 +77,7 @@ roy_uset_erase(RoyUSet * uset,
                size_t    bucket_index,
                size_t    bucket_position) {
   if (!valid_bucket_index(uset, bucket_index)) {
-    return false;
+    return false; 
   }
   RoySList ** node = &uset->buckets[bucket_index];
   size_t size = roy_slist_size(*node);

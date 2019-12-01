@@ -81,6 +81,11 @@ size_t roy_slist_unique(RoySList *slist, RCompare comparer, ROperate deleter);
 // Sorts the elements in ascending order, using quick sort strategy.
 void roy_slist_sort(RoySList *slist, RCompare comparer);
 
+/* LOOKUP */
+
+// Finds an element equivalent to 'key' using comparer function 'comparer', returns an iterator to it.
+RoySList * roy_slist_find(RoySList * slist, const void * key, RCompare comparer);
+
 /* TRAVERSE */
 
 // Traverses all elements in 'vector' using 'operate'.
