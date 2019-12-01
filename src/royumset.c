@@ -11,14 +11,14 @@ roy_umset_new(size_t   bucket_count,
               RCompare comparer,
               ROperate deleter) {
   RoyUMSet * ret    = (RoyUMSet *)malloc(sizeof(RoyUSet));
-  ret->buckets      = (RoySList **)calloc(roy_umset_bucket_count(ret),
-                                          R_PTR_SIZE);
   ret->seed         = seed;
   ret->hash         = hash ? hash : MurmurHash2;
-  ret->comparer      = comparer;
+  ret->comparer     = comparer;
   ret->deleter      = deleter;
   ret->bucket_count = roy_uint64_next_prime(bucket_count);
   ret->size         = 0;
+  ret->buckets      = (RoySList **)calloc(roy_umset_bucket_count(ret),
+                                          R_PTR_SIZE);
   for (size_t i = 0; i != roy_umset_bucket_count(ret); i++) {
     ret->buckets[i] = roy_slist_new();
   }
