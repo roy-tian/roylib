@@ -28,15 +28,6 @@ void roy_umap_delete(RoyUMap * umap);
 // (Returns NULL if position is out of range.)
 const RoyPair * roy_umap_cpointer(const RoyUMap * umap, size_t bucket_index, size_t bucket_position);
 
-// Returns an typed pointer to the key which is the 'bucket_position'-th one on 'bucket_index'-th buckets.
-// (Returns NULL if position is out of range.)
-#define roy_umap_key_at(umap, bucket_index, bucket_position, key_type) \
-        (key_type *)(roy_umap_cpointer(umap, bucket_index, bucket_position)->key)
-
-#define roy_umap_value_at(umap, bucket_index, bucket_position, value_type) \
-        (value_type *)(roy_umap_cpointer(umap, bucket_index, bucket_position)->value)
-
-
 /* CAPACITY */
 
 // Returns the number of elements in 'umap'.

@@ -42,14 +42,13 @@ roy_umap_insert(RoyUMap * umap,
                 void    * value) {
   RoySList ** node =
     &umap->uset->buckets[roy_umap_bucket(umap, key, key_size)];
-  for (RoySList * iter = roy_slist_begin(*node); iter; iter = iter->next) {
-    if (umap->uset->comparer(roy_pair_key(iter->data), key) == 0) {
-      return false;
-    }
+  if (roy_slist_find(*node, key, umap->uset->comparer)) {
+    return false;
+  } else {
+    roy_slist_push_front(*node, roy_pair_new(key, value));
+    umap->uset->size++;
+    return true;
   }
-  roy_slist_push_front(*node, roy_pair_new(key, value));
-  umap->uset->size++;
-  return true;
 }
 
 bool
