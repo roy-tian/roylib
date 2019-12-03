@@ -1,6 +1,9 @@
 #ifndef ROY_H
 #define ROY_H
 
+#include "src/trivials/roynumber.h"
+#include "src/trivials/royobject.h"
+#include "src/trivials/roypair.h"
 #include "src/royarray.h"
 #include "src/roystack.h"
 #include "src/royqueue.h"
@@ -18,8 +21,5 @@
 #include "src/royummap.h"
 #include "src/roystring.h"
 #include "src/royshell.h"
-#include "src/trivials/roypair.h"
-#include "src/trivials/roypointer.h"
-#include "src/trivials/roynumber.h"
 
 #endif // ROY_H
