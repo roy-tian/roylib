@@ -1,5 +1,5 @@
 #include "royshell.h"
-#include "trivials/roypointer.h"
+#include "trivials/royobject.h"
 #include "trivials/roypair.h"
 
 static void parse(RoyShell * shell);
@@ -52,10 +52,10 @@ roy_shell_start(RoyShell * shell) {
                      1);
     if (!roy_string_match(shell->ibuffer, "\\s+")) {
       parse(shell);
-      void (* func)(RoyShell *) = 
-      roy_pointer_get(roy_map_at(shell->dict,
-                                 roy_shell_argument_at(shell, 0),
-                                 RoyPointer));
+      void (* func)(RoyShell *) =
+      roy_object_get(roy_map_at(shell->dict,
+                                roy_shell_argument_at(shell, 0),
+                                RoyObject));
       if (func) {
         roy_shell_log_clear(shell);
         func(shell);
@@ -71,10 +71,10 @@ RoyShell *
 roy_shell_command_add(RoyShell   * shell,
                       const char * cmd,
                       ROperate     operate) {
-  RoyPointer func;
+  RoyObject func;
   roy_map_insert(shell->dict,
                  roy_string_new(cmd),
-                 roy_pointer_set(&func, operate));
+                 roy_object_set(&func, operate));
   return shell;
 }
 
