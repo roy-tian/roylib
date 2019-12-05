@@ -53,9 +53,13 @@ RoyString * roy_string_append(RoyString * string, const RoyString * substring);
 
 RoyString * roy_string_replace_str(RoyString * string, const char * substr, size_t position, size_t count);
 
-RoyString * roy_string_replace(RoyString * string, const RoyString * substr, size_t position, size_t count);
+RoyString * roy_string_replace(RoyString * string, const RoyString * substring, size_t position, size_t count);
 
-RoyString * roy_string_substring(RoyString * string, RoyString * substring, size_t position, size_t count);
+RoyString * roy_string_substring(RoyString * dest, RoyString * string, size_t position, size_t count);
+
+RoyString * roy_string_left(RoyString * dest, RoyString * string, size_t position);
+
+RoyString * roy_string_right(RoyString * dest, RoyString * string, size_t position);
 
 void roy_string_print(const RoyString * string);
 

@@ -29,6 +29,9 @@ roy_string_assign(RoyString  * string,
 int
 roy_string_at(const RoyString * string,
               size_t            position) {
+  if (position > roy_string_size(string)) {
+    position = roy_string_size(string);
+  }
   return (int)*(string->str + position);
 }
 
@@ -46,7 +49,7 @@ roy_string_cstr(const RoyString * string) {
 
 bool
 roy_string_empty(const RoyString * string) {
-  return roy_string_at(string, 0) == '\0';
+  return *string->str == '\0';
 }
 
 size_t
@@ -54,11 +57,8 @@ roy_string_size(const RoyString * string) {
   return strlen(string->str);
 }
 
-/* OPERATIONS */
-
 RoyString *
 roy_string_clear(RoyString * string) {
-
   return string = roy_string_assign(string, "");
 }
 
@@ -145,13 +145,30 @@ roy_string_replace(RoyString       * string,
 }
 
 RoyString *
-roy_string_substring(RoyString * string,
-                     RoyString * substring,
+roy_string_substring(RoyString * dest,
+                     RoyString * string,
                      size_t      position,
                      size_t      count) {
   ROY_STR(temp, count + 1)
   strncpy(temp, string->str + position, count);
-  return substring = roy_string_assign(substring, temp);
+  return dest = roy_string_assign(dest, temp);
+}
+
+RoyString *
+roy_string_left(RoyString * dest, 
+                RoyString * string, 
+                size_t      position) {
+  return roy_string_substring(dest, string, 0, position);
+}
+
+RoyString *
+roy_string_right(RoyString * dest,
+                 RoyString * string, 
+                 size_t      position) {
+  return roy_string_substring(dest, 
+                              string,
+                              roy_string_size(string) - position,
+                              position);
 }
 
 void
@@ -163,8 +180,6 @@ void
 roy_string_println(const RoyString * string) {
   puts(roy_string_cstr(string));
 }
-
-/* SEARCH */
 
 int
 roy_string_find_str(const RoyString  * string,
