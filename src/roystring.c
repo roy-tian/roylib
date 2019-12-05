@@ -2,6 +2,9 @@
 #include "roystring.h"
 #include <pcre.h>
 
+static void pos_correct(const RoyString * string, size_t * position);
+static void pos_cnt_correct(const RoyString * string, size_t * position, size_t * count);
+
 RoyString *
 roy_string_new(const char * str) {
   RoyString * ret = (RoyString *)malloc(sizeof(RoyString));
@@ -24,14 +27,10 @@ roy_string_assign(RoyString  * string,
   return string;
 }
 
-/* CHARACTER ACCESS */
-
 int
 roy_string_at(const RoyString * string,
               size_t            position) {
-  if (position > roy_string_size(string)) {
-    position = roy_string_size(string);
-  }
+  pos_correct(string, &position);
   return (int)*(string->str + position);
 }
 
@@ -44,8 +43,6 @@ const char *
 roy_string_cstr(const RoyString * string) {
   return string->str;
 }
-
-/* CAPACITY */
 
 bool
 roy_string_empty(const RoyString * string) {
@@ -66,6 +63,7 @@ RoyString *
 roy_string_insert_str(RoyString  * string,
                       const char * substr,
                       size_t       position) {
+  pos_correct(string, &position);
   ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
   memcpy(temp, string->str, position);
   strcat(temp, substr);
@@ -84,6 +82,7 @@ RoyString *
 roy_string_erase(RoyString * string,
                  size_t      position,
                  size_t      count) {
+  pos_cnt_correct(string, &position, &count);
   ROY_STR(temp, roy_string_size(string) - count + 1)
   memcpy(temp, string->str, position);
   strncat(temp, string->str + position + count,
@@ -94,10 +93,7 @@ roy_string_erase(RoyString * string,
 RoyString *
 roy_string_prepend_str(RoyString * string,
                       const char * substr) {
-  ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1);
-  memcpy(temp, substr, strlen(substr) + 1);
-  strcat(temp, string->str);
-  return string = roy_string_assign(string, temp);
+  return roy_string_insert_str(string, substr, 0);
 }
 
 RoyString *
@@ -109,10 +105,7 @@ roy_string_prepend(RoyString      * string,
 RoyString *
 roy_string_append_str(RoyString  * string,
                       const char * substr) {
-  ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
-  memcpy(temp, string->str, roy_string_size(string) + 1);
-  strcat(temp, substr);
-  return string = roy_string_assign(string, temp);
+  return roy_string_insert_str(string, substr, roy_string_size(string));
 }
 
 RoyString *
@@ -126,6 +119,7 @@ roy_string_replace_str(RoyString  * string,
                        const char * substr,
                        size_t       position,
                        size_t       count) {
+  pos_cnt_correct(string, &position, &count);
   ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
   strncpy(temp, string->str, position);
   strcat(temp, substr);
@@ -149,6 +143,7 @@ roy_string_substring(RoyString * dest,
                      RoyString * string,
                      size_t      position,
                      size_t      count) {
+  pos_cnt_correct(string, &position, &count);
   ROY_STR(temp, count + 1)
   strncpy(temp, string->str + position, count);
   return dest = roy_string_assign(dest, temp);
@@ -249,4 +244,27 @@ int
 roy_string_compare(const RoyString * string1,
                    const RoyString * string2) {
   return strcmp(roy_string_cstr(string1), roy_string_cstr(string2));
+}
+
+/* PRIVATE FUNCTIONS DOWN HERE */
+
+static void
+pos_correct(const RoyString * string,
+            size_t          * position) {
+  if (*position > roy_string_size(string)) {
+    *position = roy_string_size(string);
+  }
+}
+
+static void
+pos_cnt_correct(const RoyString * string,
+                size_t          * position,
+                size_t          * count) {
+  size_t size = roy_string_size(string);
+  if (*position > size) {
+    *position = size;
+    *count = 0;
+  } else if (*position + *count > size) {
+    *count = size;
+  }
 }
