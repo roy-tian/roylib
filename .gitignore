@@ -3,5 +3,4 @@
 /*build*
 /lib
 .DS_Store
-a.*
-**/*.a
+test
