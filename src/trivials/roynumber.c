@@ -1,6 +1,6 @@
 #include "roynumber.h"
 #include "roystr.h"
-#include <limits.h>
+#include <time.h>
 #include <math.h>
 
 // Converts pure number string 'str' into decimal number.
@@ -68,7 +68,7 @@ roy_parse_hex(const char * str) {
   return result;
 }
 
-long long
+int64_t
 roy_parse_int(const char * str) {
   long long result = 0LL;
   STR_TRIM_LEFT(str)
@@ -213,9 +213,27 @@ roy_uint64_prime(uint64_t number) {
 }
 
 uint64_t
-roy_uint64_next_prime(uint64_t number) {
+roy_next_prime(uint64_t number) {
   while (!roy_uint64_prime(number)) {
     number++;
   }
   return number;
+}
+
+void
+roy_random_new(void) {
+  srand((unsigned)time(NULL));
+}
+
+int64_t
+roy_next_random(int64_t min,
+                int64_t max) {
+  if (max < min) {
+    return max;
+  }
+  int64_t ret = max + 1;
+  while (ret > max) {
+    ret = rand() / ( (RAND_MAX + 1U) / max ) + min;
+  }
+  return ret;
 }
