@@ -1,6 +1,8 @@
 #ifndef ROYSTR_H
 #define ROYSTR_H
 
+// DEPRECATED
+
 #include "royinit.h"
 
 #define ROY_STR(str, length) char str[length + 1]; memset(str, '\0', length + 1);
