@@ -42,7 +42,7 @@ RoyShell * roy_shell_set_prompt_text(RoyShell * shell, const char * prompt);
 size_t roy_shell_argument_count(const RoyShell * shell);
 
 // Returns the text of the 'position'-th arguments.
-const char * roy_shell_argument_at(const RoyShell * shell, size_t position);
+RoyString * roy_shell_argument_at(const RoyShell * shell, size_t position);
 
 // Returns whether the current command line has any argument matches 'regex' or not.
 int roy_shell_argument_find(const RoyShell * shell, const char * regex);
@@ -57,7 +57,7 @@ RoyShell * roy_shell_log_append(RoyShell * shell, const char * format, ...);
 size_t roy_shell_history_count(const RoyShell * shell);
 
 // Shows input history anytime you like, position < 0 will show reversely.
-const char * roy_shell_ihistory_at(const RoyShell * shell, int position);
+RoyString * roy_shell_ihistory_at(const RoyShell * shell, size_t position);
 
 // Shows output history anytime you like, position < 0 will show reversely.
-const char * roy_shell_ohistory_at(const RoyShell * shell, int position);
+RoyString * roy_shell_ohistory_at(const RoyShell * shell, size_t position);

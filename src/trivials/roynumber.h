@@ -3,6 +3,8 @@
 
 #include "royinit.h"
 #include <stdint.h>
+#include <time.h>
+#include <math.h>
 
 // Converts 'str' of binary digits into its equivalent unsigned value.
 // (The parsing phase ends immediately when 'str' turned to be ill-formed.)
@@ -53,7 +55,12 @@ size_t roy_uint64_count_bit(uint64_t number);
 bool roy_uint64_prime(uint64_t number);
 
 // Returns the next prime number nearest to the given 'number'.
-uint64_t roy_uint64_next_prime(uint64_t number);
+uint64_t roy_next_prime(uint64_t number);
 
+// Seeds the stdlib version generator.
+void roy_random_new(void);
+
+// Generates a pseudo-random integer ∈ [min, max].
+int64_t roy_next_random(int64_t min, int64_t max);
 
 #endif // ROYNUMBER_H
