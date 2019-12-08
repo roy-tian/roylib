@@ -2,7 +2,7 @@
 #define ROY_H
 
 #include "src/trivials/roynumber.h"
-#include "src/trivials/royobject.h"
+#include "src/trivials/royfunction.h"
 #include "src/trivials/roypair.h"
 #include "src/royarray.h"
 #include "src/roystack.h"

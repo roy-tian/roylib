@@ -8,13 +8,13 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 include_directories(/usr/local/include)
 
 add_library(roylib
-  src/trivials/royinit.h   roy.h
-  src/trivials/hash.h      src/trivials/hash.c
-  src/trivials/shellsort.h src/trivials/shellsort.c
-  src/trivials/roystr.h    src/trivials/roystr.c
-  src/trivials/roynumber.h src/trivials/roynumber.c
-  src/trivials/royobject.h src/trivials/royobject.c
-  src/trivials/roypair.h   src/trivials/roypair.c
+  src/trivials/royinit.h     roy.h
+  src/trivials/hash.h        src/trivials/hash.c
+  src/trivials/shellsort.h   src/trivials/shellsort.c
+  src/trivials/roystr.h      src/trivials/roystr.c
+  src/trivials/roynumber.h   src/trivials/roynumber.c
+  src/trivials/royfunction.h src/trivials/royfunction.c
+  src/trivials/roypair.h     src/trivials/roypair.c
   src/royarray.h  src/royarray.c
   src/roystack.h  src/roystack.c
   src/royqueue.h  src/royqueue.c
