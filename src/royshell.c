@@ -1,5 +1,5 @@
 #include "royshell.h"
-#include "trivials/royobject.h"
+#include "trivials/royfunction.h"
 #include "trivials/roypair.h"
 
 static void tokenize(RoyShell * shell);
@@ -11,7 +11,7 @@ enum {
 
 void pair_deleter(RoyPair * pair) {
   roy_string_delete(pair->key);
-  free(pair->value);
+  roy_function_delete(pair->value);
   free(pair);
   pair = NULL;
 }
@@ -44,23 +44,23 @@ roy_shell_delete(RoyShell * shell) {
 
 void
 roy_shell_start(RoyShell * shell) {
+  enum { BUFFER_SIZE = 1023 };
   while (true) {
     roy_string_print(shell->prompt);
     roy_string_clear(shell->ibuffer);
-    fgets(roy_string_str(shell->ibuffer), MAX_LEN, stdin);
+    fgets(roy_string_str(shell->ibuffer), BUFFER_SIZE, stdin);
     roy_string_erase(shell->ibuffer,
                      roy_string_size(shell->ibuffer) - 1,
                      1); // trims '\n' at tail.
     if (roy_string_match(shell->ibuffer, "\\s+")) {
+      roy_string_clear(shell->obuffer);
       tokenize(shell);
-      void (* func)(RoyShell *) =
-      roy_object_get(roy_map_at(shell->dict,
-                                roy_shell_argument_at(shell, 0),
-                                RoyObject));
+      ROperate func = 
+        roy_function_get( roy_map_at(shell->dict,
+                                     roy_shell_argument_at(shell, 0),
+                                     RoyFunction) );
       if (func) {
-        roy_shell_log_clear(shell);
-        func(shell);
-        roy_string_println(shell->obuffer);
+        func(shell); // clients should push all output to obuffer in func.
       }
       roy_deque_push_back(shell->ihistory, shell->ibuffer);
       roy_deque_push_back(shell->ohistory, shell->obuffer);
@@ -72,10 +72,7 @@ RoyShell *
 roy_shell_command_add(RoyShell   * shell,
                       const char * cmd,
                       ROperate     operate) {
-  RoyObject func;
-  roy_map_insert(shell->dict,
-                 roy_string_new(cmd),
-                 roy_object_set(&func, operate));
+  roy_map_insert(shell->dict, roy_string_new(cmd), roy_function_new(operate));
   return shell;
 }
 
@@ -101,15 +98,11 @@ roy_shell_argument_at(const RoyShell * shell,
 int
 roy_shell_argument_find(const RoyShell * shell,
                         const char     * regex) {
-  RoyString * arg = roy_string_new("");
   for (size_t i = 0; i != roy_shell_argument_count(shell); i++) {
-    roy_string_assign(arg, roy_shell_argument_at(shell, i));
-    if (roy_string_match(arg, regex)) {
-      roy_string_delete(arg);
+    if (roy_string_match(roy_shell_argument_at(shell, i), regex)) {
       return i;
     }
   }
-  roy_string_delete(arg);
   return -1; // not found. (0 indicates the cmd itself)
 }
 
