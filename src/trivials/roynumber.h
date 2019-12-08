@@ -2,9 +2,6 @@
 #define ROYNUMBER_H
 
 #include "royinit.h"
-#include <stdint.h>
-#include <time.h>
-#include <math.h>
 
 // Converts 'str' of binary digits into its equivalent unsigned value.
 // (The parsing phase ends immediately when 'str' turned to be ill-formed.)
