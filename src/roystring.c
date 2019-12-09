@@ -91,6 +91,19 @@ roy_string_erase(RoyString * string,
 }
 
 RoyString *
+roy_string_erase_left(RoyString * string,
+                      size_t      count) {
+  return roy_string_erase(string, 0, count);
+}
+
+RoyString *
+roy_string_erase_right(RoyString * string,
+                       size_t      count) {
+  return roy_string_erase(string, roy_string_size(string) - count, count);
+}
+
+
+RoyString *
 roy_string_prepend_str(RoyString * string,
                       const char * substr) {
   return roy_string_insert_str(string, substr, 0);
@@ -152,18 +165,18 @@ roy_string_substring(RoyString * dest,
 RoyString *
 roy_string_left(RoyString * dest, 
                 RoyString * string, 
-                size_t      position) {
-  return roy_string_substring(dest, string, 0, position);
+                size_t      count) {
+  return roy_string_substring(dest, string, 0, count);
 }
 
 RoyString *
 roy_string_right(RoyString * dest,
                  RoyString * string, 
-                 size_t      position) {
+                 size_t      count) {
   return roy_string_substring(dest, 
                               string,
-                              roy_string_size(string) - position,
-                              position);
+                              roy_string_size(string) - count,
+                              count);
 }
 
 void
