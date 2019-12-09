@@ -1,6 +1,8 @@
 #include "roynumber.h"
 #include "roystr.h"
 #include <limits.h>
+#include <math.h>
+#include <time.h>
 
 // Converts pure number string 'str' into decimal number.
 #define STR_TO_INT(num, str)      \
