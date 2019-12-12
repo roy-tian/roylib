@@ -1,6 +1,13 @@
 #ifndef ROYARRAY_H
 #define ROYARRAY_H
 
+/**
+ * @author Roy Tian
+ * @version 0.1.0 alpha
+ * @date Dec 12, 2019
+ * @copyright MIT.
+ */
+
 #include "trivials/royinit.h"
 
 struct RoyArray_ {
@@ -10,99 +17,142 @@ struct RoyArray_ {
   size_t      size;
 };
 
-// RoyArray: a container that encapsulates fixed size arrays.
+/// @brief RoyArray: a container that encapsulates fixed size arrays.
 typedef struct RoyArray_ RoyArray;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
-// Creates an RoyArray and allocates sufficient memory for it.
-// [PARAMETERS]
-//   capacity - how many elements the new array can store.
-//    deleter - a function to release elements.
-// [RETURN VALUE]
-//   The newly build RoyArray.
-// [NOTES]
-//   The behavior is undefined if any immature RoyArrays are operated.
+/**
+ * @brief Creates an RoyArray and allocates sufficient memory for it.
+ * @param capacity - how many elements the new array can store.
+ * @param deleter - a function to release elements.
+ * @return The newly build RoyArray.
+ * @note The behavior is undefined if any immature RoyArrays are operated.
+ */
 RoyArray * roy_array_new(size_t capacity, ROperate deleter);
 
-// Releases all the elements and destroies the RoyArray - 'array' itself.
-// [NOTES]
-//   Always call this function after the work is done by the given 'array',
-//   otherwise memory leak will occur.
+/**
+ * @brief Releases all the elements and destroys the RoyArray - 'array' itself.
+ * @note - Always call this function after the work is done by the given 'array' to get rid of memory leaking.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 void roy_array_delete(RoyArray * array);
 
 /* ELEMENT ACCESS */
 
-// Returns a pointer to the element at 'position' in 'array'.
-// [NOTES]
-//   Returns NULL if 'position' exceeds.
+/**
+ * @brief Returns a pointer to the element at 'position' in 'array'.
+ * @note Returns NULL if 'position' exceeds.
+ */
 void * roy_array_pointer(RoyArray * array, size_t position);
 
-// Returns a const pointer to the element at 'position' in 'array'.
-// [NOTES]
-//   Returns NULL if 'position' exceeds.
+/**
+ * @brief Returns a const pointer to the element at 'position' in 'array'.
+ * @note Returns NULL if 'position' exceeds.
+ */
 const void * roy_array_cpointer(const RoyArray * array, size_t position);
 
-// Returns a typed pointer to the element at 'position', or NULL if 'position' exceeds or 'array' is empty.
+/**
+ * @brief Returns a typed pointer to the element at 'position'.
+ * @note Returns NULL if 'position' exceeds or 'array' is empty.
+ */
 #define roy_array_at(array, position, element_type) \
         ((element_type*)roy_array_pointer((array), (position)))
 
 /* CAPACITY */
 
-// Returns the number of elements in 'array'.
+/// @brief Returns the number of elements in 'array'.
 size_t roy_array_size(const RoyArray * array);
 
-// Returns the capacity of 'array'.
+/// @brief Returns the maximum number of elements 'array' can store.
 size_t roy_array_capacity(const RoyArray * array);
 
-// Returns whether there is any elements in 'array'.
+/**
+ * @brief Checks whether 'array' is empty.
+ * @return whether there are element(s) in 'array'.
+ */
 bool roy_array_empty(const RoyArray * array);
 
-// Returns whether the number of elements in 'array' reaches its capacity.
+/**
+ * @brief Checks whether 'array' is full.
+ * @return whether the number of elements in 'array' reaches its capacity and no more element can be appended.
+ */
 bool roy_array_full(const RoyArray * array);
 
 /* MODIFIERS */
 
-// Inserts an element named 'data' into 'array' at 'position', returns whether the insertion is successful.
-// (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
-// (Fails if 'position' exceeds, or 'array' is full.)
-// (Deprecated when 'array' is huge and 'position' is small, can be very slow.)
+/**
+ * @brief Inserts an element into 'array'.
+ * @param position - the position where the new element should be exactly settled.
+ * @param data - the pointer to the new element.
+ * @return Whether the insertion is successful (fails only when 'position' exceeds or 'array' is full).
+ * @note - The operation will move every element comes after 'position' to its next, so it can be very slow when 'array' is huge and 'position' is small, use with caution.
+ * @note - The behavior is undefined if 'data' is uninitialized.
+ */
 bool roy_array_insert(RoyArray * array, size_t position, void * data);
 
-// Moves the element at 'position' to the back of 'array', puts 'data' there, returns whether the operation is successful.
-// (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
-// (Fails if 'position' exceeds, or 'array' is full.)
-// (Recommended when element order is irrelevant.)
+/**
+ * @brief Inserts an element into 'array' in a faster but unstable way.
+ * @param position - the position where the new element should be exactly settled.
+ * @param data - the pointer to the new element.
+ * @return Whether the insertion is successful (fails only when 'position' exceeds or 'array' is full).
+ * @note - The operation moves the element at 'position' to the end of 'array', so it can shift the sequence of elements, use this function only if element order is irrelevant.
+ * @note - The behavior is undefined if 'data' is uninitialized.
+ */
 bool roy_array_insert_fast(RoyArray * array, size_t position, void * data);
 
-// Adds an element named 'data' to the back of 'array', returns whether the operation is successful.
-// (The behavior is undefined if 'data' is uninitialized, or mis-sized.)
-// (Fails if 'array' is full.)
+/**
+ * @brief Adds an element to the back of 'array'.
+ * @param data - the pointer to the new element.
+ * @return Whether the insertion is successful (fails only when 'array' is full).
+ * @note The behavior is undefined if 'data' is uninitialized.
+ */
 bool roy_array_push_back(RoyArray * array, void * data);
 
-// Removes an element at 'position', and fill with its next recursively, returns whether the operation is successful.
-// (Fails if 'position' exceeds, or 'array' is empty.)
-// (Deprecated when 'array' is huge and 'position' is small, can be very slow.)
+/**
+ * @brief Removes an element from 'array'.
+ * @param position - the position where the element should be removed.
+ * @return Whether the removal is successful (fails only when 'position' exceeds or 'array' is empty).
+ * @note - The operation will move every element comes after 'position' to its left, so it can be very slow when 'array' is huge and 'position' is small, use with caution.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 bool roy_array_erase(RoyArray * array, size_t position);
 
-// Removes an element at 'position', and fill the empty position with the last element, returns whether the operation is successful.
-// (Fails if 'position' exceeds, or 'array' is empty.)
-// (Recommended when element order is irrelevant.)
+/**
+ * @brief Removes an element from 'array' in a faster but unstable way.
+ * @param position - the position where the element should be removed.
+ * @return Whether the removal is successful (fails only when 'position' exceeds or 'array' is empty).
+ * @note - The operation moves the last element and settles to 'position', so it can shift the sequence of elements, use this function only if element order is irrelevant.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 bool roy_array_erase_fast(RoyArray * array, size_t position);
 
-// Removes the last element of 'array', returns whether the operation is successful.
-// (Fails if 'array' is empty.)
+/**
+ * @brief Removes the last element of 'array'.
+ * @return Whether the removal is successful (fails only when 'array' is empty).
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 bool roy_array_pop_back(RoyArray * array);
 
-// Removes all the elements in 'array'.
+/**
+ * @brief Removes all the elements in 'array'.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 void roy_array_clear(RoyArray * array);
 
 /* TRAVERSE */
 
-// Traverses all elements in 'array' using 'operate' sequentially.
+/**
+ * @brief Traverses all elements in 'array' sequentially.
+ * @param operate - a functions pointer to the traverser.
+ */
 void roy_array_for_each(RoyArray * array, ROperate operate);
 
-// Traverses all elements whichever meets 'condition' in 'array' using 'operate'.
+/**
+ * @brief Traverses elements whichever meets 'condition' in 'array'.
+ * @param condition - a pointer to the check function, if condition meets, the element gets traversed; or the element is ignored.
+ * @param operate - a function pointer to the traverser.
+ */
 void roy_array_for_which(RoyArray * array, RCondition condition, ROperate operate);
 
 #endif // ROYARRAY_H

@@ -37,11 +37,6 @@ roy_stack_push(RoyStack * stack,
 }
 
 bool
-roy_stack_duplicate_top(RoyStack * stack) {
-  return roy_stack_push(stack, roy_stack_top(stack, void));
-}
-
-bool
 roy_stack_pop(RoyStack * stack) {
   return roy_array_pop_back((RoyArray *)stack);
 }

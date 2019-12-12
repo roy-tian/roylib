@@ -1,6 +1,13 @@
 #ifndef ROYQUEUE_H
 #define ROYQUEUE_H
 
+/**
+ * @author Roy Tian
+ * @version 0.1.0 alpha
+ * @date Dec 12, 2019
+ * @copyright MIT.
+ */
+
 #include "royarray.h"
 
 struct RoyQueue_ {
@@ -12,50 +19,77 @@ struct RoyQueue_ {
   size_t      back_index;
 };
 
-/* CONSTRUCTION AND DESTRUCTION */
-
-// RoyQueue: a container adapter that gives the functionality of a FIFO data structure,
-// which implemented as an cycled linear list.
+/// @brief RoyQueue: a container adapter that gives the functionality of a FIFO data structure, which implemented as an cycled linear list.
 typedef struct RoyQueue_ RoyQueue;
 
-// Allocates sufficient memory for an RoyQueue and returns a pointer to it.
-// The queue can store 'capacity' elements with each size 'element_size' .
-// (Operations on un-newed RoyQueues will cause undefined behavior.)
+/* CONSTRUCTION AND DESTRUCTION */
+
+/**
+ * @brief Creates an RoyQueue and allocates sufficient memory for it.
+ * @param capacity - how many elements the new queue can store.
+ * @param deleter - a function to release elements.
+ * @return The newly build RoyQueue.
+ * @note The behavior is undefined if any immature RoyQueues are operated.
+ */
 RoyQueue * roy_queue_new(size_t capacity, ROperate deleter);
 
-// De-allocates the memory allocated by 'roy_queue_new'.
-// (Always call this function after the work is done by the given 'queue', or memory leak will occur.)
+/**
+ * @brief Releases all the elements and destroys the RoyQueue - 'queue' itself.
+ * @note - Always call this function after the work is done by the given 'queue' to get rid of memory leaking.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 void roy_queue_delete(RoyQueue * queue);
 
 /* ELEMENT ACCESS */
 
+/**
+ * @brief Returns a typed pointer to the first element of 'queue'.
+ * @note Returns NULL if 'queue' is empty.
+ */
 #define roy_queue_front(queue, element_type)  \
         ((element_type *)roy_array_pointer((RoyArray *)(queue), (queue)->front_index))
 
 /* CAPACITY */
 
-// Returns the number of elements in 'queue'.
+/// @brief Returns the number of elements in 'queue'.
 size_t roy_queue_size(const RoyQueue * queue);
 
-// Returns the capacity of 'queue'.
+/// @brief Returns the maximum number of elements 'queue' can store.
 size_t roy_queue_capacity(const RoyQueue * queue);
 
-// Returns whether there is any elements in 'queue'.
+/**
+ * @brief Checks whether 'queue' is empty.
+ * @return Whether there are element(s) in 'queue'.
+ */
 bool roy_queue_empty(const RoyQueue * queue);
 
-// Returns whether the number of elements in 'queue' reaches its capacity.
+/**
+ * @brief Checks whether 'queue' is full.
+ * @return Whether the number of elements in 'queue' reaches its capacity and no more element can be appended.
+ */
 bool roy_queue_full(const RoyQueue * queue);
 
 /* MODIFIERS */
 
-// Adds an element named 'data' into 'queue' next to the last element.
-// (The behavior is undefined if 'data' is uninitialized.)
+/**
+ * @brief Adds an element next to the last element of 'queue'.
+ * @param data - the pointer to the new element.
+ * @return Whether the insertion is successful (fails only when 'queue' is full).
+ * @note The behavior is undefined if 'data' is uninitialized.
+ */
 bool roy_queue_push(RoyQueue * queue, void * data);
 
-// Removes the first element.
+/**
+ * @brief Removes the first element of 'queue'.
+ * @return Whether the removal is successful (fails only when 'queue' is empty).
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 bool roy_queue_pop(RoyQueue * queue);
 
-// Removes all the elements in 'queue'.
+/**
+ * @brief Removes all the elements in 'queue'.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 void roy_queue_clear(RoyQueue * queue);
 
 #endif // ROYQUEUE_H

@@ -65,7 +65,7 @@ roy_vector_insert_fast(RoyVector * vector,
   return roy_array_insert_fast((RoyArray *)vector, position, data);
 }
 
-bool
+void
 roy_vector_push_back(RoyVector * vector,
                      void      * data) {
   expand(vector);
