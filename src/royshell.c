@@ -49,9 +49,7 @@ roy_shell_start(RoyShell * shell) {
     roy_string_print(shell->prompt);
     roy_string_clear(shell->ibuffer);
     fgets(roy_string_str(shell->ibuffer), BUFFER_SIZE, stdin);
-    roy_string_erase(shell->ibuffer,
-                     roy_string_size(shell->ibuffer) - 1,
-                     1); // trims '\n' at tail.
+    roy_string_erase_right(shell->ibuffer, 1); // trims '\n' at tail.
     if (roy_string_match(shell->ibuffer, "\\s+")) {
       roy_string_clear(shell->obuffer);
       tokenize(shell);
