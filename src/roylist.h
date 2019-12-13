@@ -1,6 +1,13 @@
 #ifndef ROYLIST_H
 #define ROYLIST_H
 
+/**
+ * @author Roy Tian
+ * @version 0.1.0 alpha
+ * @date Dec 12, 2019
+ * @copyright MIT.
+ */
+
 #include "trivials/royinit.h"
 
 struct RoyList_ {
@@ -9,34 +16,52 @@ struct RoyList_ {
   struct RoyList_ * prev;
 };
 
-// RoyList: a container implemented as a double-linked list which supports fast insertion and removal from anywhere in the container.
-// Fast random access is not supported.
+/// @brief RoyList: a container implemented as a double-linked list which supports fast insertion and removal from anywhere in the container, fast random access is not supported.
 typedef struct RoyList_ RoyList;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
-// Returns a pointer to a newly build RoyList's head for navigating.
-// It contains no data, the real data takes places from the 2nd element.
+/**
+ * @brief Creates an RoyList for navigating.
+ * @return an empty RoyList node.
+ * @note the real data takes places from the 2nd element.
+ */
 RoyList * roy_list_new(void);
 
-// De-allocates all the memory allocated.
-// (Always call this function after the work is done by the given 'list', or memory leak will occur.)
+/**
+ * @brief Releases all the elements and destroys the RoyList - 'list' itself.
+ * @param deleter - the function for element deleting.
+ * @note - Always call this function after the work is done by the given 'list' to get rid of memory leaking.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 void roy_list_delete(RoyList * list, ROperate deleter);
 
 /* ELEMENT ACCESS */
 
-// Returns an iterator to 'position' in 'list' where the element takes place.
-// (Returns the head of 'list' if position is negative, NULL if position exceeds.)
+/**
+ * @brief Returns an iterator to the specific element in 'list'.
+ * @param position - the position where the element takes place.
+ * @note Returns NULL if 'position' exceeds.
+ */
 RoyList * roy_list_iterator(RoyList * list_head, size_t position);
 
-// Returns an reversed iterator to 'position' right most in 'list' where the element takes place.
-// (Returns the tail of 'list' if position is negative, NULL if position exceeds.)
+/**
+ * @brief Returns an reversed iterator to the specific element in 'list'.
+ * @param position - the position where the element takes place.
+ * @note Returns NULL if 'position' exceeds.
+ */
 RoyList * roy_list_riterator(RoyList * list_tail, size_t rposition);
 
-// Returns an iterator to the first element.
+/**
+ * @brief Returns an iterator to the first element in 'list'.
+ * @note Returns NULL if 'list' is empty.
+ */
 RoyList * roy_list_begin(RoyList * list_head);
 
-// Returns an reversed iterator to the last element.
+/**
+ * @brief Returns an reversed iterator to the last element in 'list'.
+ * @note Returns NULL if 'list' is empty.
+ */
 RoyList * roy_list_rbegin(RoyList * list_tail);
 
 // Returns a const iterator to 'position' in 'list' where the element takes place.

@@ -42,14 +42,16 @@ void roy_vector_delete(RoyVector * vector);
 /* ELEMENT ACCESS */
 
 /**
- * @brief Returns a pointer to the element at 'position' in 'vector'.
- * @note Returns NULL if 'position' exceeds.
+ * @brief Accesses the specific element.
+ * @return a pointer to the element at 'position' in 'vector'.
+ * @return NULL - 'position' exceeds.
  */
 void * roy_vector_pointer(RoyVector * vector, size_t position);
 
 /**
- * @brief Returns a const pointer to the element at 'position' in 'vector'.
- * @note Returns NULL if 'position' exceeds.
+ * @brief Accesses the specific element.
+ * @return a const pointer to the element at 'position' in 'vector'.
+ * @return NULL - 'position' exceeds.
  */
 const void * roy_vector_cpointer(const RoyVector * vector, size_t position);
 
@@ -70,7 +72,7 @@ size_t roy_vector_capacity(const RoyVector * vector);
 
 /**
  * @brief Checks whether 'vector' is empty.
- * @return whether there are element(s) in 'vector'.
+ * @return whether there is no element in 'vector'.
  */
 bool roy_vector_empty(const RoyVector * vector);
 
@@ -148,14 +150,14 @@ void roy_vector_clear(RoyVector * vector);
 
 /**
  * @brief Traverses all elements in 'vector' sequentially.
- * @param operate - a functions pointer to the traverser.
+ * @param operate - the traverse function.
  */
 void roy_vector_for_each(RoyVector * vector, ROperate operate);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'vector'.
- * @param condition - a pointer to the check function, if condition meets, the element gets traversed; or the element is ignored.
- * @param operate - a function pointer to the traverser.
+ * @param condition - the check function, the element gets traversed if condition meets, otherwise the element is ignored.
+ * @param operate - the traverse function.
  */
 void roy_vector_for_which(RoyVector * vector, RCondition condition, ROperate operate);
 

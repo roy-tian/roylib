@@ -69,7 +69,7 @@ void
 roy_vector_push_back(RoyVector * vector,
                      void      * data) {
   expand(vector);
-  return roy_array_push_back((RoyArray *)vector, data);
+  roy_array_push_back((RoyArray *)vector, data);
 }
 
 bool

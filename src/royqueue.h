@@ -43,8 +43,9 @@ void roy_queue_delete(RoyQueue * queue);
 /* ELEMENT ACCESS */
 
 /**
- * @brief Returns a typed pointer to the first element of 'queue'.
- * @note Returns NULL if 'queue' is empty.
+ * @brief Access the first element of 'queue'.
+ * @return a typed pointer to the first element.
+ * @return NULL - if 'queue' is empty.
  */
 #define roy_queue_front(queue, element_type)  \
         ((element_type *)roy_array_pointer((RoyArray *)(queue), (queue)->front_index))
@@ -59,13 +60,15 @@ size_t roy_queue_capacity(const RoyQueue * queue);
 
 /**
  * @brief Checks whether 'queue' is empty.
- * @return Whether there are element(s) in 'queue'.
+ * @return true - there is no element in 'queue'.
+ * @return false - otherwise.
  */
 bool roy_queue_empty(const RoyQueue * queue);
 
 /**
  * @brief Checks whether 'queue' is full.
- * @return Whether the number of elements in 'queue' reaches its capacity and no more element can be appended.
+ * @return true - the number of elements in 'queue' reaches its capacity and no more element can be appended.
+ * @return false - otherwise.
  */
 bool roy_queue_full(const RoyQueue * queue);
 
@@ -74,14 +77,16 @@ bool roy_queue_full(const RoyQueue * queue);
 /**
  * @brief Adds an element next to the last element of 'queue'.
  * @param data - the pointer to the new element.
- * @return Whether the insertion is successful (fails only when 'queue' is full).
+ * @return true - the insertion is successful.
+ * @return false - 'queue' is full.
  * @note The behavior is undefined if 'data' is uninitialized.
  */
 bool roy_queue_push(RoyQueue * queue, void * data);
 
 /**
  * @brief Removes the first element of 'queue'.
- * @return Whether the removal is successful (fails only when 'queue' is empty).
+ * @return true - the removal is successful.
+ * @return false - 'queue' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 bool roy_queue_pop(RoyQueue * queue);

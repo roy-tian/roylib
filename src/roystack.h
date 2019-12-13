@@ -44,6 +44,11 @@ void roy_stack_delete(RoyStack * stack);
  * @brief Returns a typed pointer to the first element of 'stack'.
  * @note Returns NULL if 'stack' is empty.
  */
+/**
+ * @brief Accesses the last element.
+ * @return a typed pointer to the last element.
+ * @return NULL - 'stack' is empty.
+ */
 #define roy_stack_top(stack, element_type)  \
         ((element_type*)roy_array_pointer((RoyArray *)(stack), roy_stack_size(stack) - 1))
 
@@ -57,13 +62,15 @@ size_t roy_stack_capacity(const RoyStack * stack);
 
 /**
  * @brief Checks whether 'stack' is empty.
- * @return whether there are element(s) in 'stack'.
+ * @return true - there is no element in 'stack'.
+ * @return false - otherwise.
  */
 bool roy_stack_empty(const RoyStack * stack);
 
 /**
  * @brief Checks whether 'stack' is full.
- * @return Whether the number of elements in 'stack' reaches its capacity and no more element can be appended.
+ * @return true - the number of elements in 'stack' reaches its capacity and no more element can be appended.
+ * @return false - otherwise.
  */
 bool roy_stack_full(const RoyStack * stack);
 
@@ -72,14 +79,16 @@ bool roy_stack_full(const RoyStack * stack);
 /**
  * @brief Adds an element right before the first element of 'stack'.
  * @param data - the pointer to the new element.
- * @return Whether the insertion is successful (fails only when 'stack' is full).
+ * @return true - the insertion is successful.
+ * @return false - 'stack' is full.
  * @note The behavior is undefined if 'data' is uninitialized.
  */
 bool roy_stack_push(RoyStack * stack, void * data);
 
 /**
  * @brief Removes the first element of 'stack'.
- * @return Whether the removal is successful (fails only when 'stack' is empty).
+ * @return true - the removal is successful.
+ * @return false - 'stack' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 bool roy_stack_pop(RoyStack * stack);
