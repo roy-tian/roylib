@@ -60,15 +60,15 @@ size_t roy_queue_capacity(const RoyQueue * queue);
 
 /**
  * @brief Checks whether 'queue' is empty.
- * @return true - there is no element in 'queue'.
- * @return false - otherwise.
+ * @retval true - there is no element in 'queue'.
+ * @retval false - otherwise.
  */
 bool roy_queue_empty(const RoyQueue * queue);
 
 /**
  * @brief Checks whether 'queue' is full.
- * @return true - the number of elements in 'queue' reaches its capacity and no more element can be appended.
- * @return false - otherwise.
+ * @retval true - the number of elements in 'queue' reaches its capacity and no more element can be appended.
+ * @retval false - otherwise.
  */
 bool roy_queue_full(const RoyQueue * queue);
 
@@ -77,16 +77,16 @@ bool roy_queue_full(const RoyQueue * queue);
 /**
  * @brief Adds an element next to the last element of 'queue'.
  * @param data - the pointer to the new element.
- * @return true - the insertion is successful.
- * @return false - 'queue' is full.
+ * @retval true - the insertion is successful.
+ * @retval false - 'queue' is full.
  * @note The behavior is undefined if 'data' is uninitialized.
  */
 bool roy_queue_push(RoyQueue * queue, void * data);
 
 /**
  * @brief Removes the first element of 'queue'.
- * @return true - the removal is successful.
- * @return false - 'queue' is empty.
+ * @retval true - the removal is successful.
+ * @retval false - 'queue' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 bool roy_queue_pop(RoyQueue * queue);

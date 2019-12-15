@@ -35,37 +35,38 @@ RoySList * roy_slist_new(void);
  */
 void roy_slist_delete(RoySList * slist, ROperate deleter);
 
-/* ELEMENT ACCESS */
+/* ITERATORS */
 
 /**
- * @brief Returns an iterator to the specific element in 'slist'.
  * @param position - the position where the element takes place.
- * @note Returns NULL if 'position' exceeds.
+ * @return an iterator to the 'position'-th element in 'slist'.
+ * @return NULL - 'position' exceeds.
  */
 RoySList * roy_slist_iterator(RoySList * slist, size_t position);
 
 /**
- * @brief Returns an const iterator to the specific element in 'slist'.
  * @param position - the position where the element takes place.
- * @note Returns NULL if 'position' exceeds.
+ * @return a const iterator to the 'position'-th element in 'slist'.
+ * @return NULL - 'position' exceeds.
  */
 const RoySList * roy_slist_citerator(const RoySList * slist, size_t position);
 
 /**
- * @brief Returns an iterator to the first element in 'slist'.
- * @note Returns NULL if 'slist' is empty.
+ * @return an iterator to the first element in 'slist'.
+ * @return NULL - 'slist' is empty.
  */
 RoySList * roy_slist_begin(RoySList * slist);
 
 /**
- * @brief Returns an const iterator to the first element in 'slist'.
- * @note Returns NULL if 'slist' is empty.
+ * @return a const iterator to the first element in 'slist'.
+ * @return NULL - 'slist' is empty.
  */
 const RoySList * roy_slist_cbegin(const RoySList * slist);
 
 /**
- * @brief Returns a typed pointer to the element at 'position'.
- * @note Returns NULL if 'position' exceeds or 'slist' is empty.
+ * @brief Accesses specific element.
+ * @return a typed pointer to the element at 'position'.
+ * @return NULL - 'position' exceeds or 'slist' is empty.
  */
 #define roy_slist_at(slist, position, element_type)    \
         ((element_type *)roy_slist_iterator((list_head), (position))->data)
@@ -75,7 +76,11 @@ const RoySList * roy_slist_cbegin(const RoySList * slist);
 /// @brief Returns the number of elements in 'slist'.
 size_t roy_slist_size(const RoySList * slist);
 
-/// @brief Returns whether there is any elements in 'slist'.
+/**
+ * @brief Checks whether 'slist' is empty.
+ * @retval true - there is no element in 'slist'.
+ * @retval false - otherwise.
+ */
 bool roy_slist_empty(const RoySList * slist);
 
 /* MODIFIERS */
@@ -89,8 +94,9 @@ void roy_slist_push_front(RoySList * slist, void * data);
 
 /**
  * @brief Removes the first element from 'slist',
- * @return whether the operation is successful (Fails only if 'slist' is empty).
  * @param deleter - the function for element deleting.
+ * @retval true - the removal is successful.
+ * @retval false - 'slist' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 bool roy_slist_pop_front(RoySList * slist, ROperate deleter);
@@ -99,7 +105,8 @@ bool roy_slist_pop_front(RoySList * slist, ROperate deleter);
  * @brief Removes the specific element from 'slist'.
  * @param position - the position where the element should be removed.
  * @param deleter - the function for element deleting.
- * @return Whether the removal is successful (fails only when 'position' exceeds or 'slist' is empty).
+ * @retval true - the removal is successful.
+ * @retval false - 'position' exceeds or 'slist' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 bool roy_slist_erase(RoySList * slist, size_t position, ROperate deleter);
@@ -114,20 +121,20 @@ void roy_slist_clear(RoySList * slist, ROperate deleter);
 /* LIST OPERATIONS */
 
 /**
- * @brief Removes all elements in 'slist' equivalent to 'data'.
+ * @brief Removes all elements equivalent to 'data'.
  * @param data - the pointer to the comparable element.
- * @param comparer - the function to comapre two elements, returns 0 if current element is equal to the given 'data'.
+ * @param comparer - the function to compare two elements, returns 0 if current element is equal to the given 'data'.
  * @param deleter - the function for element deleting.
- * @returns How many elements are removed from 'slist'.
+ * @return How many elements are removed from 'slist'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 size_t roy_slist_remove(RoySList * slist, const void * data, RCompare comparer, ROperate deleter);
 
 /**
- * @brief Removes all elements in 'slist' meet 'condition'.
+ * @brief Removes all elements meet 'condition'.
  * @param comparer - a check function returns true indicates current element should be removed.
  * @param deleter - the function for element deleting.
- * @returns How many elements are removed from 'slist'.
+ * @return How many elements are removed from 'slist'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 size_t roy_slist_remove_if(RoySList * slist, RCondition condition, ROperate deleter);
@@ -139,6 +146,7 @@ void roy_slist_reverse(RoySList * slist);
  * @brief Removes all consecutive duplicate elements from 'slist', only the first element in each group of equal elements is left.
  * @param comparer - the function to comapre two elements, returns 0 if current element is equal to the given 'data'.
  * @param deleter - the function for element deleting.
+ * @return How many elements are removed from 'slist'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 size_t roy_slist_unique(RoySList *slist, RCompare comparer, ROperate deleter);
@@ -152,10 +160,11 @@ void roy_slist_sort(RoySList *slist, RCompare comparer);
 
 /* LOOKUP */
 
-/*
+/**
  * @brief Finds the first element equivalent to 'key'.
  * @param key - the pointer to the comparable element.
  * @param comparer - the function to compare two elements, returns 0 if current element is equal to the given 'data'.
+ * @return The iterator to the target element.
  */
 RoySList * roy_slist_find(RoySList * slist, const void * key, RCompare comparer);
 

@@ -74,15 +74,15 @@ size_t roy_array_capacity(const RoyArray * array);
 
 /**
  * @brief Checks whether 'array' is empty.
- * @return true - there is no element in 'array'.
- * @return false - otherwise.
+ * @retval true - there is no element in 'array'.
+ * @retval false - otherwise.
  */
 bool roy_array_empty(const RoyArray * array);
 
 /**
  * @brief Checks whether 'array' is full.
- * @return true - the number of elements in 'array' reaches its capacity and no more element can be appended.
- * @return false - otherwise.
+ * @retval true - the number of elements in 'array' reaches its capacity and no more element can be appended.
+ * @retval false - otherwise.
  */
 bool roy_array_full(const RoyArray * array);
 
@@ -92,8 +92,8 @@ bool roy_array_full(const RoyArray * array);
  * @brief Inserts an element into 'array'.
  * @param position - the position where the new element should be exactly settled.
  * @param data - the pointer to the new element.
- * @return true - the insertion is successful.
- * @return false - 'position' exceeds or 'array' is full.
+ * @retval true - the insertion is successful.
+ * @retval false - 'position' exceeds or 'array' is full.
  * @note - The operation will move every element comes after 'position' to its next, so it can be very slow when 'array' is huge and 'position' is small, use with caution.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
@@ -103,8 +103,8 @@ bool roy_array_insert(RoyArray * array, size_t position, void * data);
  * @brief Inserts an element into 'array' in a faster but unstable way.
  * @param position - the position where the new element should be exactly settled.
  * @param data - the pointer to the new element.
- * @return true - the insertion is successful.
- * @return false - 'position' exceeds or 'array' is full.
+ * @retval true - the insertion is successful.
+ * @retval false - 'position' exceeds or 'array' is full.
  * @note - The operation moves the element at 'position' to the end of 'array', so it can shift the sequence of elements, use this function only if element order is irrelevant.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
@@ -113,8 +113,8 @@ bool roy_array_insert_fast(RoyArray * array, size_t position, void * data);
 /**
  * @brief Adds an element to the back of 'array'.
  * @param data - the pointer to the new element.
- * @return true - the insertion is successful.
- * @return false - 'position' exceeds or 'array' is full.
+ * @retval true - the insertion is successful.
+ * @retval false - 'position' exceeds or 'array' is full.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
 bool roy_array_push_back(RoyArray * array, void * data);
@@ -122,8 +122,8 @@ bool roy_array_push_back(RoyArray * array, void * data);
 /**
  * @brief Removes an element from 'array'.
  * @param position - the position where the element should be removed.
- * @return true - the removal is successful.
- * @return false - 'position' exceeds or 'array' is empty.
+ * @retval true - the removal is successful.
+ * @retval false - 'position' exceeds or 'array' is empty.
  * @note - The operation will move every element comes after 'position' to its left recursively, so it can be very slow when 'array' is huge and 'position' is small, use with caution.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
@@ -132,8 +132,8 @@ bool roy_array_erase(RoyArray * array, size_t position);
 /**
  * @brief Removes an element from 'array' in a faster but unstable way.
  * @param position - the position where the element should be removed.
- * @return true - the removal is successful.
- * @return false - 'position' exceeds or 'array' is empty.
+ * @retval true - the removal is successful.
+ * @retval false - 'position' exceeds or 'array' is empty.
  * @note - The operation moves the last element and settles to 'position', so it can shift the sequence of elements, use this function only if element order is irrelevant.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
@@ -141,8 +141,8 @@ bool roy_array_erase_fast(RoyArray * array, size_t position);
 
 /**
  * @brief Removes the last element of 'array'.
- * @return true - the removal is successful.
- * @return false - 'array' is empty.
+ * @retval true - the removal is successful.
+ * @retval false - 'array' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 bool roy_array_pop_back(RoyArray * array);

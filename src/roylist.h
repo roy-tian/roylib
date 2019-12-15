@@ -39,115 +39,251 @@ void roy_list_delete(RoyList * list, ROperate deleter);
 /* ELEMENT ACCESS */
 
 /**
- * @brief Returns an iterator to the specific element in 'list'.
+ * @param list_head - the iterator to the head of 'list'.
  * @param position - the position where the element takes place.
- * @note Returns NULL if 'position' exceeds.
+ * @return an iterator to the 'position'-th element in 'list'.
+ * @return NULL - 'position' exceeds.
  */
 RoyList * roy_list_iterator(RoyList * list_head, size_t position);
 
 /**
- * @brief Returns an reversed iterator to the specific element in 'list'.
+ * @param list_head - the iterator to the head of 'list'.
  * @param position - the position where the element takes place.
- * @note Returns NULL if 'position' exceeds.
+ * @return a const iterator to 'position'-th element in 'list'.
+ * @return NULL - 'position' exceeds.
+ */
+const RoyList * roy_list_citerator(const RoyList * list_head, size_t position);
+
+/**
+ * @param list_tail - the iterator to the tail of 'list'.
+ * @param rposition - the reversed position where the element takes place.
+ * @return an reversed iterator to the 'rposition'-th element in 'list'.
+ * @return NULL - 'rposition' exceeds.
  */
 RoyList * roy_list_riterator(RoyList * list_tail, size_t rposition);
 
+
 /**
- * @brief Returns an iterator to the first element in 'list'.
- * @note Returns NULL if 'list' is empty.
+ * @param list_tail - the iterator to the tail of 'list'.
+ * @param rposition - the reversed position where the element takes place.
+ * @return an const reversed iterator to the 'rposition'-th element in 'list'.
+ * @return NULL - 'rposition' exceeds.
+ */
+const RoyList * roy_list_criterator(const RoyList * list_tail, size_t rposition);
+
+/**
+ * @param list_head - the iterator to the head of 'list'.
+ * @return an iterator to the first element in 'list'.
+ * @return NULL - 'list' is empty.
  */
 RoyList * roy_list_begin(RoyList * list_head);
 
 /**
- * @brief Returns an reversed iterator to the last element in 'list'.
- * @note Returns NULL if 'list' is empty.
+ * @param list_head - the iterator to the head of 'list'.
+ * @return a const iterator to the first element.
+ * @return NULL - 'list' is empty.
+ */
+const RoyList * roy_list_cbegin(const RoyList *list_head);
+
+/**
+ * @param list_tail - the iterator to the tail of 'list'.
+ * @return an reversed iterator to the last element in 'list'.
+ * @return NULL - 'list' is empty.
  */
 RoyList * roy_list_rbegin(RoyList * list_tail);
 
-// Returns a const iterator to 'position' in 'list' where the element takes place.
-// (Returns the head of 'list' if position is negative, NULL if position exceeds.)
-const RoyList * roy_list_citerator(const RoyList * list_head, size_t position);
-
-// Returns an const reversed iterator to 'position' right most in 'list' where the element takes place.
-// (Returns the tail of 'list' if position is negative, NULL if position exceeds.)
-const RoyList * roy_list_criterator(const RoyList * list_tail, size_t rposition);
-
-// Returns a const iterator to the first element.
-const RoyList * roy_list_cbegin(const RoyList *list_head);
-
-// Returns a const reversed iterator to the last element.
+/**
+ * @param list_tail - the iterator to the tail of 'list'.
+ * @return an const reversed iterator to the last element in 'list'.
+ * @return NULL - 'list' is empty.
+ */
 const RoyList * roy_list_crbegin(const RoyList *list_tail);
 
-// Returns a typed pointer to the element at 'position', NULL if position exceeds.
+/**
+ * @brief Accesses specific element.
+ * @param list_head - the iterator to the head of 'list'.
+ * @param position - the position where the element takes place.
+ * @return a typed pointer to the element at 'position'.
+ * @return NULL - 'position' exceeds.
+ */
 #define roy_list_at(list_head, position, element_type) \
         ((element_type *)roy_list_iterator((list_head), (position))->data)
 
 /* CAPACITY */
 
-// Returns the number of elements from 'list_head'.
+/**
+ * @brief Counts the number of elements in an ascending order.
+ * @param list_head - the iterator to the head of 'list'.
+ * @return the number of element in 'list'.
+ */
 size_t roy_list_size(const RoyList * list_head);
 
-// Returns the number of elements from 'list_tail'.
+/**
+ * @brief Counts the number of elements in an descending order.
+ * @param list_tail - the iterator to the tail of 'list'.
+ * @return the number of element in 'list'.
+ */
 size_t roy_list_rsize(const RoyList * list_tail);
 
-// Returns whether there is any elements from 'list_head'.
+/**
+ * @brief Checks whether 'list' is empty.
+ * @param list_head - the iterator to the head of 'list'.
+ * @retval true - there is no element in 'list'.
+ * @retval false - otherwise.
+ */
 bool roy_list_empty(const RoyList * list_head);
 
-// Returns whether there is any elements from 'list_head'.
+/**
+ * @brief Checks whether 'list' is empty.
+ * @param list_tail - the iterator to the tail of 'list'.
+ * @retval true - there is no element in 'list'.
+ * @retval false - otherwise.
+ */
 bool roy_list_rempty(const RoyList * list_tail);
 
 /* MODIFIERS */
 
-// Adds an 'element_size'-sized element named 'data' into 'list' at 'position'.
+/**
+ * @brief Inserts an element into 'list'.
+ * @param list_head - the iterator to the head of 'list'.
+ * @param position - the position where the new element should be exactly settled.
+ * @param data - the pointer to the new element.
+ * @retval true - the insertion is successful.
+ * @retval false - 'position' exceeds.
+ * @note - The behavior is undefined if 'data' is uninitialized.
+ */
 bool roy_list_insert(RoyList * list_head, size_t position, void * data);
 
 // Adds an 'element_size'-sized element named 'data' into 'list_tail' at 'rposition' rightmost.
+/**
+ * @brief Inserts an element into 'list'.
+ * @param list_tail - the iterator to the tail of 'list'.
+ * @param rposition - the reversed position where the new element should be exactly settled.
+ * @param data - the pointer to the new element.
+ * @retval true - the insertion is successful.
+ * @retval false - 'position' exceeds.
+ * @note - The behavior is undefined if 'data' is uninitialized.
+ */
 bool roy_list_insert_reverse(RoyList * list_tail, size_t rposition, void * data);
 
-// Adds an 'element_size'-sized element named 'data' at the beginning of the list.
+/**
+ * @brief Adds an element at the beginning of 'list'.
+ * @param list_head - the iterator to the head of 'list'.
+ * @param data - the pointer to the new element.
+ * @note - The behavior is undefined if 'data' is uninitialized.
+ */
 void roy_list_push_front(RoyList * list_head, void * data);
 
-// Adds an 'element_size'-sized element named 'data' at the end of the list.
+/**
+ * @brief Adds an element at the end of 'list'.
+ * @param list_tail - the iterator to the tail of 'list'.
+ * @param data - the pointer to the new element.
+ * @note - The behavior is undefined if 'data' is uninitialized.
+ */
 void roy_list_push_back(RoyList * list_tail, void * data);
 
-// Removes an element from 'list_head' at 'position'.
+/**
+ * @brief Removes specific element from 'list'.
+ * @param list_head - the iterator to the head of 'list'.
+ * @param position - the position where the element should be removed.
+ * @param deleter - the function for element deleting.
+ * @retval true - the removal is successful.
+ * @retval false - 'position' exceeds or 'list' is empty.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 bool roy_list_erase(RoyList * list_head, size_t position, ROperate deleter);
 
-// Removes an element from 'list_tail' at 'rposition'.
+/**
+ * @brief Removes specific element from 'list'.
+ * @param list_tail - the iterator to the tail of 'list'.
+ * @param rposition - the reversed position where the element should be removed.
+ * @param deleter - the function for element deleting.
+ * @retval true - the removal is successful.
+ * @retval false - 'position' exceeds or 'list' is empty.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 bool roy_list_erase_reverse(RoyList * list_tail, size_t rposition, ROperate deleter);
 
-// Removes the first element from 'list_head'.
+/**
+ * @brief Removes the first element from 'list'.
+ * @param list_head - the iterator to the head of 'list'.
+ * @param deleter - the function for element deleting.
+ * @retval true - the removal is successful.
+ * @retval false - 'list' is empty.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 bool roy_list_pop_front(RoyList * list_head, ROperate deleter);
 
-// Removes the last element from 'list_tail'.
+/**
+ * @brief Removes the last element from 'list'.
+ * @param list_tail - the iterator to the tail of 'list'.
+ * @param deleter - the function for element deleting.
+ * @retval true - the removal is successful.
+ * @retval false - 'list' is empty.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 bool roy_list_pop_back(RoyList * list_tail, ROperate deleter);
 
-// Removes all the element from 'list'.
+/**
+ * @brief Removes all the elements from 'list'.
+ * @param deleter - the function for element deleting.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 void roy_list_clear(RoyList * list_head, ROperate deleter);
 
 /* LIST OPERATIONS */
 
-// Removes all elements in 'list' equivalent to data.
+/**
+ * @brief Removes all elements equivalent to 'data'.
+ * @param data - the pointer to the comparable element.
+ * @param comparer - the function to compare two elements, returns 0 if current element is equal to the given 'data'.
+ * @param deleter - the function for element deleting.
+ * @return How many elements are removed from 'list'.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 size_t roy_list_remove(RoyList * list, const void * data, RCompare comparer, ROperate deleter);
 
-// Removes all elements in 'list' which meet 'condition'.
+/**
+ * @brief Removes all elements meet 'condition'.
+ * @param comparer - a check function returns true indicates current element should be removed.
+ * @param deleter - the function for element deleting.
+ * @return How many elements are removed from 'list'.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 size_t roy_list_remove_if(RoyList * list, RCondition condition, ROperate deleter);
 
-// Reverses the order of the elements in 'list'.
+/// @brief Reverses the order of the elements in 'list'.
 void roy_list_reverse(RoyList ** list);
 
-// Removes all consecutive duplicate elements from 'list', only the first element in each group of equal elements is left. 
+/**
+ * @brief Removes all consecutive duplicate elements from 'list', only the first element in each group of equal elements is left.
+ * @param comparer - the function to compare two elements, returns 0 if current element is equal to the given 'data'.
+ * @param deleter - the function for element deleting.
+ * @return How many elements are removed from 'list'.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 size_t roy_list_unique(RoyList * list, RCompare comparer, ROperate deleter);
 
-// Sorts the elements in ascending order, using quick sort strategy.
+/**
+ * @brief Sorts the elements in ascending order.
+ * @param comparer - the function to compare two elements, acting like <=> operator in C++.
+ * @note - This version uses shell sort strategy and may have unsatisfied performance, may be updated in future version.
+ */
 void roy_list_sort(RoyList * list, RCompare comparer);
 
 /* TRAVERSE */
 
-// Traverses all elements in 'list' using 'operate'.
+/**
+ * @brief Traverses all elements in 'list' sequentially.
+ * @param operate - the traverse function.
+ */
 void roy_list_for_each(RoyList * list, ROperate operate);
 
-// Traverses all elements whichever meets 'condition' in 'list' using 'operate'.
+/**
+ * @brief Traverses elements whichever meets 'condition' in 'list'.
+ * @param condition - the check function, the element gets traversed if condition meets, otherwise the element is ignored.
+ * @param operate - the traverse function.
+ */
 void roy_list_for_which(RoyList * list, RCondition condition, ROperate operate);
 
 #endif // ROYLIST_H
