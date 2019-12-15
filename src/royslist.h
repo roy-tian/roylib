@@ -63,6 +63,8 @@ RoySList * roy_slist_begin(RoySList * slist);
  */
 const RoySList * roy_slist_cbegin(const RoySList * slist);
 
+/* ELEMENT ACCESS */
+
 /**
  * @brief Accesses specific element.
  * @return a typed pointer to the element at 'position'.

@@ -36,7 +36,7 @@ RoyList * roy_list_new(void);
  */
 void roy_list_delete(RoyList * list, ROperate deleter);
 
-/* ELEMENT ACCESS */
+/* ITERATORS */
 
 /**
  * @param list_head - the iterator to the head of 'list'.
@@ -98,6 +98,8 @@ RoyList * roy_list_rbegin(RoyList * list_tail);
  * @return NULL - 'list' is empty.
  */
 const RoyList * roy_list_crbegin(const RoyList *list_tail);
+
+/* ELEMENT ACCESS */
 
 /**
  * @brief Accesses specific element.

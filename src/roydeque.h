@@ -1,6 +1,13 @@
 #ifndef ROYDEQUE_H
 #define ROYDEQUE_H
 
+/**
+ * @author Roy Tian
+ * @version 0.1.0 alpha
+ * @date Dec 12, 2019
+ * @copyright MIT.
+ */
+
 #include "roylist.h"
 
 struct RoyDeque_ {
@@ -10,8 +17,7 @@ struct RoyDeque_ {
   size_t     size;
 };
 
-// RoyDeque: a double ended queue powered by a RoyDeque inside,
-// which supports fast insertion and removal from both end of the queue.
+/// @brief RoyDeque: a double ended queue powered by a RoyDeque inside, which supports fast insertion and removal from both end of the queue.
 typedef struct RoyDeque_ RoyDeque;
 
 /* CONSTRUCTION AND DESTRUCTION */
