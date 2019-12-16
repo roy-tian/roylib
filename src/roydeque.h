@@ -41,7 +41,7 @@ void roy_deque_delete(RoyDeque * deque);
 /* ELEMENT ACCESS */
 
 /**
- * @brief Accesses specific element.
+ * @brief Accesses specified element.
  * @return a pointer to the element at 'position' in 'deque'.
  * @return NULL - 'position' exceeds.
  * @note - The iteration begins from the front end if 'position' is in smaller half of 'deque', and vise versa.
@@ -49,7 +49,7 @@ void roy_deque_delete(RoyDeque * deque);
 void * roy_deque_pointer(RoyDeque * deque, size_t position);
 
 /**
- * @brief Accesses specific element.
+ * @brief Accesses specified element.
  * @return a const pointer to the element at 'position' in 'deque'.
  * @return NULL - 'position' exceeds or 'deque' is empty.
  * @note - The iteration begins from the front end if 'position' is in smaller half of 'deque', and vise versa.
@@ -81,7 +81,7 @@ void * roy_deque_back(RoyDeque * deque);
 const void * roy_deque_cback(const RoyDeque * deque);
 
 /**
- * @brief Accesses specific element.
+ * @brief Accesses specified element.
  * @return a typed pointer to the element at 'position' in 'deque'.
  * @return NULL - 'position' exceeds or 'deque' is empty.
  * @note - The iteration begins from the front end if 'position' is in smaller half of 'deque', and vise versa.
@@ -129,7 +129,7 @@ void roy_deque_push_front(RoyDeque * deque, void * data);
 void roy_deque_push_back(RoyDeque * deque, void * data);
 
 /**
- * @brief Removes specific element from 'deque'.
+ * @brief Removes specified element from 'deque'.
  * @param position - where the element should be removed.
  * @retval true - the removal is successful.
  * @retval false - 'position' exceeds or 'deque' is empty.

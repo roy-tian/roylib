@@ -1,6 +1,13 @@
 #ifndef ROYMMAP_H
 #define ROYMMAP_H
 
+/**
+ * @author Roy Tian
+ * @version 0.1.0 alpha
+ * @date Dec 12, 2019
+ * @copyright MIT.
+ */
+
 #include "trivials/royinit.h"
 #include "roymset.h"
 

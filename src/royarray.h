@@ -41,15 +41,15 @@ void roy_array_delete(RoyArray * array);
 /* ELEMENT ACCESS */
 
 /**
- * @brief Accesses specific element.
+ * @brief Accesses specified element.
  * @param position - where the element takes place.
- * @return a pointer to the specific element in 'array'.
+ * @return a pointer to the specified element in 'array'.
  * @return NULL - 'position' exceeds.
  */
 void * roy_array_pointer(RoyArray * array, size_t position);
 
 /**
- * @brief Accesses specific element.
+ * @brief Accesses specified element.
  * @param position - where the element takes place.
  * @return a const pointer to the element at 'position' in 'array'.
  * @return NULL - 'position' exceeds.
@@ -57,7 +57,7 @@ void * roy_array_pointer(RoyArray * array, size_t position);
 const void * roy_array_cpointer(const RoyArray * array, size_t position);
 
 /**
- * @brief Accesses specific element.
+ * @brief Accesses specified element.
  * @return a typed pointer to the element at 'position'.
  * @return NULL - if 'position' exceeds or 'array' is empty.
  */

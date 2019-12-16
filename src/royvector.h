@@ -42,21 +42,21 @@ void roy_vector_delete(RoyVector * vector);
 /* ELEMENT ACCESS */
 
 /**
- * @brief Accesses the specific element.
+ * @brief Accesses the specified element.
  * @return a pointer to the element at 'position' in 'vector'.
  * @return NULL - 'position' exceeds.
  */
 void * roy_vector_pointer(RoyVector * vector, size_t position);
 
 /**
- * @brief Accesses the specific element.
+ * @brief Accesses the specified element.
  * @return a const pointer to the element at 'position' in 'vector'.
  * @return NULL - 'position' exceeds.
  */
 const void * roy_vector_cpointer(const RoyVector * vector, size_t position);
 
 /**
- * @brief Accesses the specific element.
+ * @brief Accesses the specified element.
  * @return a typed pointer to the element at 'position'.
  * @return NULL - 'position' exceeds or 'vector' is empty.
  */

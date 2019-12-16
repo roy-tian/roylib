@@ -101,7 +101,7 @@ const RoyList * roy_list_crbegin(const RoyList *list_tail);
 /* ELEMENT ACCESS */
 
 /**
- * @brief Accesses specific element.
+ * @brief Accesses specified element.
  * @param list_head - the iterator to the head of 'list'.
  * @param position - where the element takes place.
  * @return a typed pointer to the element at 'position'.
@@ -183,7 +183,7 @@ void roy_list_push_front(RoyList * list_head, void * data);
 void roy_list_push_back(RoyList * list_tail, void * data);
 
 /**
- * @brief Removes specific element from 'list'.
+ * @brief Removes specified element from 'list'.
  * @param list_head - the iterator to the head of 'list'.
  * @param position - where the element should be removed.
  * @param deleter - a function for element deleting.
@@ -194,7 +194,7 @@ void roy_list_push_back(RoyList * list_tail, void * data);
 bool roy_list_erase(RoyList * list_head, size_t position, ROperate deleter);
 
 /**
- * @brief Removes specific element from 'list'.
+ * @brief Removes specified element from 'list'.
  * @param list_tail - the iterator to the tail of 'list'.
  * @param rposition - the reversed position where the element should be removed.
  * @param deleter - a function for element deleting.

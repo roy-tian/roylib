@@ -1,6 +1,13 @@
 #ifndef ROYUMAP_H
 #define ROYUMAP_H
 
+/**
+ * @author Roy Tian
+ * @version 0.1.0 alpha
+ * @date Dec 12, 2019
+ * @copyright MIT.
+ */
+
 #include "trivials/royinit.h"
 #include "trivials/roypair.h"
 #include "royuset.h"
@@ -9,72 +16,141 @@ struct RoyUMap_ {
   RoyUSet * uset;
 };
 
+/**
+ * @brief RoyUMap [aka Unordered Map] is an associative container that contains key-value pairs with unique keys.
+ * Search, insertion, and removal of elements have average constant-time complexity.
+ * Internally, the elements are not sorted in any particular order, but organized into buckets.
+ * Which bucket an element is placed into depends entirely on the hash of its key.
+ * This allows fast access to individual elements, since once the hash is computed, it refers to the exact bucket the element is placed into.
+ */
 typedef struct RoyUMap_ RoyUMap;
 
 
 /* CONSTRUCTION & DESTRUCTION */
 
-// Returns a pointer to a newly build RoyUMap.
-// using a hash seed, a hash function and a comparer function(NULL if you want to use default versions).
+/**
+ * @brief Creates a RoyUMap.
+ * @param seed - a hash seed.
+ * @param hash - a hash function, NULL to use the default MurmurHash.
+ * @param comparer - a function to compare two elements, acting like <=> operator in C++.
+ * @param deleter - a function for element deleting.
+ * @return a pointer to a newly build RoyUMap.
+ */
 RoyUMap * roy_umap_new(size_t bucket_count, uint64_t seed, RHash hash, RCompare comparer, ROperate deleter);
 
-// De-allocates all the memory allocated.
-// (Always call this function after the work is done by the given 'umap', or memory leak will occur.)
+/**
+ * @brief Releases all the elements and destroys the RoyUSet - 'umap' itself.
+ * @note - Always call this function after the work is done by the given 'uset' to get rid of memory leaking.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 void roy_umap_delete(RoyUMap * umap);
 
 /* ELEMENT ACCESS */
 
-// Returns an pointer to the pair which is the 'bucket_position'-th one on 'bucket_index'-th buckets.
-// (Returns NULL if position is out of range.)
+/**
+ * @brief Accesses specified RoyPair.
+ * @param bucket_index - the serial number of the target bucket.
+ * @param bucket_position - the position where the element takes place in the target bucket.
+ * @return a const pointer to the specified RoyPair.
+ * @return NULL - 'bucket_index' or 'bucket_position' exceeds, or 'umap' is empty.
+ */
 const RoyPair * roy_umap_cpointer(const RoyUMap * umap, size_t bucket_index, size_t bucket_position);
 
 /* CAPACITY */
 
-// Returns the number of elements in 'umap'.
+/// @brief Returns the number of elements in 'umap'.
 size_t roy_umap_size(const RoyUMap * umap);
 
-// Returns whether there is any elements in 'umap'.
+/**
+ * @brief Checks whether 'umap' is empty.
+ * @retval true - there is no element in 'umap'.
+ * @retval false - otherwise.
+ */
 bool roy_umap_empty(const RoyUMap * umap);
 
 /* MODIFIERS */
 
-// Hashes a pair conbined by 'key' and 'value' into 'umap'.
+/**
+ * @brief Hashes a RoyPair combined by 'key' and 'value' into 'umap', if 'umap' doesn't already contain an element with an equivalent key.
+ * @param key - a pointer to the new key.
+ * @param key_size - total memory the new key takes.
+ * @param comparer - a function to compare two keys, acting like <=> operator in C++.
+ * @return true - the insertion is successful.
+ * @return false - 'umap' already contain an element with an equivalent key.
+ * @note - The behavior is undefined if 'key' or 'value' is uninitialized.
+ */
 bool roy_umap_insert(RoyUMap * umap, void * key, size_t key_size, void * value);
 
-// Removes a pair which is the 'bucket_position'-th one on 'bucket_index'-th buckets of 'umap'.
+/**
+ * @brief Removes specified element.
+ * @param bucket_index - the serial number of the target bucket.
+ * @param bucket_position - the position where the element takes place in the target bucket.
+ * @return true - the removal is successful.
+ * @return false - 'bucket_index' or 'bucket_position' exceeds, or 'umap' is empty.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 bool roy_umap_erase(RoyUMap * umap, size_t bucket_index, size_t bucket_position);
 
-// Removes the pair in 'umap' of which 'key' is equal to given 'key'.
+/**
+ * @brief Removes all RoyPairs with key equivalent to 'key'.
+ * @param key - a pointer to the new key.
+ * @param key_size - total memory the new key takes.
+ * @return the number of elements being removed from 'umap'.
+ * (since there are no duplicated RoyPairs in 'umap', the return value would be no more than 1.)
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 size_t roy_umap_remove(RoyUMap * umap, const void * key, size_t key_size);
 
-// Removes all elements from 'umap'.
+/**
+ * @brief Removes all the elements from 'umap'.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 void roy_umap_clear(RoyUMap * umap);
 
 /* LOOKUPS */
 
-// Finds the value of pair of which 'key' equivalent to given 'key'.
+/**
+ * @brief Finds the RoyPair with key equivalent to 'key'.
+ * @param key - a pointer to the comparable key.
+ * @param key_size - total memory the key takes.
+ * @return The const pointer to the value of the target RoyPair.
+ */
 const void * roy_umap_find(const RoyUMap * umap, const void * key, size_t key_size);
 
 /* HASH SET SPECIFIC */
 
-// Returns the number of buckets in 'umap'.
+/// @brief Returns the number of buckets in 'umap'.
 size_t roy_umap_bucket_count(const RoyUMap * umap);
 
-// Returns the number of elements in the buckets with index 'bucket_index'.
+/// @brief Returns the number of elements in the buckets with index 'bucket_index'.
 size_t roy_umap_bucket_size(const RoyUMap * umap, size_t bucket_index);
 
-// Returns the index of the buckets for key 'data' calculated by hash function of 'umap'.
+/**
+ * @param key - a pointer to the comparable key.
+ * @param key_size - total memory the key takes.
+ * @return the index of the buckets for 'key' calculated by hash function of 'umap'.
+ */
 int64_t roy_umap_bucket(const RoyUMap * umap, const void * data, size_t data_size);
 
-// Returns the average number of elements per buckets.
+/**
+ * @brief Returns the average number of elements per buckets,
+ * that is, size() divided by bucket_count().
+ */
 double roy_umap_load_factor(const RoyUMap * umap);
 
 /* TRAVERSE */
 
-// Traverses all elements in 'umap' using 'operate'.
+/**
+ * @brief Traverses all elements in 'umap'.
+ * @param operate - a function for element traversing.
+ */
 void roy_umap_for_each(RoyUMap * umap, ROperate oeprate);
 
-// Traverses all elements whichever meets 'condition' in 'umap' using 'operate'.
+/**
+ * @brief Traverses elements whichever meets 'condition' in 'umap'.
+ * @param condition - a function to check whether the given element meet the condition.
+ * @param operate - a function for element traversing.
+ */
 void roy_umap_for_which(RoyUMap * umap, RCondition condition, ROperate operate);
 
 #endif // ROYUMAP_H

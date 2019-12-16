@@ -1,6 +1,13 @@
 #ifndef ROYMAP_H
 #define ROYMAP_H
 
+/**
+ * @author Roy Tian
+ * @version 0.1.0 alpha
+ * @date Dec 12, 2019
+ * @copyright MIT.
+ */
+
 #include "trivials/royinit.h"
 #include "royset.h"
 
@@ -63,7 +70,7 @@ void * roy_map_max(RoyMap * map);
 const void * roy_map_cmax(const RoyMap * map);
 
 /**
- * @brief Accesses specific value.
+ * @brief Accesses specified value.
  * @return a pointer to the mapped value of the element with key equivalent to 'key'.
  * @return NULL - 'map' does not have an element with the specified key.
  */

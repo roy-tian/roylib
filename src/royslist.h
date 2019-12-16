@@ -66,7 +66,7 @@ const RoySList * roy_slist_cbegin(const RoySList * slist);
 /* ELEMENT ACCESS */
 
 /**
- * @brief Accesses specific element.
+ * @brief Accesses specified element.
  * @return a typed pointer to the element at 'position'.
  * @return NULL - 'position' exceeds or 'slist' is empty.
  */
@@ -104,7 +104,7 @@ void roy_slist_push_front(RoySList * slist, void * data);
 bool roy_slist_pop_front(RoySList * slist, ROperate deleter);
 
 /**
- * @brief Removes the specific element from 'slist'.
+ * @brief Removes the specified element from 'slist'.
  * @param position - where the element should be removed.
  * @param deleter - a function for element deleting.
  * @retval true - the removal is successful.

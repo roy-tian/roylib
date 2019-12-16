@@ -1,6 +1,13 @@
 #ifndef ROYSET_H
 #define ROYSET_H
 
+/**
+ * @author Roy Tian
+ * @version 0.1.0 alpha
+ * @date Dec 12, 2019
+ * @copyright MIT.
+ */
+
 #include "trivials/royinit.h"
 
 struct RoySet_ {
@@ -60,7 +67,7 @@ const RoySet * roy_set_cmax(const RoySet *set);
 
 /* CAPACITY */
 
-/// @return the number of elements in 'set'.
+/// @brief Returns the number of elements in 'set'.
 size_t roy_set_size(const RoySet * set);
 
 /**
