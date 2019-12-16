@@ -22,7 +22,7 @@ typedef struct RoyList_ RoyList;
 /* CONSTRUCTION AND DESTRUCTION */
 
 /**
- * @brief Creates an RoyList for navigating.
+ * @brief Creates a RoyList for navigating.
  * @return an empty RoyList node.
  * @note the real data takes places from the 2nd element.
  */
@@ -57,7 +57,7 @@ const RoyList * roy_list_citerator(const RoyList * list_head, size_t position);
 /**
  * @param list_tail - the iterator to the tail of 'list'.
  * @param rposition - the reversed position where the element takes place.
- * @return an reversed iterator to the 'rposition'-th element in 'list'.
+ * @return a reversed iterator to the 'rposition'-th element in 'list'.
  * @return NULL - 'rposition' exceeds.
  */
 RoyList * roy_list_riterator(RoyList * list_tail, size_t rposition);
@@ -65,7 +65,7 @@ RoyList * roy_list_riterator(RoyList * list_tail, size_t rposition);
 /**
  * @param list_tail - the iterator to the tail of 'list'.
  * @param rposition - the reversed position where the element takes place.
- * @return an const reversed iterator to the 'rposition'-th element in 'list'.
+ * @return a const reversed iterator to the 'rposition'-th element in 'list'.
  * @return NULL - 'rposition' exceeds.
  */
 const RoyList * roy_list_criterator(const RoyList * list_tail, size_t rposition);
@@ -86,14 +86,14 @@ const RoyList * roy_list_cbegin(const RoyList *list_head);
 
 /**
  * @param list_tail - the iterator to the tail of 'list'.
- * @return an reversed iterator to the last element in 'list'.
+ * @return a reversed iterator to the last element in 'list'.
  * @return NULL - 'list' is empty.
  */
 RoyList * roy_list_rbegin(RoyList * list_tail);
 
 /**
  * @param list_tail - the iterator to the tail of 'list'.
- * @return an const reversed iterator to the last element in 'list'.
+ * @return a const reversed iterator to the last element in 'list'.
  * @return NULL - 'list' is empty.
  */
 const RoyList * roy_list_crbegin(const RoyList *list_tail);

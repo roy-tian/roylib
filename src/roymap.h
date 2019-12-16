@@ -10,65 +10,127 @@ struct RoyMap_ {
   ROperate   deleter;
 };
 
-// RoyMap: an associative container that contains a sorted map of unique objects of type Key.
-// Sorting is done using the key comparison function 'comparer'. Search, removal, and insertion operations have logarithmic complexity.
+/**
+ * @brief RoyMap: an associative container that contains a sorted map of unique objects of type Key.
+ * Sorting is done using the key comparison function 'comparer'.
+ * Search, removal, and insertion operations have logarithmic complexity.
+ */
 typedef struct RoyMap_ RoyMap;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
-// Returns a pointer to a newly build RoyMap. 
+/**
+ * @brief Creates an RoyMap.
+ * @param capacity - number of elements the new stack can store.
+ * @param deleter - a function for element deleting.
+ * @return The newly build RoyMap.
+ * @note The behavior is undefined if any immature RoyMaps are operated.
+ */
 RoyMap * roy_map_new(RCompare comparer, ROperate deleter);
 
-// De-allocates all the memory allocated.
-// (Always call this function after the work is done by the given 'map', or memory leak will occur.)
+/**
+ * @brief Releases all the elements and destroys the RoyMap - 'map' itself.
+ * @param deleter - a function for element deleting.
+ * @note - Always call this function after the work is done by the given 'map' to get rid of memory leaking.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 void roy_map_delete(RoyMap * map);
 
 /* ELEMENT ACCESS */
 
-// Returns an pointer to the value of the minimum element of 'map'.
+/**
+ * @return a pointer to the value of the minimum element of 'map'.
+ * @return NULL - 'map' is empty.
+ */
 void * roy_map_min(RoyMap * map);
 
-// Returns an pointer to the value of the maximum element of 'map'.
-void * roy_map_max(RoyMap * map);
-
-// Returns a const pointer to the value of the minimum element of 'map'.
+/**
+ * @return a const pointer to the value of the minimum element of 'map'.
+ * @return NULL - 'map' is empty.
+ */
 const void * roy_map_cmin(const RoyMap * map);
 
-// Returns a const pointer to the value of the maximum element of 'map'.
+/**
+ * @return a pointer to the value of the maximum element of 'map'.
+ * @return NULL - 'map' is empty.
+ */
+void * roy_map_max(RoyMap * map);
+
+/**
+ * @return a const pointer to the value of the maximum element of 'map'.
+ * @return NULL - 'map' is empty.
+ */
 const void * roy_map_cmax(const RoyMap * map);
 
+/**
+ * @brief Accesses specific value.
+ * @return a pointer to the mapped value of the element with key equivalent to 'key'.
+ * @return NULL - 'map' does not have an element with the specified key.
+ */
 #define roy_map_at(map, key, value_type) \
         ((value_type *)roy_map_find((map), (key)))
 
 /* CAPACITY */
 
-// Returns the number of elements in 'map'.
+/// @brief Returns the number of elements in 'map'.
 size_t roy_map_size(const RoyMap * map);
 
-// Returns whether there is any elements in 'map'.
+/**
+ * @brief Checks whether 'map' is empty.
+ * @retval true - there is no element in 'map'.
+ * @retval false - otherwise.
+ */
 bool roy_map_empty(const RoyMap * map);
 
 /* MODIFIERS */
 
-// Adds a 'key_size'-sized key contains a 'value_size'-sized value into 'map' by ascending order.
+/**
+ * @brief Inserts a 'key'-'value' pair into 'map' in ascending order by 'key',
+ * if 'map' doesn't already contain an element with an equivalent key.
+ * @param key - a pointer to the new key.
+ * @param value - a pointer to the new value.
+ * @return the 'map' after the operation.
+ * @note - The behavior is undefined if 'key' or 'value' is uninitialized.
+ */
 RoyMap * roy_map_insert(RoyMap * map, void * key, void * value);
 
-// Removes the element equals to 'key' from 'map'.
+/**
+ * @brief Removes an element with an equivalent key from 'map'.
+ * @param key - a key for comparision.
+ * @return the 'map' after the operation.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 RoyMap * roy_map_erase(RoyMap * map, const void * key);
 
-// Removes all the element from 'map'.
+/**
+ * @brief Removes all the elements from 'map'.
+ * @param deleter - a function for element deleting.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 void roy_map_clear(RoyMap * map);
 
 /* LOOKUP */
 
+/**
+ * @brief Finds the first element with an equivalent key.
+ * @param key - a key for comparision.
+ * @return The iterator to the value of target element.
+ */
 void * roy_map_find(RoyMap * map, const void * key);
 
 /* TRAVERSE */
 
-// Traverses all elements in 'map' using 'operate'.
+/**
+ * @brief Traverses all elements in 'map' in ascending order.
+ * @param operate - a function for element traversing.
+ */
 void roy_map_for_each(RoyMap * map, ROperate operate);
 
-// Traverses all elements whichever meets 'condition' in 'map' using 'operate'.
+/**
+ * @brief Traverses elements whichever meets 'condition' in 'map'.
+ * @param condition - a function to check whether the given element meet the condition.
+ * @param operate - a function for element traversing.
+ */
 void roy_map_for_which(RoyMap * map, RCondition condition, ROperate operate);
 
 #endif // ROYMAP_H
