@@ -194,10 +194,10 @@ roy_slist_sort(RoySList * slist,
 
 RoySList *
 roy_slist_find(RoySList   * slist,
-               const void * key,
+               const void * data,
                RCompare     comparer) {
   for (RoySList * iter = roy_slist_begin(slist); iter; iter = iter->next) {
-    if (comparer(iter->data, key) == 0) {
+    if (comparer(iter->data, data) == 0) {
       return iter;
     }
   }

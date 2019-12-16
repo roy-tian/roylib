@@ -160,15 +160,13 @@ size_t roy_slist_unique(RoySList *slist, RCompare comparer, ROperate deleter);
  */
 void roy_slist_sort(RoySList *slist, RCompare comparer);
 
-/* LOOKUP */
-
 /**
- * @brief Finds the first element equivalent to 'key'.
- * @param key - a pointer to the comparable element.
+ * @brief Finds the first element equivalent to 'data'.
+ * @param data - a pointer to the comparable element.
  * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'data'.
  * @return The iterator to the target element.
  */
-RoySList * roy_slist_find(RoySList * slist, const void * key, RCompare comparer);
+RoySList * roy_slist_find(RoySList * slist, const void * data, RCompare comparer);
 
 /* TRAVERSE */
 
