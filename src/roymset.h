@@ -9,11 +9,32 @@ struct RoyMSet_ {
   void            * key;
 };
 
-// RoyMSet [aka Multi-Set]: an associative container that contains a sorted set of objects of type Key, duplicated objects is allowed.
-// Sorting is done using the key comparison function 'comparer'. Search, removal, and insertion operations have logarithmic complexity.
+/**
+ * @brief RoyMSet [aka Multi-Set]: an associative container that contains
+ * a sorted set of objects of type Key, duplicated objects is allowed.
+ * Sorting is done using the key comparison function 'comparer'.
+ * Search, removal, and insertion operations have logarithmic complexity.
+ */
 typedef struct RoyMSet_ RoyMSet;
 
-/* ELEMENT ACCESS */
+/* CONSTRUCTION AND DESTRUCTION */
+
+/**
+ * @brief Creates a RoyMSet.
+ * @return an empty RoyMSet node.
+ */
+RoyMSet * roy_mset_new(void);
+
+/**
+ * @brief Releases all the elements and destroys the RoyMSet - 'mset' itself.
+ * @param deleter - a function for element deleting.
+ * @note - Always call this function after the work is done by the given 'mset' to get rid of memory leaking.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
+void roy_mset_delete(RoyMSet * mset, ROperate deleter);
+
+
+/* ITERATORS */
 
 // Returns an iterator to the minimum element of 'mset'.
 RoyMSet * roy_mset_min(RoyMSet *mset);

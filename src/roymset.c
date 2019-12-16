@@ -4,6 +4,18 @@
 static RoyMSet * node_new(void * key);
 
 RoyMSet *
+roy_mset_new(void) {
+  return (RoyMSet *)roy_set_new();
+}
+
+void
+roy_mset_delete(RoyMSet * mset,
+                ROperate deleter) {
+  roy_set_delete((RoySet *)mset, deleter);
+}
+
+
+RoyMSet *
 roy_mset_min(RoyMSet * mset) {
   return (RoyMSet *)roy_set_min((RoySet *)mset);
 }

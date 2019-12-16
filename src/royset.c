@@ -4,6 +4,17 @@ static RoySet * node_new(void * key);
 static void     node_delete(RoySet * set, ROperate deleter);
 
 RoySet *
+roy_set_new(void) {
+  return NULL;
+}
+
+void
+roy_set_delete(RoySet * set,
+               ROperate deleter) {
+  roy_set_clear(set, deleter);
+}
+
+RoySet *
 roy_set_min(RoySet * set) {
   if (!set) {
     return NULL;
