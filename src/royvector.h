@@ -25,8 +25,8 @@ typedef struct RoyVector_ RoyVector;
 
 /**
  * @brief Creates an RoyVector and allocates sufficient memory for it.
- * @param capacity - how many elements the new stack can store.
- * @param deleter - a function to release elements.
+ * @param capacity - number of elements the new stack can store.
+ * @param deleter - a function for element deleting.
  * @return The newly build RoyVector.
  * @note The behavior is undefined if any immature RoyVectors are operated.
  */
@@ -82,8 +82,8 @@ bool roy_vector_empty(const RoyVector * vector);
 
 /**
  * @brief Inserts an element into 'vector'.
- * @param position - the position where the new element should be exactly settled.
- * @param data - the pointer to the new element.
+ * @param position - where the new element should be exactly settled.
+ * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
  * @retval false - 'position' exceeds.
  * @note - The storage will expand automatically whenever needed.
@@ -94,8 +94,8 @@ bool roy_vector_insert(RoyVector * vector, size_t position, void * data);
 
 /**
  * @brief Inserts an element into 'vector' in a faster but unstable way.
- * @param position - the position where the new element should be exactly settled.
- * @param data - the pointer to the new element.
+ * @param position - where the new element should be exactly settled.
+ * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
  * @retval false - 'position' exceeds.
  * @note - The storage will be expanded automatically whenever needed.
@@ -106,7 +106,7 @@ bool roy_vector_insert_fast(RoyVector * vector, size_t position, void * data);
 
 /**
  * @brief Adds an element to the back of 'vector'.
- * @param data - the pointer to the new element.
+ * @param data - a pointer to the new element.
  * @note - The storage will be expanded automatically whenever needed.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
@@ -114,7 +114,7 @@ void roy_vector_push_back(RoyVector * vector, void * data);
 
 /**
  * @brief Removes an element from 'vector'.
- * @param position - the position where the element should be removed.
+ * @param position - where the element should be removed.
  * @retval true - the removal is successful.
  * @retval false - 'position' exceeds or 'vector' is empty.
  * @note - The storage will be shrunk to fit all elements automatically whenever it could.
@@ -125,7 +125,7 @@ bool roy_vector_erase(RoyVector * vector, size_t position);
 
 /**
  * @brief Removes an element from 'vector' in a faster but unstable way.
- * @param position - the position where the element should be removed.
+ * @param position - where the element should be removed.
  * @retval true - the removal is successful.
  * @retval false - 'position' exceeds or 'vector' is empty.
  * @note - The storage will be shrunk to fit all elements automatically whenever it could.
@@ -153,14 +153,14 @@ void roy_vector_clear(RoyVector * vector);
 
 /**
  * @brief Traverses all elements in 'vector' sequentially.
- * @param operate - the traverse function.
+ * @param operate - a function for element traversing.
  */
 void roy_vector_for_each(RoyVector * vector, ROperate operate);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'vector'.
- * @param condition - the check function, the element gets traversed if condition meets, otherwise the element is ignored.
- * @param operate - the traverse function.
+ * @param condition - a function to check whether the given element meet the condition.
+ * @param operate - a function for element traversing.
  */
 void roy_vector_for_which(RoyVector * vector, RCondition condition, ROperate operate);
 

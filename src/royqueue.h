@@ -26,8 +26,8 @@ typedef struct RoyQueue_ RoyQueue;
 
 /**
  * @brief Creates an RoyQueue and allocates sufficient memory for it.
- * @param capacity - how many elements the new queue can store.
- * @param deleter - a function to release elements.
+ * @param capacity - number of elements the new queue can store.
+ * @param deleter - a function for element deleting.
  * @return The newly build RoyQueue.
  * @note The behavior is undefined if any immature RoyQueues are operated.
  */
@@ -76,7 +76,7 @@ bool roy_queue_full(const RoyQueue * queue);
 
 /**
  * @brief Adds an element next to the last element of 'queue'.
- * @param data - the pointer to the new element.
+ * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
  * @retval false - 'queue' is full.
  * @note The behavior is undefined if 'data' is uninitialized.

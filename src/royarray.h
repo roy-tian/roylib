@@ -24,8 +24,8 @@ typedef struct RoyArray_ RoyArray;
 
 /**
  * @brief Creates an RoyArray and allocates sufficient memory for it.
- * @param capacity - how many elements the new array can store.
- * @param deleter - a function to release elements.
+ * @param capacity - number of elements the new array can store.
+ * @param deleter - a function for element deleting.
  * @return The newly build RoyArray.
  * @note The behavior is undefined if any immature RoyArrays are operated.
  */
@@ -42,7 +42,7 @@ void roy_array_delete(RoyArray * array);
 
 /**
  * @brief Accesses specific element.
- * @param position - the position where the element takes place.
+ * @param position - where the element takes place.
  * @return a pointer to the specific element in 'array'.
  * @return NULL - 'position' exceeds.
  */
@@ -50,7 +50,7 @@ void * roy_array_pointer(RoyArray * array, size_t position);
 
 /**
  * @brief Accesses specific element.
- * @param position - the position where the element takes place.
+ * @param position - where the element takes place.
  * @return a const pointer to the element at 'position' in 'array'.
  * @return NULL - 'position' exceeds.
  */
@@ -90,8 +90,8 @@ bool roy_array_full(const RoyArray * array);
 
 /**
  * @brief Inserts an element into 'array'.
- * @param position - the position where the new element should be exactly settled.
- * @param data - the pointer to the new element.
+ * @param position - where the new element should be exactly settled.
+ * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
  * @retval false - 'position' exceeds or 'array' is full.
  * @note - The operation will move every element comes after 'position' to its next, so it can be very slow when 'array' is huge and 'position' is small, use with caution.
@@ -101,8 +101,8 @@ bool roy_array_insert(RoyArray * array, size_t position, void * data);
 
 /**
  * @brief Inserts an element into 'array' in a faster but unstable way.
- * @param position - the position where the new element should be exactly settled.
- * @param data - the pointer to the new element.
+ * @param position - where the new element should be exactly settled.
+ * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
  * @retval false - 'position' exceeds or 'array' is full.
  * @note - The operation moves the element at 'position' to the end of 'array', so it can shift the sequence of elements, use this function only if element order is irrelevant.
@@ -112,7 +112,7 @@ bool roy_array_insert_fast(RoyArray * array, size_t position, void * data);
 
 /**
  * @brief Adds an element to the back of 'array'.
- * @param data - the pointer to the new element.
+ * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
  * @retval false - 'position' exceeds or 'array' is full.
  * @note - The behavior is undefined if 'data' is uninitialized.
@@ -121,7 +121,7 @@ bool roy_array_push_back(RoyArray * array, void * data);
 
 /**
  * @brief Removes an element from 'array'.
- * @param position - the position where the element should be removed.
+ * @param position - where the element should be removed.
  * @retval true - the removal is successful.
  * @retval false - 'position' exceeds or 'array' is empty.
  * @note - The operation will move every element comes after 'position' to its left recursively, so it can be very slow when 'array' is huge and 'position' is small, use with caution.
@@ -131,7 +131,7 @@ bool roy_array_erase(RoyArray * array, size_t position);
 
 /**
  * @brief Removes an element from 'array' in a faster but unstable way.
- * @param position - the position where the element should be removed.
+ * @param position - where the element should be removed.
  * @retval true - the removal is successful.
  * @retval false - 'position' exceeds or 'array' is empty.
  * @note - The operation moves the last element and settles to 'position', so it can shift the sequence of elements, use this function only if element order is irrelevant.
@@ -157,14 +157,14 @@ void roy_array_clear(RoyArray * array);
 
 /**
  * @brief Traverses all elements in 'array' sequentially.
- * @param operate - the traverse function.
+ * @param operate - a function for element traversing.
  */
 void roy_array_for_each(RoyArray * array, ROperate operate);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'array'.
- * @param condition - the check function, the element gets traversed if condition meets, otherwise the element is ignored.
- * @param operate - the traverse function.
+ * @param condition - a function to check whether the given element meet the condition.
+ * @param operate - a function for element traversing.
  */
 void roy_array_for_which(RoyArray * array, RCondition condition, ROperate operate);
 

@@ -24,8 +24,8 @@ typedef struct RoyStack_ RoyStack;
 
 /**
  * @brief Creates an RoyStack and allocates sufficient memory for it.
- * @param capacity - how many elements the new stack can store.
- * @param deleter - a function to release elements.
+ * @param capacity - number of elements the new stack can store.
+ * @param deleter - a function for element deleting.
  * @return The newly build RoyStack.
  * @note The behavior is undefined if any immature RoyStacks are operated.
  */
@@ -74,7 +74,7 @@ bool roy_stack_full(const RoyStack * stack);
 
 /**
  * @brief Adds an element right before the first element of 'stack'.
- * @param data - the pointer to the new element.
+ * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
  * @retval false - 'stack' is full.
  * @note The behavior is undefined if 'data' is uninitialized.
