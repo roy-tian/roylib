@@ -20,7 +20,6 @@ void
 roy_list_delete(RoyList * list, ROperate deleter) {
   roy_list_clear(list, deleter);
   free(list);
-  list = NULL;
 }
 
 RoyList *
@@ -348,5 +347,4 @@ node_delete(RoyList * list,
             ROperate  deleter) {
   deleter(list->data);
   free(list);
-  list = NULL;
 }

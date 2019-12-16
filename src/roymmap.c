@@ -15,7 +15,6 @@ void
 roy_mmap_delete(RoyMMap * mmap) {
   roy_mmap_clear(mmap);
   free(mmap);
-  mmap = NULL;
 }
 
 void *

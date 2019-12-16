@@ -15,7 +15,6 @@ void
 roy_umap_delete(RoyUMap * umap) {
   roy_uset_delete(umap->uset);
   free(umap);
-  umap = NULL;
 }
 
 const RoyPair *

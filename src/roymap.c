@@ -15,7 +15,6 @@ void
 roy_map_delete(RoyMap * map) {
   roy_map_clear(map);
   free(map);
-  map = NULL;
 }
 
 void *

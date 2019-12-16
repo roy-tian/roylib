@@ -15,7 +15,6 @@ void
 roy_ummap_delete(RoyUMMap * ummap) {
   roy_umset_delete(ummap->umset);
   free(ummap);
-  ummap = NULL;
 }
 
 const RoyPair *

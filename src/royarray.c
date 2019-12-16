@@ -20,7 +20,6 @@ roy_array_delete(RoyArray * array) {
   roy_array_for_each(array, array->deleter);
   free(array->data);
   free(array);
-  array = NULL;
 }
 
 void *

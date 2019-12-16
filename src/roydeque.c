@@ -14,7 +14,6 @@ void
 roy_deque_delete(RoyDeque * deque) {
   roy_list_delete(deque->head, deque->deleter);
   free(deque);
-  deque = NULL;
 }
 
 void *

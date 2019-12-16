@@ -39,7 +39,6 @@ roy_shell_delete(RoyShell * shell) {
   roy_string_delete(shell->prompt);
   roy_map_delete(shell->dict);
   free(shell);
-  shell = NULL;
 }
 
 void

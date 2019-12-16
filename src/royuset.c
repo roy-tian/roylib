@@ -33,7 +33,6 @@ roy_uset_delete(RoyUSet * uset) {
   }
   free(uset->buckets);
   free(uset);
-  uset = NULL;
 }
 
 const void *
