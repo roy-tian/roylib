@@ -17,7 +17,7 @@ struct RoySet_ {
 };
 
 /**
- * @brief RoySet: an associative container that contains a sorted set of unique objects.
+ * @brief RoySet: an associative container that contains a sorted set of unique objects of type key.
  * Sorting is done using the key comparison function 'comparer'.
  * Search, removal, and insertion operations have logarithmic complexity.
  */
@@ -97,7 +97,7 @@ RoySet * roy_set_insert(RoySet ** set, void * key, RCompare comparer);
 void roy_set_clear(RoySet * set, ROperate deleter);
 
 /**
- * @brief Removes the element equivalents to 'key'.
+ * @brief Removes the element equivalents to 'key' from 'set'.
  * @param key - a pointer to the comparable element.
  * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'data'.
  * @param deleter - a function for element deleting.
@@ -109,7 +109,7 @@ RoySet * roy_set_remove(RoySet ** set, const void * key, RCompare comparer, ROpe
 /* LOOKUP */
 
 /**
- * @brief Finds the first element equivalent to 'key'.
+ * @brief Finds the element equivalent to 'key'.
  * @param key - a pointer to the comparable element.
  * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'key'.
  * @return The iterator to the target element.

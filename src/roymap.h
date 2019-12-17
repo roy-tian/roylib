@@ -28,7 +28,7 @@ typedef struct RoyMap_ RoyMap;
 
 /**
  * @brief Creates an RoyMap.
- * @param capacity - number of elements the new stack can store.
+ * @param comparer - a function to compare two elements, acting like <=> operator in C++.
  * @param deleter - a function for element deleting.
  * @return The newly build RoyMap.
  * @note The behavior is undefined if any immature RoyMaps are operated.
@@ -37,7 +37,6 @@ RoyMap * roy_map_new(RCompare comparer, ROperate deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyMap - 'map' itself.
- * @param deleter - a function for element deleting.
  * @note - Always call this function after the work is done by the given 'map' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
@@ -71,7 +70,7 @@ const void * roy_map_cmax(const RoyMap * map);
 
 /**
  * @brief Accesses specified value.
- * @return a pointer to the mapped value of the element with key equivalent to 'key'.
+ * @return a typed pointer to the mapped value of the element with key equivalent to 'key'.
  * @return NULL - 'map' does not have an element with the specified key.
  */
 #define roy_map_at(map, key, value_type) \
@@ -102,12 +101,12 @@ bool roy_map_empty(const RoyMap * map);
 RoyMap * roy_map_insert(RoyMap * map, void * key, void * value);
 
 /**
- * @brief Removes an element with an equivalent key from 'map'.
+ * @brief Removes the element with an equivalent key from 'map'.
  * @param key - a key for comparision.
  * @return the 'map' after the operation.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-RoyMap * roy_map_erase(RoyMap * map, const void * key);
+RoyMap * roy_map_remove(RoyMap * map, const void * key);
 
 /**
  * @brief Removes all the elements from 'map'.
@@ -119,9 +118,9 @@ void roy_map_clear(RoyMap * map);
 /* LOOKUP */
 
 /**
- * @brief Finds the first element with an equivalent key.
+ * @brief Finds the element with an equivalent key.
  * @param key - a key for comparision.
- * @return The iterator to the value of target element.
+ * @return a pointer to the value of target element.
  */
 void * roy_map_find(RoyMap * map, const void * key);
 

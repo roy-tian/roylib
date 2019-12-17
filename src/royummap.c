@@ -34,8 +34,8 @@ roy_ummap_empty(const RoyUMMap * ummap) {
   return roy_umset_empty(ummap->umset);
 }
 
-bool
-roy_ummap_insert(RoyUMMap * ummap, 
+void
+roy_ummap_insert(RoyUMMap * ummap,
                  void     * key,
                  size_t     key_size,
                  void     * value) {
@@ -43,7 +43,6 @@ roy_ummap_insert(RoyUMMap * ummap,
     &ummap->umset->buckets[roy_ummap_bucket(ummap, key, key_size)];
   roy_slist_push_front(*node, roy_pair_new(key, value));
   ummap->umset->size++;
-  return true;
 }
 
 bool

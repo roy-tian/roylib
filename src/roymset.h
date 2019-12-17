@@ -17,8 +17,7 @@ struct RoyMSet_ {
 };
 
 /**
- * @brief RoyMSet [aka Multi-Set]: an associative container that contains
- * a sorted set of objects of type Key, duplicated objects is allowed.
+ * @brief RoyMSet [aka Multi-Set]: an associative container that contains a sorted set of objects of type Key, duplicated objectss are allowed.
  * Sorting is done using the key comparison function 'comparer'.
  * Search, removal, and insertion operations have logarithmic complexity.
  */
@@ -43,49 +42,100 @@ void roy_mset_delete(RoyMSet * mset, ROperate deleter);
 
 /* ITERATORS */
 
-// Returns an iterator to the minimum element of 'mset'.
+/**
+ * @return an iterator to first the minimum element of 'mset'.
+ * @return NULL - 'mset' is empty.
+ */
 RoyMSet * roy_mset_min(RoyMSet *mset);
 
-// Returns an iterator to the maximum element of 'mset'.
+/**
+ * @return a iterator to the last maximum element of 'set'.
+ * @return NULL - 'set' is empty.
+ */
 RoyMSet * roy_mset_max(RoyMSet *mset);
 
-// Returns a const iterator to the minimum element of 'mset'.
+/**
+ * @return an const iterator to first the minimum element of 'mset'.
+ * @return NULL - 'mset' is empty.
+ */
 const RoyMSet * roy_mset_cmin(const RoyMSet *mset);
 
-// Returns a const iterator to the maximum element of 'mset'.
+/**
+ * @return a const iterator to the last maximum element of 'mset'.
+ * @return NULL - 'mset' is empty.
+ */
 const RoyMSet * roy_mset_cmax(const RoyMSet *mset);
 
 /* CAPACITY */
 
-// Returns the number of elements in 'mset'.
+/// @brief Returns the number of elements in 'mset'.
 size_t roy_mset_size(const RoyMSet * mset);
 
-// Returns whether there is any elements in 'mset'.
+/**
+ * @brief Checks whether 'mset' is empty.
+ * @retval true - there is no element in 'mset'.
+ * @retval false - otherwise.
+ */
 bool roy_mset_empty(const RoyMSet * mset);
 
 /* MODIFIERS */
 
-// Adds an 'key_size'-sized key into 'mset' by ascending order.
+/**
+ * @brief Inserts an element into 'mset' by ascending order, duplicated elements are allowed.
+ * @param key - a pointer to the new element.
+ * @param comparer - a function to compare two elements, acting like <=> operator in C++.
+ * @return the 'mset' after the operation.
+ * @note - The behavior is undefined if 'key' is uninitialized.
+ */
 RoyMSet * roy_mset_insert(RoyMSet ** mset, void * key, RCompare comparer);
 
-// Removes all elements from 'mset'.
+/**
+ * @brief Removes all the elements from 'mset'.
+ * @param deleter - a function for element deleting.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 void roy_mset_clear(RoyMSet * mset, ROperate deleter);
 
-// Removes all elements equals to 'key' from 'mset'.
+/**
+ * @brief Removes the element equivalents to 'key' from 'mset'.
+ * @param key - a pointer to the comparable element.
+ * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'data'.
+ * @param deleter - a function for element deleting.
+ * @return the 'mset' after the operation.
+ * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
+ */
 RoyMSet * roy_mset_remove(RoyMSet ** mset, const void * key, RCompare comparer, ROperate deleter);
 
 /* LOOKUP */
 
+/**
+ * @param key - a pointer to the comparable element.
+ * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'data'.
+ * @return the number of elements equivalent to 'key'.
+ */
 size_t roy_mset_count(const RoyMSet * mset, const void * key, RCompare comparer);
 
+/**
+ * @brief Finds the first element equivalent to 'key'.
+ * @param key - a pointer to the comparable element.
+ * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'key'.
+ * @return The iterator to the target element.
+ */
 RoyMSet * roy_mset_find(const RoyMSet * mset, const void * key, RCompare comparer);
 
 /* TRAVERSE */
 
-// Traverses all elements in 'mset' using 'operate'.
+/**
+ * @brief Traverses all elements in 'mset' in ascending order.
+ * @param operate - a function for element traversing.
+ */
 void roy_mset_for_each(RoyMSet * mset, ROperate operate);
 
-// Traverses all elements whichever meets 'condition' in 'mset' using 'operate'.
+/**
+ * @brief Traverses elements whichever meets 'condition' in 'mset'.
+ * @param condition - a function to check whether the given element meet the condition.
+ * @param operate - a function for element traversing.
+ */
 void roy_mset_for_which(RoyMSet * mset, RCondition condition, ROperate operate);
 
 #endif // ROYMSET_H

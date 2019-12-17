@@ -39,7 +39,7 @@ typedef struct RoyUMap_ RoyUMap;
 RoyUMap * roy_umap_new(size_t bucket_count, uint64_t seed, RHash hash, RCompare comparer, ROperate deleter);
 
 /**
- * @brief Releases all the elements and destroys the RoyUSet - 'umap' itself.
+ * @brief Releases all the elements and destroys the RoyUMap - 'umap' itself.
  * @note - Always call this function after the work is done by the given 'uset' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */

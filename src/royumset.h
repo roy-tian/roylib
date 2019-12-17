@@ -85,7 +85,7 @@ bool roy_umset_empty(const RoyUMSet * umset);
 /* MODIFIERS */
 
 /**
- * @brief Hashes an element into 'umset', duplicated key is allowed.
+ * @brief Hashes an element into 'umset', duplicated keys are allowed.
  * @param key - a pointer to the new element.
  * @param key_size - total memory the new element takes.
  * @param comparer - a function to compare two elements, acting like <=> operator in C++.
