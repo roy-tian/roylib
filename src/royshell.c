@@ -3,7 +3,6 @@
 #include "trivials/roypair.h"
 
 static void tokenize(RoyShell * shell);
-static void pos_correct(const RoyDeque * deque, size_t * position);
 
 enum {
   MAX_LEN = 1023,
@@ -52,10 +51,10 @@ roy_shell_start(RoyShell * shell) {
     if (roy_string_match(shell->ibuffer, "\\s+")) {
       roy_string_clear(shell->obuffer);
       tokenize(shell);
+      RoyString * buf = NULL;
+      roy_shell_argument_at(buf, shell, 0);
       ROperate func = 
-        roy_function_get( roy_map_at(shell->dict,
-                                     roy_shell_argument_at(shell, 0),
-                                     RoyFunction) );
+        roy_function_get( roy_map_at(shell->dict, buf, RoyFunction) );
       if (func) {
         func(shell); // clients should push all output to obuffer in func.
       }
@@ -86,17 +85,19 @@ roy_shell_argument_count(const RoyShell * shell) {
 }
 
 RoyString *
-roy_shell_argument_at(const RoyShell * shell,
+roy_shell_argument_at(RoyString      * dest,
+                      const RoyShell * shell,
                       size_t           position) {
-  pos_correct(shell->argv, &position);
-  return roy_deque_at(shell->argv, position, RoyString);
+  dest = roy_deque_at(shell->argv, position, RoyString);
+  return dest;
 }
 
 int
 roy_shell_argument_find(const RoyShell * shell,
                         const char     * regex) {
   for (size_t i = 0; i != roy_shell_argument_count(shell); i++) {
-    if (roy_string_match(roy_shell_argument_at(shell, i), regex)) {
+    RoyString * buf = NULL;
+    if (roy_string_match( roy_shell_argument_at(buf, shell, i), regex) ) {
       return i;
     }
   }
@@ -126,17 +127,19 @@ roy_shell_history_count(const RoyShell * shell) {
 }
 
 RoyString *
-roy_shell_ihistory_at(const RoyShell * shell,
+roy_shell_ihistory_at(RoyString      * dest,
+                      const RoyShell * shell,
                       size_t           position) {
-  pos_correct(shell->ihistory, &position);
-  return roy_deque_at(shell->ihistory, position, RoyString);
+  dest = roy_deque_at(shell->ihistory, position, RoyString);
+  return dest;
 }
 
 RoyString *
-roy_shell_ohistory_at(const RoyShell * shell,
+roy_shell_ohistory_at(RoyString      * dest,
+                      const RoyShell * shell,
                       size_t           position) {
-  pos_correct(shell->ohistory, &position);
-  return roy_deque_at(shell->ohistory, position, RoyString);
+  dest = roy_deque_at(shell->ohistory, position, RoyString);
+  return dest;
 }
 
 /* PRIVATE FUNCTIONS */
@@ -158,16 +161,9 @@ tokenize(RoyShell  * shell) {
       phead = ptail;
     }
   }
-  if (roy_shell_argument_count(shell) != 0 &&
-      !roy_map_find(shell->dict, roy_shell_argument_at(shell, 0))) {
+  RoyString * buf = NULL;
+  roy_shell_argument_at(buf, shell, 0);
+  if (roy_shell_argument_count(shell) != 0 && !roy_map_find(shell->dict, buf)) {
     roy_deque_push_front(shell->argv, "");
   }
-}
-
-static void
-pos_correct(const RoyDeque * deque,
-            size_t         * position) {
-  if (*position >= roy_deque_size(deque)) {
-    *position = roy_deque_size(deque) - 1;
-  } 
 }
