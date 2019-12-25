@@ -59,9 +59,10 @@ size_t roy_shell_argument_count(const RoyShell * shell);
 
 /**
  * @brief Returns the text content of specified argument of current argv.
+ * @param dest - a pointer to the selected RoyString to be returned.
  * @param position - where the argument takes place in current argv.
  */
-RoyString * roy_shell_argument_at(const RoyShell * shell, size_t position);
+RoyString * roy_shell_argument_at(RoyString * dest, const RoyShell * shell, size_t position);
 
 /**
  * @brief Finds specified argument in 'shell'.
@@ -85,8 +86,18 @@ RoyShell * roy_shell_log_append(RoyShell * shell, const char * format, ...);
 /// @brief Counts the number of input/output operation rounds.
 size_t roy_shell_history_count(const RoyShell * shell);
 
-// Shows input history anytime you like, position < 0 will show reversely.
+/**
+ * @param dest - a pointer to the selected RoyString to be returned.
+ * @param position - where the input takes place in input history.
+ * @return - the text content of specified input.
+ * @return - NULL if position exceeds.
+ */
 RoyString * roy_shell_ihistory_at(RoyString * dest, const RoyShell * shell, size_t position);
 
-// Shows output history anytime you like, position < 0 will show reversely.
+/**
+ * @param dest - a pointer to the selected RoyString to be returned.
+ * @param position - where the input takes place in output history.
+ * @return - the text content of specified input.
+ * @return - NULL if position exceeds.
+ */
 RoyString * roy_shell_ohistory_at(RoyString * dest, const RoyShell * shell, size_t position);
