@@ -4,4 +4,6 @@
 /lib
 .DS_Store
 test
+a.c
+a.exe
 a.out*

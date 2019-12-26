@@ -155,9 +155,9 @@ roy_uint_to_str(char     * dest,
 
 uint64_t
 roy_uint_set_bits(uint64_t * dest,
+                  uint64_t   src,
                   size_t     position,
-                  size_t     count,
-                  uint64_t   src) {
+                  size_t     count) {
   return *dest = (*dest & ~(~(~0ULL << count) << (position + 1 - count))) |
                  ( src  &   ~(~0ULL << count) << (position + 1 - count));
 }
