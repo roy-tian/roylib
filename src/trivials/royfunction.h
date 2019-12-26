@@ -7,7 +7,7 @@ struct RoyFunction_ {
   void * func_ptr;
 };
 
-// RoyFunction: encapsulates any kinds of pointers in order to transfer the underlying objects.
+/// @brief RoyFunction: encapsulates any kinds of pointers in order to transfer the underlying objects.
 typedef struct RoyFunction_ RoyFunction;
 
 RoyFunction * roy_function_new(void * func_ptr);
