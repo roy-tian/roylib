@@ -40,10 +40,10 @@ void roy_shell_start(RoyShell * shell);
 RoyShell * roy_shell_command_add(RoyShell * shell, const char * cmd, ROperate operate);
 
 /// @brief A convenient #define for 'roy_shell_command_add' with identical name of cmd and 'operate' function.
-#define roy_shell_add(shell, cmd) roy_shell_command_add(shell, #cmd, cmd)
+#define roy_shell_add(shell, cmd) roy_shell_command_add(shell, #cmd, (ROperate)cmd)
 
 /// @brief A convenient #define for roy_shell_command_add(shell, "", cmd).
-#define roy_shell_default(shell, cmd) roy_shell_command_add(shell, "", cmd)
+#define roy_shell_default(shell, cmd) roy_shell_command_add(shell, "", (ROperate)cmd)
 
 /**
  * @brief Sets the text of shell prompt, "> " by default.
