@@ -13,6 +13,6 @@ roy_function_delete(RoyFunction * function) {
 }
 
 void *
-roy_object_get(RoyFunction * function) {
+roy_function_get(RoyFunction * function) {
   return function ? function->func_ptr : NULL;
 }
