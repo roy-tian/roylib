@@ -181,6 +181,12 @@ void roy_string_print(const RoyString * string);
 /// @brief Writes 'string' to stdout, adds a new line to the end of 'string' if there wasn't one.
 void roy_string_println(const RoyString * string);
 
+/**
+ * @brief Writes 'string' according to stdin.
+ * @param buffer_size - size of the buffer inside the function.
+ */ 
+void roy_string_scan(RoyString * string, size_t buffer_size);
+
 /* SEARCH */
 
 /**

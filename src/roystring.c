@@ -2,15 +2,14 @@
 #include "roystring.h"
 #include <pcre.h>
 
-static bool pos_correct(const RoyString * string, size_t position);
-static bool pos_cnt_correct(const RoyString * string, size_t position, size_t count);
+static bool valid_pos(const RoyString * string, size_t position);
+static bool valid_pos_cnt(const RoyString * string, size_t position, size_t count);
 
 RoyString *
 roy_string_new(const char * str) {
   RoyString * ret = (RoyString *)malloc(sizeof(RoyString));
-  ret->str = (char *)calloc(strlen(str) + 1, sizeof(char));
-  memcpy(ret->str, str, strlen(str) + 1);
-  return ret;
+  ret->str = NULL;
+  return roy_string_assign(ret, str);
 }
 
 void
@@ -22,7 +21,7 @@ roy_string_delete(RoyString * string) {
 RoyString *
 roy_string_assign(RoyString  * string,
                   const char * str) {
-  string->str = (char *)realloc(string->str, strlen(str) + 1);
+  string->str = realloc(string->str, (strlen(str) + 1) * sizeof(char));
   memcpy(string->str, str, strlen(str) + 1);
   return string;
 }
@@ -30,7 +29,7 @@ roy_string_assign(RoyString  * string,
 int
 roy_string_at(const RoyString * string,
               size_t            position) {
-  if (pos_correct(string, position)) {
+  if (valid_pos(string, position)) {
     return *(string->str + position);
   }
   return '\0';
@@ -58,19 +57,19 @@ roy_string_size(const RoyString * string) {
 
 void
 roy_string_clear(RoyString * string) {
-  string = roy_string_assign(string, "");
+  roy_string_assign(string, "");
 }
 
 bool
 roy_string_insert_str(RoyString  * string,
                       const char * substr,
                       size_t       position) {
-  if (pos_correct(string, position)) {
+  if (valid_pos(string, position)) {
     ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
     memcpy(temp, string->str, position);
     strcat(temp, substr);
     strncat(temp, string->str + position, roy_string_size(string) - position);
-    string = roy_string_assign(string, temp);
+    roy_string_assign(string, temp);
     return true;
   } else {
     return false;
@@ -112,12 +111,12 @@ bool
 roy_string_erase(RoyString * string,
                  size_t      position,
                  size_t      count) {
-  if (pos_cnt_correct(string, position, count)) {
+  if (valid_pos_cnt(string, position, count)) {
     ROY_STR(temp, roy_string_size(string) - count + 1)
     memcpy(temp, string->str, position);
     strncat(temp, string->str + position + count,
             roy_string_size(string) - position - count);
-    string = roy_string_assign(string, temp);
+    roy_string_assign(string, temp);
     return true;
   } else {
     return false;
@@ -141,7 +140,7 @@ roy_string_replace_str(RoyString  * string,
                        const char * substr,
                        size_t       position,
                        size_t       count) {
-  if (pos_cnt_correct(string, position, count)) {
+  if (valid_pos_cnt(string, position, count)) {
     ROY_STR(temp, roy_string_size(string) + strlen(substr) + 1)
     strncpy(temp, string->str, position);
     strcat(temp, substr);
@@ -169,7 +168,7 @@ roy_string_substring(RoyString * dest,
                      RoyString * string,
                      size_t      position,
                      size_t      count) {
-  if (pos_cnt_correct(string, position, count)) {
+  if (valid_pos_cnt(string, position, count)) {
     ROY_STR(temp, count + 1)
     strncpy(temp, string->str + position, count);
     return dest = roy_string_assign(dest, temp);
@@ -206,6 +205,14 @@ roy_string_println(const RoyString * string) {
   if (roy_string_at(string, roy_string_size(string) - 1) != '\n') {
     putchar('\n');
   }
+}
+
+void
+roy_string_scan(RoyString * string,
+                size_t      buffer_size) {
+  ROY_STR(buf, buffer_size)
+  scanf("%s", buf);
+  roy_string_assign(string, buf);
 }
 
 int
@@ -281,13 +288,13 @@ roy_string_compare(const RoyString * string1,
 /* PRIVATE FUNCTIONS DOWN HERE */
 
 static bool
-pos_correct(const RoyString * string,
+valid_pos(const RoyString * string,
             size_t            position) {
   return position <= roy_string_size(string);
 }
 
 static bool
-pos_cnt_correct(const RoyString * string,
+valid_pos_cnt(const RoyString * string,
                 size_t            position,
                 size_t            count) {
   size_t size = roy_string_size(string);
