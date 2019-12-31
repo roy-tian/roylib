@@ -2,6 +2,7 @@
 #include "trivials/royfunction.h"
 #include "trivials/roypair.h"
 
+// Tokens will be pushed into argv.
 static void tokenize(RoyShell * shell);
 
 enum {
@@ -45,18 +46,16 @@ roy_shell_start(RoyShell * shell) {
   enum { BUFFER_SIZE = 1023 };
   while (true) {
     roy_string_print(shell->prompt);
-    roy_string_clear(shell->ibuffer);
-    fgets(roy_string_str(shell->ibuffer), BUFFER_SIZE, stdin);
-    roy_string_erase_right(shell->ibuffer, 1); // trims '\n' at tail.
+    roy_string_scan(shell->ibuffer, BUFFER_SIZE);
+    roy_string_println(shell->ibuffer);
     if (roy_string_match(shell->ibuffer, "\\s+")) {
-      roy_string_clear(shell->obuffer);
       tokenize(shell);
-      RoyString * buf = NULL;
-      roy_shell_argument_at(buf, shell, 0);
-      ROperate func = 
-        roy_function_get( roy_map_at(shell->dict, buf, RoyFunction) );
+      RoyString * temp = NULL;
+      roy_shell_argument_at(temp, shell, 0);      // Gets the first token from argv
+      ROperate func = roy_map_find(shell->dict, temp);
       if (func) {
-        func(shell); // clients should push all output to obuffer in func.
+        roy_string_clear(shell->obuffer);
+        func(shell); // clients take the resposibility to select useful outputs and push them to 'obuffer' in 'func'.
       }
       roy_deque_push_back(shell->ihistory, shell->ibuffer);
       roy_deque_push_back(shell->ohistory, shell->obuffer);
@@ -68,7 +67,7 @@ RoyShell *
 roy_shell_command_add(RoyShell   * shell,
                       const char * cmd,
                       ROperate     operate) {
-  roy_map_insert(shell->dict, roy_string_new(cmd), roy_function_new(operate));
+  roy_map_insert(shell->dict, roy_string_new(cmd), operate);
   return shell;
 }
 
