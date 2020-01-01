@@ -93,9 +93,8 @@ bool roy_array_full(const RoyArray * array);
  * @param position - where the new element should be exactly settled.
  * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
- * @retval false - 'position' exceeds or 'array' is full.
+ * @retval false - 'position' exceeds, 'array' is full or 'data' is uninitialized.
  * @note - The operation will move every element comes after 'position' to its next, so it can be very slow when 'array' is huge and 'position' is small, use with caution.
- * @note - The behavior is undefined if 'data' is uninitialized.
  */
 bool roy_array_insert(RoyArray * array, size_t position, void * data);
 
@@ -104,9 +103,8 @@ bool roy_array_insert(RoyArray * array, size_t position, void * data);
  * @param position - where the new element should be exactly settled.
  * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
- * @retval false - 'position' exceeds or 'array' is full.
+ * @retval false - 'position' exceeds, 'array' is full or 'data' is uninitialized.
  * @note - The operation moves the element at 'position' to the end of 'array', so it can shift the sequence of elements, use this function only if element order is irrelevant.
- * @note - The behavior is undefined if 'data' is uninitialized.
  */
 bool roy_array_insert_fast(RoyArray * array, size_t position, void * data);
 
@@ -114,8 +112,7 @@ bool roy_array_insert_fast(RoyArray * array, size_t position, void * data);
  * @brief Adds an element to the back of 'array'.
  * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
- * @retval false - 'position' exceeds or 'array' is full.
- * @note - The behavior is undefined if 'data' is uninitialized.
+ * @retval false - 'position' exceeds, 'array' is full or 'data' is uninitialized.
  */
 bool roy_array_push_back(RoyArray * array, void * data);
 
