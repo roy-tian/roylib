@@ -78,8 +78,7 @@ bool roy_queue_full(const RoyQueue * queue);
  * @brief Adds an element next to the last element of 'queue'.
  * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
- * @retval false - 'queue' is full.
- * @note The behavior is undefined if 'data' is uninitialized.
+ * @retval false - 'queue' is full or 'data' is uninitialized.
  */
 bool roy_queue_push(RoyQueue * queue, void * data);
 

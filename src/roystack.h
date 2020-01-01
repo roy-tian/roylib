@@ -76,8 +76,7 @@ bool roy_stack_full(const RoyStack * stack);
  * @brief Adds an element right before the first element of 'stack'.
  * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
- * @retval false - 'stack' is full.
- * @note The behavior is undefined if 'data' is uninitialized.
+ * @retval false - 'stack' is full or 'data' is uninitialized.
  */
 bool roy_stack_push(RoyStack * stack, void * data);
 

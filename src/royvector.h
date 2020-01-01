@@ -85,10 +85,9 @@ bool roy_vector_empty(const RoyVector * vector);
  * @param position - where the new element should be exactly settled.
  * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
- * @retval false - 'position' exceeds.
+ * @retval false - 'position' exceeds or 'data' is uninitialized.
  * @note - The storage will expand automatically whenever needed.
  * @note - The operation will move every element comes after 'position' to its next, so it can be very slow when 'vector' is huge and 'position' is small, use with caution.
- * @note - The behavior is undefined if 'data' is uninitialized.
  */
 bool roy_vector_insert(RoyVector * vector, size_t position, void * data);
 
@@ -97,20 +96,20 @@ bool roy_vector_insert(RoyVector * vector, size_t position, void * data);
  * @param position - where the new element should be exactly settled.
  * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
- * @retval false - 'position' exceeds.
+ * @retval false - 'position' exceeds or 'data' is uninitialized.
  * @note - The storage will be expanded automatically whenever needed.
  * @note - The operation moves the element at 'position' to the end of 'vector', so it can shift the sequence of elements, use this function only if element order is irrelevant.
- * @note - The behavior is undefined if 'data' is uninitialized.
  */
 bool roy_vector_insert_fast(RoyVector * vector, size_t position, void * data);
 
 /**
  * @brief Adds an element to the back of 'vector'.
  * @param data - a pointer to the new element.
+ * @retval true - the insertion is successful.
+ * @retval false - data' is uninitialized.
  * @note - The storage will be expanded automatically whenever needed.
- * @note - The behavior is undefined if 'data' is uninitialized.
  */
-void roy_vector_push_back(RoyVector * vector, void * data);
+bool roy_vector_push_back(RoyVector * vector, void * data);
 
 /**
  * @brief Removes an element from 'vector'.
