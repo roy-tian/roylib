@@ -1,5 +1,4 @@
 #include "royshell.h"
-#include "trivials/royfunction.h"
 #include "trivials/roypair.h"
 
 // Tokens will be pushed into argv.
@@ -11,15 +10,19 @@ enum {
 
 void pair_deleter(RoyPair * pair) {
   roy_string_delete(pair->key);
-  roy_function_delete(pair->value);
   free(pair);
   pair = NULL;
 }
 
+int pair_comparer(const RoyPair * lhs,
+                  const RoyPair * rhs) {
+  return roy_string_compare(lhs->key, rhs->key);
+}
+
 RoyShell *
 roy_shell_new(void) {
-  RoyShell * ret = (RoyShell *)malloc(sizeof(RoyShell));
-  ret->dict      = roy_map_new((RCompare)roy_string_compare, (ROperate)pair_deleter);
+  RoyShell * ret = malloc(sizeof(RoyShell));
+  ret->dict      = roy_map_new((RCompare)pair_comparer, (ROperate)pair_deleter);
   ret->prompt    = roy_string_new("> ");
   ret->ibuffer   = roy_string_new("");
   ret->obuffer   = roy_string_new("");
@@ -47,18 +50,18 @@ roy_shell_start(RoyShell * shell) {
   while (true) {
     roy_string_print(shell->prompt);
     roy_string_scan(shell->ibuffer, BUFFER_SIZE);
-    roy_string_println(shell->ibuffer);
-    if (roy_string_match(shell->ibuffer, "\\s+")) {
+    if (roy_string_match(shell->ibuffer, "\\w+")) {
+      roy_string_clear(shell->obuffer);
       tokenize(shell);
-      RoyString * temp = NULL;
-      roy_shell_argument_at(temp, shell, 0);      // Gets the first token from argv
+      const RoyString * temp = roy_shell_argument_at(shell, 0);  // Gets the first token from argv
       ROperate func = roy_map_find(shell->dict, temp);
       if (func) {
-        roy_string_clear(shell->obuffer);
         func(shell); // clients take the resposibility to select useful outputs and push them to 'obuffer' in 'func'.
       }
-      roy_deque_push_back(shell->ihistory, shell->ibuffer);
-      roy_deque_push_back(shell->ohistory, shell->obuffer);
+      roy_deque_push_back(shell->ihistory,
+                          roy_string_new(roy_string_cstr(shell->ibuffer)));
+      roy_deque_push_back(shell->ohistory,
+                          roy_string_new(roy_string_cstr(shell->obuffer)));
     }
   }
 }
@@ -84,19 +87,16 @@ roy_shell_argument_count(const RoyShell * shell) {
 }
 
 RoyString *
-roy_shell_argument_at(RoyString      * dest,
-                      const RoyShell * shell,
+roy_shell_argument_at(const RoyShell * shell,
                       size_t           position) {
-  dest = roy_deque_at(shell->argv, position, RoyString);
-  return dest;
+  return roy_deque_at(shell->argv, position, RoyString);
 }
 
 int
 roy_shell_argument_find(const RoyShell * shell,
                         const char     * regex) {
   for (size_t i = 0; i != roy_shell_argument_count(shell); i++) {
-    RoyString * buf = NULL;
-    if (roy_string_match( roy_shell_argument_at(buf, shell, i), regex) ) {
+    if (roy_string_match(roy_shell_argument_at(shell, i), regex)) {
       return i;
     }
   }
@@ -126,19 +126,15 @@ roy_shell_history_count(const RoyShell * shell) {
 }
 
 RoyString *
-roy_shell_ihistory_at(RoyString      * dest,
-                      const RoyShell * shell,
+roy_shell_ihistory_at(const RoyShell * shell,
                       size_t           position) {
-  dest = roy_deque_at(shell->ihistory, position, RoyString);
-  return dest;
+  return roy_deque_at(shell->ihistory, position, RoyString);
 }
 
 RoyString *
-roy_shell_ohistory_at(RoyString      * dest,
-                      const RoyShell * shell,
+roy_shell_ohistory_at(const RoyShell * shell,
                       size_t           position) {
-  dest = roy_deque_at(shell->ohistory, position, RoyString);
-  return dest;
+  return roy_deque_at(shell->ohistory, position, RoyString);
 }
 
 /* PRIVATE FUNCTIONS */
@@ -146,23 +142,24 @@ roy_shell_ohistory_at(RoyString      * dest,
 static void
 tokenize(RoyShell  * shell) {
   roy_deque_clear(shell->argv);
-  const char * phead = roy_string_str(shell->ibuffer);
-  const char * ptail = roy_string_str(shell->ibuffer);
+  const char * phead = roy_string_cstr(shell->ibuffer);
+  const char * ptail = roy_string_cstr(shell->ibuffer);
   while (*phead != '\0') {
     if (!isgraph(*phead)) {
       phead++;
     } else {
       ptail = phead;
-      do { ptail++; } while (isgraph(*ptail));
-      char arg[MAX_LEN + 1] = "\0";
+      do {
+        ptail++;
+      } while (isgraph(*ptail));
+      char arg[ptail - phead + 1];
       strncpy(arg, phead, ptail - phead);
-      roy_deque_push_back(shell->argv, arg);
+      roy_deque_push_back(shell->argv, roy_string_new(arg));
       phead = ptail;
     }
   }
-  RoyString * buf = NULL;
-  roy_shell_argument_at(buf, shell, 0);
-  if (roy_shell_argument_count(shell) != 0 && !roy_map_find(shell->dict, buf)) {
-    roy_deque_push_front(shell->argv, "");
+  const RoyString * temp = roy_shell_argument_at(shell, 0);
+  if (roy_shell_argument_count(shell) != 0 && !roy_map_find(shell->dict, temp)) {
+    roy_deque_push_front(shell->argv, roy_string_new(""));
   }
 }
