@@ -6,7 +6,7 @@ roy_ummap_new(size_t   bucket_count,
               RHash    hash, 
               RCompare comparer, 
               ROperate deleter) {
-  RoyUMMap * ret = (RoyUMMap *)malloc(sizeof(RoyUMMap));
+  RoyUMMap * ret = malloc(sizeof(RoyUMMap));
   ret->umset = roy_umset_new(bucket_count, seed, hash, comparer, deleter);
   return ret;
 }

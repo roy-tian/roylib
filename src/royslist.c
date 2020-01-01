@@ -226,7 +226,7 @@ void roy_slist_for_which(RoySList   * slist,
 
 static RoySList *
 node_new(void * data) {
-  RoySList * ret = (RoySList *)malloc(sizeof(RoySList));
+  RoySList * ret = malloc(sizeof(RoySList));
   ret->data = data;
   ret->next = NULL;
   return ret;

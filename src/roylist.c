@@ -6,8 +6,8 @@ static void      node_delete(RoyList * list, ROperate deleter);
 
 RoyList *
 roy_list_new(void) {
-  RoyList * head = (RoyList *)malloc(sizeof(RoyList));
-  RoyList * tail = (RoyList *)malloc(sizeof(RoyList));
+  RoyList * head = malloc(sizeof(RoyList));
+  RoyList * tail = malloc(sizeof(RoyList));
   head->data = tail->data = NULL;
   head->next = tail;
   head->prev = NULL;
@@ -335,7 +335,7 @@ void roy_list_for_which(RoyList    * list,
 
 static RoyList *
 node_new(void * data) {
-  RoyList * ret = (RoyList *)malloc(sizeof(RoyList));
+  RoyList * ret = malloc(sizeof(RoyList));
   ret->data = data;
   ret->prev = NULL;
   ret->next = NULL;

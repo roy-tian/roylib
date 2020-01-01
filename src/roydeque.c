@@ -2,7 +2,7 @@
 
 RoyDeque *
 roy_deque_new(ROperate deleter) {
-  RoyDeque * ret = (RoyDeque *)malloc(sizeof(RoyDeque));
+  RoyDeque * ret = malloc(sizeof(RoyDeque));
   ret->head      = roy_list_new();
   ret->tail      = ret->head->next;
   ret->deleter   = deleter;

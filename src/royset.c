@@ -167,7 +167,7 @@ roy_set_for_which(RoySet     * set,
 
 static RoySet *
 node_new(void * key) {
-  RoySet * ret = (RoySet *)malloc(sizeof(RoySet));
+  RoySet * ret = malloc(sizeof(RoySet));
   ret->left    = NULL;
   ret->right   = NULL;
   ret->key     = key;

@@ -3,7 +3,7 @@
 RoyPair *
 roy_pair_new(void * key,
              void * value) {
-  RoyPair * ret = (RoyPair *)malloc(sizeof(RoyPair));
+  RoyPair * ret = malloc(sizeof(RoyPair));
   ret->key      = key;
   ret->value    = value;
   return ret;

@@ -6,7 +6,7 @@ roy_umap_new(size_t   bucket_count,
              RHash    hash, 
              RCompare comparer, 
              ROperate deleter) {
-  RoyUMap * ret = (RoyUMap *)malloc(sizeof(RoyUMap));
+  RoyUMap * ret = malloc(sizeof(RoyUMap));
   ret->uset = roy_uset_new(bucket_count, seed, hash, comparer, deleter);
   return ret;
 }

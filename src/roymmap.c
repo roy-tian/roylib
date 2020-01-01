@@ -4,7 +4,7 @@
 RoyMMap *
 roy_mmap_new(RCompare comparer,
              ROperate deleter) {
-  RoyMMap * ret = (RoyMMap *)malloc(sizeof(RoyMMap));
+  RoyMMap * ret = malloc(sizeof(RoyMMap));
   ret->root     = NULL;
   ret->comparer = comparer;
   ret->deleter  = deleter;

@@ -7,7 +7,7 @@ static bool valid_pos_cnt(const RoyString * string, size_t position, size_t coun
 
 RoyString *
 roy_string_new(const char * str) {
-  RoyString * ret = (RoyString *)malloc(sizeof(RoyString));
+  RoyString * ret = malloc(sizeof(RoyString));
   ret->str = NULL;
   return roy_string_assign(ret, str);
 }
@@ -211,8 +211,9 @@ void
 roy_string_scan(RoyString * string,
                 size_t      buffer_size) {
   ROY_STR(buf, buffer_size)
-  scanf("%s", buf);
+  fgets(buf, buffer_size, stdin);
   roy_string_assign(string, buf);
+  roy_string_erase_right(string, 1);
 }
 
 int

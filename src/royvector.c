@@ -8,8 +8,8 @@ static void shrink(RoyVector * vector);
 RoyVector *
 roy_vector_new(size_t   capacity,
                ROperate deleter) {
-  RoyVector * ret    = (RoyVector *)malloc(sizeof(RoyVector));
-  ret->data          = (void **)calloc(capacity, R_PTR_SIZE);
+  RoyVector * ret    = malloc(sizeof(RoyVector));
+  ret->data          = calloc(capacity, R_PTR_SIZE);
   ret->deleter       = deleter;
   ret->capacity      = capacity;
   ret->size          = 0;

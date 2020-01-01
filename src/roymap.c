@@ -4,8 +4,8 @@
 RoyMap *
 roy_map_new(RCompare comparer,
             ROperate deleter) {
-  RoyMap * ret  = (RoyMap *)malloc(sizeof(RoyMap));
-  ret->root     = NULL;
+  RoyMap * ret  = malloc(sizeof(RoyMap));
+  ret->root     = roy_set_new();
   ret->comparer = comparer;
   ret->deleter  = deleter;
   return ret;
@@ -69,7 +69,10 @@ roy_map_clear(RoyMap * map) {
 void *
 roy_map_find(RoyMap     * map,
              const void * key) {
-  return roy_pair_value(roy_set_find(map->root, key, map->comparer)->key);
+  RoyPair * pair_temp = roy_pair_new(key, NULL);
+  RoySet * set_found = roy_set_find(map->root, pair_temp, map->comparer);
+  free(pair_temp);
+  return set_found ? roy_pair_value(set_found->key) : NULL;
 }
 
 void
