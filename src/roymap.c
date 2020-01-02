@@ -66,6 +66,9 @@ roy_map_clear(RoyMap * map) {
   roy_set_clear(map->root, map->deleter);
 }
 
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
+
 void *
 roy_map_find(RoyMap     * map,
              const void * key) {
@@ -74,6 +77,9 @@ roy_map_find(RoyMap     * map,
   free(pair_temp);
   return set_found ? roy_pair_value(set_found->key) : NULL;
 }
+
+#pragma GCC diagnostic warning "-Wdiscarded-qualifiers"
+#endif
 
 void
 roy_map_for_each(RoyMap   * map,
