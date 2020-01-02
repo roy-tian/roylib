@@ -49,7 +49,7 @@ roy_list_citerator(const RoyList * list_head,
 RoyList *
 roy_list_riterator(RoyList * list_tail,
                    size_t    rposition) {
-  RoyList * riter = roy_list_rbegin(list_tail);
+  RoyList * riter = list_tail;
   while (riter->prev && riter->prev->prev &&
          rposition < roy_list_rsize(list_tail)) {
     riter = riter->prev;
@@ -61,7 +61,7 @@ roy_list_riterator(RoyList * list_tail,
 const RoyList *
 roy_list_criterator(const RoyList * list_tail,
                     size_t          rposition) {
-  const RoyList * riter = roy_list_crbegin(list_tail);
+  const RoyList * riter = list_tail;
   while (riter->prev && riter->prev->prev &&
          rposition < roy_list_rsize(list_tail)) {
     riter = riter->prev;
