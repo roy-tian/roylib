@@ -50,13 +50,16 @@ roy_shell_start(RoyShell * shell) {
   while (true) {
     roy_string_print(shell->prompt);
     roy_string_scan(shell->ibuffer, BUFFER_SIZE);
-    if (roy_string_match(shell->ibuffer, "\\w+")) {
+    if (roy_string_match(shell->ibuffer, "[\\w\\s]+")) {
       roy_string_clear(shell->obuffer);
       tokenize(shell);
-      const RoyString * temp = roy_shell_argument_at(shell, 0);  // Gets the first token from argv
-      ROperate func = roy_map_find(shell->dict, temp);
+      // Gets the first token from argv
+      ROperate func = roy_map_find(shell->dict, 
+                                   roy_shell_argument_at(shell, 0));
       if (func) {
-        func(shell); // clients take the resposibility to select useful outputs and push them to 'obuffer' in 'func'.
+        func(shell); 
+        // Clients take the resposibility to select useful outputs,
+        // and push them to 'obuffer' in 'func'.
       }
       roy_deque_push_back(shell->ihistory,
                           roy_string_new(roy_string_cstr(shell->ibuffer)));
@@ -154,12 +157,13 @@ tokenize(RoyShell  * shell) {
       } while (isgraph(*ptail));
       char arg[ptail - phead + 1];
       strncpy(arg, phead, ptail - phead);
+      arg[ptail - phead] = '\0';
       roy_deque_push_back(shell->argv, roy_string_new(arg));
       phead = ptail;
     }
   }
-  const RoyString * temp = roy_shell_argument_at(shell, 0);
-  if (roy_shell_argument_count(shell) != 0 && !roy_map_find(shell->dict, temp)) {
+  if (roy_shell_argument_count(shell) != 0 &&
+      !roy_map_find(shell->dict, roy_shell_argument_at(shell, 0))) {
     roy_deque_push_front(shell->argv, roy_string_new(""));
   }
 }

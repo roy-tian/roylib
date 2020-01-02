@@ -87,14 +87,12 @@ size_t roy_shell_history_count(const RoyShell * shell);
 
 /**
  * @param position - where the input takes place in input history.
- * @return - the text content of specified input.
- * @return - NULL if position exceeds.
+ * @return - the text content of specified input, NULL if position exceeds.
  */
 RoyString * roy_shell_ihistory_at(const RoyShell * shell, size_t position);
 
 /**
  * @param position - where the input takes place in output history.
- * @return - the text content of specified input.
- * @return - NULL if position exceeds.
+ * @return - the text content of specified input, NULL if position exceeds.
  */
 RoyString * roy_shell_ohistory_at(const RoyShell * shell, size_t position);
