@@ -69,10 +69,10 @@ roy_map_clear(RoyMap * map) {
 void *
 roy_map_find(RoyMap * map,
              void   * key) {
-  RoyPair * pair_temp = roy_pair_new(key, NULL);
-  RoySet * set_found = roy_set_find(map->root, pair_temp, map->comparer);
-  free(pair_temp);
-  return set_found ? roy_pair_value(set_found->key) : NULL;
+  RoyPair * pair = roy_pair_new(key, NULL);
+  RoySet * set = roy_set_find(map->root, pair, map->comparer);
+  free(pair);
+  return set ? roy_pair_value(set->key) : NULL;
 }
 
 void
