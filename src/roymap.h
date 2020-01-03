@@ -122,7 +122,7 @@ void roy_map_clear(RoyMap * map);
  * @param key - a key for comparision.
  * @return a pointer to the value of target element.
  */
-void * roy_map_find(RoyMap * map, const void * key);
+void * roy_map_find(RoyMap * map, void * key);
 
 /* TRAVERSE */
 
