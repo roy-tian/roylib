@@ -66,6 +66,24 @@ roy_mmap_clear(RoyMMap * mmap) {
   roy_mset_clear(mmap->root, mmap->deleter);
 }
 
+size_t
+roy_mmap_count(const RoyMMap * mmap,
+               void          * key) {
+  RoyPair * pair = roy_pair_new(key, NULL);
+  size_t ret = roy_mset_count(mmap->root, pair, (RCompare)mmap->comparer);
+  free(pair);
+  return ret;
+}
+
+void *
+roy_mmap_find(RoyMMap * mmap,
+              void    * key) {
+  RoyPair * pair = roy_pair_new(key, NULL);
+  RoyMSet * mset = roy_mset_find(mmap->root, pair, (RCompare)mmap->comparer);
+  free(pair);
+  return mset ? roy_pair_value(mset->key) : NULL;
+}
+
 void
 roy_mmap_for_each(RoyMMap  * mmap,
                   ROperate   operate) {
