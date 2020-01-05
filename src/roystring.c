@@ -9,21 +9,13 @@ RoyString *
 roy_string_new(const char * str) {
   RoyString * ret = malloc(sizeof(RoyString));
   ret->str = NULL;
-  return roy_string_assign(ret, str);
+  return roy_string_assign_str(ret, str);
 }
 
 void
 roy_string_delete(RoyString * string) {
   free(string->str);
   free(string);
-}
-
-RoyString *
-roy_string_assign(RoyString  * string,
-                  const char * str) {
-  string->str = realloc(string->str, (strlen(str) + 1) * sizeof(char));
-  memcpy(string->str, str, strlen(str) + 1);
-  return string;
 }
 
 int
@@ -55,9 +47,23 @@ roy_string_size(const RoyString * string) {
   return strlen(string->str);
 }
 
+RoyString *
+roy_string_assign_str(RoyString  * string,
+                      const char * str) {
+  string->str = realloc(string->str, (strlen(str) + 1) * sizeof(char));
+  memcpy(string->str, str, strlen(str) + 1);
+  return string;
+}
+
+RoyString *
+roy_string_assign(RoyString       * dest,
+                  const RoyString * src) {
+  return roy_string_assign_str(dest, roy_string_cstr(src));
+}
+
 void
 roy_string_clear(RoyString * string) {
-  roy_string_assign(string, "");
+  roy_string_assign_str(string, "");
 }
 
 bool
@@ -69,7 +75,7 @@ roy_string_insert_str(RoyString  * string,
     memcpy(temp, string->str, position);
     strcat(temp, substr);
     strncat(temp, string->str + position, roy_string_size(string) - position);
-    roy_string_assign(string, temp);
+    roy_string_assign_str(string, temp);
     return true;
   } else {
     return false;
@@ -116,7 +122,7 @@ roy_string_erase(RoyString * string,
     memcpy(temp, string->str, position);
     strncat(temp, string->str + position + count,
             roy_string_size(string) - position - count);
-    roy_string_assign(string, temp);
+    roy_string_assign_str(string, temp);
     return true;
   } else {
     return false;
@@ -145,7 +151,7 @@ roy_string_replace_str(RoyString  * string,
     strncpy(temp, string->str, position);
     strcat(temp, substr);
     strcat(temp, string->str + position + count);
-    string = roy_string_assign(string, temp);
+    string = roy_string_assign_str(string, temp);
     return true;
   } else {
     return false;
@@ -171,7 +177,7 @@ roy_string_substring(RoyString * dest,
   if (valid_pos_cnt(string, position, count)) {
     ROY_STR(temp, count + 1)
     strncpy(temp, string->str + position, count);
-    return dest = roy_string_assign(dest, temp);
+    return dest = roy_string_assign_str(dest, temp);
   } else {
     return NULL;
   }
@@ -212,7 +218,7 @@ roy_string_scan(RoyString * string,
                 size_t      buffer_size) {
   ROY_STR(buf, buffer_size)
   fgets(buf, buffer_size, stdin);
-  roy_string_assign(string, buf);
+  roy_string_assign_str(string, buf);
   roy_string_erase_right(string, 1);
 }
 

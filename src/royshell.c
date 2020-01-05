@@ -80,7 +80,7 @@ roy_shell_command_add(RoyShell   * shell,
 RoyShell *
 roy_shell_set_prompt_text(RoyShell   * shell,
                           const char * prompt) {
-  roy_string_assign(shell->prompt, prompt);
+  roy_string_assign_str(shell->prompt, prompt);
   return shell;
 }
 

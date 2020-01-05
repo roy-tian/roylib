@@ -16,9 +16,6 @@ typedef struct RoyString_ RoyString;
 /// @brief Constructs a RoyString with given 'str'.
 RoyString * roy_string_new(const char * str);
 
-/// @brief Assigns character sequence 'str' to 'string'.
-RoyString * roy_string_assign(RoyString * string, const char * str);
-
 /**
  * @brief Releases all memory and destroys the RoyString - 'string' itself.
  * @note - Always call this function after the work is done by the given 'string' to get rid of memory leaking.
@@ -53,6 +50,16 @@ bool roy_string_empty(const RoyString * string);
 size_t roy_string_size(const RoyString * string);
 
 /* OPERATIONS */
+
+/// @brief Assigns character sequence 'str' to 'string'.
+RoyString * roy_string_assign_str(RoyString * string, const char * str);
+
+/**
+ * @brief Copies strings from one to another.
+ * @param dest - the new string to write to.
+ * @param src - the specified strirng to read from.
+ */ 
+RoyString * roy_string_assign(RoyString * dest, const RoyString * src);
 
 /// @brief Clears the contents of 'string'.
 void roy_string_clear(RoyString * string);
@@ -233,4 +240,4 @@ bool roy_string_equal_str(const RoyString * string, const char * str);
  */
 int roy_string_compare(const RoyString * lhs, const RoyString * rhs);
 
-#endif // RoyString *_H
+#endif // ROYSTRING_H
