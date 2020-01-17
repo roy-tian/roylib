@@ -1,4 +1,4 @@
-#include "../trivials/roystr.h"
+#include "../trivial/roystr.h"
 #include "roystring.h"
 #include <pcre.h>
 

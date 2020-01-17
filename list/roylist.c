@@ -1,5 +1,5 @@
 #include "roylist.h"
-#include "../trivials/shellsort.h"
+#include "../trivial/shellsort.h"
 
 static RoyList * node_new(void * data);
 static void      node_delete(RoyList * list, ROperate deleter);

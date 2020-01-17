@@ -1,5 +1,5 @@
 #include "royshell.h"
-#include "../trivials/roypair.h"
+#include "../trivial/roypair.h"
 
 // Tokens will be pushed into argv.
 static void tokenize(RoyShell * shell);

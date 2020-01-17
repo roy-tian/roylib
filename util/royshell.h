@@ -1,4 +1,4 @@
-#include "../trivials/royinit.h"
+#include "../trivial/royinit.h"
 #include "../list/roydeque.h"
 #include "../tree/roymap.h"
 #include "roystring.h"

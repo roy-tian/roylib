@@ -8,8 +8,8 @@
  * @copyright MIT.
  */
 
-#include "../trivials/royinit.h"
-#include "../trivials/roypair.h"
+#include "../trivial/royinit.h"
+#include "../trivial/roypair.h"
 #include "royuset.h"
 
 struct RoyUMap_ {

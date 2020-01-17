@@ -8,7 +8,7 @@
  * @copyright MIT.
  */
 
-#include "../trivials/royinit.h"
+#include "../trivial/royinit.h"
 #include "roymset.h"
 
 struct RoyMMap_ {

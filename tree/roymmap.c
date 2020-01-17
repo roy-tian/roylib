@@ -1,5 +1,5 @@
 #include "roymmap.h"
-#include "../trivials/roypair.h"
+#include "../trivial/roypair.h"
 
 RoyMMap *
 roy_mmap_new(RCompare comparer,

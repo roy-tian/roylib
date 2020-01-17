@@ -2,7 +2,7 @@
 #define ROYSTRING_H
 
 
-#include "../trivials/royinit.h"
+#include "../trivial/royinit.h"
 
 struct RoyString_ {
   char * str;

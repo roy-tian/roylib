@@ -1,5 +1,5 @@
 #include "royuset.h"
-#include "../trivials/hash.h"
+#include "../trivial/hash.h"
 #include "../util/roynumber.h"
 #include <math.h>
 
