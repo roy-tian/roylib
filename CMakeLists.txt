@@ -8,29 +8,29 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 include_directories(/usr/local/include)
 
 add_library(roylib
-        trivials/royinit.h   roy.h
-        trivials/roystr.h    trivials/roystr.c
-        trivials/roypair.h   trivials/roypair.c
-        trivials/hash.h      trivials/hash.c
-        trivials/shellsort.h trivials/shellsort.c
-        array/royarray.h     array/royarray.c
-        array/roystack.h     array/roystack.c
-        array/royqueue.h     array/royqueue.c
-        array/royvector.h    array/royvector.c
-        list/royslist.h      list/royslist.c
-        list/roylist.h       list/roylist.c
-        list/roydeque.h      list/roydeque.c
-        tree/royset.h        tree/royset.c
-        tree/roymset.h       tree/roymset.c
-        tree/roymap.h        tree/roymap.c
-        tree/roymmap.h       tree/roymmap.c
-        hash/royuset.h       hash/royuset.c
-        hash/royumset.h      hash/royumset.c
-        hash/royumap.h       hash/royumap.c
-        hash/royummap.h      hash/royummap.c
-        util/roystring.h     util/roystring.c
-        util/royshell.h      util/royshell.c
-        util/roynumber.h     util/roynumber.c
+        trivial/royinit.h   roy.h
+        trivial/roystr.h    trivial/roystr.c
+        trivial/roypair.h   trivial/roypair.c
+        trivial/hash.h      trivial/hash.c
+        trivial/shellsort.h trivial/shellsort.c
+        array/royarray.h    array/royarray.c
+        array/roystack.h    array/roystack.c
+        array/royqueue.h    array/royqueue.c
+        array/royvector.h   array/royvector.c
+        list/royslist.h     list/royslist.c
+        list/roylist.h      list/roylist.c
+        list/roydeque.h     list/roydeque.c
+        tree/royset.h       tree/royset.c
+        tree/roymset.h      tree/roymset.c
+        tree/roymap.h       tree/roymap.c
+        tree/roymmap.h      tree/roymmap.c
+        hash/royuset.h      hash/royuset.c
+        hash/royumset.h     hash/royumset.c
+        hash/royumap.h      hash/royumap.c
+        hash/royummap.h     hash/royummap.c
+        util/roystring.h    util/roystring.c
+        util/royshell.h     util/royshell.c
+        util/roynumber.h    util/roynumber.c
 )
 
 target_link_libraries(roylib pcre)

@@ -1,7 +1,7 @@
 #ifndef ROY_H
 #define ROY_H
 
-#include "trivials/roypair.h"
+#include "trivial/roypair.h"
 #include "array/royarray.h"
 #include "array/roystack.h"
 #include "array/royqueue.h"
