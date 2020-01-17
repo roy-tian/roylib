@@ -1,6 +1,6 @@
-#include "trivials/royinit.h"
-#include "roydeque.h"
-#include "roymap.h"
+#include "../trivials/royinit.h"
+#include "../list/roydeque.h"
+#include "../tree/roymap.h"
 #include "roystring.h"
 
 struct RoyShell_ {

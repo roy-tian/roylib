@@ -8,29 +8,29 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 include_directories(/usr/local/include)
 
 add_library(roylib
-  src/trivials/royinit.h   roy.h
-  src/trivials/roystr.h    src/trivials/roystr.c
-  src/trivials/roynumber.h src/trivials/roynumber.c
-  src/trivials/roypair.h   src/trivials/roypair.c
-  src/trivials/hash.h      src/trivials/hash.c
-  src/trivials/shellsort.h src/trivials/shellsort.c
-  src/royarray.h  src/royarray.c
-  src/roystack.h  src/roystack.c
-  src/royqueue.h  src/royqueue.c
-  src/royvector.h src/royvector.c
-  src/royslist.h  src/royslist.c
-  src/roylist.h   src/roylist.c
-  src/roydeque.h  src/roydeque.c
-  src/royset.h    src/royset.c
-  src/roymset.h   src/roymset.c
-  src/roymap.h    src/roymap.c
-  src/roymmap.h   src/roymmap.c
-  src/royuset.h   src/royuset.c
-  src/royumset.h  src/royumset.c
-  src/royumap.h   src/royumap.c
-  src/royummap.h  src/royummap.c
-  src/roystring.h src/roystring.c
-  src/royshell.h  src/royshell.c
+        trivials/royinit.h   roy.h
+        trivials/roystr.h    trivials/roystr.c
+        trivials/roypair.h   trivials/roypair.c
+        trivials/hash.h      trivials/hash.c
+        trivials/shellsort.h trivials/shellsort.c
+        array/royarray.h     array/royarray.c
+        array/roystack.h     array/roystack.c
+        array/royqueue.h     array/royqueue.c
+        array/royvector.h    array/royvector.c
+        list/royslist.h      list/royslist.c
+        list/roylist.h       list/roylist.c
+        list/roydeque.h      list/roydeque.c
+        tree/royset.h        tree/royset.c
+        tree/roymset.h       tree/roymset.c
+        tree/roymap.h        tree/roymap.c
+        tree/roymmap.h       tree/roymmap.c
+        hash/royuset.h       hash/royuset.c
+        hash/royumset.h      hash/royumset.c
+        hash/royumap.h       hash/royumap.c
+        hash/royummap.h      hash/royummap.c
+        util/roystring.h     util/roystring.c
+        util/royshell.h      util/royshell.c
+        util/roynumber.h     util/roynumber.c
 )
 
 target_link_libraries(roylib pcre)

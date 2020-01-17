@@ -8,7 +8,7 @@
  * @copyright MIT.
  */
 
-#include "trivials/royinit.h"
+#include "../trivials/royinit.h"
 
 struct RoySet_ {
   struct RoySet_ * left;

@@ -1,7 +1,7 @@
 #ifndef ROYNUMBER_H
 #define ROYNUMBER_H
 
-#include "royinit.h"
+#include "../trivials/royinit.h"
 
 /**
  * @brief Converts 'str' of binary digits into its equivalent unsigned value.

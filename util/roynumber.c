@@ -1,5 +1,5 @@
 #include "roynumber.h"
-#include "roystr.h"
+#include "../trivials/roystr.h"
 #include <limits.h>
 #include <math.h>
 #include <time.h>
