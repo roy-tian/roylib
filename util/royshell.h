@@ -55,13 +55,13 @@ RoyShell * roy_shell_set_prompt_text(RoyShell * shell, const char * prompt);
  * @brief Counts the number of arguments of current line.
  * @note The main command is included even if it's empty.
  */
-size_t roy_shell_argument_count(const RoyShell * shell);
+size_t roy_shell_argc(const RoyShell * shell);
 
 /**
  * @brief Returns the text content of specified argument of current argv.
  * @param position - where the argument takes place in current argv.
  */
-RoyString * roy_shell_argument_at(const RoyShell * shell, size_t position);
+RoyString * roy_shell_argv_at(const RoyShell * shell, size_t position);
 
 /**
  * @brief Finds specified argument in 'shell'.
@@ -70,7 +70,7 @@ RoyString * roy_shell_argument_at(const RoyShell * shell, size_t position);
  * @retval 0 - the cmd itself.
  * @retval -1 - argument not found.
  */
-int roy_shell_argument_find(const RoyShell * shell, const char * regex);
+int roy_shell_argv_find(const RoyShell * shell, const char * regex);
 
 /// @brief Clears the log buffer for a new info to be logged.
 RoyShell * roy_shell_log_clear(RoyShell * shell);
@@ -78,9 +78,9 @@ RoyShell * roy_shell_log_clear(RoyShell * shell);
 /**
  * @brief Adds new log to the information flow.
  * @param format - a string literal specifying how to interpret the data.
- * @note - The flow can be printed to console and automatically pushed into 'ohistory' at the end of each round.
+ * @note - The flow can be printed to console and automatically pushed into 'output history' at the end of each round.
  */
-RoyShell * roy_shell_log_append(RoyShell * shell, const char * format, ...);
+RoyShell * roy_shell_log(RoyShell * shell, const char * format, ...);
 
 /// @brief Counts the number of input/output operation rounds.
 size_t roy_shell_history_count(const RoyShell * shell);
@@ -89,10 +89,10 @@ size_t roy_shell_history_count(const RoyShell * shell);
  * @param position - where the input takes place in input history.
  * @return - the text content of specified input, NULL if position exceeds.
  */
-RoyString * roy_shell_ihistory_at(const RoyShell * shell, size_t position);
+RoyString * roy_shell_in_at(const RoyShell * shell, size_t position);
 
 /**
  * @param position - where the input takes place in output history.
  * @return - the text content of specified input, NULL if position exceeds.
  */
-RoyString * roy_shell_ohistory_at(const RoyShell * shell, size_t position);
+RoyString * roy_shell_out_at(const RoyShell * shell, size_t position);

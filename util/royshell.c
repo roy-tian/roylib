@@ -23,9 +23,9 @@ RoyShell *
 roy_shell_new(void) {
   RoyShell * ret = malloc(sizeof(RoyShell));
   ret->dict      = roy_map_new((RCompare)pair_comparer, (ROperate)pair_deleter);
-  ret->prompt    = roy_string_new("> ");
-  ret->ibuffer   = roy_string_new("");
-  ret->obuffer   = roy_string_new("");
+  ret->prompt    = roy_string_new_str("> ");
+  ret->ibuffer   = roy_string_new(NULL);
+  ret->obuffer   = roy_string_new(NULL);
   ret->argv      = roy_deque_new((ROperate)roy_string_delete);
   ret->ihistory  = roy_deque_new((ROperate)roy_string_delete);
   ret->ohistory  = roy_deque_new((ROperate)roy_string_delete);
@@ -46,7 +46,7 @@ roy_shell_delete(RoyShell * shell) {
 
 void
 roy_shell_start(RoyShell * shell) {
-  enum { BUFFER_SIZE = 1023 };
+  enum { BUFFER_SIZE = 1024 };
   while (true) {
     roy_string_print(shell->prompt);
     roy_string_scan(shell->ibuffer, BUFFER_SIZE);
@@ -54,17 +54,14 @@ roy_shell_start(RoyShell * shell) {
       roy_string_clear(shell->obuffer);
       tokenize(shell);
       // Gets the first token from argv
-      ROperate func = roy_map_find(shell->dict, 
-                                   roy_shell_argument_at(shell, 0));
+      ROperate func = roy_map_find(shell->dict, roy_shell_argv_at(shell, 0));
       if (func) {
         func(shell); 
         // Clients take the resposibility to select useful outputs,
         // and push them to 'obuffer' in 'func'.
       }
-      roy_deque_push_back(shell->ihistory,
-                          roy_string_new(roy_string_cstr(shell->ibuffer)));
-      roy_deque_push_back(shell->ohistory,
-                          roy_string_new(roy_string_cstr(shell->obuffer)));
+      roy_deque_push_back(shell->ihistory, roy_string_new(shell->ibuffer));
+      roy_deque_push_back(shell->ohistory, roy_string_new(shell->obuffer));
     }
   }
 }
@@ -73,7 +70,7 @@ RoyShell *
 roy_shell_command_add(RoyShell   * shell,
                       const char * cmd,
                       ROperate     operate) {
-  roy_map_insert(shell->dict, roy_string_new(cmd), operate);
+  roy_map_insert(shell->dict, roy_string_new_str(cmd), operate);
   return shell;
 }
 
@@ -85,21 +82,21 @@ roy_shell_set_prompt_text(RoyShell   * shell,
 }
 
 size_t
-roy_shell_argument_count(const RoyShell * shell) {
+roy_shell_argc(const RoyShell * shell) {
   return roy_deque_size(shell->argv);
 }
 
 RoyString *
-roy_shell_argument_at(const RoyShell * shell,
+roy_shell_argv_at(const RoyShell * shell,
                       size_t           position) {
   return roy_deque_at(shell->argv, position, RoyString);
 }
 
 int
-roy_shell_argument_find(const RoyShell * shell,
+roy_shell_argv_find(const RoyShell * shell,
                         const char     * regex) {
-  for (size_t i = 0; i != roy_shell_argument_count(shell); i++) {
-    if (roy_string_match(roy_shell_argument_at(shell, i), regex)) {
+  for (size_t i = 0; i != roy_shell_argc(shell); i++) {
+    if (roy_string_match(roy_shell_argv_at(shell, i), regex)) {
       return i;
     }
   }
@@ -113,7 +110,7 @@ roy_shell_log_clear(RoyShell * shell) {
 }
 
 RoyShell *
-roy_shell_log_append(RoyShell   * shell,
+roy_shell_log(RoyShell   * shell,
                      const char * format,
                      ...) {
   va_list args;
@@ -129,13 +126,13 @@ roy_shell_history_count(const RoyShell * shell) {
 }
 
 RoyString *
-roy_shell_ihistory_at(const RoyShell * shell,
+roy_shell_in_at(const RoyShell * shell,
                       size_t           position) {
   return roy_deque_at(shell->ihistory, position, RoyString);
 }
 
 RoyString *
-roy_shell_ohistory_at(const RoyShell * shell,
+roy_shell_out_at(const RoyShell * shell,
                       size_t           position) {
   return roy_deque_at(shell->ohistory, position, RoyString);
 }
@@ -158,12 +155,12 @@ tokenize(RoyShell  * shell) {
       char arg[ptail - phead + 1];
       strncpy(arg, phead, ptail - phead);
       arg[ptail - phead] = '\0';
-      roy_deque_push_back(shell->argv, roy_string_new(arg));
+      roy_deque_push_back(shell->argv, roy_string_new_str(arg));
       phead = ptail;
     }
   }
-  if (roy_shell_argument_count(shell) != 0 &&
-      !roy_map_find(shell->dict, roy_shell_argument_at(shell, 0))) {
-    roy_deque_push_front(shell->argv, roy_string_new(""));
+  if (roy_shell_argc(shell) != 0 &&
+      !roy_map_find(shell->dict, roy_shell_argv_at(shell, 0))) {
+    roy_deque_push_front(shell->argv, roy_string_new(NULL));
   }
 }
