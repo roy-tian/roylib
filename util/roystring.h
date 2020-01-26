@@ -1,8 +1,8 @@
 #ifndef ROYSTRING_H
 #define ROYSTRING_H
 
-
 #include "../trivial/royinit.h"
+#include "../list/roydeque.h"
 
 struct RoyString_ {
   char * str;
@@ -13,8 +13,17 @@ typedef struct RoyString_ RoyString;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
+/// @brief Constructs a RoyString exactly the same as RoyString 'string'.
+RoyString * roy_string_new(const RoyString * string);
+
 /// @brief Constructs a RoyString with given 'str'.
-RoyString * roy_string_new(const char * str);
+RoyString * roy_string_new_str(const char * str);
+
+/// @brief Constructs a RoyString with given integer 'value'.
+RoyString * roy_string_new_int(int64_t value);
+
+/// @brief Constructs a RoyString with given double 'value'.
+RoyString * roy_string_new_double(double value);
 
 /**
  * @brief Releases all memory and destroys the RoyString - 'string' itself.
@@ -51,15 +60,21 @@ size_t roy_string_size(const RoyString * string);
 
 /* OPERATIONS */
 
-/// @brief Assigns character sequence 'str' to 'string'.
-RoyString * roy_string_assign_str(RoyString * string, const char * str);
-
 /**
  * @brief Copies strings from one to another.
  * @param dest - the new string to write to.
  * @param src - the specified strirng to read from.
  */ 
 RoyString * roy_string_assign(RoyString * dest, const RoyString * src);
+
+/// @brief Assigns character sequence 'str' to 'string'.
+RoyString * roy_string_assign_str(RoyString * string, const char * str);
+
+/// @brief Assigns integer 'value' to 'string'.
+RoyString * roy_string_assign_int(RoyString * string, int64_t value);
+
+/// @brief Assigns double number 'value' to 'string'.
+RoyString * roy_string_assign_double(RoyString * string, double value);
 
 /// @brief Clears the contents of 'string'.
 void roy_string_clear(RoyString * string);
@@ -226,6 +241,8 @@ int roy_string_find_regex(const RoyString * string, const char * regex, size_t p
 /// @brief Test whether 'string' totally matches the given regular expression 'regex'.
 bool roy_string_match(const RoyString * string, const char * regex);
 
+/* UTILITIES */
+
 /// @brief Test whether the content of 'string1' and 'string2' are totally equal.
 bool roy_string_equal(const RoyString * string1, const RoyString * string2);
 
@@ -239,5 +256,21 @@ bool roy_string_equal_str(const RoyString * string, const char * str);
  * @retval Positive value if 'lhs' appears after 'rhs' in lexicographical order.
  */
 int roy_string_compare(const RoyString * lhs, const RoyString * rhs);
+
+/**
+ *  @brief Interprets an integer value in a RoyString 'string'.
+ *  @note Discards any whitespace characters until the first non-whitespace character is found, then takes as many characters as possible to form a valid integer number representation and converts them to an integer value.
+ */
+int64_t roy_string_to_int(const RoyString * string);
+
+/**
+ * @brief Interprets a floating-point value in a byte string pointed to by str.
+ * @note Function discards any whitespace characters until first non-whitespace character is found. Then it takes as many characters as possible to form a valid floating-point representation and converts them to a floating-point value.
+ */
+double roy_string_to_double(const RoyString * string);
+
+RoyDeque * roy_string_split(RoyDeque * dest, const RoyString * string, const char * regex);
+
+RoyString * roy_string_join(RoyString * dest, const RoyDeque * vector, const char * splitter);
 
 #endif // ROYSTRING_H

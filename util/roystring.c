@@ -2,14 +2,31 @@
 #include "roystring.h"
 #include <pcre.h>
 
-static bool valid_pos(const RoyString * string, size_t position);
-static bool valid_pos_cnt(const RoyString * string, size_t position, size_t count);
+static inline RoyString * new_empty(void);
+static inline bool valid_pos(const RoyString * string, size_t position);
+static inline bool valid_pos_cnt(const RoyString * string, size_t position, size_t count);
 
 RoyString *
-roy_string_new(const char * str) {
-  RoyString * ret = malloc(sizeof(RoyString));
-  ret->str = NULL;
-  return roy_string_assign_str(ret, str);
+roy_string_new(const RoyString * string) {
+  RoyString * ret = new_empty();
+  return string ?
+         roy_string_assign(ret, string) :
+         roy_string_assign_str(ret, "");
+}
+
+RoyString *
+roy_string_new_str(const char * str) {
+  return roy_string_assign_str(new_empty(), str);
+}
+
+RoyString *
+roy_string_new_int(int64_t value) {
+  return roy_string_assign_int(new_empty(), value);
+}
+
+RoyString *
+roy_string_new_double(double value) {
+  return roy_string_assign_double(new_empty(), value);
 }
 
 void
@@ -48,6 +65,12 @@ roy_string_size(const RoyString * string) {
 }
 
 RoyString *
+roy_string_assign(RoyString       * dest,
+                  const RoyString * src) {
+  return roy_string_assign_str(dest, roy_string_cstr(src));
+}
+
+RoyString *
 roy_string_assign_str(RoyString  * string,
                       const char * str) {
   string->str = realloc(string->str, (strlen(str) + 1) * sizeof(char));
@@ -56,9 +79,21 @@ roy_string_assign_str(RoyString  * string,
 }
 
 RoyString *
-roy_string_assign(RoyString       * dest,
-                  const RoyString * src) {
-  return roy_string_assign_str(dest, roy_string_cstr(src));
+roy_string_assign_int(RoyString * string,
+                      int64_t     value) {
+  enum { MAX_INT = 21 };
+  char buf[MAX_INT] = {'\0'};
+  sprintf(buf, "%lld", value);
+  return roy_string_assign_str(string, buf);
+}
+
+RoyString *
+roy_string_assign_double(RoyString * string,
+                         double      value) {
+  enum { MAX_DOUBLE = 44 };
+  char buf[MAX_DOUBLE] = {'\0'};
+  sprintf(buf, "%.15g", value);
+  return roy_string_assign_str(string, buf);
 }
 
 void
@@ -292,18 +327,44 @@ roy_string_compare(const RoyString * string1,
   return strcmp(roy_string_cstr(string1), roy_string_cstr(string2));
 }
 
+int64_t
+roy_string_to_int(const RoyString * string) {
+  return strtoll(roy_string_cstr(string), NULL, 0);
+}
+
+double
+roy_string_to_double(const RoyString * string) {
+  return strtod(roy_string_cstr(string), NULL);
+}
+
+RoyDeque *
+roy_string_split(RoyDeque * dest,
+                 const RoyString * string,
+                 const char * regex) {
+
+}
+
+RoyString * roy_string_join(RoyString * dest, const RoyDeque * vector, const char * splitter);
+
 /* PRIVATE FUNCTIONS DOWN HERE */
 
-static bool
+static inline RoyString *
+new_empty(void) {
+  RoyString * ret = malloc(sizeof(RoyString));
+  ret->str = NULL;
+  return ret;
+}
+
+static inline bool
 valid_pos(const RoyString * string,
-            size_t            position) {
+          size_t            position) {
   return position <= roy_string_size(string);
 }
 
-static bool
+static inline bool
 valid_pos_cnt(const RoyString * string,
-                size_t            position,
-                size_t            count) {
+              size_t            position,
+              size_t            count) {
   size_t size = roy_string_size(string);
   return (position <= size) && (position + count <= size);
 }
