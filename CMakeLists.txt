@@ -33,4 +33,4 @@ add_library(roylib
         util/roynumber.h    util/roynumber.c
 )
 
-target_link_libraries(roylib pcre)
+target_link_libraries(roylib pcre2)

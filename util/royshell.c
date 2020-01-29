@@ -23,9 +23,9 @@ RoyShell *
 roy_shell_new(void) {
   RoyShell * ret = malloc(sizeof(RoyShell));
   ret->dict      = roy_map_new((RCompare)pair_comparer, (ROperate)pair_deleter);
-  ret->prompt    = roy_string_new_str("> ");
-  ret->ibuffer   = roy_string_new(NULL);
-  ret->obuffer   = roy_string_new(NULL);
+  ret->prompt    = roy_string_new("> ");
+  ret->ibuffer   = roy_string_new("");
+  ret->obuffer   = roy_string_new("");
   ret->argv      = roy_deque_new((ROperate)roy_string_delete);
   ret->ihistory  = roy_deque_new((ROperate)roy_string_delete);
   ret->ohistory  = roy_deque_new((ROperate)roy_string_delete);
@@ -60,8 +60,10 @@ roy_shell_start(RoyShell * shell) {
         // Clients take the resposibility to select useful outputs,
         // and push them to 'obuffer' in 'func'.
       }
-      roy_deque_push_back(shell->ihistory, roy_string_new(shell->ibuffer));
-      roy_deque_push_back(shell->ohistory, roy_string_new(shell->obuffer));
+      roy_deque_push_back(shell->ihistory,
+                          roy_string_new(roy_string_cstr(shell->ibuffer)));
+      roy_deque_push_back(shell->ohistory,
+                          roy_string_new(roy_string_cstr(shell->obuffer)));
     }
   }
 }
@@ -70,14 +72,14 @@ RoyShell *
 roy_shell_command_add(RoyShell   * shell,
                       const char * cmd,
                       ROperate     operate) {
-  roy_map_insert(shell->dict, roy_string_new_str(cmd), operate);
+  roy_map_insert(shell->dict, roy_string_new(cmd), operate);
   return shell;
 }
 
 RoyShell *
 roy_shell_set_prompt_text(RoyShell   * shell,
                           const char * prompt) {
-  roy_string_assign_str(shell->prompt, prompt);
+  roy_string_assign(shell->prompt, prompt);
   return shell;
 }
 
@@ -155,7 +157,7 @@ tokenize(RoyShell  * shell) {
       char arg[ptail - phead + 1];
       strncpy(arg, phead, ptail - phead);
       arg[ptail - phead] = '\0';
-      roy_deque_push_back(shell->argv, roy_string_new_str(arg));
+      roy_deque_push_back(shell->argv, roy_string_new(arg));
       phead = ptail;
     }
   }

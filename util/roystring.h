@@ -13,11 +13,8 @@ typedef struct RoyString_ RoyString;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
-/// @brief Constructs a RoyString exactly the same as RoyString 'string'.
-RoyString * roy_string_new(const RoyString * string);
-
 /// @brief Constructs a RoyString with given 'str'.
-RoyString * roy_string_new_str(const char * str);
+RoyString * roy_string_new(const char * str);
 
 /// @brief Constructs a RoyString with given integer 'value'.
 RoyString * roy_string_new_int(int64_t value);
@@ -56,19 +53,16 @@ const char * roy_string_cstr(const RoyString * string);
 bool roy_string_empty(const RoyString * string);
 
 /// @brief Returns the number of characters in 'string'.
-size_t roy_string_size(const RoyString * string);
+size_t roy_string_length(const RoyString * string);
 
 /* OPERATIONS */
 
 /**
  * @brief Copies strings from one to another.
  * @param dest - the new string to write to.
- * @param src - the specified strirng to read from.
+ * @param src - the specified C char-array to read from.
  */ 
-RoyString * roy_string_assign(RoyString * dest, const RoyString * src);
-
-/// @brief Assigns character sequence 'str' to 'string'.
-RoyString * roy_string_assign_str(RoyString * string, const char * str);
+RoyString * roy_string_assign(RoyString * dest, const char * src);
 
 /// @brief Assigns integer 'value' to 'string'.
 RoyString * roy_string_assign_int(RoyString * string, int64_t value);
@@ -86,40 +80,19 @@ void roy_string_clear(RoyString * string);
  * @retval true - the operation is successful.
  * @retval false - 'position' exceeds.
  */
-bool roy_string_insert_str(RoyString * string, const char * substr, size_t position);
-
-/**
- * @brief Inserts characters into 'string'.
- * @param substr - additional RoyString to insert.
- * @param position - position before which the characters will be inserted.
- * @retval true - the operation is successful.
- * @retval false - 'position' exceeds.
- */
-bool roy_string_insert(RoyString * string, const RoyString * substring, size_t position);
+bool roy_string_insert(RoyString * string, const char * substr, size_t position);
 
 /**
  * @brief Adds additional characters to the left end of 'string'.
  * @param substr - additional C char-array to insert.
  */
-void roy_string_prepend_str(RoyString * string, const char * substr);
-
-/**
- * @brief Adds additional characters to the left end of 'string'.
- * @param substr - additional RoyString to insert.
- */
-void roy_string_prepend(RoyString * string, const RoyString * substring);
+void roy_string_prepend(RoyString * string, const char * substr);
 
 /**
  * @brief Adds additional characters to the right end of 'string'.
  * @param substr - additional C char-array to insert.
  */
-void roy_string_append_str(RoyString * string, const char * substr);
-
-/**
- * @brief Adds additional characters to the right end of 'string'.
- * @param substr - additional RoyString to insert.
- */
-void roy_string_append(RoyString * string, const RoyString * substring);
+void roy_string_append(RoyString * string, const char * substr);
 
 /**
  * @brief Removes characters from 'string'.
@@ -154,17 +127,7 @@ bool roy_string_erase_right(RoyString * string, size_t count);
  * @retval true - the operation is successful.
  * @retval false - 'position' or 'position' + 'count' exceeds.
  */
- bool roy_string_replace_str(RoyString * string, const char * substr, size_t position, size_t count);
-
-/**
- * @brief Replaces the part of the string indicated by [pos, pos + count) with a new string.
- * @param substr - additional RoyString to insert.
- * @param position - first character to be replaced.
- * @param count - number of characters to be replaced.
- * @retval true - the operation is successful.
- * @retval false - 'position' or 'position' + 'count' exceeds.
- */
-bool roy_string_replace(RoyString * string, const RoyString * substring, size_t position, size_t count);
+ bool roy_string_replace(RoyString * string, const char * substr, size_t position, size_t count);
 
 /**
  * @brief Returns a substring [pos, pos+count).
@@ -212,42 +175,36 @@ void roy_string_scan(RoyString * string, size_t buffer_size);
 /* SEARCH */
 
 /**
- * @brief Finds the position where the first substr occur.
+ * @brief Finds the position where the first substr occur (takes advantages of 'strstr').
  * @param substr - substr to be found.
  * @param position - position at which to start the search from 'string'.
  * @return Position of the first character of the found substring.
  * @return -1 - 'substr' not found.
  */
-int roy_string_find_str(const RoyString * string, const char * substr, size_t position);
+int roy_string_find(const RoyString * string, const char * substr, size_t position);
 
 /**
- * @brief Finds the position where the first substring occurs.
- * @param substring - substring to be found.
- * @param position - position at which to start the search from 'string'.
- * @return Position of the first character of the found substring.
- * @return -1 - 'substring' not found.
- */
-int roy_string_find(const RoyString * string, const RoyString * substring, size_t position);
-
-/**
- * @brief Finds the position where the first regular expression occurs.
+ * @brief Finds the position where the given regular expression begins for the first time.
  * @param regex - pattern to be found.
  * @param position - position at which to start the search from 'string'.
  * @return Position of the first character of the found pattern.
  * @return -1 - pattern not found.
  */
-int roy_string_find_regex(const RoyString * string, const char * regex, size_t position);
+int roy_string_regex_begin(const RoyString * string, const char * regex, size_t position);
+
+/**
+ * @brief Finds the position where the given regular expression ends for the first time.
+ * @param regex - pattern to be found.
+ * @param position - position at which to start the search from 'string'.
+ * @return Position of the last character of the found pattern.
+ * @return -1 - pattern not found.
+ */
+int roy_string_regex_end(const RoyString * string, const char * regex, size_t position);
 
 /// @brief Test whether 'string' totally matches the given regular expression 'regex'.
 bool roy_string_match(const RoyString * string, const char * regex);
 
 /* UTILITIES */
-
-/// @brief Test whether the content of 'string1' and 'string2' are totally equal.
-bool roy_string_equal(const RoyString * string1, const RoyString * string2);
-
-/// @brief Test whether the content of 'string' and 'str' are totally equal.
-bool roy_string_equal_str(const RoyString * string, const char * str);
 
 /**
  * @brief Compares two strings lexicographically.
