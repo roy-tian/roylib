@@ -248,18 +248,6 @@ roy_string_match(const RoyString * string,
   roy_string_regex_end(string, regex, 0) == (int)roy_string_length(string) - 1;
 }
 
-bool
-roy_string_equal(const RoyString * string1,
-                 const RoyString * string2) {
-  return strcmp(roy_string_cstr(string1), roy_string_cstr(string2)) == 0;
-}
-
-bool
-roy_string_equal_str(const RoyString * string,
-                     const char * str) {
-  return strcmp(roy_string_cstr(string), str) == 0;
-}
-
 int
 roy_string_compare(const RoyString * string1,
                    const RoyString * string2) {
@@ -315,9 +303,9 @@ valid_pos_cnt(const RoyString * string,
 
 static int
 find_regex(const RoyString * string,
-      const char      * regex,
-      size_t            position,
-      int               begin_end) {
+           const char      * regex,
+           size_t            position,
+           int               begin_end) {
   const PCRE2_SPTR pattern = (PCRE2_SPTR)regex;
   int error_code;
   PCRE2_SIZE error_offset;
@@ -331,6 +319,10 @@ find_regex(const RoyString * string,
     NULL
   );
 
+  if (re == NULL) {
+    return PCRE2_ERROR_NULL;
+  }
+
   const PCRE2_SPTR subject = (PCRE2_SPTR)roy_string_cstr(string) + position;
   PCRE2_SIZE subject_length = strlen((const char *)subject);
   pcre2_match_data * match_data = pcre2_match_data_create_from_pattern(re, NULL);
@@ -341,6 +333,8 @@ find_regex(const RoyString * string,
   if (rc < 0) {
     ret = rc;
   } else {
+    /* Since 'match_data' is create by 'pcre2_match_data_create_from_pattern',
+       'rc' would never equal to 0. */
     PCRE2_SIZE * ovector = pcre2_get_ovector_pointer(match_data);
     ret = ovector[begin_end];
   }
