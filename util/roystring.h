@@ -189,6 +189,7 @@ int roy_string_find(const RoyString * string, const char * substr, size_t positi
  * @param position - position at which to start the search from 'string'.
  * @return Position of the first character of the found pattern.
  * @return -1 - pattern not found.
+ * @return -51 - pattern is ill-formed.
  */
 int roy_string_regex_begin(const RoyString * string, const char * regex, size_t position);
 
@@ -196,10 +197,20 @@ int roy_string_regex_begin(const RoyString * string, const char * regex, size_t 
  * @brief Finds the position where the given regular expression ends for the first time.
  * @param regex - pattern to be found.
  * @param position - position at which to start the search from 'string'.
- * @return Position of the last character of the found pattern.
+ * @return Position of the first character right after the found pattern.
  * @return -1 - pattern not found.
+ * @return -51 - pattern is ill-formed.
  */
 int roy_string_regex_end(const RoyString * string, const char * regex, size_t position);
+
+/**
+ * @brief Finds all regular expressions repeatly from 'string'.
+ * @param dest - where the regular expression found to pushed into.
+ * @param regex - pattern to be found.
+ * @param position - position at which to start the search from 'string'.
+ * @return the destination deque.
+ */
+RoyDeque * roy_string_all_regex(RoyDeque * dest, const RoyString * string, const char * regex, size_t position);
 
 /// @brief Test whether 'string' totally matches the given regular expression 'regex'.
 bool roy_string_match(const RoyString * string, const char * regex);
