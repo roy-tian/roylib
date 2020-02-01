@@ -7,7 +7,6 @@
 static RoyString * new_empty(void);
 static bool valid_pos(const RoyString * string, size_t position);
 static bool valid_pos_cnt(const RoyString * string, size_t position, size_t count);
-static int find_regex(const RoyString * string, const char * regex, size_t position, int begin_end);
 
 RoyString *
 roy_string_new(const char * str) {
@@ -218,34 +217,63 @@ roy_string_scan(RoyString * string,
 
 int
 roy_string_find(const RoyString  * string,
-                const char       * substr,
-                size_t             position) {
-  const char * begin = string->str + position;
-  const char * found = strstr(string->str + position, substr);
-  return found ? (int)(found - begin) : -1;
-}
+                const char       * pattern,
+                size_t             position,
+                int              * begin,
+                int              * end) {
+  const PCRE2_SPTR ptn = (const PCRE2_SPTR)pattern;
+  int error_code;
+  PCRE2_SIZE error_offset;
 
-int
-roy_string_regex_begin(const RoyString * string,
-                       const char      * regex,
-                       size_t            position) {
-  return find_regex(string, regex, position, 0);
-}
+  pcre2_code * re = pcre2_compile(
+    ptn,
+    PCRE2_ZERO_TERMINATED,
+    0U,
+    &error_code,
+    &error_offset,
+    NULL
+  );
 
-int
-roy_string_regex_end(const RoyString * string,
-                     const char      * regex,
-                     size_t            position) {
-  return find_regex(string, regex, position, 1);
-}
+  if (re == NULL) {
+    if (*begin) { *begin = PCRE2_ERROR_NOMATCH; }
+    if (*end)   { *end   = PCRE2_ERROR_NOMATCH; }
+    return PCRE2_ERROR_NULL;
+  }
 
+  const PCRE2_SPTR subject =
+    (const PCRE2_SPTR)roy_string_cstr(string) + position;
+  PCRE2_SIZE subject_length =
+    strlen((const char *)subject);
+  pcre2_match_data * match_data =
+    pcre2_match_data_create_from_pattern(re, NULL);
+
+  int rc = pcre2_match(re, subject, subject_length, 0ULL, 0U, match_data, NULL);
+
+  int ret;
+  if (rc < 0) {
+    ret = rc;
+    if (*begin) { *begin = PCRE2_ERROR_NOMATCH; }
+    if (*end)   { *end   = PCRE2_ERROR_NOMATCH; }
+  } else {
+    /* Since 'match_data' is create by 'pcre2_match_data_create_from_pattern',
+       'rc' would never equal to 0. */
+    PCRE2_SIZE * ovector = pcre2_get_ovector_pointer(match_data);
+    ret = ovector[0];
+    if (*begin) { *begin = ovector[0]; }
+    if (*end)   { *end   = ovector[1]; }
+  }
+
+  pcre2_match_data_free(match_data);
+  pcre2_code_free(re);
+  return ret;
+}
 
 bool
 roy_string_match(const RoyString * string,
-                 const char      * regex) {
-  return
-  roy_string_regex_begin(string, regex, 0) == 0 &&
-  roy_string_regex_end(string, regex, 0) == (int)roy_string_length(string) - 1;
+                 const char      * pattern) {
+  int begin, end;
+  roy_string_find(string, pattern, 0, &begin, &end);
+  return (begin == 0) && (end == (int)roy_string_length(string) - 1);
 }
 
 int
@@ -299,47 +327,4 @@ valid_pos_cnt(const RoyString * string,
               size_t            count) {
   size_t size = roy_string_length(string);
   return (position <= size) && (position + count <= size);
-}
-
-static int
-find_regex(const RoyString * string,
-           const char      * regex,
-           size_t            position,
-           int               begin_end) {
-  const PCRE2_SPTR pattern = (PCRE2_SPTR)regex;
-  int error_code;
-  PCRE2_SIZE error_offset;
-
-  pcre2_code * re = pcre2_compile(
-    pattern,
-    PCRE2_ZERO_TERMINATED,
-    0U,
-    &error_code,
-    &error_offset,
-    NULL
-  );
-
-  if (re == NULL) {
-    return PCRE2_ERROR_NULL;
-  }
-
-  const PCRE2_SPTR subject = (PCRE2_SPTR)roy_string_cstr(string) + position;
-  PCRE2_SIZE subject_length = strlen((const char *)subject);
-  pcre2_match_data * match_data = pcre2_match_data_create_from_pattern(re, NULL);
-
-  int rc = pcre2_match(re, subject, subject_length, 0ULL, 0U, match_data, NULL);
-
-  int ret;
-  if (rc < 0) {
-    ret = rc;
-  } else {
-    /* Since 'match_data' is create by 'pcre2_match_data_create_from_pattern',
-       'rc' would never equal to 0. */
-    PCRE2_SIZE * ovector = pcre2_get_ovector_pointer(match_data);
-    ret = ovector[begin_end];
-  }
-
-  pcre2_match_data_free(match_data);
-  pcre2_code_free(re);
-  return ret;
 }

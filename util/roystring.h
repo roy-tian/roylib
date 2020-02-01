@@ -175,45 +175,22 @@ void roy_string_scan(RoyString * string, size_t buffer_size);
 /* SEARCH */
 
 /**
- * @brief Finds the position where the first substr occur (takes advantages of 'strstr').
- * @param substr - substr to be found.
+ * @brief Finds the position where the first substr occur (takes advantages of pcre2).
+ * @param pattern - substring to be found, char string literals and regexs are allowed.
  * @param position - position at which to start the search from 'string'.
- * @return Position of the first character of the found substring.
- * @return -1 - 'substr' not found.
- */
-int roy_string_find(const RoyString * string, const char * substr, size_t position);
-
-/**
- * @brief Finds the position where the given regular expression begins for the first time.
- * @param regex - pattern to be found.
- * @param position - position at which to start the search from 'string'.
+ * @param begin - position of the first character of the found pattern, pass NULL if it's irrelevent, returns -1 if not found.
+ * @param end - position of the first character right after the found pattern, pass NULL if it's irrelevent, returns -1 if not found.
  * @return Position of the first character of the found pattern.
- * @return -1 - pattern not found.
- * @return -51 - pattern is ill-formed.
+ * @return -1 - 'pattern' not found.
+ * @return -51 - 'pattern' is a ill-formed regex (the underhood compile function fails, -51 is PCRE2_ERROR_NULL).
  */
-int roy_string_regex_begin(const RoyString * string, const char * regex, size_t position);
+int roy_string_find(const RoyString * string, const char * pattern, size_t position, int * begin, int * end);
 
 /**
- * @brief Finds the position where the given regular expression ends for the first time.
- * @param regex - pattern to be found.
- * @param position - position at which to start the search from 'string'.
- * @return Position of the first character right after the found pattern.
- * @return -1 - pattern not found.
- * @return -51 - pattern is ill-formed.
+ * @brief Test whether 'string' exactly matches the given string 'pattern'. 
+ * @param pattern - string to be compared, char string literals and regexs are allowed.
  */
-int roy_string_regex_end(const RoyString * string, const char * regex, size_t position);
-
-/**
- * @brief Finds all regular expressions repeatly from 'string'.
- * @param dest - where the regular expression found to pushed into.
- * @param regex - pattern to be found.
- * @param position - position at which to start the search from 'string'.
- * @return the destination deque.
- */
-RoyDeque * roy_string_all_regex(RoyDeque * dest, const RoyString * string, const char * regex, size_t position);
-
-/// @brief Test whether 'string' totally matches the given regular expression 'regex'.
-bool roy_string_match(const RoyString * string, const char * regex);
+bool roy_string_match(const RoyString * string, const char * pattern);
 
 /* UTILITIES */
 
@@ -237,8 +214,30 @@ int64_t roy_string_to_int(const RoyString * string);
  */
 double roy_string_to_double(const RoyString * string);
 
-RoyDeque * roy_string_split(RoyDeque * dest, const RoyString * string, const char * regex);
+/**
+ * @brief Finds all regular expressions repeatly from 'string', stores them in deque 'dest'.
+ * @param dest - where the regular expression found to pushed into.
+ * @param pattern - pattern to be found.
+ * @param position - position at which to start the search from 'string'.
+ * @return the destination deque.
+ */
+RoyDeque * roy_string_tokenize(RoyDeque * dest, const RoyString * string, const char * pattern);
 
-RoyString * roy_string_join(RoyString * dest, const RoyDeque * vector, const char * splitter);
+/**
+ * @brief Seperates 'string' into substrings using 'seperator', and stores all substrings in deque 'dest'.
+ * @param dest - where the substrings to pushed into.
+ * @param seperator - The string where each split should occur. Can be a string or a regular expression.
+ * @param position - position at which to start the search from 'string'.
+ * @return the destination deque.
+ * @note 
+ */
+RoyDeque * roy_string_split(RoyDeque * dest, const RoyString * string, const char * seperator);
+
+/**
+ * @brief Creates and returns a new string by concatenating all of the substrings in 'deque'.
+ * @param seperator - the specified sepatator The dest string will be separated.
+ * @note If 'deque' has only one string, then that string will be returned without using the separator.
+ */
+RoyString * roy_string_join(RoyString * dest, const RoyDeque * deque, const char * seperator);
 
 #endif // ROYSTRING_H
