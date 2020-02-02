@@ -38,10 +38,10 @@ void roy_string_delete(RoyString * string);
 int roy_string_at(const RoyString * string, size_t position);
 
 /// @brief Returns a standard C character array version of 'string'.
-char * roy_string_str(RoyString * string);
+char * roy_string_str(RoyString * string, size_t position);
 
 /// @brief Returns a non-modifiable standard C character array version of 'string'.
-const char * roy_string_cstr(const RoyString * string);
+const char * roy_string_cstr(const RoyString * string, size_t position);
 
 /* CAPACITY */
 
@@ -178,11 +178,9 @@ void roy_string_scan(RoyString * string, size_t buffer_size);
  * @brief Finds the position where the first substr occur (takes advantages of pcre2).
  * @param pattern - substring to be found, char string literals and regexs are allowed.
  * @param position - position at which to start the search from 'string'.
- * @param begin - position of the first character of the found pattern, pass NULL if it's irrelevent, returns -1 if not found.
- * @param end - position of the first character right after the found pattern, pass NULL if it's irrelevent, returns -1 if not found.
- * @return Position of the first character of the found pattern.
- * @return -1 - 'pattern' not found.
- * @return -51 - 'pattern' is a ill-formed regex (the underhood compile function fails, -51 is PCRE2_ERROR_NULL).
+ * @param begin - position of the first character of the found pattern, pass NULL if it's irrelevent, returns -1 if not found, -51 if 'pattern' is a ill-formed regex.
+ * @param end - position of the first character right after the found pattern, pass NULL if it's irrelevent, returns -1 if not found, -51 if 'pattern' is a ill-formed regex.
+ * @return same as argument 'begin'.
  */
 int roy_string_find(const RoyString * string, const char * pattern, size_t position, int * begin, int * end);
 
@@ -215,15 +213,6 @@ int64_t roy_string_to_int(const RoyString * string);
 double roy_string_to_double(const RoyString * string);
 
 /**
- * @brief Finds all regular expressions repeatly from 'string', stores them in deque 'dest'.
- * @param dest - where the regular expression found to pushed into.
- * @param pattern - pattern to be found.
- * @param position - position at which to start the search from 'string'.
- * @return the destination deque.
- */
-RoyDeque * roy_string_tokenize(RoyDeque * dest, const RoyString * string, const char * pattern);
-
-/**
  * @brief Seperates 'string' into substrings using 'seperator', and stores all substrings in deque 'dest'.
  * @param dest - where the substrings to pushed into.
  * @param seperator - The string where each split should occur. Can be a string or a regular expression.
@@ -239,5 +228,14 @@ RoyDeque * roy_string_split(RoyDeque * dest, const RoyString * string, const cha
  * @note If 'deque' has only one string, then that string will be returned without using the separator.
  */
 RoyString * roy_string_join(RoyString * dest, const RoyDeque * deque, const char * seperator);
+
+/**
+ * @brief Finds all regular expressions repeatly and greedly from 'string', stores them in deque 'dest'.
+ * @param dest - where the regular expression found to pushed into.
+ * @param pattern - pattern to be found.
+ * @param position - position at which to start the search from 'string'.
+ * @return the destination deque.
+ */
+RoyDeque * roy_string_tokenize(RoyDeque * dest, const RoyString * string, const char * pattern);
 
 #endif // ROYSTRING_H

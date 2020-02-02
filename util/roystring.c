@@ -32,20 +32,20 @@ roy_string_delete(RoyString * string) {
 int
 roy_string_at(const RoyString * string,
               size_t            position) {
-  if (valid_pos(string, position)) {
-    return *(string->str + position);
-  }
-  return '\0';
+  int * pret = (int *)roy_string_cstr(string, position);
+  return pret ? *pret : '\0';
 }
 
 char *
-roy_string_str(RoyString * string) {
-  return string->str;
+roy_string_str(RoyString * string,
+               size_t      position) {
+  return valid_pos(string, position) ? string->str + position : NULL;
 }
 
 const char *
-roy_string_cstr(const RoyString * string) {
-  return string->str;
+roy_string_cstr(const RoyString * string,
+                size_t            position) {
+  return valid_pos(string, position) ? string->str + position : NULL;
 }
 
 bool
@@ -60,7 +60,7 @@ roy_string_length(const RoyString * string) {
 
 RoyString *
 roy_string_assign(RoyString  * string,
-                      const char * str) {
+                  const char * str) {
   string->str = realloc(string->str, (strlen(str) + 1) * sizeof(char));
   memcpy(string->str, str, strlen(str) + 1);
   return string;
@@ -169,7 +169,7 @@ roy_string_substring(RoyString * dest,
                      size_t      count) {
   if (valid_pos_cnt(string, position, count)) {
     ROY_STR(temp, count + 1)
-    strncpy(temp, roy_string_cstr(string) + position, count);
+    strncpy(temp, roy_string_cstr(string, position), count);
     return dest = roy_string_assign(dest, temp);
   } else {
     return NULL;
@@ -195,7 +195,7 @@ roy_string_right(RoyString * dest,
 
 void
 roy_string_print(const RoyString * string) {
-  printf("%s", roy_string_cstr(string));
+  printf("%s", roy_string_cstr(string, 0));
 }
 
 void
@@ -225,42 +225,45 @@ roy_string_find(const RoyString  * string,
   int error_code;
   PCRE2_SIZE error_offset;
 
-  pcre2_code * re = pcre2_compile(
-    ptn,
-    PCRE2_ZERO_TERMINATED,
-    0U,
-    &error_code,
-    &error_offset,
-    NULL
-  );
+  pcre2_code * re = pcre2_compile(ptn,
+                                  PCRE2_ZERO_TERMINATED,
+                                  0U,
+                                  &error_code,
+                                  &error_offset,
+                                  NULL);
 
   if (re == NULL) {
-    if (*begin) { *begin = PCRE2_ERROR_NOMATCH; }
-    if (*end)   { *end   = PCRE2_ERROR_NOMATCH; }
+    if (begin) { *begin = PCRE2_ERROR_NULL; }
+    if (end)   { *end   = PCRE2_ERROR_NULL; }
     return PCRE2_ERROR_NULL;
   }
 
   const PCRE2_SPTR subject =
-    (const PCRE2_SPTR)roy_string_cstr(string) + position;
+    (const PCRE2_SPTR)roy_string_cstr(string, position);
   PCRE2_SIZE subject_length =
     strlen((const char *)subject);
   pcre2_match_data * match_data =
     pcre2_match_data_create_from_pattern(re, NULL);
-
-  int rc = pcre2_match(re, subject, subject_length, 0ULL, 0U, match_data, NULL);
-
+  int rc = pcre2_match(re,
+                       subject,
+                       subject_length,
+                       0ULL,
+                       PCRE2_NOTEMPTY,
+                       match_data,
+                       NULL);
   int ret;
+
   if (rc < 0) {
     ret = rc;
-    if (*begin) { *begin = PCRE2_ERROR_NOMATCH; }
-    if (*end)   { *end   = PCRE2_ERROR_NOMATCH; }
+    if (begin) { *begin = PCRE2_ERROR_NOMATCH; }
+    if (end)   { *end   = PCRE2_ERROR_NOMATCH; }
   } else {
     /* Since 'match_data' is create by 'pcre2_match_data_create_from_pattern',
        'rc' would never equal to 0. */
     PCRE2_SIZE * ovector = pcre2_get_ovector_pointer(match_data);
     ret = ovector[0];
-    if (*begin) { *begin = ovector[0]; }
-    if (*end)   { *end   = ovector[1]; }
+    if (begin) { *begin = ovector[0]; }
+    if (end)   { *end   = ovector[1]; }
   }
 
   pcre2_match_data_free(match_data);
@@ -279,31 +282,49 @@ roy_string_match(const RoyString * string,
 int
 roy_string_compare(const RoyString * string1,
                    const RoyString * string2) {
-  return strcmp(roy_string_cstr(string1), roy_string_cstr(string2));
+  return strcmp(roy_string_cstr(string1, 0), roy_string_cstr(string2, 0));
 }
 
 int64_t
 roy_string_to_int(const RoyString * string) {
-  return strtoll(roy_string_cstr(string), NULL, 0);
+  return strtoll(roy_string_cstr(string, 0), NULL, 0);
 }
 
 double
 roy_string_to_double(const RoyString * string) {
-  return strtod(roy_string_cstr(string), NULL);
+  return strtod(roy_string_cstr(string, 0), NULL);
 }
 
 RoyDeque *
 roy_string_split(RoyDeque        * dest,
                  const RoyString * string,
-                 const char      * regex) {
-  
+                 const char      * seperator) {
+  int begin, end;
+  int len = roy_string_length(string);
+  size_t pos = 0;
+  roy_string_find(string, seperator, 0, &begin, &end);
+  while (begin >= 0 && begin < len - 1 && end < len) {
+    RoyString * temp = roy_string_new(roy_string_cstr(string, pos));
+    roy_string_left(temp, temp, begin);
+    roy_deque_push_back(dest, temp);
+    pos = end;
+    roy_string_find(string, seperator, 0, &begin, &end);
+    printf("%d %d \n", begin, end);
+  }
+  return dest;
 }
 
 RoyString *
 roy_string_join(RoyString      * dest,
-                const RoyDeque * vector,
-                const char     * splitter) {
-
+                const RoyDeque * deque,
+                const char     * seperator) {
+  int i = 0;
+  for (; i < (int)roy_deque_size(deque) - 1; i++) {
+    roy_string_append(dest, roy_string_cstr(roy_deque_cpointer(deque, i), 0));
+    roy_string_append(dest, seperator);
+  }
+  roy_string_append(dest, roy_string_cstr(roy_deque_cpointer(deque, i), 0));
+  return dest;
 }
 
 /* PRIVATE FUNCTIONS DOWN HERE */

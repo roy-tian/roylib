@@ -61,9 +61,9 @@ roy_shell_start(RoyShell * shell) {
         // and push them to 'obuffer' in 'func'.
       }
       roy_deque_push_back(shell->ihistory,
-                          roy_string_new(roy_string_cstr(shell->ibuffer)));
+                          roy_string_new(roy_string_cstr(shell->ibuffer, 0)));
       roy_deque_push_back(shell->ohistory,
-                          roy_string_new(roy_string_cstr(shell->obuffer)));
+                          roy_string_new(roy_string_cstr(shell->obuffer, 0)));
     }
   }
 }
@@ -117,7 +117,7 @@ roy_shell_log(RoyShell   * shell,
                      ...) {
   va_list args;
   va_start(args, format);
-  vsprintf(roy_string_str(shell->obuffer), format, args);
+  vsprintf(roy_string_str(shell->obuffer, 0), format, args);
   va_end(args);
   return shell;
 }
@@ -144,8 +144,8 @@ roy_shell_out_at(const RoyShell * shell,
 static void
 tokenize(RoyShell  * shell) {
   roy_deque_clear(shell->argv);
-  const char * phead = roy_string_cstr(shell->ibuffer);
-  const char * ptail = roy_string_cstr(shell->ibuffer);
+  const char * phead = roy_string_cstr(shell->ibuffer, 0);
+  const char * ptail = roy_string_cstr(shell->ibuffer, 0);
   while (*phead != '\0') {
     if (!isgraph(*phead)) {
       phead++;
