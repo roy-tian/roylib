@@ -9,8 +9,8 @@ struct RoyShell_ {
   RoyString * ibuffer;
   RoyString * obuffer;
   RoyDeque  * argv;
-  RoyDeque  * ihistory;
-  RoyDeque  * ohistory;
+  RoyDeque  * ivector;
+  RoyDeque  * ovector;
 };
 
 /// @brief RoyShell: A simulated shell with simple function.
@@ -47,9 +47,9 @@ RoyShell * roy_shell_command_add(RoyShell * shell, const char * cmd, ROperate op
 
 /**
  * @brief Sets the text of shell prompt, "> " by default.
- * @param prompt - string literal of new prompt.
+ * @param prompt - function to set prompt as a new string literal.
  */
-RoyShell * roy_shell_set_prompt_text(RoyShell * shell, const char * prompt);
+void roy_shell_set_prompt(RoyShell * shell, ROperate prompt);
 
 /**
  * @brief Counts the number of arguments of current line.
@@ -65,12 +65,12 @@ RoyString * roy_shell_argv_at(const RoyShell * shell, size_t position);
 
 /**
  * @brief Finds specified argument in 'shell'.
- * @param regex - the argument to be found, regular expressions are supported.
+ * @param pattern - the argument to be found, regular expressions are supported.
  * @retval N - the position of the found argument.
  * @retval 0 - the cmd itself.
  * @retval -1 - argument not found.
  */
-int roy_shell_argv_find(const RoyShell * shell, const char * regex);
+int roy_shell_argv_find(const RoyShell * shell, const char * pattern);
 
 /// @brief Clears the log buffer for a new info to be logged.
 RoyShell * roy_shell_log_clear(RoyShell * shell);
@@ -81,9 +81,6 @@ RoyShell * roy_shell_log_clear(RoyShell * shell);
  * @note - The flow can be printed to console and automatically pushed into 'output history' at the end of each round.
  */
 RoyShell * roy_shell_log(RoyShell * shell, const char * format, ...);
-
-/// @brief Counts the number of input/output operation rounds.
-size_t roy_shell_history_count(const RoyShell * shell);
 
 /**
  * @param position - where the input takes place in input history.
