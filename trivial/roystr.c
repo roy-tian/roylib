@@ -1,6 +1,6 @@
 #include "roystr.h"
 
-enum {STRING_CAPACITY = 1023};
+enum { BUFFER_SIZE = 1000 };
 
 char *
 roy_str_to_lower(char * str) {
@@ -216,8 +216,8 @@ sequence(char * dest,
 char *
 roy_str_fill_sequence(char       * dest,
                       const char * pattern) {
-  enum Flag { LEFT, MIDDLE, RIGHT };
-  enum Flag flag = 0;
+  typedef enum { LEFT, MIDDLE, RIGHT } Flag;
+  Flag flag = 0;
   char * pdest = dest;
   while (*pattern != '\0') {
     if (flag == LEFT && isprint(*pattern)) {
@@ -225,7 +225,7 @@ roy_str_fill_sequence(char       * dest,
     } else if (flag == MIDDLE && *pattern == '-') {
       flag = RIGHT;
     } else if (flag == RIGHT && isprint(*pattern)) {
-      char buf[STRING_CAPACITY + 1] = "\0";
+      char buf[BUFFER_SIZE] = "\0";
       strcat(dest, sequence(buf, *(pattern - 2), *pattern));
       pdest += strlen(buf);
       flag = LEFT;
@@ -474,10 +474,10 @@ char *
 roy_str_read_from_file(char       * dest,
                        const char * path) {
   FILE * fp = fopen(path, "r");
-  ROY_STR(buf, STRING_CAPACITY)
-  fgets(buf, STRING_CAPACITY, fp);
+  ROY_STR(buf, BUFFER_SIZE)
+  fgets(buf, BUFFER_SIZE, fp);
   strcpy(dest, buf);
-  while (fgets(buf, STRING_CAPACITY, fp)) {
+  while (fgets(buf, BUFFER_SIZE, fp)) {
     strcat(dest, buf);
   }
   fclose(fp);
