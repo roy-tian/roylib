@@ -4,6 +4,11 @@
 #include "roystring.h"
 #include <pcre2.h>
 
+enum {
+    INT_MAX_LENGTH = 21,
+    DOUBLE_MAX_LENGTH = 44
+};
+
 static RoyString * new_empty(void);
 static bool valid_pos(const RoyString * string, size_t position);
 static bool valid_pos_cnt(const RoyString * string, size_t position, size_t count);
@@ -73,7 +78,7 @@ roy_string_assign(RoyString  * string,
 RoyString *
 roy_string_assign_int(RoyString * string,
                       int         value) {
-  char buf[21] = { '\0' }; // the possible maximum length of an integer is 20.
+  char buf[INT_MAX_LENGTH] = { '\0' };
   sprintf(buf, "%d", value);
   return roy_string_assign(string, buf);
 }
@@ -81,7 +86,7 @@ roy_string_assign_int(RoyString * string,
 RoyString *
 roy_string_assign_double(RoyString * string,
                          double      value) {
-  char buf[44] = { '\0' }; // the possible maximum length of a float number is 43.
+  char buf[DOUBLE_MAX_LENGTH] = { '\0' };
   sprintf(buf, "%.15g", value);
   return roy_string_assign(string, buf);
 }
@@ -217,18 +222,18 @@ roy_string_find(const RoyString  * string,
                 const char       * pattern,
                 size_t             position) {
   match_t ret = { PCRE2_ERROR_NOMATCH, PCRE2_ERROR_NOMATCH };
-  const PCRE2_SPTR ptn = (const PCRE2_SPTR)pattern;
-  int err_code;
+  const PCRE2_SPTR  ptn = (const PCRE2_SPTR)pattern;
+  int          err_code;
   PCRE2_SIZE err_offset;
-  pcre2_code * re =
+  pcre2_code *       re =
     pcre2_compile(ptn, PCRE2_ZERO_TERMINATED, 0U, &err_code, &err_offset, NULL);
 
   if (re == NULL) {
     ret.begin = ret.end = PCRE2_ERROR_NULL;
   }
 
-  const PCRE2_SPTR sub    = (const PCRE2_SPTR)roy_string_cstr(string, position);
-  PCRE2_SIZE sublen       = strlen((const char *)sub);
+  const PCRE2_SPTR    sub = (const PCRE2_SPTR)roy_string_cstr(string, position);
+  PCRE2_SIZE       sublen = strlen((const char *)sub);
   pcre2_match_data * data = pcre2_match_data_create_from_pattern(re, NULL);
 
   if (pcre2_match(re, sub, sublen, 0ULL, PCRE2_NOTEMPTY, data, NULL) > 0) {

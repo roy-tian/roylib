@@ -196,7 +196,7 @@ void roy_string_scan(RoyString * string, size_t buffer_size);
 match_t roy_string_find(const RoyString * string, const char * pattern, size_t position);
 
 /**
- * @brief Test whether 'string' exactly matches the given string 'pattern'. 
+ * @brief Tests whether 'string' exactly matches the given string 'pattern'. 
  * @param pattern - string to be compared, char string literals and regexs are allowed.
  */
 bool roy_string_match(const RoyString * string, const char * pattern);
