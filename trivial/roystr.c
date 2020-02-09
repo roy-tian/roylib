@@ -1,7 +1,5 @@
 #include "roystr.h"
 
-enum { BUFFER_SIZE = 1000 };
-
 char *
 roy_str_to_lower(char * str) {
   char * pstr = str;
@@ -225,7 +223,7 @@ roy_str_fill_sequence(char       * dest,
     } else if (flag == MIDDLE && *pattern == '-') {
       flag = RIGHT;
     } else if (flag == RIGHT && isprint(*pattern)) {
-      char buf[BUFFER_SIZE] = "\0";
+      char buf[R_BUF_SIZE] = "\0";
       strcat(dest, sequence(buf, *(pattern - 2), *pattern));
       pdest += strlen(buf);
       flag = LEFT;
@@ -474,10 +472,10 @@ char *
 roy_str_read_from_file(char       * dest,
                        const char * path) {
   FILE * fp = fopen(path, "r");
-  ROY_STR(buf, BUFFER_SIZE)
-  fgets(buf, BUFFER_SIZE, fp);
+  ROY_STR(buf, R_BUF_SIZE)
+  fgets(buf, R_BUF_SIZE, fp);
   strcpy(dest, buf);
-  while (fgets(buf, BUFFER_SIZE, fp)) {
+  while (fgets(buf, R_BUF_SIZE, fp)) {
     strcat(dest, buf);
   }
   fclose(fp);

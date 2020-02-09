@@ -15,22 +15,23 @@ typedef bool     (* RCondition) (const void *);
 typedef int      (* RCompare)   (const void *, const void *);
 typedef uint64_t (* RHash)      (const void *, size_t, uint64_t);
 
-enum CommonConstants {
-  R_PTR_SIZE = sizeof(void *)
+enum Size {
+  R_PTR_SIZE = sizeof(void *),
+  R_BUF_SIZE = 0x400
 };
 
-enum NumeralSystem {
-  R_BINARY     = 2,
-  R_OCTAL      = 8,
-  R_DECIMAL    = 10,
-  R_HEXDECIMAL = 16
+enum Numeral {
+  R_BINARY     = 0b10,
+  R_OCTAL      =  010,
+  R_DECIMAL    =   10,
+  R_HEXDECIMAL = 0x10
 };
 
-enum BinaryWidths {
-  R_BYTE  = 8,
-  R_WORD  = 16,
-  R_DWORD = 32,
-  R_QWORD = 64
+enum Width {
+  R_BYTE  =  010,
+  R_WORD  = 0x10,
+  R_DWORD = 0x20,
+  R_QWORD = 0x40
 };
 
 #endif // ROYINIT_H
