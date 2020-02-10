@@ -100,13 +100,12 @@ bool
 roy_string_insert(RoyString  * string,
                   const char * substr,
                   size_t       position) {
-  if (valid_pos(string, position)) {
-    ROY_STR(temp, roy_string_length(string) + strlen(substr) + 1)
+  if (valid_pos(string, position)) {\
+    size_t length = roy_string_length(string);
+    ROY_STR(temp, length + strlen(substr) + 1)
     memcpy (temp, roy_string_cstr(string, 0), position);
     strcat (temp, substr);
-    strncat(temp,
-            roy_string_cstr(string, position),
-            roy_string_length(string) - position);
+    strncat(temp, roy_string_cstr(string, position), length - position);
     roy_string_assign(string, temp);
     return true;
   }
@@ -130,11 +129,12 @@ roy_string_erase(RoyString * string,
                  size_t      position,
                  size_t      count) {
   if (valid_pos_cnt(string, position, count)) {
-    ROY_STR(temp, roy_string_length(string) - count + 1)
+    size_t length = roy_string_length(string);
+    ROY_STR(temp, length - count + 1)
     memcpy (temp, roy_string_cstr(string, 0), position);
     strncat(temp,
             roy_string_cstr(string, position + count),
-            roy_string_length(string) - position - count);
+            length - position - count);
     roy_string_assign(string, temp);
     return true;
   }

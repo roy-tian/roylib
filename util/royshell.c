@@ -1,16 +1,8 @@
 #include "royshell.h"
 #include "../trivial/roypair.h"
 
-void pair_deleter(RoyPair * pair) {
-  roy_string_delete(pair->key);
-  free(pair);
-  pair = NULL;
-}
-
-int pair_comparer(const RoyPair * lhs,
-                  const RoyPair * rhs) {
-  return roy_string_compare(lhs->key, rhs->key);
-}
+static void pair_deleter(RoyPair * pair);
+static int pair_comparer(const RoyPair * lhs, const RoyPair * rhs);
 
 RoyShell *
 roy_shell_new(void) {
@@ -54,6 +46,7 @@ roy_shell_start(RoyShell * shell) {
       }
       roy_deque_push_back(shell->ivector, roy_string_copy(shell->ibuffer));
       roy_deque_push_back(shell->ovector, roy_string_copy(shell->obuffer));
+      roy_deque_clear(shell->argv);
     }
   }
 }
@@ -121,4 +114,17 @@ RoyString *
 roy_shell_out_at(const RoyShell * shell,
                  size_t           position) {
   return roy_deque_at(shell->ovector, position, RoyString);
+}
+
+/* PRIVATE FUNCTIONS DOWN HERE */
+
+static void pair_deleter(RoyPair * pair) {
+  roy_string_delete(pair->key);
+  free(pair);
+  pair = NULL;
+}
+
+static int pair_comparer(const RoyPair * lhs,
+                  const RoyPair * rhs) {
+  return roy_string_compare(lhs->key, rhs->key);
 }
