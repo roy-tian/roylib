@@ -14,7 +14,7 @@ typedef struct RoyString_ RoyString;
 typedef struct {
   int begin;
   int end;
-} match_t;
+} RMatch;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
@@ -183,7 +183,7 @@ void roy_string_println(const RoyString * string);
  * @brief Writes 'string' according to stdin.
  * @param buffer_size - size of the buffer inside the function.
  */ 
-void roy_string_scan(RoyString * string, size_t buffer_size);
+void roy_string_scan(RoyString * string, size_t buf_size);
 
 /* SEARCH */
 
@@ -193,7 +193,7 @@ void roy_string_scan(RoyString * string, size_t buffer_size);
  * @param position - position at which to start the search from 'string'.
  * @return the first pattern found, can be accessed by '.begin' '.end', -1 if not found, -51 if 'pattern' is a ill-formed regex.
  */
-match_t roy_string_find(const RoyString * string, const char * pattern, size_t position);
+RMatch roy_string_find(const RoyString * string, const char * pattern, size_t position);
 
 /**
  * @brief Tests whether 'string' exactly matches the given string 'pattern'. 
@@ -225,7 +225,7 @@ double roy_string_to_double(const RoyString * string);
 
 /**
  * @brief Finds all regular expressions repeatly and greedly from 'string', stores them in deque 'dest'.
- * @param dest - where the position info (match_t) to pushed into.
+ * @param dest - where the position info (RMatch) to pushed into.
  * @param pattern - pattern to be parsed.
  * @return the size of the destanation deque, aka number of tokenized strings.
  */

@@ -100,7 +100,7 @@ bool
 roy_string_insert(RoyString  * string,
                   const char * substr,
                   size_t       position) {
-  if (valid_pos(string, position)) {\
+  if (valid_pos(string, position)) {
     size_t length = roy_string_length(string);
     ROY_STR(temp, length + strlen(substr) + 1)
     memcpy (temp, roy_string_cstr(string, 0), position);
@@ -210,22 +210,22 @@ roy_string_println(const RoyString * string) {
 
 void
 roy_string_scan(RoyString * string,
-                size_t      buffer_size) {
-  ROY_STR(temp, buffer_size)
-  fgets  (temp, buffer_size, stdin);
+                size_t      buf_size) {
+  ROY_STR(temp, buf_size)
+  fgets  (temp, buf_size, stdin);
   roy_string_assign(string, temp);
   roy_string_erase_right(string, 1);
 }
 
-match_t
+RMatch
 roy_string_find(const RoyString  * string,
                 const char       * pattern,
                 size_t             position) {
-  match_t ret = { PCRE2_ERROR_NOMATCH, PCRE2_ERROR_NOMATCH };
-  const PCRE2_SPTR  ptn = (const PCRE2_SPTR)pattern;
-  int          err_code;
+  RMatch ret = { PCRE2_ERROR_NOMATCH, PCRE2_ERROR_NOMATCH };
+  const PCRE2_SPTR ptn = (const PCRE2_SPTR)pattern;
+  int err_code;
   PCRE2_SIZE err_offset;
-  pcre2_code *       re =
+  pcre2_code * re =
     pcre2_compile(ptn, PCRE2_ZERO_TERMINATED, 0U, &err_code, &err_offset, NULL);
 
   if (re == NULL) {
@@ -252,7 +252,7 @@ roy_string_find(const RoyString  * string,
 bool
 roy_string_match(const RoyString * string,
                  const char      * pattern) {
-  match_t match = roy_string_find(string, pattern, 0);
+  RMatch match = roy_string_find(string, pattern, 0);
   return match.begin == 0 && match.end == (int)roy_string_length(string);
 }
 
@@ -277,11 +277,11 @@ roy_string_tokenize(RoyDeque        * dest,
                     const RoyString * string,
                     const char      * pattern) {
   size_t pos = 0;
-  match_t match = roy_string_find(string, pattern, pos);
+  RMatch match = roy_string_find(string, pattern, pos);
   while (match.begin != PCRE2_ERROR_NOMATCH) {
-    match_t * temp = malloc(sizeof(match_t));
-    temp->begin = pos + match.begin;
-    temp->end = pos + match.end;
+    RMatch * temp = malloc(sizeof(RMatch));
+    temp->begin   = pos + match.begin;
+    temp->end     = pos + match.end;
     roy_deque_push_back(dest, temp);
     pos += match.end;
     match = roy_string_find(string, pattern, pos);
@@ -294,7 +294,7 @@ roy_string_split(RoyDeque        * dest,
                  const RoyString * string,
                  const char      * seperator) {
   size_t pos = 0;
-  match_t match = roy_string_find(string, seperator, pos);
+  RMatch match = roy_string_find(string, seperator, pos);
   while (match.begin != PCRE2_ERROR_NOMATCH) {
     RoyString * temp = roy_string_copy(string);
     roy_string_substring(temp, pos, match.begin);
@@ -324,7 +324,6 @@ roy_string_join(RoyString      * dest,
   roy_string_append(dest, roy_string_cstr(roy_deque_cpointer(deque, i), 0));
   return dest;
 }
-
 
 /* PRIVATE FUNCTIONS DOWN HERE */
 
