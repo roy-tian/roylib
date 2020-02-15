@@ -80,11 +80,18 @@ int
 roy_shell_argv_find(const RoyShell * shell,
                     const char     * pattern) {
   for (size_t i = 0; i != roy_shell_argc(shell); i++) {
-    if (roy_string_match(roy_shell_argv_at(shell, i), pattern)) {
+    if (roy_shell_argv_match(shell, i, pattern)) {
       return i;
     }
   }
   return -1; // not found. (0 indicates the cmd itself)
+}
+
+bool
+roy_shell_argv_match(const RoyShell * shell,
+                     size_t           position,
+                     const char     * pattern) {
+  return roy_string_match(roy_shell_argv_at(shell, position), pattern);
 }
 
 RoyShell *

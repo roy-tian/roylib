@@ -72,6 +72,13 @@ RoyString * roy_shell_argv_at(const RoyShell * shell, size_t position);
  */
 int roy_shell_argv_find(const RoyShell * shell, const char * pattern);
 
+/**
+ * @brief Test the specified argument is match the given pattern or not.
+ * @param position - the position of the argument vector, 0 represent the cmd itself, argv starts from 1.
+ * @param pattern - the argument to be found, regular expressions are supported.
+ */
+bool roy_shell_argv_match(const RoyShell * shell, size_t position, const char * pattern);
+
 /// @brief Clears the log buffer for a new info to be logged.
 RoyShell * roy_shell_log_clear(RoyShell * shell);
 
