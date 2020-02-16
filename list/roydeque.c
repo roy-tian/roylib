@@ -142,7 +142,9 @@ size_t roy_deque_remove_if(RoyDeque   * deque,
 
 void
 roy_deque_reverse(RoyDeque * deque) {
+  RoyList * phead = deque->head;
   roy_list_reverse(&deque->head);
+  deque->tail = phead;
 }
 
 size_t
