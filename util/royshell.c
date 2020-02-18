@@ -34,10 +34,16 @@ roy_shell_start(RoyShell * shell) {
   while (true) {
     roy_string_print(shell->prompt);
     roy_string_scan(shell->ibuffer, R_BUF_SIZE);
+    roy_deque_clear(shell->argv);
     if (roy_string_split(shell->argv, shell->ibuffer, "\\s+") > 0) {
-      // Clears the out buffer for new info
+      // If cmd (aka first token in argv) cannot be found in dict,
+      // push_front a nil string to use default func:
+      if (!roy_map_find(shell->dict, roy_shell_argv_at(shell, 0))) {
+        roy_deque_push_front(shell->argv, roy_string_new(""));
+      }
+      // Clears the out buffer for new info to fill with:
       roy_string_clear(shell->obuffer);
-      // Gets the first token from argv
+      // Gets the cmd (aka the first token in argv):
       ROperate func = roy_map_find(shell->dict, roy_shell_argv_at(shell, 0));
       if (func) {
         func(shell); 
@@ -46,7 +52,6 @@ roy_shell_start(RoyShell * shell) {
       }
       roy_deque_push_back(shell->ivector, roy_string_copy(shell->ibuffer));
       roy_deque_push_back(shell->ovector, roy_string_copy(shell->obuffer));
-      roy_deque_clear(shell->argv);
     }
   }
 }
@@ -95,19 +100,9 @@ roy_shell_argv_match(const RoyShell * shell,
 }
 
 RoyShell *
-roy_shell_log_clear(RoyShell * shell) {
-  roy_string_clear(shell->obuffer);
-  return shell;
-}
-
-RoyShell *
-roy_shell_log(RoyShell   * shell,
-              const char * format,
-              ...) {
-  va_list args;
-  va_start(args, format);
-  vsprintf(roy_string_str(shell->obuffer, 0), format, args);
-  va_end(args);
+roy_shell_log(RoyShell        * shell,
+              const RoyString * log) {
+  roy_string_assign(shell->obuffer, roy_string_cstr(log, 0));
   return shell;
 }
 

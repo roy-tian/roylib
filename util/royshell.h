@@ -79,15 +79,12 @@ int roy_shell_argv_find(const RoyShell * shell, const char * pattern);
  */
 bool roy_shell_argv_match(const RoyShell * shell, size_t position, const char * pattern);
 
-/// @brief Clears the log buffer for a new info to be logged.
-RoyShell * roy_shell_log_clear(RoyShell * shell);
-
 /**
  * @brief Adds new log to the information flow.
  * @param format - a string literal specifying how to interpret the data.
  * @note - The flow can be printed to console and automatically pushed into 'output history' at the end of each round.
  */
-RoyShell * roy_shell_log(RoyShell * shell, const char * format, ...);
+RoyShell * roy_shell_log(RoyShell * shell, const RoyString * log);
 
 /**
  * @param position - where the input takes place in input history.
