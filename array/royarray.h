@@ -1,13 +1,6 @@
 #ifndef ROYARRAY_H
 #define ROYARRAY_H
 
-/**
- * @author Roy Tian
- * @version 0.1.0 alpha
- * @date Dec 12, 2019
- * @copyright MIT.
- */
-
 #include "../trivial/royinit.h"
 
 struct RoyArray_ {

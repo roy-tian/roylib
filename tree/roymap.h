@@ -1,13 +1,6 @@
 #ifndef ROYMAP_H
 #define ROYMAP_H
 
-/**
- * @author Roy Tian
- * @version 0.1.0 alpha
- * @date Dec 12, 2019
- * @copyright MIT.
- */
-
 #include "../trivial/royinit.h"
 #include "royset.h"
 

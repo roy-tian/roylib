@@ -1,13 +1,6 @@
 #ifndef ROYSTACK_H
 #define ROYSTACK_H
 
-/**
- * @author Roy Tian
- * @version 0.1.0 alpha
- * @date Dec 12, 2019
- * @copyright MIT.
- */
-
 #include "royarray.h"
 
 struct RoyStack_ {

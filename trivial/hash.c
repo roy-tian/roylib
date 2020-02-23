@@ -1,6 +1,5 @@
 #include "hash.h"
 
-
 uint64_t
 MurmurHash2(const void * key,
             size_t       key_size,
