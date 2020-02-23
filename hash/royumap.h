@@ -47,7 +47,7 @@ void roy_umap_delete(RoyUMap * umap);
  * @return a const pointer to the specified RoyPair.
  * @return NULL - 'bucket_index' or 'bucket_position' exceeds, or 'umap' is empty.
  */
-const RoyPair * roy_umap_cpointer(const RoyUMap * umap, size_t bucket_index, size_t bucket_position);
+const RoyCPair * roy_umap_cpointer(const RoyUMap * umap, size_t bucket_index, size_t bucket_position);
 
 /* CAPACITY */
 

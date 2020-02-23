@@ -112,14 +112,14 @@ void roy_mmap_clear(RoyMMap * mmap);
  * @param key - a pointer to the element with a comparable 'key'.
  * @return the number of elements equivalent to 'key'.
  */
-size_t roy_mmap_count(const RoyMMap * mmap, void * key);
+size_t roy_mmap_count(const RoyMMap * mmap, const void * key);
 
 /**
  * @brief Finds the first element with an equivalent key.
  * @param key - a key for comparision.
  * @return a pointer to the value of target element.
  */
-void * roy_mmap_find(RoyMMap * mmap, void * key);
+void * roy_mmap_find(RoyMMap * mmap, const void * key);
 
 /* TRAVERSE */
 

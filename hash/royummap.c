@@ -17,7 +17,7 @@ roy_ummap_delete(RoyUMMap * ummap) {
   free(ummap);
 }
 
-const RoyPair *
+const RoyCPair *
 roy_ummap_cpointer(const RoyUMMap * ummap,
                    size_t           bucket_index,
                    size_t           bucket_position) {
@@ -68,7 +68,7 @@ const void *
 roy_ummap_find(const RoyUMMap * ummap,
                const void     * key,
                size_t           key_size) {
-  return (*(RoyPair *)roy_umset_find(ummap->umset, key, key_size)).value;
+  return (*(RoyCPair *)roy_umset_find(ummap->umset, key, key_size)).value;
 }
 
 size_t

@@ -67,9 +67,9 @@ roy_map_clear(RoyMap * map) {
 }
 
 void *
-roy_map_find(RoyMap * map,
-             void   * key) {
-  RoyPair * pair = roy_pair_new(key, NULL);
+roy_map_find(RoyMap     * map,
+             const void * key) {
+  RoyCPair * pair = roy_cpair_new(key, NULL);
   RoySet * set = roy_set_find(map->root, pair, map->comparer);
   free(pair);
   return set ? roy_pair_value(set->key) : NULL;

@@ -17,7 +17,7 @@ roy_umap_delete(RoyUMap * umap) {
   free(umap);
 }
 
-const RoyPair *
+const RoyCPair *
 roy_umap_cpointer(const RoyUMap * umap,
                   size_t          bucket_index,
                   size_t          bucket_position) {
@@ -73,7 +73,7 @@ const void *
 roy_umap_find(const RoyUMap * umap,
               const void    * key,
               size_t          key_size) {
-  return (*(RoyPair *)roy_uset_find(umap->uset, key, key_size)).value;
+  return (*(RoyCPair *)roy_uset_find(umap->uset, key, key_size)).value;
 }
 
 size_t
