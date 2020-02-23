@@ -118,6 +118,11 @@ roy_shell_out_at(const RoyShell * shell,
   return roy_deque_at(shell->ovector, position, RoyString);
 }
 
+size_t
+roy_shell_rounds(const RoyShell * shell) {
+  return roy_deque_size(shell->ivector);
+}
+
 /* PRIVATE FUNCTIONS DOWN HERE */
 
 static void pair_deleter(RoyPair * pair) {

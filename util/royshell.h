@@ -94,6 +94,9 @@ RoyString * roy_shell_in_at(const RoyShell * shell, size_t position);
 
 /**
  * @param position - where the input takes place in output history.
- * @return - the text content of specified input, NULL if position exceeds.
+ * @return - the text content of specified output, NULL if position exceeds.
  */
 RoyString * roy_shell_out_at(const RoyShell * shell, size_t position);
+
+/// @brief Counts the input/output rounds in shell.
+size_t roy_shell_rounds(const RoyShell * shell);
