@@ -226,13 +226,13 @@ roy_random_new(void) {
   srand((unsigned)time(NULL));
 }
 
-int64_t
-roy_random_next(int64_t min,
-                int64_t max) {
+uint64_t
+roy_random_next(uint64_t min,
+                uint64_t max) {
   if (max < min) {
     return max;
   }
-  int64_t ret = max + 1;
+  uint64_t ret = max + 1;
   while (ret > max) {
     ret = rand() / ( (RAND_MAX + 1U) / max ) + min;
   }

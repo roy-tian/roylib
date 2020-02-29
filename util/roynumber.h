@@ -95,6 +95,6 @@ uint64_t roy_next_prime(uint64_t number);
 void roy_random_new(void);
 
 /// @brief Generates a pseudo-random integer N ∈ [min, max].
-int64_t roy_random_next(int64_t min, int64_t max);
+uint64_t roy_random_next(uint64_t min, uint64_t max);
 
 #endif // ROYNUMBER_H
