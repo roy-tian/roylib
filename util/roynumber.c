@@ -227,7 +227,7 @@ roy_random_new(void) {
 }
 
 int64_t
-roy_next_random(int64_t min,
+roy_random_next(int64_t min,
                 int64_t max) {
   if (max < min) {
     return max;

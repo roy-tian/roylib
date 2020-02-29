@@ -235,7 +235,7 @@ size_t roy_string_tokenize(RoyDeque * dest, const RoyString * string, const char
  * @brief Seperates 'string' into substrings using 'seperator', and stores all substrings in deque 'dest'.
  * @param dest - where the substrings to pushed into.
  * @param seperator - The string where each split should occur. Can be a string or a regular expression.
- * @return the size of the destanation deque, aka number of splitted strings.
+ * @return the size of the destination deque, aka number of splitted strings.
  */
 size_t roy_string_split(RoyDeque * dest, const RoyString * string, const char * seperator);
 
@@ -245,6 +245,5 @@ size_t roy_string_split(RoyDeque * dest, const RoyString * string, const char * 
  * @note If 'deque' has only one string, then that string will be returned without using the separator.
  */
 RoyString * roy_string_join(RoyString * dest, const RoyDeque * deque, const char * seperator);
-
 
 #endif // ROYSTRING_H
