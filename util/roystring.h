@@ -228,26 +228,26 @@ int roy_string_to_int(const RoyString * string);
 double roy_string_to_double(const RoyString * string);
 
 /**
- * @brief Finds all regular expressions repeatly and greedly from 'string', stores them in deque 'dest'.
+ * @brief Finds all regular expressions repeatedly and greedily from 'string', stores them in deque 'dest'.
  * @param dest - where the position info (RMatch) to pushed into.
  * @param pattern - pattern to be parsed.
- * @return the size of the destanation deque, aka number of tokenized strings.
+ * @return the size of the destination deque, aka number of tokenized strings.
  */
 size_t roy_string_tokenize(RoyDeque * restrict dest, const RoyString * restrict string, const char * restrict pattern);
 
 /**
- * @brief Seperates 'string' into substrings using 'seperator', and stores all substrings in deque 'dest'.
+ * @brief Separates 'string' into substrings using 'separator', and stores all substrings in deque 'dest'.
  * @param dest - where the substrings to pushed into.
- * @param seperator - The string where each split should occur. Can be a string or a regular expression.
- * @return the size of the destination deque, aka number of splitted strings.
+ * @param separator - The string where each split should occur. Can be a string or a regular expression.
+ * @return the size of the destination deque, aka number of split strings.
  */
-size_t roy_string_split(RoyDeque * restrict dest, const RoyString * restrict string, const char * restrict seperator);
+size_t roy_string_split(RoyDeque * restrict dest, const RoyString * restrict string, const char * restrict separator);
 
 /**
  * @brief Creates and returns a new string by concatenating all of the substrings in 'deque'.
- * @param seperator - the specified sepatator The dest string will be separated.
+ * @param separator - the specified separator The dest string will be separated.
  * @note If 'deque' has only one string, then that string will be returned without using the separator.
  */
-RoyString * roy_string_join(RoyString * restrict dest, const RoyDeque * restrict deque, const char * restrict seperator);
+RoyString * roy_string_join(RoyString * restrict dest, const RoyDeque * restrict deque, const char * restrict separator);
 
 #endif // ROYSTRING_H

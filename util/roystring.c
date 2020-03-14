@@ -292,9 +292,9 @@ roy_string_tokenize(RoyDeque        * restrict dest,
 size_t
 roy_string_split(RoyDeque        * restrict dest,
                  const RoyString * restrict string,
-                 const char      * restrict seperator) {
+                 const char      * restrict separator) {
   size_t pos = 0;
-  RMatch match = roy_string_find(string, seperator, pos);
+  RMatch match = roy_string_find(string, separator, pos);
   while (match.begin != PCRE2_ERROR_NOMATCH) {
     RoyString * temp = roy_string_copy(string);
     roy_string_substring(temp, pos, match.begin);
@@ -302,7 +302,7 @@ roy_string_split(RoyDeque        * restrict dest,
       roy_deque_push_back(dest, temp);
     }
     pos += match.end;
-    match = roy_string_find(string, seperator, pos);
+    match = roy_string_find(string, separator, pos);
   }
   RoyString * temp = roy_string_copy(string);
   roy_string_erase_left(temp, pos);
@@ -315,11 +315,11 @@ roy_string_split(RoyDeque        * restrict dest,
 RoyString *
 roy_string_join(RoyString      * restrict dest,
                 const RoyDeque * restrict deque,
-                const char     * restrict seperator) {
+                const char     * restrict separator) {
   int i = 0;
   for (; i < (int)roy_deque_size(deque) - 1; i++) {
     roy_string_append(dest, roy_string_cstr(roy_deque_cpointer(deque, i), 0));
-    roy_string_append(dest, seperator);
+    roy_string_append(dest, separator);
   }
   roy_string_append(dest, roy_string_cstr(roy_deque_cpointer(deque, i), 0));
   return dest;

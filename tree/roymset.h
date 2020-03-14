@@ -11,7 +11,7 @@ struct RoyMSet_ {
 
 /**
  * @brief RoyMSet [aka Multi-Set]: an associative container that contains a sorted set of objects of type Key,
- *        duplicated objectss are allowed.
+ *        duplicated objects are allowed.
  * Sorting is done using the key comparison function 'comparer'.
  * Search, removal, and insertion operations have logarithmic complexity.
  */

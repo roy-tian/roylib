@@ -26,7 +26,7 @@ typedef struct RoyUMSet_ RoyUMSet;
 /* CONSTRUCTION & DESTRUCTION */
 
 /**
- * @brief Creates a RoyUMset.
+ * @brief Creates a RoyUMSet.
  * @param seed - a hash seed.
  * @param hash - a hash function, NULL to use the default MurmurHash.
  * @param comparer - a function to compare two elements, acting like <=> operator in C++.
