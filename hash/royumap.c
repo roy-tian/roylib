@@ -35,10 +35,10 @@ roy_umap_empty(const RoyUMap * umap) {
 }
 
 bool
-roy_umap_insert(RoyUMap * umap, 
-                void    * key,
-                size_t    key_size,
-                void    * value) {
+roy_umap_insert(RoyUMap * restrict umap,
+                void    * restrict key,
+                size_t             key_size,
+                void    * restrict value) {
   RoySList ** node =
     &umap->uset->buckets[roy_umap_bucket(umap, key, key_size)];
   if (roy_slist_find(*node, key, umap->uset->comparer)) {
@@ -60,7 +60,7 @@ roy_umap_erase(RoyUMap * umap,
 size_t
 roy_umap_remove(RoyUMap    * umap,
                 const void * key,
-                size_t       key_size) {
+                size_t                key_size) {
   return roy_uset_remove(umap->uset, key, key_size);
 }
 

@@ -55,9 +55,9 @@ roy_array_full(const RoyArray * array) {
 }
 
 bool
-roy_array_insert(RoyArray * array,
-                 size_t     position,
-                 void     * data) {
+roy_array_insert(RoyArray * restrict array,
+                 size_t              position,
+                 void     * restrict data) {
   if (!valid_position(array, position) || roy_array_full(array) || !data) {
     return false;
   }
@@ -70,9 +70,9 @@ roy_array_insert(RoyArray * array,
 }
 
 bool
-roy_array_insert_fast(RoyArray * array,
+roy_array_insert_fast(RoyArray * restrict array,
                       size_t     position,
-                      void     * data) {
+                      void     * restrict data) {
   if (!valid_position(array, position) || roy_array_full(array) || !data) {
     return false;
   }
@@ -83,8 +83,8 @@ roy_array_insert_fast(RoyArray * array,
 }
 
 bool
-roy_array_push_back(RoyArray * array,
-                    void     * data) {
+roy_array_push_back(RoyArray * restrict array,
+                    void     * restrict data) {
   if (roy_array_full(array) || !data) {
     return false;
   }

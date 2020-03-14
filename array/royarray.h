@@ -89,7 +89,7 @@ bool roy_array_full(const RoyArray * array);
  * @retval false - 'position' exceeds, 'array' is full or 'data' is uninitialized.
  * @note - The operation will move every element comes after 'position' to its next, so it can be very slow when 'array' is huge and 'position' is small, use with caution.
  */
-bool roy_array_insert(RoyArray * array, size_t position, void * data);
+bool roy_array_insert(RoyArray * restrict array, size_t position, void * restrict data);
 
 /**
  * @brief Inserts an element into 'array' in a faster but unstable way.
@@ -99,7 +99,7 @@ bool roy_array_insert(RoyArray * array, size_t position, void * data);
  * @retval false - 'position' exceeds, 'array' is full or 'data' is uninitialized.
  * @note - The operation moves the element at 'position' to the end of 'array', so it can shift the sequence of elements, use this function only if element order is irrelevant.
  */
-bool roy_array_insert_fast(RoyArray * array, size_t position, void * data);
+bool roy_array_insert_fast(RoyArray * restrict array, size_t position, void * restrict data);
 
 /**
  * @brief Adds an element to the back of 'array'.
@@ -107,7 +107,7 @@ bool roy_array_insert_fast(RoyArray * array, size_t position, void * data);
  * @retval true - the insertion is successful.
  * @retval false - 'position' exceeds, 'array' is full or 'data' is uninitialized.
  */
-bool roy_array_push_back(RoyArray * array, void * data);
+bool roy_array_push_back(RoyArray * restrict array, void * restrict data);
 
 /**
  * @brief Removes an element from 'array'.

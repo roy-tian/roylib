@@ -86,7 +86,7 @@ bool roy_uset_empty(const RoyUSet * uset);
  * @return false - 'uset' already contain an element with an equivalent key.
  * @note - The behavior is undefined if 'key' is uninitialized.
  */
-bool roy_uset_insert(RoyUSet * uset, void * key, size_t key_size);
+bool roy_uset_insert(RoyUSet * restrict uset, void * restrict key, size_t key_size);
 
 /**
  * @brief Removes specified element.

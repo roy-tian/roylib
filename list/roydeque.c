@@ -71,24 +71,24 @@ roy_deque_empty(const RoyDeque * deque) {
 }
 
 bool
-roy_deque_insert(RoyDeque   * deque,
-                 size_t       position,
-                 void       * data) {
+roy_deque_insert(RoyDeque   * restrict deque,
+                 size_t                position,
+                 void       * restrict data) {
   return (position <= deque->size / 2)                      ?
          roy_list_insert(deque->head, position, data)       :
          roy_list_insert_reverse(deque->tail, deque->size - position - 1, data);
 }
 
 void
-roy_deque_push_front(RoyDeque   * deque,
-                     void       * data) {
+roy_deque_push_front(RoyDeque   * restrict deque,
+                     void       * restrict data) {
   roy_list_push_front(deque->head, data);
   deque->size++;
 }
 
 void
-roy_deque_push_back(RoyDeque   * deque,
-                    void       * data) {
+roy_deque_push_back(RoyDeque   * restrict deque,
+                    void       * restrict data) {
   roy_list_push_back(deque->tail, data);
   deque->size++;
 }

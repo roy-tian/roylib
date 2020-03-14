@@ -47,8 +47,8 @@ roy_umset_empty(const RoyUMSet * umset) {
 }
 
 void
-roy_umset_insert(RoyUMSet * umset,
-                 void     * data,
+roy_umset_insert(RoyUMSet * restrict umset,
+                 void     * restrict data,
                  size_t     data_size) {
   RoySList ** node = &umset->buckets[roy_umset_bucket(umset, data, data_size)];
   roy_slist_push_front(*node, data);

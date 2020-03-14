@@ -71,7 +71,7 @@ bool roy_stack_full(const RoyStack * stack);
  * @retval true - the insertion is successful.
  * @retval false - 'stack' is full or 'data' is uninitialized.
  */
-bool roy_stack_push(RoyStack * stack, void * data);
+bool roy_stack_push(RoyStack * restrict stack, void * restrict data);
 
 /**
  * @brief Removes the first element of 'stack'.

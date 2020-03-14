@@ -37,7 +37,7 @@ void roy_shell_start(RoyShell * shell);
  * @param operate - a function pointer to do the operation with current arg vector.
  * @note - A RoyShell must have at least a default command "" (empty string) in order to perform 'roy_shell_start'.
  */
-RoyShell * roy_shell_command_add(RoyShell * shell, const char * cmd, ROperate operate);
+RoyShell * roy_shell_command_add(RoyShell * restrict shell, const char * restrict cmd, ROperate operate);
 
 /// @brief A convenient #define for 'roy_shell_command_add' with identical name of cmd and 'operate' function.
 #define roy_shell_add(shell, cmd) roy_shell_command_add(shell, #cmd, (ROperate)cmd)
@@ -84,7 +84,7 @@ bool roy_shell_argv_match(const RoyShell * shell, size_t position, const char * 
  * @param format - a string literal specifying how to interpret the data.
  * @note - The flow can be printed to console and automatically pushed into 'output history' at the end of each round.
  */
-RoyShell * roy_shell_log(RoyShell * shell, const RoyString * log);
+RoyShell * roy_shell_log(RoyShell * restrict shell, const RoyString * restrict log);
 
 /**
  * @param position - where the input takes place in input history.

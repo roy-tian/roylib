@@ -35,10 +35,10 @@ roy_ummap_empty(const RoyUMMap * ummap) {
 }
 
 void
-roy_ummap_insert(RoyUMMap * ummap,
-                 void     * key,
-                 size_t     key_size,
-                 void     * value) {
+roy_ummap_insert(RoyUMMap * restrict ummap,
+                 void     * restrict key,
+                 size_t              key_size,
+                 void     * restrict value) {
   RoySList ** node =
     &ummap->umset->buckets[roy_ummap_bucket(ummap, key, key_size)];
   roy_slist_push_front(*node, roy_pair_new(key, value));

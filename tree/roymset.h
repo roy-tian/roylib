@@ -80,7 +80,7 @@ bool roy_mset_empty(const RoyMSet * mset);
  * @return the 'mset' after the operation.
  * @note - The behavior is undefined if 'key' is uninitialized.
  */
-RoyMSet * roy_mset_insert(RoyMSet ** mset, void * key, RCompare comparer);
+RoyMSet * roy_mset_insert(RoyMSet ** restrict mset, void * restrict key, RCompare comparer);
 
 /**
  * @brief Removes all the elements from 'mset'.

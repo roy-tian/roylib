@@ -73,7 +73,7 @@ bool roy_queue_full(const RoyQueue * queue);
  * @retval true - the insertion is successful.
  * @retval false - 'queue' is full or 'data' is uninitialized.
  */
-bool roy_queue_push(RoyQueue * queue, void * data);
+bool roy_queue_push(RoyQueue * restrict queue, void * restrict data);
 
 /**
  * @brief Removes the first element of 'queue'.

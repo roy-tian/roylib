@@ -76,7 +76,7 @@ size_t roy_string_length(const RoyString * string);
  * @param dest - the new string to write to.
  * @param src - the specified C char-array to read from.
  */ 
-RoyString * roy_string_assign(RoyString * dest, const char * src);
+RoyString * roy_string_assign(RoyString * restrict dest, const char * restrict src);
 
 /// @brief Assigns integer 'value' to 'string'.
 RoyString * roy_string_assign_int(RoyString * string, int value);
@@ -94,19 +94,19 @@ void roy_string_clear(RoyString * string);
  * @retval true - the operation is successful.
  * @retval false - 'position' exceeds.
  */
-bool roy_string_insert(RoyString * string, const char * substr, size_t position);
+bool roy_string_insert(RoyString * restrict string, const char * restrict substr, size_t position);
 
 /**
  * @brief Adds additional characters to the left end of 'string'.
  * @param substr - additional C char-array to insert.
  */
-void roy_string_prepend(RoyString * string, const char * substr);
+void roy_string_prepend(RoyString * restrict string, const char * restrict substr);
 
 /**
  * @brief Adds additional characters to the right end of 'string'.
  * @param substr - additional C char-array to insert.
  */
-void roy_string_append(RoyString * string, const char * substr);
+void roy_string_append(RoyString * restrict string, const char * restrict substr);
 
 /**
  * @brief Removes characters from 'string'.
@@ -141,7 +141,7 @@ bool roy_string_erase_right(RoyString * string, size_t count);
  * @retval true - the operation is successful.
  * @retval false - 'position' or 'position' + 'count' exceeds.
  */
- bool roy_string_replace(RoyString * string, const char * substr, size_t position, size_t count);
+ bool roy_string_replace(RoyString * restrict string, const char * restrict substr, size_t position, size_t count);
 
 /**
  * @brief Returns a substring [pos, pos+count).
@@ -229,7 +229,7 @@ double roy_string_to_double(const RoyString * string);
  * @param pattern - pattern to be parsed.
  * @return the size of the destanation deque, aka number of tokenized strings.
  */
-size_t roy_string_tokenize(RoyDeque * dest, const RoyString * string, const char * pattern);
+size_t roy_string_tokenize(RoyDeque * restrict dest, const RoyString * restrict string, const char * restrict pattern);
 
 /**
  * @brief Seperates 'string' into substrings using 'seperator', and stores all substrings in deque 'dest'.
@@ -237,13 +237,13 @@ size_t roy_string_tokenize(RoyDeque * dest, const RoyString * string, const char
  * @param seperator - The string where each split should occur. Can be a string or a regular expression.
  * @return the size of the destination deque, aka number of splitted strings.
  */
-size_t roy_string_split(RoyDeque * dest, const RoyString * string, const char * seperator);
+size_t roy_string_split(RoyDeque * restrict dest, const RoyString * restrict string, const char * restrict seperator);
 
 /**
  * @brief Creates and returns a new string by concatenating all of the substrings in 'deque'.
  * @param seperator - the specified sepatator The dest string will be separated.
  * @note If 'deque' has only one string, then that string will be returned without using the separator.
  */
-RoyString * roy_string_join(RoyString * dest, const RoyDeque * deque, const char * seperator);
+RoyString * roy_string_join(RoyString * restrict dest, const RoyDeque * restrict deque, const char * restrict seperator);
 
 #endif // ROYSTRING_H

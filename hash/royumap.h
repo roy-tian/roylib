@@ -14,7 +14,8 @@ struct RoyUMap_ {
  * Search, insertion, and removal of elements have average constant-time complexity.
  * Internally, the elements are not sorted in any particular order, but organized into buckets.
  * Which bucket an element is placed into depends entirely on the hash of its key.
- * This allows fast access to individual elements, since once the hash is computed, it refers to the exact bucket the element is placed into.
+ * This allows fast access to individual elements, since once the hash is computed,
+ * it refers to the exact bucket the element is placed into.
  */
 typedef struct RoyUMap_ RoyUMap;
 
@@ -72,7 +73,7 @@ bool roy_umap_empty(const RoyUMap * umap);
  * @return false - 'umap' already contain an element with an equivalent key.
  * @note - The behavior is undefined if 'key' or 'value' is uninitialized.
  */
-bool roy_umap_insert(RoyUMap * umap, void * key, size_t key_size, void * value);
+bool roy_umap_insert(RoyUMap * restrict umap, void * restrict key, size_t key_size, void * restrict value);
 
 /**
  * @brief Removes specified element.

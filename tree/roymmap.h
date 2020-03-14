@@ -90,7 +90,7 @@ bool roy_mmap_empty(const RoyMMap * mmap);
  * @return the 'mmap' after the operation.
  * @note - The behavior is undefined if 'key' or 'value' is uninitialized.
  */
-RoyMMap * roy_mmap_insert(RoyMMap * mmap, void * key, void * value);
+RoyMMap * roy_mmap_insert(RoyMMap * restrict mmap, void * restrict key, void * restrict value);
 
 /**
  * @brief Removes all elements with an equivalent key from 'mmap'.

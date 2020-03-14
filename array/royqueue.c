@@ -38,8 +38,8 @@ roy_queue_full(const RoyQueue * queue) {
 }
 
 bool
-roy_queue_push(RoyQueue * queue,
-               void     * data) {
+roy_queue_push(RoyQueue * restrict queue,
+               void     * restrict data) {
   if (roy_array_insert((RoyArray *)queue, queue->back_index, data)) {
     queue->back_index++;
     queue->back_index = roy_queue_capacity(queue) % queue->back_index;

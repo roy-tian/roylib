@@ -67,8 +67,8 @@ roy_slist_empty(const RoySList * slist) {
 }
 
 void
-roy_slist_push_front(RoySList * slist,
-                     void     * data) {
+roy_slist_push_front(RoySList * restrict slist,
+                     void     * restrict data) {
   RoySList * elem = node_new(data);
   elem->next      = slist->next;
   slist->next     = elem;

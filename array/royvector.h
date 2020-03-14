@@ -82,7 +82,7 @@ bool roy_vector_empty(const RoyVector * vector);
  * @note - The storage will expand automatically whenever needed.
  * @note - The operation will move every element comes after 'position' to its next, so it can be very slow when 'vector' is huge and 'position' is small, use with caution.
  */
-bool roy_vector_insert(RoyVector * vector, size_t position, void * data);
+bool roy_vector_insert(RoyVector * restrict vector, size_t position, void * restrict data);
 
 /**
  * @brief Inserts an element into 'vector' in a faster but unstable way.
@@ -93,7 +93,7 @@ bool roy_vector_insert(RoyVector * vector, size_t position, void * data);
  * @note - The storage will be expanded automatically whenever needed.
  * @note - The operation moves the element at 'position' to the end of 'vector', so it can shift the sequence of elements, use this function only if element order is irrelevant.
  */
-bool roy_vector_insert_fast(RoyVector * vector, size_t position, void * data);
+bool roy_vector_insert_fast(RoyVector * restrict vector, size_t position, void * restrict data);
 
 /**
  * @brief Adds an element to the back of 'vector'.
@@ -102,7 +102,7 @@ bool roy_vector_insert_fast(RoyVector * vector, size_t position, void * data);
  * @retval false - data' is uninitialized.
  * @note - The storage will be expanded automatically whenever needed.
  */
-bool roy_vector_push_back(RoyVector * vector, void * data);
+bool roy_vector_push_back(RoyVector * restrict vector, void * restrict data);
 
 /**
  * @brief Removes an element from 'vector'.

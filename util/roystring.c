@@ -68,8 +68,8 @@ roy_string_length(const RoyString * string) {
 }
 
 RoyString *
-roy_string_assign(RoyString  * string,
-                  const char * str) {
+roy_string_assign(RoyString  * restrict string,
+                  const char * restrict str) {
   string->str = realloc(string->str, (strlen(str) + 1) * sizeof(char));
   memcpy(string->str, str, strlen(str) + 1);
   return string;
@@ -97,9 +97,9 @@ roy_string_clear(RoyString * string) {
 }
 
 bool
-roy_string_insert(RoyString  * string,
-                  const char * substr,
-                  size_t       position) {
+roy_string_insert(RoyString  * restrict string,
+                  const char * restrict substr,
+                  size_t                position) {
   if (valid_pos(string, position)) {
     size_t length = roy_string_length(string);
     ROY_STR(temp, length + strlen(substr) + 1)
@@ -113,14 +113,14 @@ roy_string_insert(RoyString  * string,
 }
 
 void
-roy_string_prepend(RoyString * string,
-                   const char * substr) {
+roy_string_prepend(RoyString  * restrict string,
+                   const char * restrict substr) {
   roy_string_insert(string, substr, 0);
 }
 
 void
-roy_string_append(RoyString  * string,
-                  const char * substr) {
+roy_string_append(RoyString  * restrict string,
+                  const char * restrict substr) {
   roy_string_insert(string, substr, roy_string_length(string));
 }
 
@@ -154,8 +154,8 @@ roy_string_erase_right(RoyString * string,
 }
 
 bool
-roy_string_replace(RoyString  * string,
-                   const char * substr,
+roy_string_replace(RoyString  * restrict string,
+                   const char * restrict substr,
                    size_t       position,
                    size_t       count) {
   if (valid_pos_cnt(string, position, count)) {
@@ -273,9 +273,9 @@ roy_string_to_double(const RoyString * string) {
 }
 
 size_t
-roy_string_tokenize(RoyDeque        * dest,
-                    const RoyString * string,
-                    const char      * pattern) {
+roy_string_tokenize(RoyDeque        * restrict dest,
+                    const RoyString * restrict string,
+                    const char      * restrict pattern) {
   size_t pos = 0;
   RMatch match = roy_string_find(string, pattern, pos);
   while (match.begin != PCRE2_ERROR_NOMATCH) {
@@ -290,9 +290,9 @@ roy_string_tokenize(RoyDeque        * dest,
 }
 
 size_t
-roy_string_split(RoyDeque        * dest,
-                 const RoyString * string,
-                 const char      * seperator) {
+roy_string_split(RoyDeque        * restrict dest,
+                 const RoyString * restrict string,
+                 const char      * restrict seperator) {
   size_t pos = 0;
   RMatch match = roy_string_find(string, seperator, pos);
   while (match.begin != PCRE2_ERROR_NOMATCH) {
@@ -313,9 +313,9 @@ roy_string_split(RoyDeque        * dest,
 }
 
 RoyString *
-roy_string_join(RoyString      * dest,
-                const RoyDeque * deque,
-                const char     * seperator) {
+roy_string_join(RoyString      * restrict dest,
+                const RoyDeque * restrict deque,
+                const char     * restrict seperator) {
   int i = 0;
   for (; i < (int)roy_deque_size(deque) - 1; i++) {
     roy_string_append(dest, roy_string_cstr(roy_deque_cpointer(deque, i), 0));

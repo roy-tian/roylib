@@ -105,21 +105,21 @@ bool roy_deque_empty(const RoyDeque * deque);
  * @note - The iteration begins from the front end if 'position' is in smaller half of 'deque', and vise versa.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
-bool roy_deque_insert(RoyDeque * deque, size_t position, void * data);
+bool roy_deque_insert(RoyDeque * restrict deque, size_t position, void * restrict data);
 
 /**
  * @brief Adds an element at the beginning end of 'deque'.
  * @param data - a pointer to the new element.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
-void roy_deque_push_front(RoyDeque * deque, void * data);
+void roy_deque_push_front(RoyDeque * restrict deque, void * restrict data);
 
 /**
  * @brief Adds an element at the back end of 'deque'.
  * @param data - a pointer to the new element.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
-void roy_deque_push_back(RoyDeque * deque, void * data);
+void roy_deque_push_back(RoyDeque * restrict deque, void * restrict data);
 
 /**
  * @brief Removes specified element from 'deque'.

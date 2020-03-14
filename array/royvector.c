@@ -50,24 +50,24 @@ roy_vector_empty(const RoyVector * vector) {
 }
 
 bool
-roy_vector_insert(RoyVector * vector,
-                  size_t      position,
-                  void      * data) {
+roy_vector_insert(RoyVector * restrict vector,
+                  size_t               position,
+                  void      * restrict data) {
   expand(vector);
   return roy_array_insert((RoyArray *)vector, position, data);
 }
 
 bool
-roy_vector_insert_fast(RoyVector * vector,
-                       size_t      position,
-                       void      * data) {
+roy_vector_insert_fast(RoyVector * restrict vector,
+                       size_t               position,
+                       void      * restrict data) {
   expand(vector);
   return roy_array_insert_fast((RoyArray *)vector, position, data);
 }
 
 bool
-roy_vector_push_back(RoyVector * vector,
-                     void      * data) {
+roy_vector_push_back(RoyVector * restrict vector,
+                     void      * restrict data) {
   expand(vector);
   return roy_array_push_back((RoyArray *)vector, data);
 }

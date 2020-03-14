@@ -100,8 +100,8 @@ roy_shell_argv_match(const RoyShell * shell,
 }
 
 RoyShell *
-roy_shell_log(RoyShell        * shell,
-              const RoyString * log) {
+roy_shell_log(RoyShell        * restrict shell,
+              const RoyString * restrict log) {
   roy_string_assign(shell->obuffer, roy_string_cstr(log, 0));
   return shell;
 }

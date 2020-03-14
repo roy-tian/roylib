@@ -45,8 +45,8 @@ bool roy_mset_empty(const RoyMSet * mset) {
 }
 
 RoyMSet *
-roy_mset_insert(RoyMSet  ** mset,
-                void     *  key,
+roy_mset_insert(RoyMSet  ** restrict mset,
+                void     *  restrict key,
                 RCompare    comparer) {
   if (!*mset) {
     *mset = node_new(key);

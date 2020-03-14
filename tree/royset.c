@@ -73,8 +73,8 @@ roy_set_empty(const RoySet * set) {
 }
 
 RoySet *
-roy_set_insert(RoySet   ** set,
-               void     *  key,
+roy_set_insert(RoySet   ** restrict set,
+               void     *  restrict key,
                RCompare    comparer) {
   if (!*set) {
     *set = node_new(key);

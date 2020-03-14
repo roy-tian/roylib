@@ -146,7 +146,7 @@ bool roy_list_rempty(const RoyList * list_tail);
  * @retval false - 'position' exceeds.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
-bool roy_list_insert(RoyList * list_head, size_t position, void * data);
+bool roy_list_insert(RoyList * restrict list_head, size_t position, void * restrict data);
 
 /**
  * @brief Inserts an element into 'list'.
@@ -157,7 +157,7 @@ bool roy_list_insert(RoyList * list_head, size_t position, void * data);
  * @retval false - 'position' exceeds.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
-bool roy_list_insert_reverse(RoyList * list_tail, size_t rposition, void * data);
+bool roy_list_insert_reverse(RoyList * restrict list_tail, size_t rposition, void * restrict data);
 
 /**
  * @brief Adds an element at the beginning of 'list'.
@@ -165,7 +165,7 @@ bool roy_list_insert_reverse(RoyList * list_tail, size_t rposition, void * data)
  * @param data - a pointer to the new element.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
-void roy_list_push_front(RoyList * list_head, void * data);
+void roy_list_push_front(RoyList * restrict list_head, void * restrict data);
 
 /**
  * @brief Adds an element at the end of 'list'.
@@ -173,7 +173,7 @@ void roy_list_push_front(RoyList * list_head, void * data);
  * @param data - a pointer to the new element.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
-void roy_list_push_back(RoyList * list_tail, void * data);
+void roy_list_push_back(RoyList * restrict list_tail, void * restrict data);
 
 /**
  * @brief Removes specified element from 'list'.

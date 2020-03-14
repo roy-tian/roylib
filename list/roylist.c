@@ -123,9 +123,9 @@ roy_list_rempty(const RoyList * list_tail) {
 }
 
 bool
-roy_list_insert(RoyList * list_head,
-                size_t    position,
-                void    * data) {
+roy_list_insert(RoyList * restrict list_head,
+                size_t             position,
+                void    * restrict data) {
   RoyList * iter = roy_list_iterator(list_head, position);
   if (iter) {
     roy_list_push_front(iter->prev, data);
@@ -135,9 +135,9 @@ roy_list_insert(RoyList * list_head,
 }
 
 bool
-roy_list_insert_reverse(RoyList * list_tail,
-                        size_t    rposition,
-                        void    * data) {
+roy_list_insert_reverse(RoyList * restrict list_tail,
+                        size_t             rposition,
+                        void    * restrict data) {
   RoyList * iter = roy_list_riterator(list_tail, rposition);
   if (iter) {
     roy_list_push_back(iter->next, data);
@@ -147,8 +147,8 @@ roy_list_insert_reverse(RoyList * list_tail,
 }
 
 void
-roy_list_push_front(RoyList * list_head,
-                    void    * data) {
+roy_list_push_front(RoyList * restrict list_head,
+                    void    * restrict data) {
   RoyList * elem  = node_new(data);
   RoyList * front = list_head->next;
   list_head->next = elem;
@@ -158,8 +158,8 @@ roy_list_push_front(RoyList * list_head,
 }
 
 void
-roy_list_push_back(RoyList * list_tail,
-                   void    * data) {
+roy_list_push_back(RoyList * restrict list_tail,
+                   void    * restrict data) {
   RoyList * elem  = node_new(data);
   RoyList * back  = list_tail->prev;
   list_tail->prev = elem;

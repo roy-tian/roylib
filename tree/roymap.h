@@ -91,7 +91,7 @@ bool roy_map_empty(const RoyMap * map);
  * @return the 'map' after the operation.
  * @note - The behavior is undefined if 'key' or 'value' is uninitialized.
  */
-RoyMap * roy_map_insert(RoyMap * map, void * key, void * value);
+RoyMap * roy_map_insert(RoyMap * restrict map, void * restrict key, void * restrict value);
 
 /**
  * @brief Removes the element with an equivalent key from 'map'.

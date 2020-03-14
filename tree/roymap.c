@@ -46,9 +46,9 @@ bool roy_map_empty(const RoyMap * map) {
 }
 
 RoyMap *
-roy_map_insert(RoyMap * map,
-               void   * key,
-               void   * value) {
+roy_map_insert(RoyMap * restrict map,
+               void   * restrict key,
+               void   * restrict value) {
   map->root = 
     roy_set_insert(&map->root, roy_pair_new(key, value), map->comparer);
   return map;

@@ -57,9 +57,9 @@ roy_uset_empty(const RoyUSet * uset) {
 }
 
 bool
-roy_uset_insert(RoyUSet * uset,
-                void    * data,
-                size_t    data_size) {
+roy_uset_insert(RoyUSet * restrict uset,
+                void    * restrict data,
+                size_t             data_size) {
   RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data, data_size)];
   if (roy_slist_find(*node, data, uset->comparer)) {
     return false;

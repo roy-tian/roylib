@@ -85,7 +85,7 @@ bool roy_slist_empty(const RoySList * slist);
  * @param data - a pointer to the new element.
  * @note - The behavior is undefined if 'data' is uninitialized.
  */
-void roy_slist_push_front(RoySList * slist, void * data);
+void roy_slist_push_front(RoySList * restrict slist, void * restrict data);
 
 /**
  * @brief Removes the first element from 'slist',

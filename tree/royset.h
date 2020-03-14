@@ -80,7 +80,7 @@ bool roy_set_empty(const RoySet * set);
  * @return the 'set' after the operation.
  * @note - The behavior is undefined if 'key' is uninitialized.
  */
-RoySet * roy_set_insert(RoySet ** set, void * key, RCompare comparer);
+RoySet * roy_set_insert(RoySet ** restrict set, void * restrict key, RCompare comparer);
 
 /**
  * @brief Removes all the elements from 'set'.

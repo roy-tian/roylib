@@ -69,7 +69,7 @@ bool roy_ummap_empty(const RoyUMMap * ummap);
  * @param comparer - a function to compare two keys, acting like <=> operator in C++.
  * @note - The behavior is undefined if 'key' or 'value' is uninitialized.
  */
-void roy_ummap_insert(RoyUMMap * ummap, void * key, size_t key_size, void * value);
+void roy_ummap_insert(RoyUMMap * restrict ummap, void * restrict key, size_t key_size, void * restrict value);
 
 /**
  * @brief Removes specified element.

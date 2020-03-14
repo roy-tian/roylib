@@ -84,7 +84,7 @@ bool roy_umset_empty(const RoyUMSet * umset);
  * @param comparer - a function to compare two elements, acting like <=> operator in C++.
  * @note - The behavior is undefined if 'key' is uninitialized.
  */
-void roy_umset_insert(RoyUMSet * umset, void * key, size_t key_size);
+void roy_umset_insert(RoyUMSet * restrict umset, void * restrict key, size_t key_size);
 
 /**
  * @brief Removes specified element.

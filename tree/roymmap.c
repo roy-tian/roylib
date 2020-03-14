@@ -46,9 +46,9 @@ bool roy_mmap_empty(const RoyMMap * mmap) {
 }
 
 RoyMMap *
-roy_mmap_insert(RoyMMap * mmap,
-                void    * key,
-                void    * value) {
+roy_mmap_insert(RoyMMap * restrict mmap,
+                void    * restrict key,
+                void    * restrict value) {
   mmap->root =
     roy_mset_insert(&mmap->root, roy_pair_new(key, value), mmap->comparer);
   return mmap;
