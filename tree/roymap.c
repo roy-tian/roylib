@@ -28,12 +28,12 @@ void * roy_map_max(RoyMap * map) {
 
 const void *
 roy_map_cmin(const RoyMap * map) {
-  return roy_pair_value(roy_set_cmin(map->root)->key);
+  return roy_cpair_value(roy_set_cmin(map->root)->key);
 }
 
 const void *
 roy_map_cmax(const RoyMap * map) {
-  return roy_pair_value(roy_set_cmax(map->root)->key);
+  return roy_cpair_value(roy_set_cmax(map->root)->key);
 }
 
 size_t

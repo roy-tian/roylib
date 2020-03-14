@@ -60,7 +60,7 @@ roy_umap_erase(RoyUMap * umap,
 size_t
 roy_umap_remove(RoyUMap    * umap,
                 const void * key,
-                size_t                key_size) {
+                size_t       key_size) {
   return roy_uset_remove(umap->uset, key, key_size);
 }
 

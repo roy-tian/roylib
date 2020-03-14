@@ -71,7 +71,7 @@ roy_array_insert(RoyArray * restrict array,
 
 bool
 roy_array_insert_fast(RoyArray * restrict array,
-                      size_t     position,
+                      size_t              position,
                       void     * restrict data) {
   if (!valid_position(array, position) || roy_array_full(array) || !data) {
     return false;
