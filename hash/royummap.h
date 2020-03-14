@@ -10,11 +10,13 @@ struct RoyUMMap_ {
 };
 
 /**
- * @brief RoyUMMap [aka Unordered Multi-Map] is an associative container that contains key-value pairs, duplicated keys are allowed.
+ * @brief RoyUMMap [aka Unordered Multi-Map] is an associative container that contains key-value pairs,
+ * duplicated keys are allowed.
  * Search, insertion, and removal of elements have average constant-time complexity.
  * Internally, the elements are not sorted in any particular order, but organized into buckets.
  * Which bucket an element is placed into depends entirely on the hash of its key.
- * This allows fast access to individual elements, since once the hash is computed, it refers to the exact bucket the element is placed into.
+ * This allows fast access to individual elements, since once the hash is computed,
+ * it refers to the exact bucket the element is placed into.
  */
 typedef struct RoyUMMap_ RoyUMMap;
 

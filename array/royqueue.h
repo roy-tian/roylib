@@ -12,7 +12,10 @@ struct RoyQueue_ {
   size_t      back_index;
 };
 
-/// @brief RoyQueue: a container adapter that gives the functionality of a FIFO data structure, which implemented as an cycled linear list.
+/**
+ * @brief RoyQueue: a container adapter that gives the functionality of a FIFO data structure,
+ * which implemented as an cycled linear list.
+ */
 typedef struct RoyQueue_ RoyQueue;
 
 /* CONSTRUCTION AND DESTRUCTION */

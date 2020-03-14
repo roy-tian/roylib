@@ -44,7 +44,8 @@ double roy_parse_double(const char * str);
 char * roy_int_to_str(char * dest, int64_t number, size_t base, size_t width, bool fill_zero);
 
 /**
- * @brief Converts the unsinged integer 'number' into a 'width'-width, 'base' character representation in the string 'dest'.
+ * @brief Converts the unsinged integer 'number' into a 'width'-width,
+ *        'base' character representation in the string 'dest'.
  * @param dest - a pointer to the result string to write to.
  * @param base - base of 'number', eg. 2 represents binary, etc.
  * @param width - the minimal length of result string.
@@ -54,7 +55,8 @@ char * roy_int_to_str(char * dest, int64_t number, size_t base, size_t width, bo
 char * roy_uint_to_str(char * dest, uint64_t number, size_t base, size_t width, bool fill_zero);
 
 /**
- * @brief Returns a string with the 'count' bits that begin at position 'position' set to the rightmost 'count' bits of 'src', the other bits are left unchanged.
+ * @brief Returns a string with the 'count' bits that begin at position 'position'
+ *        set to the rightmost 'count' bits of 'src', the other bits are left unchanged.
  * @param src - the number to copy from.
  * @param position - position of the first bit to include.
  * @param count - length of the bit segment.
@@ -62,7 +64,8 @@ char * roy_uint_to_str(char * dest, uint64_t number, size_t base, size_t width, 
 uint64_t roy_uint_set_bits(uint64_t * dest, uint64_t src, size_t position, size_t count);
 
 /**
- * @brief Inverts a specified segment in number, (i.e., 1 changed into 0 and vice versa), the other bits are left unchanged.
+ * @brief Inverts a specified segment in number, (i.e., 1 changed into 0 and vice versa),
+ *        the other bits are left unchanged.
  * @param position - position of the first bit to include.
  * @param count - length of the bit segment.
  */ 

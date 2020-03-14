@@ -9,7 +9,10 @@ struct RoyList_ {
   struct RoyList_ * prev;
 };
 
-/// @brief RoyList: a container implemented as a double-linked list which supports fast insertion and removal from anywhere in the container, fast random access is not supported.
+/**
+ * @brief RoyList: a container implemented as a double-linked list which supports fast insertion and removal
+ *        from anywhere in the container, fast random access is not supported.
+ */
 typedef struct RoyList_ RoyList;
 
 /* CONSTRUCTION AND DESTRUCTION */
@@ -249,7 +252,8 @@ size_t roy_list_remove_if(RoyList * list, RCondition condition, ROperate deleter
 void roy_list_reverse(RoyList ** list);
 
 /**
- * @brief Removes all consecutive duplicate elements from 'list', only the first element in each group of equal elements is left.
+ * @brief Removes all consecutive duplicate elements from 'list',
+ *        only the first element in each group of equal elements is left.
  * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'data'.
  * @param deleter - a function for element deleting.
  * @return the number of elements being removed from 'list'.

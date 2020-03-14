@@ -65,7 +65,8 @@ bool roy_umap_empty(const RoyUMap * umap);
 /* MODIFIERS */
 
 /**
- * @brief Hashes a RoyPair combined by 'key' and 'value' into 'umap', if 'umap' doesn't already contain an element with an equivalent key.
+ * @brief Hashes a RoyPair combined by 'key' and 'value' into 'umap',
+ *        if 'umap' doesn't already contain an element with an equivalent key.
  * @param key - a pointer to the new key.
  * @param key_size - total memory the new key takes.
  * @param comparer - a function to compare two keys, acting like <=> operator in C++.

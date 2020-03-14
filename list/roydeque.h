@@ -10,7 +10,10 @@ struct RoyDeque_ {
   size_t     size;
 };
 
-/// @brief RoyDeque: a double ended queue powered by a RoyDeque inside, which supports fast insertion and removal from both end of the queue.
+/**
+ * @brief RoyDeque: a double ended queue powered by a RoyDeque inside,
+ *        which supports fast insertion and removal from both end of the queue.
+ */
 typedef struct RoyDeque_ RoyDeque;
 
 /* CONSTRUCTION AND DESTRUCTION */
@@ -176,7 +179,8 @@ size_t roy_deque_remove_if(RoyDeque * deque, RCondition condition);
 void roy_deque_reverse(RoyDeque * deque);
 
 /**
- * @brief Removes all consecutive duplicate elements from 'deque', only the first element in each group of equal elements is left.
+ * @brief Removes all consecutive duplicate elements from 'deque',
+ *        only the first element in each group of equal elements is left.
  * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'data'.
  * @return the number of elements being removed from 'deque'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.

@@ -80,7 +80,8 @@ bool roy_vector_empty(const RoyVector * vector);
  * @retval true - the insertion is successful.
  * @retval false - 'position' exceeds or 'data' is uninitialized.
  * @note - The storage will expand automatically whenever needed.
- * @note - The operation will move every element comes after 'position' to its next, so it can be very slow when 'vector' is huge and 'position' is small, use with caution.
+ * @note - The operation will move every element comes after 'position' to its next,
+ *         so it can be very slow when 'vector' is huge and 'position' is small, use with caution.
  */
 bool roy_vector_insert(RoyVector * restrict vector, size_t position, void * restrict data);
 
@@ -91,7 +92,8 @@ bool roy_vector_insert(RoyVector * restrict vector, size_t position, void * rest
  * @retval true - the insertion is successful.
  * @retval false - 'position' exceeds or 'data' is uninitialized.
  * @note - The storage will be expanded automatically whenever needed.
- * @note - The operation moves the element at 'position' to the end of 'vector', so it can shift the sequence of elements, use this function only if element order is irrelevant.
+ * @note - The operation moves the element at 'position' to the end of 'vector',
+ *         so it may shift the sequence of elements, use this function only if element order is irrelevant.
  */
 bool roy_vector_insert_fast(RoyVector * restrict vector, size_t position, void * restrict data);
 
@@ -110,7 +112,8 @@ bool roy_vector_push_back(RoyVector * restrict vector, void * restrict data);
  * @retval true - the removal is successful.
  * @retval false - 'position' exceeds or 'vector' is empty.
  * @note - The storage will be shrunk to fit all elements automatically whenever it could.
- * @note - The operation will move every element comes after 'position' to its left, so it can be very slow when 'array' is huge and 'position' is small, use with caution.
+ * @note - The operation will move every element comes after 'position' to its left,
+ *         so it can be very slow when 'array' is huge and 'position' is small, use with caution.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 bool roy_vector_erase(RoyVector * vector, size_t position);
@@ -121,7 +124,8 @@ bool roy_vector_erase(RoyVector * vector, size_t position);
  * @retval true - the removal is successful.
  * @retval false - 'position' exceeds or 'vector' is empty.
  * @note - The storage will be shrunk to fit all elements automatically whenever it could.
- * @note - The operation moves the last element and settles to 'position', so it can shift the sequence of elements, use this function only if element order is irrelevant.
+ * @note - The operation moves the last element and settles to 'position',
+ *         so it can shift the sequence of elements, use this function only if element order is irrelevant.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 bool roy_vector_erase_fast(RoyVector * vector, size_t position);

@@ -87,7 +87,8 @@ bool roy_array_full(const RoyArray * array);
  * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
  * @retval false - 'position' exceeds, 'array' is full or 'data' is uninitialized.
- * @note - The operation will move every element comes after 'position' to its next, so it can be very slow when 'array' is huge and 'position' is small, use with caution.
+ * @note - The operation will move every element comes after 'position' to its next,
+ *         so it can be very slow when 'array' is huge and 'position' is small, use with caution.
  */
 bool roy_array_insert(RoyArray * restrict array, size_t position, void * restrict data);
 
@@ -97,7 +98,8 @@ bool roy_array_insert(RoyArray * restrict array, size_t position, void * restric
  * @param data - a pointer to the new element.
  * @retval true - the insertion is successful.
  * @retval false - 'position' exceeds, 'array' is full or 'data' is uninitialized.
- * @note - The operation moves the element at 'position' to the end of 'array', so it can shift the sequence of elements, use this function only if element order is irrelevant.
+ * @note - The operation moves the element at 'position' to the end of 'array',
+ *         so it can shift the sequence of elements, use this function only if element order is irrelevant.
  */
 bool roy_array_insert_fast(RoyArray * restrict array, size_t position, void * restrict data);
 
@@ -114,7 +116,8 @@ bool roy_array_push_back(RoyArray * restrict array, void * restrict data);
  * @param position - where the element should be removed.
  * @retval true - the removal is successful.
  * @retval false - 'position' exceeds or 'array' is empty.
- * @note - The operation will move every element comes after 'position' to its left recursively, so it can be very slow when 'array' is huge and 'position' is small, use with caution.
+ * @note - The operation will move every element comes after 'position' to its left recursively,
+ *         so it can be very slow when 'array' is huge and 'position' is small, use with caution.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 bool roy_array_erase(RoyArray * array, size_t position);
@@ -124,7 +127,8 @@ bool roy_array_erase(RoyArray * array, size_t position);
  * @param position - where the element should be removed.
  * @retval true - the removal is successful.
  * @retval false - 'position' exceeds or 'array' is empty.
- * @note - The operation moves the last element and settles to 'position', so it can shift the sequence of elements, use this function only if element order is irrelevant.
+ * @note - The operation moves the last element and settles to 'position',
+ *         so it may shift the sequence of elements, use this function only if element order is irrelevant.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 bool roy_array_erase_fast(RoyArray * array, size_t position);

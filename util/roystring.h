@@ -213,13 +213,17 @@ int roy_string_compare(const RoyString * lhs, const RoyString * rhs);
 
 /**
  *  @brief Interprets an integer value in a RoyString 'string'.
- *  @note Discards any whitespace characters until the first non-whitespace character is found, then takes as many characters as possible to form a valid integer number representation and converts them to an integer value.
+ *  @note Discards any whitespace characters until the first non-whitespace character is found,
+ *        then takes as many characters as possible to form a valid integer number representation and
+ *        converts them to an integer value.
  */
 int roy_string_to_int(const RoyString * string);
 
 /**
  * @brief Interprets a floating-point value in a byte string pointed to by str.
- * @note Function discards any whitespace characters until first non-whitespace character is found. Then it takes as many characters as possible to form a valid floating-point representation and converts them to a floating-point value.
+ * @note Function discards any whitespace characters until first non-whitespace character is found.
+ *       Then it takes as many characters as possible to form a valid floating-point representation and
+ *       converts them to a floating-point value.
  */
 double roy_string_to_double(const RoyString * string);
 
