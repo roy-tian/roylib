@@ -33,6 +33,28 @@ roy_string_copy(const RoyString * other) {
   return roy_string_assign(new_empty(), roy_string_cstr(other, 0));
 }
 
+RoyString *
+roy_string_read_file(const char * path) {
+  FILE * fp = fopen(path, "r");
+
+  if (!fp) {
+    perror(path);
+    exit(EXIT_FAILURE);
+  }
+
+  fseek(fp, 0, SEEK_END);
+  size_t size = ftell(fp);
+  fseek(fp, 0, SEEK_SET);
+  char buf[size];
+  memset(buf, '\0', size);
+  fread(buf, sizeof(char), size, fp);
+
+  RoyString * ret = new_empty();
+  roy_string_assign(ret, buf);
+  fclose(fp);
+  return ret;
+}
+
 void
 roy_string_delete(RoyString * string) {
   free(string->str);

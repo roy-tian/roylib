@@ -30,6 +30,9 @@ RoyString * roy_string_new_double(double value);
 /// @brief Constructs a RoyString with the content of another RoyString.
 RoyString * roy_string_copy(const RoyString * other);
 
+/// @brief Constructs a RoyString with given double 'value'.
+RoyString * roy_string_read_file(const char * path);
+
 /**
  * @brief Releases all memory and destroys the RoyString - 'string' itself.
  * @note - Always call this function after the work is done by the given 'string' to get rid of memory leaking.
