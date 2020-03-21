@@ -24,9 +24,10 @@ RoyShell * roy_shell_new(void);
 
 /**
  * @brief Releases all memory of the given RoyShell.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - Always call this function after the work is done to get rid of memory leaking.
  */
-void roy_shell_delete(RoyShell * shell);
+void roy_shell_delete(RoyShell * shell, void * user_data);
 
 /// @brief Starts a simulation.
 void roy_shell_start(RoyShell * shell);

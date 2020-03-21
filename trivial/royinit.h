@@ -9,7 +9,7 @@
 #include <stdint.h>
 #include <string.h>
 
-typedef void     (* ROperate)   (void *);
+typedef void     (* ROperate)   (void *, void *);
 typedef bool     (* RCondition) (const void *);
 typedef int      (* RCompare)   (const void *, const void *);
 typedef uint64_t (* RHash)      (const void *, size_t, uint64_t);

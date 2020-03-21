@@ -26,10 +26,11 @@ RoySList * roy_slist_new(void);
 /**
  * @brief Releases all the elements and destroys the RoySList - 'slist' itself.
  * @param deleter - a function for element deleting.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - Always call this function after the work is done by the given 'slist' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_slist_delete(RoySList * slist, ROperate deleter);
+void roy_slist_delete(RoySList * slist, ROperate deleter, void * user_data);
 
 /* ITERATORS */
 
@@ -93,28 +94,31 @@ void roy_slist_push_front(RoySList * restrict slist, void * restrict data);
 /**
  * @brief Removes the first element from 'slist',
  * @param deleter - a function for element deleting.
+ * @param user_data - data to cooperate with 'deleter'.
  * @retval true - the removal is successful.
  * @retval false - 'slist' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-bool roy_slist_pop_front(RoySList * slist, ROperate deleter);
+bool roy_slist_pop_front(RoySList * slist, ROperate deleter, void * user_data);
 
 /**
  * @brief Removes the specified element from 'slist'.
  * @param position - where the element should be removed.
  * @param deleter - a function for element deleting.
+ * @param user_data - data to cooperate with 'deleter'.
  * @retval true - the removal is successful.
  * @retval false - 'position' exceeds or 'slist' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-bool roy_slist_erase(RoySList * slist, size_t position, ROperate deleter);
+bool roy_slist_erase(RoySList * slist, size_t position, ROperate deleter, void * user_data);
 
 /**
  * @brief Removes all the elements from 'slist'.
  * @param deleter - a function for element deleting.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_slist_clear(RoySList * slist, ROperate deleter);
+void roy_slist_clear(RoySList * slist, ROperate deleter, void * user_data);
 
 /* LIST OPERATIONS */
 
@@ -123,19 +127,21 @@ void roy_slist_clear(RoySList * slist, ROperate deleter);
  * @param data - a pointer to the comparable element.
  * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'data'.
  * @param deleter - a function for element deleting.
+ * @param user_data - data to cooperate with 'deleter'.
  * @return the number of elements being removed from 'slist'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_slist_remove(RoySList * slist, const void * data, RCompare comparer, ROperate deleter);
+size_t roy_slist_remove(RoySList * slist, const void * data, RCompare comparer, ROperate deleter, void * user_data);
 
 /**
  * @brief Removes all elements meet 'condition'.
  * @param condition - a function to check whether the given element meet the condition.
  * @param deleter - a function for element deleting.
+ * @param user_data - data to cooperate with 'deleter'.
  * @return the number of elements being removed from 'slist'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_slist_remove_if(RoySList * slist, RCondition condition, ROperate deleter);
+size_t roy_slist_remove_if(RoySList * slist, RCondition condition, ROperate deleter, void * user_data);
 
 /// @brief Reverses the order of the elements in 'slist'.
 void roy_slist_reverse(RoySList * slist);
@@ -145,17 +151,18 @@ void roy_slist_reverse(RoySList * slist);
  *        only the first element in each group of equal elements is left.
  * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'data'.
  * @param deleter - a function for element deleting.
+ * @param user_data - data to cooperate with 'deleter'.
  * @return the number of elements being removed from 'slist'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_slist_unique(RoySList *slist, RCompare comparer, ROperate deleter);
+size_t roy_slist_unique(RoySList *slist, RCompare comparer, ROperate deleter, void * user_data);
 
 /**
  * @brief Sorts the elements in ascending order.
  * @param comparer - a function to compare two elements, acting like <=> operator in C++.
  * @note - This version uses shell sort strategy and may have unsatisfied performance, may be updated in future version.
  */
-void roy_slist_sort(RoySList *slist, RCompare comparer);
+void roy_slist_sort(RoySList *slist, RCompare comparer, void *user_data);
 
 /**
  * @brief Finds the first element equivalent to 'data'.
@@ -169,15 +176,17 @@ RoySList * roy_slist_find(RoySList * slist, const void * data, RCompare comparer
 
 /**
  * @brief Traverses all elements in 'slist' sequentially.
+ * @param user_data - data to cooperate with 'operate'.
  * @param operate - a function for element traversing.
  */
-void roy_slist_for_each(RoySList * slist, ROperate operate);
+void roy_slist_for_each(RoySList * slist, ROperate operate, void * user_data);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'slist'.
  * @param condition - a function to check whether the given element meet the condition.
  * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'operate'.
  */
-void roy_slist_for_which(RoySList * slist, RCondition condition, ROperate operate);
+void roy_slist_for_which(RoySList * slist, RCondition condition, ROperate operate, void * user_data);
 
 #endif // ROYSLIST_H

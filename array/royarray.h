@@ -26,10 +26,11 @@ RoyArray * roy_array_new(size_t capacity, ROperate deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyArray - 'array' itself.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - Always call this function after the work is done by the given 'array' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_array_delete(RoyArray * array);
+void roy_array_delete(RoyArray * array, void * user_data);
 
 /* ELEMENT ACCESS */
 
@@ -152,14 +153,16 @@ void roy_array_clear(RoyArray * array);
 /**
  * @brief Traverses all elements in 'array' sequentially.
  * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'operate'.
  */
-void roy_array_for_each(RoyArray * array, ROperate operate);
+void roy_array_for_each(RoyArray * array, ROperate operate, void * user_data);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'array'.
  * @param condition - a function to check whether the given element meet the condition.
  * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'operate'.
  */
-void roy_array_for_which(RoyArray * array, RCondition condition, ROperate operate);
+void roy_array_for_which(RoyArray * array, RCondition condition, ROperate operate, void * user_data);
 
 #endif // ROYARRAY_H

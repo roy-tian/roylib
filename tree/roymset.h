@@ -28,10 +28,11 @@ RoyMSet * roy_mset_new(void);
 /**
  * @brief Releases all the elements and destroys the RoyMSet - 'mset' itself.
  * @param deleter - a function for element deleting.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - Always call this function after the work is done by the given 'mset' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_mset_delete(RoyMSet * mset, ROperate deleter);
+void roy_mset_delete(RoyMSet * mset, ROperate deleter, void * user_data);
 
 
 /* ITERATORS */
@@ -40,25 +41,25 @@ void roy_mset_delete(RoyMSet * mset, ROperate deleter);
  * @return an iterator to first the minimum element of 'mset'.
  * @return NULL - 'mset' is empty.
  */
-RoyMSet * roy_mset_min(RoyMSet *mset);
+RoyMSet * roy_mset_min(RoyMSet * mset);
 
 /**
  * @return a iterator to the last maximum element of 'set'.
  * @return NULL - 'set' is empty.
  */
-RoyMSet * roy_mset_max(RoyMSet *mset);
+RoyMSet * roy_mset_max(RoyMSet * mset);
 
 /**
  * @return an const iterator to first the minimum element of 'mset'.
  * @return NULL - 'mset' is empty.
  */
-const RoyMSet * roy_mset_cmin(const RoyMSet *mset);
+const RoyMSet * roy_mset_cmin(const RoyMSet * mset);
 
 /**
  * @return a const iterator to the last maximum element of 'mset'.
  * @return NULL - 'mset' is empty.
  */
-const RoyMSet * roy_mset_cmax(const RoyMSet *mset);
+const RoyMSet * roy_mset_cmax(const RoyMSet * mset);
 
 /* CAPACITY */
 
@@ -86,19 +87,21 @@ RoyMSet * roy_mset_insert(RoyMSet ** restrict mset, void * restrict key, RCompar
 /**
  * @brief Removes all the elements from 'mset'.
  * @param deleter - a function for element deleting.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_mset_clear(RoyMSet * mset, ROperate deleter);
+void roy_mset_clear(RoyMSet * mset, ROperate deleter, void * user_data);
 
 /**
  * @brief Removes the element equivalents to 'key' from 'mset'.
  * @param key - a pointer to the comparable element.
  * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'data'.
  * @param deleter - a function for element deleting.
+ * @param user_data - data to cooperate with 'deleter'.
  * @return the 'mset' after the operation.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-RoyMSet * roy_mset_remove(RoyMSet ** mset, const void * key, RCompare comparer, ROperate deleter);
+RoyMSet * roy_mset_remove(RoyMSet ** mset, const void * key, RCompare comparer, ROperate deleter, void * user_data);
 
 /* LOOKUP */
 
@@ -122,14 +125,16 @@ RoyMSet * roy_mset_find(const RoyMSet * mset, const void * key, RCompare compare
 /**
  * @brief Traverses all elements in 'mset' in ascending order.
  * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'operate'.
  */
-void roy_mset_for_each(RoyMSet * mset, ROperate operate);
+void roy_mset_for_each(RoyMSet * mset, ROperate operate, void * user_data);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'mset'.
  * @param condition - a function to check whether the given element meet the condition.
  * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'operate'.
  */
-void roy_mset_for_which(RoyMSet * mset, RCondition condition, ROperate operate);
+void roy_mset_for_which(RoyMSet * mset, RCondition condition, ROperate operate, void * user_data);
 
 #endif // ROYMSET_H

@@ -37,7 +37,7 @@ RoyString * roy_string_read_file(const char * path);
  * @brief Releases all memory and destroys the RoyString - 'string' itself.
  * @note - Always call this function after the work is done by the given 'string' to get rid of memory leaking.
  */
-void roy_string_delete(RoyString * string);
+void roy_string_delete(RoyString * string, void * user_data);
 
 /* CHARACTER ACCESS */
 

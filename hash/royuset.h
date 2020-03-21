@@ -37,10 +37,11 @@ RoyUSet * roy_uset_new(size_t bucket_count, uint64_t seed, RHash hash, RCompare 
 
 /**
  * @brief Releases all the elements and destroys the RoyUSet - 'uset' itself.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - Always call this function after the work is done by the given 'uset' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_uset_delete(RoyUSet * uset);
+void roy_uset_delete(RoyUSet * uset, void * user_data);
 
 /* ELEMENT ACCESS */
 
@@ -92,27 +93,30 @@ bool roy_uset_insert(RoyUSet * restrict uset, void * restrict key, size_t key_si
  * @brief Removes specified element.
  * @param bucket_index - the serial number of the target bucket.
  * @param bucket_position - the position where the element takes place in the target bucket.
+ * @param user_data - data to cooperate with 'deleter'.
  * @return true - the removal is successful.
  * @return false - 'bucket_index' or 'bucket_position' exceeds, or 'uset' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-bool roy_uset_erase(RoyUSet * uset, size_t bucket_index, size_t bucket_position);
+bool roy_uset_erase(RoyUSet * uset, size_t bucket_index, size_t bucket_position, void * user_data);
 
 /**
  * @brief Removes all elements equivalent to 'key'
  * @param key - a pointer to the new element.
  * @param key_size - total memory the new element takes.
+ * @param user_data - data to cooperate with 'deleter'.
  * @return the number of elements being removed from 'uset'.
  * (since there are no duplicated elements in 'uset', the return value would be no more than 1.)
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_uset_remove(RoyUSet * uset, const void * key, size_t key_size);
+size_t roy_uset_remove(RoyUSet * uset, const void *key, size_t key_size, void * user_data);
 
 /**
  * @brief Removes all the elements from 'uset'.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_uset_clear(RoyUSet * uset);
+void roy_uset_clear(RoyUSet * uset, void * user_data);
 
 /* LOOKUPS */
 
@@ -149,15 +153,17 @@ double roy_uset_load_factor(const RoyUSet * uset);
 
 /**
  * @brief Traverses all elements in 'uset'.
+ * @param user_data - data to cooperate with 'operate'.
  * @param operate - a function for element traversing.
  */
-void roy_uset_for_each(RoyUSet * uset, ROperate oeprate);
+void roy_uset_for_each(RoyUSet * uset, ROperate oeprate, void * user_data);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'uset'.
+ * @param user_data - data to cooperate with 'operate'.
  * @param condition - a function to check whether the given element meet the condition.
  * @param operate - a function for element traversing.
  */
-void roy_uset_for_which(RoyUSet * uset, RCondition condition, ROperate operate);
+void roy_uset_for_which(RoyUSet * uset, RCondition condition, ROperate operate, void * user_data);
 
 #endif // ROYUSET_H

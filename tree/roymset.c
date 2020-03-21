@@ -9,9 +9,10 @@ roy_mset_new(void) {
 }
 
 void
-roy_mset_delete(RoyMSet * mset,
-                ROperate deleter) {
-  roy_set_delete((RoySet *)mset, deleter);
+roy_mset_delete(RoyMSet  * mset,
+                ROperate   deleter,
+                void     * user_data) {
+  roy_set_delete((RoySet *)mset, deleter, user_data);
 }
 
 
@@ -27,12 +28,12 @@ roy_mset_max(RoyMSet * mset) {
 
 const RoyMSet *
 roy_mset_cmin(const RoyMSet * mset) {
-  return (RoyMSet *)roy_set_cmin((RoySet *) mset);
+  return (RoyMSet *)roy_set_cmin((RoySet *)mset);
 }
 
 const RoyMSet *
 roy_mset_cmax(const RoyMSet * mset) {
-  return (RoyMSet *)roy_set_cmax((RoySet *) mset);
+  return (RoyMSet *)roy_set_cmax((RoySet *)mset);
 }
 
 size_t
@@ -62,16 +63,19 @@ RoyMSet *
 roy_mset_remove(RoyMSet    ** mset,
                 const void *  key,
                 RCompare      comparer,
-                ROperate      deleter) {
+                ROperate      deleter,
+                void       *  user_data) {
   while (roy_mset_find(*mset, key, comparer)) {
-    roy_set_remove((RoySet **)mset, key, comparer, deleter);
+    roy_set_remove((RoySet **)mset, key, comparer, deleter, user_data);
   }
   return *mset;
 }
 
 void
-roy_mset_clear(RoyMSet * mset, ROperate deleter) {
-  roy_set_clear((RoySet *)mset, deleter);
+roy_mset_clear(RoyMSet  * mset,
+               ROperate   deleter,
+               void     * user_data) {
+  roy_set_clear((RoySet *)mset, deleter, user_data);
 }
 
 size_t
@@ -95,16 +99,18 @@ roy_mset_find(const RoyMSet * mset,
 }
 
 void
-roy_mset_for_each(RoyMSet * mset,
-                  ROperate  operate) {
-  roy_set_for_each((RoySet *)mset, operate);
+roy_mset_for_each(RoyMSet  * mset,
+                  ROperate   operate,
+                  void     * user_data) {
+  roy_set_for_each((RoySet *)mset, operate, user_data);
 }
 
 void
 roy_mset_for_which(RoyMSet    * mset,
                    RCondition   condition,
-                   ROperate     operate) {
-  roy_set_for_which((RoySet *)mset, condition, operate);
+                   ROperate     operate,
+                   void       * user_data) {
+  roy_set_for_which((RoySet *)mset, condition, operate, user_data);
 }
 
 /* PRIVATE FUNCTIONS BELOW */

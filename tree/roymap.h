@@ -33,7 +33,7 @@ RoyMap * roy_map_new(RCompare comparer, ROperate deleter);
  * @note - Always call this function after the work is done by the given 'map' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_map_delete(RoyMap * map);
+void roy_map_delete(RoyMap * map, void * user_data);
 
 /* ELEMENT ACCESS */
 
@@ -104,9 +104,10 @@ RoyMap * roy_map_remove(RoyMap * map, const void * key);
 /**
  * @brief Removes all the elements from 'map'.
  * @param deleter - a function for element deleting.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_map_clear(RoyMap * map);
+void roy_map_clear(RoyMap * map, void * user_data);
 
 /* LOOKUP */
 
@@ -122,14 +123,16 @@ void * roy_map_find(RoyMap * map, const void * key);
 /**
  * @brief Traverses all elements in 'map' in ascending order.
  * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'operate'.
  */
-void roy_map_for_each(RoyMap * map, ROperate operate);
+void roy_map_for_each(RoyMap * map, ROperate operate, void * user_data);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'map'.
  * @param condition - a function to check whether the given element meet the condition.
  * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'operate'.
  */
-void roy_map_for_which(RoyMap * map, RCondition condition, ROperate operate);
+void roy_map_for_which(RoyMap * map, RCondition condition, ROperate operate, void * user_data);
 
 #endif // ROYMAP_H

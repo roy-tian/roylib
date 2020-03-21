@@ -1,7 +1,7 @@
 #include "royshell.h"
 #include "../trivial/roypair.h"
 
-static void pair_deleter(RoyPair * pair);
+static void pair_deleter(RoyPair * pair, void * user_data);
 static int pair_comparer(const RoyPair * lhs, const RoyPair * rhs);
 
 RoyShell *
@@ -18,14 +18,15 @@ roy_shell_new(void) {
 }
 
 void
-roy_shell_delete(RoyShell * shell) {
-  roy_deque_delete (shell->ovector);
-  roy_deque_delete (shell->ivector);
-  roy_deque_delete (shell->argv);
-  roy_string_delete(shell->obuffer);
-  roy_string_delete(shell->ibuffer);
-  roy_string_delete(shell->prompt);
-  roy_map_delete   (shell->dict);
+roy_shell_delete(RoyShell * shell,
+                 void     * user_data) {
+  roy_deque_delete (shell->ovector, user_data);
+  roy_deque_delete (shell->ivector, user_data);
+  roy_deque_delete (shell->argv,    user_data);
+  roy_string_delete(shell->obuffer, user_data);
+  roy_string_delete(shell->ibuffer, user_data);
+  roy_string_delete(shell->prompt,  user_data);
+  roy_map_delete   (shell->dict,    user_data);
   free(shell);
 }
 
@@ -34,7 +35,7 @@ roy_shell_start(RoyShell * shell) {
   while (true) {
     roy_string_print(shell->prompt);
     roy_string_scan(shell->ibuffer, R_BUF_SIZE);
-    roy_deque_clear(shell->argv);
+    roy_deque_clear(shell->argv, NULL);
     if (roy_string_split(shell->argv, shell->ibuffer, "\\s+") > 0) {
       // If cmd (aka first token in argv) cannot be found in dict,
       // push_front a nil string to use default func:
@@ -46,7 +47,7 @@ roy_shell_start(RoyShell * shell) {
       // Gets the cmd (aka the first token in argv):
       ROperate func = roy_map_find(shell->dict, roy_shell_argv_at(shell, 0));
       if (func) {
-        func(shell); 
+        func(shell, NULL); 
         // Clients take the resposibility to select useful outputs,
         // and push them to 'obuffer' inside 'func'.
       }
@@ -67,7 +68,7 @@ roy_shell_command_add(RoyShell   * shell,
 void
 roy_shell_set_prompt(RoyShell   * shell,
                      ROperate     prompt) {
-  prompt ? prompt(shell->prompt) : roy_string_assign(shell->prompt, "> ");
+  prompt ? prompt(shell->prompt, NULL) : roy_string_assign(shell->prompt, "> ");
 }
 
 size_t
@@ -125,13 +126,16 @@ roy_shell_rounds(const RoyShell * shell) {
 
 /* PRIVATE FUNCTIONS DOWN HERE */
 
-static void pair_deleter(RoyPair * pair) {
-  roy_string_delete(pair->key);
+static void
+pair_deleter(RoyPair * pair,
+             void    * user_data) {
+  roy_string_delete(pair->key, user_data);
   free(pair);
   pair = NULL;
 }
 
-static int pair_comparer(const RoyPair * lhs,
-                  const RoyPair * rhs) {
+static int
+pair_comparer(const RoyPair * lhs,
+              const RoyPair * rhs) {
   return roy_string_compare(lhs->key, rhs->key);
 }

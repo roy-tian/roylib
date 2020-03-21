@@ -34,10 +34,11 @@ RoyUMap * roy_umap_new(size_t bucket_count, uint64_t seed, RHash hash, RCompare 
 
 /**
  * @brief Releases all the elements and destroys the RoyUMap - 'umap' itself.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - Always call this function after the work is done by the given 'uset' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_umap_delete(RoyUMap * umap);
+void roy_umap_delete(RoyUMap * umap, void * user_data);
 
 /* ELEMENT ACCESS */
 
@@ -80,27 +81,30 @@ bool roy_umap_insert(RoyUMap * restrict umap, void * restrict key, size_t key_si
  * @brief Removes specified element.
  * @param bucket_index - the serial number of the target bucket.
  * @param bucket_position - the position where the element takes place in the target bucket.
+ * @param user_data - data to cooperate with 'deleter'.
  * @return true - the removal is successful.
  * @return false - 'bucket_index' or 'bucket_position' exceeds, or 'umap' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-bool roy_umap_erase(RoyUMap * umap, size_t bucket_index, size_t bucket_position);
+bool roy_umap_erase(RoyUMap * umap, size_t bucket_index, size_t bucket_position, void * user_data);
 
 /**
  * @brief Removes all RoyPairs with key equivalent to 'key'.
  * @param key - a pointer to the new key.
  * @param key_size - total memory the new key takes.
+ * @param user_data - data to cooperate with 'deleter'.
  * @return the number of elements being removed from 'umap'.
  * (since there are no duplicated RoyPairs in 'umap', the return value would be no more than 1.)
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_umap_remove(RoyUMap * umap, const void * key, size_t key_size);
+size_t roy_umap_remove(RoyUMap * umap, const void *key, size_t key_size, void * user_data);
 
 /**
  * @brief Removes all the elements from 'umap'.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_umap_clear(RoyUMap * umap);
+void roy_umap_clear(RoyUMap * umap, void * user_data);
 
 /* LOOKUPS */
 
@@ -137,15 +141,17 @@ double roy_umap_load_factor(const RoyUMap * umap);
 
 /**
  * @brief Traverses all elements in 'umap'.
+ * @param user_data - data to cooperate with 'operate'.
  * @param operate - a function for element traversing.
  */
-void roy_umap_for_each(RoyUMap * umap, ROperate oeprate);
+void roy_umap_for_each(RoyUMap * umap, ROperate oeprate, void * user_data);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'umap'.
+ * @param user_data - data to cooperate with 'operate'.
  * @param condition - a function to check whether the given element meet the condition.
  * @param operate - a function for element traversing.
  */
-void roy_umap_for_which(RoyUMap * umap, RCondition condition, ROperate operate);
+void roy_umap_for_which(RoyUMap * umap, RCondition condition, ROperate operate, void * user_data);
 
 #endif // ROYUMAP_H

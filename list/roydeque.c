@@ -11,8 +11,9 @@ roy_deque_new(ROperate deleter) {
 }
 
 void
-roy_deque_delete(RoyDeque * deque) {
-  roy_list_delete(deque->head, deque->deleter);
+roy_deque_delete(RoyDeque * deque,
+                 void     * user_data) {
+  roy_list_delete(deque->head, deque->deleter, user_data);
   free(deque);
 }
 
@@ -71,41 +72,43 @@ roy_deque_empty(const RoyDeque * deque) {
 }
 
 bool
-roy_deque_insert(RoyDeque   * restrict deque,
+roy_deque_insert(RoyDeque * restrict deque,
                  size_t                position,
-                 void       * restrict data) {
+                 void     * restrict data) {
   return (position <= deque->size / 2)                      ?
          roy_list_insert(deque->head, position, data)       :
          roy_list_insert_reverse(deque->tail, deque->size - position - 1, data);
 }
 
 void
-roy_deque_push_front(RoyDeque   * restrict deque,
-                     void       * restrict data) {
+roy_deque_push_front(RoyDeque * restrict deque,
+                     void     * restrict data) {
   roy_list_push_front(deque->head, data);
   deque->size++;
 }
 
 void
-roy_deque_push_back(RoyDeque   * restrict deque,
-                    void       * restrict data) {
+roy_deque_push_back(RoyDeque * restrict deque,
+                    void     * restrict data) {
   roy_list_push_back(deque->tail, data);
   deque->size++;
 }
 
 bool
 roy_deque_erase(RoyDeque * deque,
-                size_t     position) {
-  return (position <= deque->size / 2)         ?
-         roy_list_erase(deque->head, position, deque->deleter) :
+                size_t     position,
+                void     * user_data) {
+  return (position <= deque->size / 2) ?
+         roy_list_erase(deque->head, position, deque->deleter, user_data) :
          roy_list_erase_reverse(deque->tail,
                                 deque->size - position - 1,
-                                deque->deleter);
+                                deque->deleter, user_data);
 }
 
 bool
-roy_deque_pop_front(RoyDeque * deque) {
-  if (roy_list_pop_front(deque->head, deque->deleter)) {
+roy_deque_pop_front(RoyDeque * deque,
+                    void     * user_data) {
+  if (roy_list_pop_front(deque->head, deque->deleter, user_data)) {
     deque->size--;
     return true;
   }
@@ -113,8 +116,9 @@ roy_deque_pop_front(RoyDeque * deque) {
 }
 
 bool
-roy_deque_pop_back(RoyDeque * deque) {
-  if (roy_list_pop_back(deque->tail, deque->deleter)) {
+roy_deque_pop_back(RoyDeque * deque,
+                   void     * user_data) {
+  if (roy_list_pop_back(deque->tail, deque->deleter, user_data)) {
     deque->size--;
     return true;
   }
@@ -122,22 +126,27 @@ roy_deque_pop_back(RoyDeque * deque) {
 }
 
 void
-roy_deque_clear(RoyDeque * deque) {
+roy_deque_clear(RoyDeque * deque,
+                void     * user_data) {
   while (!roy_deque_empty(deque)) {
-    roy_deque_pop_front(deque);
+    roy_deque_pop_front(deque, user_data);
   }
 }
 
 size_t
 roy_deque_remove(RoyDeque   * deque,
                  const void * data,
-                 RCompare     comparer) {
-  return roy_list_remove(deque->head, data, comparer, deque->deleter);
+                 RCompare     comparer,
+                 void       * user_data) {
+  return
+    roy_list_remove(deque->head, data, comparer, deque->deleter, user_data);
 }
 
-size_t roy_deque_remove_if(RoyDeque   * deque,
-                           RCondition   condition) {
-  return roy_list_remove_if(deque->head, condition, deque->deleter);
+size_t
+roy_deque_remove_if(RoyDeque   * deque,
+                    RCondition   condition,
+                    void       * user_data) {
+  return roy_list_remove_if(deque->head, condition, deque->deleter, user_data);
 }
 
 void
@@ -149,8 +158,9 @@ roy_deque_reverse(RoyDeque * deque) {
 
 size_t
 roy_deque_unique(RoyDeque * deque,
-                 RCompare   comparer) {
-  return roy_list_unique(deque->head, comparer, deque->deleter);
+                 RCompare   comparer,
+                 void     * user_data) {
+  return roy_list_unique(deque->head, comparer, deque->deleter, user_data);
 }
 
 void
@@ -161,13 +171,15 @@ roy_deque_sort(RoyDeque * deque,
 
 void
 roy_deque_for_each(RoyDeque * deque,
-                   ROperate   operate) {
-  roy_list_for_each(deque->head, operate);
+                   ROperate   operate,
+                   void     * user_data) {
+  roy_list_for_each(deque->head, operate, user_data);
 }
 
 void
 roy_deque_for_which(RoyDeque   * deque,
                     RCondition   condition,
-                    ROperate     operate) {
-  roy_list_for_which(deque->head, condition, operate);
+                    ROperate     operate,
+                    void       * user_data) {
+  roy_list_for_which(deque->head, condition, operate, user_data);
 }

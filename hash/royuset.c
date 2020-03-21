@@ -26,9 +26,10 @@ roy_uset_new(size_t   bucket_count,
 }
 
 void
-roy_uset_delete(RoyUSet * uset) {
+roy_uset_delete(RoyUSet * uset,
+                void    * user_data) {
   for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
-    roy_slist_delete(uset->buckets[i], uset->deleter);
+    roy_slist_delete(uset->buckets[i], uset->deleter, user_data);
   }
   free(uset->buckets);
   free(uset);
@@ -73,13 +74,14 @@ roy_uset_insert(RoyUSet * restrict uset,
 bool
 roy_uset_erase(RoyUSet * uset,
                size_t    bucket_index,
-               size_t    bucket_position) {
+               size_t    bucket_position,
+               void    * user_data) {
   if (!valid_bucket_index(uset, bucket_index)) {
     return false; 
   }
   RoySList ** node = &uset->buckets[bucket_index];
   size_t size = roy_slist_size(*node);
-  roy_slist_erase(*node, bucket_position, uset->deleter);
+  roy_slist_erase(*node, bucket_position, uset->deleter, user_data);
   size -= roy_slist_size(*node);
   uset->size -= size;
   return true;
@@ -87,10 +89,12 @@ roy_uset_erase(RoyUSet * uset,
 
 size_t
 roy_uset_remove(RoyUSet    * uset,
-                const void * data,
-                size_t       data_size) {
-  RoySList ** node = &uset->buckets[roy_uset_bucket(uset, data, data_size)];
-  size_t remove_count = roy_slist_remove(*node, data, uset->comparer, uset->deleter);
+                const void * key,
+                size_t       key_size,
+                void       * user_data) {
+  RoySList ** node = &uset->buckets[roy_uset_bucket(uset, key, key_size)];
+  size_t remove_count =
+    roy_slist_remove(*node, key, uset->comparer, uset->deleter, user_data);
   uset->size -= remove_count;
   return remove_count;
 }
@@ -109,9 +113,10 @@ roy_uset_find(const RoyUSet * uset,
 }
 
 void
-roy_uset_clear(RoyUSet * uset) {
+roy_uset_clear(RoyUSet * uset,
+               void    * user_data) {
   for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
-    roy_slist_clear(uset->buckets[i], uset->deleter);
+    roy_slist_clear(uset->buckets[i], uset->deleter, user_data);
   }
 }
 
@@ -140,11 +145,12 @@ roy_uset_load_factor(const RoyUSet * uset) {
 }
 
 void
-roy_uset_for_each(RoyUSet * uset,
-                  ROperate  operate) {
+roy_uset_for_each(RoyUSet  * uset,
+                  ROperate   oeprate,
+                  void     * user_data) {
   for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
     if (uset->buckets[i] && !roy_slist_empty(uset->buckets[i])) {
-      roy_slist_for_each(uset->buckets[i], operate);
+      roy_slist_for_each(uset->buckets[i], oeprate, user_data);
     }
   }
 }
@@ -152,10 +158,11 @@ roy_uset_for_each(RoyUSet * uset,
 void
 roy_uset_for_which(RoyUSet    * uset,
                    RCondition   condition,
-                   ROperate     operate) {
+                   ROperate     operate,
+                   void       * user_data) {
   for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
     if (uset->buckets[i] && !roy_slist_empty(uset->buckets[i])) {
-      roy_slist_for_which(uset->buckets[i], condition, operate);
+      roy_slist_for_which(uset->buckets[i], condition, operate, user_data);
     }
   }
 }

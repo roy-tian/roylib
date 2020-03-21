@@ -31,10 +31,11 @@ RoyQueue * roy_queue_new(size_t capacity, ROperate deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyQueue - 'queue' itself.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - Always call this function after the work is done by the given 'queue' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_queue_delete(RoyQueue * queue);
+void roy_queue_delete(RoyQueue *queue, void * user_data);
 
 /* ELEMENT ACCESS */
 

@@ -12,8 +12,9 @@ roy_mmap_new(RCompare comparer,
 }
 
 void
-roy_mmap_delete(RoyMMap * mmap) {
-  roy_mmap_clear(mmap);
+roy_mmap_delete(RoyMMap * mmap,
+                void    * user_data) {
+  roy_mmap_clear(mmap, user_data);
   free(mmap);
 }
 
@@ -57,13 +58,15 @@ roy_mmap_insert(RoyMMap * restrict mmap,
 RoyMMap *
 roy_mmap_remove(RoyMMap    * mmap,
                 const void * key) {
-  mmap->root = roy_mset_remove(&mmap->root, key, mmap->comparer, mmap->deleter);
+  mmap->root =
+    roy_mset_remove(&mmap->root, key, mmap->comparer, mmap->deleter, NULL);
   return mmap;
 }
 
 void
-roy_mmap_clear(RoyMMap * mmap) {
-  roy_mset_clear(mmap->root, mmap->deleter);
+roy_mmap_clear(RoyMMap * mmap,
+               void    * user_data) {
+  roy_mset_clear(mmap->root, mmap->deleter, user_data);
 }
 
 size_t
@@ -86,13 +89,15 @@ roy_mmap_find(RoyMMap    * mmap,
 
 void
 roy_mmap_for_each(RoyMMap  * mmap,
-                  ROperate   operate) {
-  roy_mset_for_each(mmap->root, operate);
+                  ROperate   operate,
+                  void     * user_data) {
+  roy_mset_for_each(mmap->root, operate, user_data);
 }
 
 void
 roy_mmap_for_which(RoyMMap    * mmap,
                    RCondition   condition,
-                   ROperate     operate) {
-  roy_mset_for_which(mmap->root, condition, operate);
+                   ROperate     operate,
+                   void       * user_data) {
+  roy_mset_for_which(mmap->root, condition, operate, user_data);
 }

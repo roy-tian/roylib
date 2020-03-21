@@ -13,8 +13,9 @@ roy_queue_new(size_t capacity, ROperate deleter) {
 }
 
 void
-roy_queue_delete(RoyQueue * queue) {
-  roy_array_delete((RoyArray *)queue);
+roy_queue_delete(RoyQueue * queue,
+                 void     * user_data) {
+  roy_array_delete((RoyArray *)queue, user_data);
 }
 
 size_t

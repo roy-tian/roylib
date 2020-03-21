@@ -12,8 +12,9 @@ roy_umap_new(size_t   bucket_count,
 }
 
 void
-roy_umap_delete(RoyUMap * umap) {
-  roy_uset_delete(umap->uset);
+roy_umap_delete(RoyUMap * umap,
+                void    * user_data) {
+  roy_uset_delete(umap->uset, user_data);
   free(umap);
 }
 
@@ -53,20 +54,23 @@ roy_umap_insert(RoyUMap * restrict umap,
 bool
 roy_umap_erase(RoyUMap * umap,
                size_t    bucket_index,
-               size_t    bucket_position) {
-  return roy_uset_erase(umap->uset, bucket_index, bucket_position);
+               size_t    bucket_position,
+               void    * user_data) {
+  return roy_uset_erase(umap->uset, bucket_index, bucket_position, user_data);
 }
 
 size_t
 roy_umap_remove(RoyUMap    * umap,
                 const void * key,
-                size_t       key_size) {
-  return roy_uset_remove(umap->uset, key, key_size);
+                size_t       key_size,
+                void       * user_data) {
+  return roy_uset_remove(umap->uset, key, key_size, user_data);
 }
 
 void
-roy_umap_clear(RoyUMap * umap) {
-  return roy_uset_clear(umap->uset);
+roy_umap_clear(RoyUMap * umap,
+               void    * user_data) {
+  return roy_uset_clear(umap->uset, user_data);
 }
 
 const void *
@@ -100,14 +104,16 @@ roy_umap_load_factor(const RoyUMap * umap) {
 }
 
 void
-roy_umap_for_each(RoyUMap * umap,
-                  ROperate  operate) {
-  roy_uset_for_each(umap->uset, operate);
+roy_umap_for_each(RoyUMap  * umap,
+                  ROperate   oeprate,
+                  void     * user_data) {
+  roy_uset_for_each(umap->uset, oeprate, user_data);
 }
 
 void
 roy_umap_for_which(RoyUMap    * umap,
                    RCondition   condition,
-                   ROperate     operate) {
-  roy_uset_for_which(umap->uset, condition, operate);
+                   ROperate     operate,
+                   void       * user_data) {
+  roy_uset_for_which(umap->uset, condition, operate, user_data);
 }

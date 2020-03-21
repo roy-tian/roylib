@@ -12,8 +12,9 @@ roy_map_new(RCompare comparer,
 }
 
 void
-roy_map_delete(RoyMap * map) {
-  roy_map_clear(map);
+roy_map_delete(RoyMap * map,
+               void   * user_data) {
+  roy_map_clear(map, user_data);
   free(map);
 }
 
@@ -57,13 +58,14 @@ roy_map_insert(RoyMap * restrict map,
 RoyMap *
 roy_map_remove(RoyMap     * map,
                const void * key) {
-  map->root = roy_set_remove(&map->root, key, map->comparer, map->deleter);
+  map->root = roy_set_remove(&map->root, key, map->comparer, map->deleter, NULL);
   return map;
 }
 
 void
-roy_map_clear(RoyMap * map) {
-  roy_set_clear(map->root, map->deleter);
+roy_map_clear(RoyMap * map,
+              void   * user_data) {
+  roy_set_clear(map->root, map->deleter, user_data);
 }
 
 void *
@@ -77,13 +79,15 @@ roy_map_find(RoyMap     * map,
 
 void
 roy_map_for_each(RoyMap   * map,
-                 ROperate   operate) {
-  roy_set_for_each(map->root, operate);
+                 ROperate   operate,
+                 void     * user_data) {
+  roy_set_for_each(map->root, operate, user_data);
 }
 
 void
 roy_map_for_which(RoyMap     * map,
                   RCondition   condition,
-                  ROperate     operate) {
-  roy_set_for_which(map->root, condition, operate);
+                  ROperate     operate,
+                  void       * user_data) {
+  roy_set_for_which(map->root, condition, operate, user_data);
 }

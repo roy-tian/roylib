@@ -27,10 +27,11 @@ RoyVector * roy_vector_new(size_t capacity, ROperate deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyVector - 'vector' itself.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - Always call this function after the work is done by the given 'vector' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_vector_delete(RoyVector * vector);
+void roy_vector_delete(RoyVector * vector, void * user_data);
 
 /* ELEMENT ACCESS */
 
@@ -149,15 +150,17 @@ void roy_vector_clear(RoyVector * vector);
 
 /**
  * @brief Traverses all elements in 'vector' sequentially.
+ * @param user_data - data to cooperate with 'operate'.
  * @param operate - a function for element traversing.
  */
-void roy_vector_for_each(RoyVector * vector, ROperate operate);
+void roy_vector_for_each(RoyVector * vector, ROperate operate, void * user_data);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'vector'.
+ * @param user_data - data to cooperate with 'operate'.
  * @param condition - a function to check whether the given element meet the condition.
  * @param operate - a function for element traversing.
  */
-void roy_vector_for_which(RoyVector * vector, RCondition condition, ROperate operate);
+void roy_vector_for_which(RoyVector * vector, RCondition condition, ROperate operate, void * user_data);
 
 #endif // ROYVECTOR_H

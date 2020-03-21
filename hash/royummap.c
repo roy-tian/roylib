@@ -12,8 +12,9 @@ roy_ummap_new(size_t   bucket_count,
 }
 
 void
-roy_ummap_delete(RoyUMMap * ummap) {
-  roy_umset_delete(ummap->umset);
+roy_ummap_delete(RoyUMMap * ummap,
+                 void     * user_data) {
+  roy_umset_delete(ummap->umset, user_data);
   free(ummap);
 }
 
@@ -48,20 +49,24 @@ roy_ummap_insert(RoyUMMap * restrict ummap,
 bool
 roy_ummap_erase(RoyUMMap * ummap,
                 size_t     bucket_index,
-                size_t     bucket_position) {
-  return roy_umset_erase(ummap->umset, bucket_index, bucket_position);
+                size_t     bucket_position,
+                void     * user_data) {
+  return
+    roy_umset_erase(ummap->umset, bucket_index, bucket_position, user_data);
 }
 
 size_t
-roy_ummap_remove(RoyUMMap    * ummap,
-                 const void  * key,
-                 size_t        key_size) {
-  return roy_umset_remove(ummap->umset, key, key_size);
+roy_ummap_remove(RoyUMMap   * ummap,
+                 const void * key,
+                 size_t       key_size,
+                 void       * user_data) {
+  return roy_umset_remove(ummap->umset, key, key_size, user_data);
 }
 
 void
-roy_ummap_clear(RoyUMMap * ummap) {
-  return roy_umset_clear(ummap->umset);
+roy_ummap_clear(RoyUMMap * ummap,
+                void     * user_data) {
+  return roy_umset_clear(ummap->umset, user_data);
 }
 
 const void *
@@ -96,13 +101,15 @@ roy_ummap_load_factor(const RoyUMMap * ummap) {
 
 void
 roy_ummap_for_each(RoyUMMap * ummap,
-                   ROperate   operate) {
-  roy_umset_for_each(ummap->umset, operate);
+                   ROperate   oeprate,
+                   void     * user_data) {
+  roy_umset_for_each(ummap->umset, oeprate, user_data);
 }
 
 void
-roy_ummap_for_which(RoyUMMap    * ummap,
-                    RCondition    condition,
-                    ROperate      operate) {
-  roy_umset_for_which(ummap->umset, condition, operate);
+roy_ummap_for_which(RoyUMMap   * ummap,
+                    RCondition   condition,
+                    ROperate     operate,
+                    void       * user_data) {
+  roy_umset_for_which(ummap->umset, condition, operate, user_data);
 }

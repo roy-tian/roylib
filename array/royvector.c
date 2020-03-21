@@ -18,8 +18,9 @@ roy_vector_new(size_t   capacity,
 }
 
 void
-roy_vector_delete(RoyVector * vector) {
-  roy_array_delete((RoyArray *)vector);
+roy_vector_delete(RoyVector * vector,
+                  void      * user_data) {
+  roy_array_delete((RoyArray *)vector, user_data);
 }
 
 void *
@@ -103,7 +104,7 @@ roy_vector_pop_back(RoyVector * vector) {
 
 void
 roy_vector_clear(RoyVector * vector) {
-  roy_vector_for_each(vector, vector->deleter);
+  roy_vector_for_each(vector, vector->deleter, NULL);
   vector->capacity = vector->capacity_base;
   vector->size = 0;
   vector->data =
@@ -112,15 +113,17 @@ roy_vector_clear(RoyVector * vector) {
 
 void
 roy_vector_for_each(RoyVector * vector,
-                    ROperate    operate) {
-  roy_array_for_each((RoyArray *)vector, operate);
+                    ROperate    operate,
+                    void      * user_data) {
+  roy_array_for_each((RoyArray *) vector, operate, user_data);
 }
 
 void
 roy_vector_for_which(RoyVector  * vector,
                      RCondition   condition,
-                     ROperate     operate) {
-  roy_array_for_which((RoyArray *)vector, condition, operate);
+                     ROperate     operate,
+                     void       * user_data) {
+  roy_array_for_which((RoyArray *) vector, condition, operate, user_data);
 }
 
 /* PRIVATE FUNCTIONS BELOW */

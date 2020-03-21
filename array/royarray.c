@@ -16,8 +16,8 @@ roy_array_new(size_t capacity, ROperate deleter) {
 }
 
 void
-roy_array_delete(RoyArray * array) {
-  roy_array_for_each(array, array->deleter);
+roy_array_delete(RoyArray * array, void * user_data) {
+  roy_array_for_each(array, array->deleter, user_data);
   free(array->data);
   free(array);
 }
@@ -99,7 +99,7 @@ roy_array_erase(RoyArray * array,
   if (!valid_data(array, position)) {
     return false;
   }
-  array->deleter(roy_array_pointer(array, position));
+  array->deleter(roy_array_pointer(array, position), NULL);
   for (size_t i = position; i < roy_array_size(array); i++) {
     array->data[i] = array->data[i + 1];
   }
@@ -113,7 +113,7 @@ roy_array_erase_fast(RoyArray * array,
   if (!valid_data(array, position)) {
     return false;
   }
-  array->deleter(roy_array_pointer(array, position));
+  array->deleter(roy_array_pointer(array, position), NULL);
   array->data[position] = array->data[roy_array_size(array) - 1];
   array->size--;
   return true;
@@ -124,32 +124,34 @@ roy_array_pop_back(RoyArray * array) {
   if (roy_array_empty(array)) {
     return false;
   }
-  array->deleter(roy_array_pointer(array, roy_array_size(array) - 1));
+  array->deleter(roy_array_pointer(array, roy_array_size(array) - 1), NULL);
   array->size--;
   return true;
 }
 
 void
 roy_array_clear(RoyArray * array) {
-  roy_array_for_each(array, array->deleter);
+  roy_array_for_each(array, array->deleter, NULL);
   array->size = 0;
 }
 
 void
 roy_array_for_each(RoyArray * array,
-                   ROperate   operate) {
+                   ROperate   operate,
+                   void     * user_data) {
   for (size_t i = 0; i != roy_array_size(array); i++) {
-    operate(roy_array_pointer(array, i));
+    operate(roy_array_pointer(array, i), user_data);
   }
 }
 
 void
 roy_array_for_which(RoyArray   * array,
                     RCondition   condition,
-                    ROperate     operate) {
+                    ROperate     operate,
+                    void       * user_data) {
   for (size_t i = 0; i != roy_array_size(array); i++) {
     if (condition(roy_array_cpointer(array, i))) {
-      operate(roy_array_pointer(array, i));
+      operate(roy_array_pointer(array, i), user_data);
     }
   }
 }

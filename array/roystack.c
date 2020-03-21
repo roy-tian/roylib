@@ -6,8 +6,9 @@ roy_stack_new(size_t capacity, ROperate deleter) {
 }
 
 void
-roy_stack_delete(RoyStack * stack) {
-  roy_array_delete((RoyArray *)stack);
+roy_stack_delete(RoyStack * stack,
+                 void     * user_data) {
+  roy_array_delete((RoyArray *)stack, user_data);
 }
 
 size_t

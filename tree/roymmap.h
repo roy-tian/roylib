@@ -30,10 +30,11 @@ RoyMMap * roy_mmap_new(RCompare comparer, ROperate deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyMMap - 'mmap' itself.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - Always call this function after the work is done by the given 'mmap' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_mmap_delete(RoyMMap * mmap);
+void roy_mmap_delete(RoyMMap * mmap, void * user_data);
 
 /* ELEMENT ACCESS */
 
@@ -102,9 +103,10 @@ RoyMMap * roy_mmap_remove(RoyMMap * mmap, const void * key);
 
 /**
  * @brief Removes all the elements from 'mmap'.
+ * @param user_data - data to cooperate with 'operate'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_mmap_clear(RoyMMap * mmap);
+void roy_mmap_clear(RoyMMap * mmap, void * user_data);
 
 /* LOOKUP */
 
@@ -126,14 +128,16 @@ void * roy_mmap_find(RoyMMap * mmap, const void * key);
 /**
  * @brief Traverses all elements in 'mmap' in ascending order.
  * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'operate'.
  */
-void roy_mmap_for_each(RoyMMap * mmap, ROperate operate);
+void roy_mmap_for_each(RoyMMap * mmap, ROperate operate, void * user_data);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'mmap'.
  * @param condition - a function to check whether the given element meet the condition.
  * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'operate'.
  */
-void roy_mmap_for_which(RoyMMap * mmap, RCondition condition, ROperate operate);
+void roy_mmap_for_which(RoyMMap * mmap, RCondition condition, ROperate operate, void * user_data);
 
 #endif // ROYMMAP_H

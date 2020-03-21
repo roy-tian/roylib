@@ -37,10 +37,11 @@ RoyUMSet * roy_umset_new(size_t bucket_count, uint64_t seed, RHash hash, RCompar
 
 /**
  * @brief Releases all the elements and destroys the RoyUMSet - 'umset' itself.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - Always call this function after the work is done by the given 'umset' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_umset_delete(RoyUMSet * umset);
+void roy_umset_delete(RoyUMSet * umset, void * user_data);
 
 /* ELEMENT ACCESS */
 
@@ -90,26 +91,29 @@ void roy_umset_insert(RoyUMSet * restrict umset, void * restrict key, size_t key
  * @brief Removes specified element.
  * @param bucket_index - the serial number of the target bucket.
  * @param bucket_position - the position where the element takes place in the target bucket.
+ * @param user_data - data to cooperate with 'deleter'.
  * @return true - the removal is successful.
  * @return false - 'bucket_index' or 'bucket_position' exceeds, or 'umset' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-bool roy_umset_erase(RoyUMSet * umset, int bucket_index, int bucket_position);
+bool roy_umset_erase(RoyUMSet * umset, int bucket_index, int bucket_position, void * user_data);
 
 /**
  * @brief Removes all elements equivalent to 'key'.
  * @param key - a pointer to the new element.
  * @param key_size - total memory the new element takes.
+ * @param user_data - data to cooperate with 'deleter'.
  * @return the number of elements being removed from 'umset'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_umset_remove(RoyUMSet * umset, const void * key, size_t key_size);
+size_t roy_umset_remove(RoyUMSet * umset, const void *key, size_t key_size, void * user_data);
 
 /**
  * @brief Removes all the elements from 'umset'.
+ * @param user_data - data to cooperate with 'deleter'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_umset_clear(RoyUMSet * umset);
+void roy_umset_clear(RoyUMSet * umset, void * user_data);
 
 /* LOOKUPS */
 
@@ -146,15 +150,17 @@ double roy_umset_load_factor(const RoyUMSet * umset);
 
 /**
  * @brief Traverses all elements in 'umset'.
+ * @param user_data - data to cooperate with 'operate'.
  * @param operate - a function for element traversing.
  */
-void roy_umset_for_each(RoyUMSet * umset, ROperate oeprate);
+void roy_umset_for_each(RoyUMSet * umset, ROperate oeprate, void * user_data);
 
 /**
  * @brief Traverses elements whichever meets 'condition' in 'umset'.
+ * @param user_data - data to cooperate with 'operate'.
  * @param condition - a function to check whether the given element meet the condition.
  * @param operate - a function for element traversing.
  */
-void roy_umset_for_which(RoyUMSet * umset, RCondition condition, ROperate oeprate);
+void roy_umset_for_which(RoyUMSet * umset, RCondition condition, ROperate oeprate, void * user_data);
 
 #endif // ROYUMSET_H

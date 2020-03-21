@@ -25,8 +25,9 @@ roy_umset_new(size_t   bucket_count,
 }
 
 void
-roy_umset_delete(RoyUMSet * umset) {
-  roy_uset_delete((RoyUSet *)umset);
+roy_umset_delete(RoyUMSet * umset,
+                 void     * user_data) {
+  roy_uset_delete((RoyUSet *) umset, user_data);
 }
 
 const void *
@@ -49,7 +50,7 @@ roy_umset_empty(const RoyUMSet * umset) {
 void
 roy_umset_insert(RoyUMSet * restrict umset,
                  void     * restrict data,
-                 size_t     data_size) {
+                 size_t              data_size) {
   RoySList ** node = &umset->buckets[roy_umset_bucket(umset, data, data_size)];
   roy_slist_push_front(*node, data);
   umset->size++;
@@ -58,15 +59,18 @@ roy_umset_insert(RoyUMSet * restrict umset,
 bool
 roy_umset_erase(RoyUMSet * umset,
                 int        bucket_index,
-                int        bucket_position) {
-  return roy_uset_erase((RoyUSet *)umset, bucket_index, bucket_position);
+                int        bucket_position,
+                void     * user_data) {
+  return
+  roy_uset_erase((RoyUSet *)umset, bucket_index, bucket_position, user_data);
 }
 
 size_t
 roy_umset_remove(RoyUMSet   * umset,
-                 const void * data,
-                 size_t       data_size) {
-  return roy_uset_remove((RoyUSet *)umset, data, data_size);
+                 const void * key,
+                 size_t       key_size,
+                 void       * user_data) {
+  return roy_uset_remove((RoyUSet *) umset, key, key_size, user_data);
 }
 
 const void *
@@ -77,8 +81,9 @@ roy_umset_find(const RoyUMSet * umset,
 }
 
 void
-roy_umset_clear(RoyUMSet * umset) {
-  roy_uset_clear((RoyUSet *)umset);
+roy_umset_clear(RoyUMSet * umset,
+                void     * user_data) {
+  roy_uset_clear((RoyUSet *) umset, user_data);
 }
 
 size_t
@@ -106,13 +111,15 @@ roy_umset_load_factor(const RoyUMSet * umset) {
 
 void
 roy_umset_for_each(RoyUMSet * umset,
-                   ROperate   operate) {
-  roy_uset_for_each((RoyUSet *)umset, operate);
+                   ROperate   oeprate,
+                   void     * user_data) {
+  roy_uset_for_each((RoyUSet *)umset, oeprate, user_data);
 }
 
 void
 roy_umset_for_which(RoyUMSet   * umset,
                     RCondition   condition,
-                    ROperate     operate) {
-  roy_uset_for_which((RoyUSet *)umset, condition, operate);
+                    ROperate     oeprate,
+                    void       * user_data) {
+  roy_uset_for_which((RoyUSet *)umset, condition, oeprate, user_data);
 }
