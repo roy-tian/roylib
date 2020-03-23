@@ -1,7 +1,7 @@
 #ifndef ROYLIST_H
 #define ROYLIST_H
 
-#include "../trivial/royinit.h"
+#include "../util/royinit.h"
 
 struct RoyList_ {
   void            * data;
@@ -273,7 +273,7 @@ size_t roy_list_unique(RoyList * list, RCompare comparer, ROperate deleter, void
 /**
  * @brief Sorts the elements in ascending order.
  * @param comparer - a function to compare two elements, acting like <=> operator in C++.
- * @note - This version uses shell sort strategy and may have unsatisfied performance, may be updated in future version.
+ * @note - This version uses heap sort strategy powered by RoyMSet.
  */
 void roy_list_sort(RoyList * list, RCompare comparer);
 

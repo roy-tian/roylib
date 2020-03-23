@@ -1,8 +1,9 @@
 #include "roylist.h"
-#include "../trivial/shellsort.h"
+#include "../tree/roymset.h"
 
 static RoyList * node_new(void * data);
 static void      node_delete(RoyList * list, ROperate deleter, void * user_data);
+static void      sort_back(void * data, RoyList ** iter);
 
 RoyList *
 roy_list_new(void) {
@@ -302,23 +303,15 @@ roy_list_unique(RoyList  * list,
 void
 roy_list_sort(RoyList  * list,
               RCompare   comparer) {
-  size_t size = roy_list_size(list);
-  uint64_t i, j, k;
-  for (i = gap_index(size); i > 0; i--) {
-    uint64_t cur_gap = GAPS[i];
-    for (j = cur_gap; j < size; j++) {
-      void * tempj = roy_list_iterator(list, j)->data;
-      for (k = j; k >= cur_gap; k -= cur_gap) {
-        void * tempk = roy_list_citerator(list, k - cur_gap)->data;
-        if (comparer(tempj, tempk) < 0) {
-          roy_list_iterator(list, k)->data = tempk;
-        } else {
-          break;
-        }
-      }
-      roy_list_iterator(list, k)->data = tempj;
-    }
+  RoyMSet * mset = roy_mset_new();
+  RoyList * iter = roy_list_begin(list);
+  while (iter && iter->next) {
+    roy_mset_insert(&mset, iter->data, (RCompare)comparer);
+    iter = iter->next;
   }
+  iter = roy_list_begin(list);
+  roy_mset_for_each(mset, (ROperate)sort_back, &iter);
+  roy_mset_delete(mset, NULL, NULL);
 }
 
 void
@@ -360,6 +353,16 @@ static void
 node_delete(RoyList * list,
             ROperate  deleter,
             void    * user_data) {
-  deleter(list->data, user_data);
+  if (deleter) {
+    deleter(list->data, user_data);
+  }
   free(list);
+}
+
+
+static void
+sort_back(void    *  data,
+          RoyList ** iter) {
+  (*iter)->data = data;
+  (*iter) = (*iter)->next;
 }

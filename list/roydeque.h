@@ -28,7 +28,6 @@ RoyDeque * roy_deque_new(ROperate deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyDeque - 'deque' itself.
- * @param deleter - a function for element deleting.
  * @param user_data - data to cooperate with 'deleter'.
  * @note - Always call this function after the work is done by the given 'deque' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
@@ -198,7 +197,7 @@ size_t roy_deque_unique(RoyDeque * deque, RCompare comparer, void * user_data);
 /**
  * @brief Sorts the elements in ascending order.
  * @param comparer - a function to compare two elements, acting like <=> operator in C++.
- * @note - This version uses shell sort strategy and may have unsatisfied performance, may be updated in future version.
+ * @note - This version uses heap sort strategy powered by RoyMSet.
  */
 void roy_deque_sort(RoyDeque * deque, RCompare comparer);
 
