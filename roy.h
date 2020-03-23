@@ -1,7 +1,6 @@
 #ifndef ROY_H
 #define ROY_H
 
-#include "trivial/roypair.h"
 #include "array/royarray.h"
 #include "array/roystack.h"
 #include "array/royqueue.h"
@@ -17,6 +16,7 @@
 #include "hash/royumset.h"
 #include "hash/royumap.h"
 #include "hash/royummap.h"
+#include "util/roypair.h"
 #include "util/roystring.h"
 #include "util/royshell.h"
 #include "util/roynumber.h"

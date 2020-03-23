@@ -5,7 +5,7 @@
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 #endif
 
-#include "royinit.h"
+#include "../util/royinit.h"
 
 /**
  * @brief MurmurHash2, 64-bit versions, by Austin Appleby

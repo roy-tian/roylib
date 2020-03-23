@@ -1,7 +1,7 @@
 #ifndef ROYSET_H
 #define ROYSET_H
 
-#include "../trivial/royinit.h"
+#include "../util/royinit.h"
 
 struct RoySet_ {
   struct RoySet_ * left;

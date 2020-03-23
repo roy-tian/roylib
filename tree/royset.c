@@ -185,7 +185,9 @@ static void
 node_delete(RoySet   * set,
             ROperate   deleter,
             void     * user_data) {
-  deleter(set->key, user_data);
+  if (deleter) {
+    deleter(set->key, user_data);
+  }
   free(set);
   set = NULL;
 }

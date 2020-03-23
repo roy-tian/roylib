@@ -1,8 +1,8 @@
 #ifndef ROYUMAP_H
 #define ROYUMAP_H
 
-#include "../trivial/royinit.h"
-#include "../trivial/roypair.h"
+#include "../util/royinit.h"
+#include "../util/roypair.h"
 #include "royuset.h"
 
 struct RoyUMap_ {

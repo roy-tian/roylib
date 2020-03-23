@@ -1,7 +1,7 @@
 #ifndef ROYSTRING_H
 #define ROYSTRING_H
 
-#include "../trivial/royinit.h"
+#include "royinit.h"
 #include "../list/roydeque.h"
 
 struct RoyString_ {

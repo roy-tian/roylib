@@ -1,6 +1,6 @@
 #include "royumset.h"
 #include "royuset.h"
-#include "../trivial/hash.h"
+#include "hash.h"
 #include "../util/roynumber.h"
 #include <math.h>
 

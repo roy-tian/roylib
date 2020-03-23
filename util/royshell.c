@@ -1,5 +1,5 @@
 #include "royshell.h"
-#include "../trivial/roypair.h"
+#include "roypair.h"
 
 static void pair_deleter(RoyPair * pair, void * user_data);
 static int pair_comparer(const RoyPair * lhs, const RoyPair * rhs);
