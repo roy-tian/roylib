@@ -56,8 +56,8 @@ roy_string_read_file(const char * path) {
 }
 
 void
-roy_string_delete(RoyString * string,
-                  void      * user_data) {
+roy_string_delete(RoyString                    * string,
+                  __attribute__((unused)) void * user_data) {
   free(string->str);
   free(string);
 }
