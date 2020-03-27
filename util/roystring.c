@@ -39,7 +39,7 @@ roy_string_read_file(const char * path) {
 
   if (!fp) {
     perror(path);
-    exit(EXIT_FAILURE);
+    return NULL;
   }
 
   fseek(fp, 0, SEEK_END);
