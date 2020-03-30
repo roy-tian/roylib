@@ -193,29 +193,32 @@ roy_string_replace(RoyString  * restrict string,
 }
 
 bool
-roy_string_substring(RoyString * string,
-                     size_t      position,
-                     size_t      count) {
-  if (valid_pos_cnt(string, position, count)) {
+roy_string_substring(      RoyString * dest,
+                     const RoyString * src,
+                     size_t            position,
+                     size_t            count) {
+  if (valid_pos_cnt(src, position, count)) {
     ROY_STR(temp, count + 1)
-    strncpy(temp, roy_string_cstr(string, position), count);
-    roy_string_assign(string, temp);
+    strncpy(temp, roy_string_cstr(src, position), count);
+    roy_string_assign(dest, temp);
     return true;
   }
   return false;
 }
 
 bool
-roy_string_left(RoyString * string, 
-                size_t      count) {
-  return roy_string_substring(string, 0, count);
+roy_string_left(      RoyString * dest,
+                const RoyString * src,
+                size_t            count) {
+  return roy_string_substring(dest, src, 0, count);
 }
 
 bool
-roy_string_right(RoyString * string, 
-                 size_t      count) {
+roy_string_right(      RoyString * dest,
+                 const RoyString * src,
+                 size_t            count) {
   return
-  roy_string_substring(string, roy_string_length(string) - count, count);
+  roy_string_substring(dest, src, roy_string_length(src) - count, count);
 }
 
 void
@@ -244,7 +247,7 @@ RMatch
 roy_string_find(const RoyString  * string,
                 const char       * pattern,
                 size_t             position) {
-  RMatch ret = { PCRE2_ERROR_NOMATCH, PCRE2_ERROR_NOMATCH };
+  RMatch ret = { PCRE2_ERROR_NOMATCH, PCRE2_ERROR_NOMATCH, 0 };
   const PCRE2_SPTR ptn = (const PCRE2_SPTR)pattern;
   int err_code;
   PCRE2_SIZE err_offset;
@@ -285,30 +288,49 @@ roy_string_compare(const RoyString * string1,
   return strcmp(roy_string_cstr(string1, 0), roy_string_cstr(string2, 0));
 }
 
-int
+int64_t
 roy_string_to_int(const RoyString * string) {
-  return atoi(roy_string_cstr(string, 0));
+  return strtoll(roy_string_cstr(string, 0), NULL, 0);
 }
 
 double
 roy_string_to_double(const RoyString * string) {
-  return atof(roy_string_cstr(string, 0));
+  return strtod(roy_string_cstr(string, 0), NULL);
 }
 
 size_t
 roy_string_tokenize(RoyDeque        * restrict dest,
                     const RoyString * restrict string,
-                    const char      * restrict pattern) {
-  size_t pos = 0;
-  RMatch match = roy_string_find(string, pattern, pos);
-  while (match.begin != PCRE2_ERROR_NOMATCH) {
+                    int                        pattern_count,
+                    ...) {
+  int pos = 0;
+  int len = roy_string_length(string);
+  RMatch match = { PCRE2_ERROR_NOMATCH, PCRE2_ERROR_NOMATCH, 0 };
+  do {
+    va_list args;
+    va_start(args, pattern_count);
+    int maxVal = 0;
+    RMatch curMatch;
+    for (int i = 1; i <= pattern_count; i++) {
+      curMatch = roy_string_find(string, va_arg(args, const char*), pos);
+      int curVal =
+        (len - curMatch.begin) * 1000000 + (curMatch.end - curMatch.begin);
+      if (maxVal < curVal) {
+        maxVal = curVal;
+        match = curMatch;
+        match.type = i;
+      }
+    }
+
     RMatch * temp = malloc(sizeof(RMatch));
-    temp->begin   = pos + match.begin;
-    temp->end     = pos + match.end;
+    temp->begin = match.begin + pos;
+    temp->end   = match.end   + pos;
+    temp->type  = match.type;
     roy_deque_push_back(dest, temp);
     pos += match.end;
-    match = roy_string_find(string, pattern, pos);
-  }
+    va_end(args);
+  } while (match.begin != PCRE2_ERROR_NOMATCH);
+  roy_deque_pop_back(dest, NULL);
   return roy_deque_size(dest);
 }
 
@@ -319,8 +341,8 @@ roy_string_split(RoyDeque        * restrict dest,
   size_t pos = 0;
   RMatch match = roy_string_find(string, separator, pos);
   while (match.begin != PCRE2_ERROR_NOMATCH) {
-    RoyString * temp = roy_string_copy(string);
-    roy_string_substring(temp, pos, match.begin);
+    RoyString * temp = roy_string_new("");
+    roy_string_substring(temp, string, pos, match.begin);
     if (!roy_string_empty(temp)) {
       roy_deque_push_back(dest, temp);
     }

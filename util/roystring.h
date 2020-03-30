@@ -14,6 +14,7 @@ typedef struct RoyString_ RoyString;
 typedef struct {
   int begin;
   int end;
+  int type;
 } RMatch;
 
 /* CONSTRUCTION AND DESTRUCTION */
@@ -148,33 +149,37 @@ bool roy_string_erase_right(RoyString * string, size_t count);
 
 /**
  * @brief Returns a substring [pos, pos+count).
- * @param string - the original RoyString.
+ * @param dest - the destination RoyString.
+ * @param src - the original RoyString.
  * @param position - first character of the substring.
  * @param count - number of characters of the substring.
  * @retval true - the operation is successful.
  * @retval false - 'position' or 'position' + 'count' exceeds.
+ * @note 'dest' and 'src' can be identical for self operation.
  */
-bool roy_string_substring(RoyString * string, size_t position, size_t count);
+bool roy_string_substring(RoyString * dest, const RoyString * src, size_t position, size_t count);
 
 /**
  * @brief Returns a substring [0, count).
- * @param dest - the returned RoyString.
- * @param string - the original RoyString.
+ * @param dest - the destination RoyString.
+ * @param src - the original RoyString.
  * @param count - number of characters of the substring.
  * @retval true - the operation is successful.
  * @retval false - 'position' or 'position' + 'count' exceeds.
+ * @note 'dest' and 'src' can be identical for self operation.
  */
-bool roy_string_left(RoyString * string, size_t count);
+bool roy_string_left(RoyString * dest, const RoyString * src, size_t count);
 
 /**
  * @brief Returns a substring [size() - count, size()).
- * @param dest - the returned RoyString.
- * @param string - the original RoyString.
+ * @param dest - the destination RoyString.
+ * @param src - the original RoyString.
  * @param count - number of characters of the substring.
  * @retval true - the operation is successful.
  * @retval false - 'position' or 'position' + 'count' exceeds.
+ * @note 'dest' and 'src' can be identical for self operation.
  */
-bool roy_string_right(RoyString * string, size_t count);
+bool roy_string_right(RoyString * dest, const RoyString * src, size_t count);
 
 /// @brief Writes 'string' to stdout.
 void roy_string_print(const RoyString * string);
@@ -220,7 +225,7 @@ int roy_string_compare(const RoyString * lhs, const RoyString * rhs);
  *        then takes as many characters as possible to form a valid integer number representation and
  *        converts them to an integer value.
  */
-int roy_string_to_int(const RoyString * string);
+int64_t roy_string_to_int(const RoyString * string);
 
 /**
  * @brief Interprets a floating-point value in a byte string pointed to by str.
@@ -236,7 +241,7 @@ double roy_string_to_double(const RoyString * string);
  * @param pattern - pattern to be parsed.
  * @return the size of the destination deque, aka number of tokenized strings.
  */
-size_t roy_string_tokenize(RoyDeque * restrict dest, const RoyString * restrict string, const char * restrict pattern);
+size_t roy_string_tokenize(RoyDeque * restrict dest, const RoyString * restrict string, int pattern_count, ...);
 
 /**
  * @brief Separates 'string' into substrings using 'separator', and stores all substrings in deque 'dest'.
