@@ -20,6 +20,11 @@ roy_string_new(const char * str) {
 }
 
 RoyString *
+roy_string_new_empty(void) {
+  return roy_string_assign(new_empty(), "");
+}
+
+RoyString *
 roy_string_new_int(int value) {
   return roy_string_assign_int(new_empty(), value);
 }

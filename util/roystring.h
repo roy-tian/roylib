@@ -5,8 +5,10 @@
 #include "roymatch.h"
 #include "../list/roydeque.h"
 
-#define RE_COMMENT "(?<!:)\\/\\/.*|\\/\\*(\\s|.)*?\\*\\/"
-#define RE_NUMBER  "[+-]?(\\d+\\.?\\d*|\\d*\\.?\\d+)([Ee][+-]?\\d+)?"
+#define RE_COMMENT      "(?<!:)\\/\\/.*|\\/\\*(\\s|.)*?\\*\\/"
+#define RE_PREPROCESSOR "\\#(if|ifdef|ifndef|else|elif|endif|define|undef|include|error)\\s+[\\\"\\<].+[\\\"\\>]"
+#define RE_TEXT         "\"(\\s|.)*?\"|\'\\\\?\\w\'"
+#define RE_NUMBER       "[+-]?(\\d+\\.?\\d*|\\d*\\.?\\d+)([Ee][+-]?\\d+)?"
 
 struct RoyString_ {
   char * str;
@@ -19,6 +21,9 @@ typedef struct RoyString_ RoyString;
 
 /// @brief Constructs a RoyString with given 'str'.
 RoyString * roy_string_new(const char * str);
+
+/// @brief Constructs a nil RoyString.
+RoyString * roy_string_new_empty(void);
 
 /// @brief Constructs a RoyString with given integer 'value'.
 RoyString * roy_string_new_int(int value);
