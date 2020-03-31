@@ -12,6 +12,7 @@ enum {
 static RoyString * new_empty(void);
 static bool valid_pos(const RoyString * string, size_t position);
 static bool valid_pos_cnt(const RoyString * string, size_t position, size_t count);
+static int  score_match(const RoyMatch * match, size_t string_length);
 
 RoyString *
 roy_string_new(const char * str) {
@@ -221,6 +222,14 @@ roy_string_right(      RoyString * dest,
   roy_string_substring(dest, src, roy_string_length(src) - count, count);
 }
 
+bool
+roy_string_sub_match(      RoyString * dest,
+                     const RoyString * src,
+                     const RoyMatch  * match) {
+  return
+  roy_string_substring(dest, src, match->begin, match->end - match->begin);
+}
+
 void
 roy_string_print(const RoyString * string) {
   printf("%s", roy_string_cstr(string, 0));
@@ -243,11 +252,11 @@ roy_string_scan(RoyString * string,
   roy_string_erase_right(string, 1);
 }
 
-RMatch
+RoyMatch
 roy_string_find(const RoyString  * string,
                 const char       * pattern,
                 size_t             position) {
-  RMatch ret = { PCRE2_ERROR_NOMATCH, PCRE2_ERROR_NOMATCH, 0 };
+  RoyMatch ret = roy_match_make_default();
   const PCRE2_SPTR ptn = (const PCRE2_SPTR)pattern;
   int err_code;
   PCRE2_SIZE err_offset;
@@ -278,7 +287,7 @@ roy_string_find(const RoyString  * string,
 bool
 roy_string_match(const RoyString * string,
                  const char      * pattern) {
-  RMatch match = roy_string_find(string, pattern, 0);
+  RoyMatch match = roy_string_find(string, pattern, 0);
   return match.begin == 0 && match.end == (int)roy_string_length(string);
 }
 
@@ -305,31 +314,30 @@ roy_string_tokenize(RoyDeque        * restrict dest,
                     ...) {
   int pos = 0;
   int len = roy_string_length(string);
-  RMatch match = { PCRE2_ERROR_NOMATCH, PCRE2_ERROR_NOMATCH, 0 };
+  RoyMatch max_match;
+  int max_score;
   do {
     va_list args;
     va_start(args, pattern_count);
-    int maxVal = 0;
-    RMatch curMatch;
+    roy_match_set_default(&max_match);
+    max_score = 0;
+    RoyMatch cur_match;
+    int cur_score;
     for (int i = 1; i <= pattern_count; i++) {
-      curMatch = roy_string_find(string, va_arg(args, const char*), pos);
-      int curVal =
-        (len - curMatch.begin) * 1000000 + (curMatch.end - curMatch.begin);
-      if (maxVal < curVal) {
-        maxVal = curVal;
-        match = curMatch;
-        match.type = i;
+      cur_match = roy_string_find(string, va_arg(args, const char*), pos);
+      cur_score = score_match(&cur_match, len);
+      if (max_score < cur_score) {
+        max_score = cur_score;
+        max_match = cur_match;
+        max_match.type = i;
       }
     }
-
-    RMatch * temp = malloc(sizeof(RMatch));
-    temp->begin = match.begin + pos;
-    temp->end   = match.end   + pos;
-    temp->type  = match.type;
-    roy_deque_push_back(dest, temp);
-    pos += match.end;
+    roy_deque_push_back(dest, roy_match_new(max_match.begin + pos,
+                                            max_match.end   + pos,
+                                            max_match.type));
+    pos += max_match.end;
     va_end(args);
-  } while (match.begin != PCRE2_ERROR_NOMATCH);
+  } while (max_match.begin != PCRE2_ERROR_NOMATCH);
   roy_deque_pop_back(dest, NULL);
   return roy_deque_size(dest);
 }
@@ -339,7 +347,7 @@ roy_string_split(RoyDeque        * restrict dest,
                  const RoyString * restrict string,
                  const char      * restrict separator) {
   size_t pos = 0;
-  RMatch match = roy_string_find(string, separator, pos);
+  RoyMatch match = roy_string_find(string, separator, pos);
   while (match.begin != PCRE2_ERROR_NOMATCH) {
     RoyString * temp = roy_string_new("");
     roy_string_substring(temp, string, pos, match.begin);
@@ -370,6 +378,7 @@ roy_string_join(RoyString      * restrict dest,
   return dest;
 }
 
+
 /* PRIVATE FUNCTIONS DOWN HERE */
 
 static RoyString *
@@ -391,4 +400,14 @@ valid_pos_cnt(const RoyString * string,
               size_t            count) {
   size_t size = roy_string_length(string);
   return (position <= size) && (position + count <= size);
+}
+
+/* Evaluate the RoyMatch: the nearer the 'match' to the beginning of the string,
+   and the shorter the 'match' is, the higher score it gets.*/
+static int
+score_match(const RoyMatch * match,
+            size_t           string_length) {
+  return
+  roy_match_default(match) ? 0 :
+  (int)(string_length - match->begin) * 1000000 + (match->end - match->begin);
 }

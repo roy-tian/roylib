@@ -7,7 +7,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 
 include_directories(
         /usr/local/include
-        C:/Devs/MSYS/mingw64/lib/gcc/x86_64-w64-mingw32/9.3.0/include
+        C:/Devs/MSYS/mingw64/lib/gcc/x86_64-w64-mingw32/*/include
 )
 
 add_library(roylib
@@ -33,6 +33,6 @@ add_library(roylib
         util/roynumber.h  util/roynumber.c
         util/roystr.h     util/roystr.c
         util/roypair.h    util/roypair.c
-)
+        util/roymatch.c   util/roymatch.h)
 
 target_link_libraries(roylib pcre2-8)

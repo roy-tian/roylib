@@ -2,7 +2,11 @@
 #define ROYSTRING_H
 
 #include "royinit.h"
+#include "roymatch.h"
 #include "../list/roydeque.h"
+
+#define RE_COMMENT "(?<!:)\\/\\/.*|\\/\\*(\\s|.)*?\\*\\/"
+#define RE_NUMBER  "[+-]?(\\d+\\.?\\d*|\\d*\\.?\\d+)([Ee][+-]?\\d+)?"
 
 struct RoyString_ {
   char * str;
@@ -10,12 +14,6 @@ struct RoyString_ {
 
 /// @brief RoyString: stores and manipulates sequences of chars, offering common string operations.
 typedef struct RoyString_ RoyString;
-
-typedef struct {
-  int begin;
-  int end;
-  int type;
-} RMatch;
 
 /* CONSTRUCTION AND DESTRUCTION */
 
@@ -181,6 +179,17 @@ bool roy_string_left(RoyString * dest, const RoyString * src, size_t count);
  */
 bool roy_string_right(RoyString * dest, const RoyString * src, size_t count);
 
+/**
+ * @brief Returns a substring [match.begin, match.end).
+ * @param dest - the destination RoyString.
+ * @param src - the original RoyString.
+ * @param match - offer the range of the returning substring.
+ * @retval true - the operation is successful.
+ * @retval false - 'position' or 'position' + 'count' exceeds.
+ * @note 'dest' and 'src' can be identical for self operation.
+ */
+bool roy_string_sub_match(RoyString * dest, const RoyString * src, const RoyMatch * match);
+
 /// @brief Writes 'string' to stdout.
 void roy_string_print(const RoyString * string);
 
@@ -201,7 +210,7 @@ void roy_string_scan(RoyString * string, size_t buf_size);
  * @param position - position at which to start the search from 'string'.
  * @return the first pattern found, can be accessed by '.begin' '.end', -1 if not found, -51 if 'pattern' is a ill-formed regex.
  */
-RMatch roy_string_find(const RoyString * string, const char * pattern, size_t position);
+RoyMatch roy_string_find(const RoyString * string, const char * pattern, size_t position);
 
 /**
  * @brief Tests whether 'string' exactly matches the given string 'pattern'. 
@@ -257,5 +266,6 @@ size_t roy_string_split(RoyDeque * restrict dest, const RoyString * restrict str
  * @note If 'deque' has only one string, then that string will be returned without using the separator.
  */
 RoyString * roy_string_join(RoyString * restrict dest, const RoyDeque * restrict deque, const char * restrict separator);
+
 
 #endif // ROYSTRING_H
