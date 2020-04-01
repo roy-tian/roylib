@@ -6,7 +6,7 @@
 #include "../list/roydeque.h"
 
 #define RE_COMMENT      "(?<!:)\\/\\/.*|\\/\\*(\\s|.)*?\\*\\/"
-#define RE_PREPROCESSOR "\\#(if|ifdef|ifndef|else|elif|endif|define|undef|include|error)\\s+[\\\"\\<].+[\\\"\\>]"
+#define RE_PREPROCESSOR "\\#include\\s+[\\\"\\<].+[\\\"\\>]|#(if|ifdef|ifndef|else|elif|endif|define|undef|include|error).*"
 #define RE_TEXT         "\"(\\s|.)*?\"|\'\\\\?\\w\'"
 #define RE_NUMBER       "[+-]?(\\d+\\.?\\d*|\\d*\\.?\\d+)([Ee][+-]?\\d+)?"
 

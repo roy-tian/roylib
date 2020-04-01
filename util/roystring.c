@@ -12,7 +12,7 @@ enum {
 static RoyString * new_empty(void);
 static bool valid_pos(const RoyString * string, size_t position);
 static bool valid_pos_cnt(const RoyString * string, size_t position, size_t count);
-static int  score_match(const RoyMatch * match, size_t string_length);
+static size_t score_match(const RoyMatch * match, size_t string_length);
 
 RoyString *
 roy_string_new(const char * str) {
@@ -320,14 +320,14 @@ roy_string_tokenize(RoyDeque        * restrict dest,
   int pos = 0;
   int len = roy_string_length(string);
   RoyMatch max_match;
-  int max_score;
+  size_t max_score;
   do {
     va_list args;
     va_start(args, pattern_count);
     roy_match_set_default(&max_match);
     max_score = 0;
     RoyMatch cur_match;
-    int cur_score;
+    size_t cur_score;
     for (int i = 1; i <= pattern_count; i++) {
       cur_match = roy_string_find(string, va_arg(args, const char*), pos);
       cur_score = score_match(&cur_match, len);
@@ -337,9 +337,9 @@ roy_string_tokenize(RoyDeque        * restrict dest,
         max_match.type = i;
       }
     }
-    roy_deque_push_back(dest, roy_match_new(max_match.begin + pos,
-                                            max_match.end   + pos,
-                                            max_match.type));
+    RoyMatch * temp =
+      roy_match_new(max_match.begin + pos, max_match.end + pos, max_match.type);
+    roy_deque_push_back(dest, temp);
     pos += max_match.end;
     va_end(args);
   } while (max_match.begin != PCRE2_ERROR_NOMATCH);
@@ -409,10 +409,10 @@ valid_pos_cnt(const RoyString * string,
 
 /* Evaluate the RoyMatch: the nearer the 'match' to the beginning of the string,
    and the shorter the 'match' is, the higher score it gets.*/
-static int
+static size_t
 score_match(const RoyMatch * match,
             size_t           string_length) {
   return
   roy_match_default(match) ? 0 :
-  (int)(string_length - match->begin) * 1000000 + (match->end - match->begin);
+  (string_length - match->begin) * INT_MAX + (match->end - match->begin);
 }
