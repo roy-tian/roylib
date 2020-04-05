@@ -51,8 +51,7 @@ roy_string_read_file(const char * path) {
   fseek(fp, 0, SEEK_END);
   size_t size = ftell(fp);
   fseek(fp, 0, SEEK_SET);
-  char buf[size];
-  memset(buf, '\0', size);
+  ROY_STR(buf, size + 1)
   fread(buf, sizeof(char), size, fp);
 
   RoyString * ret = new_empty();
