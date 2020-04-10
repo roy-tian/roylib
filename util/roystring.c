@@ -41,8 +41,7 @@ roy_string_copy(const RoyString * other) {
 
 RoyString *
 roy_string_read_file(const char * path) {
-  FILE * fp = fopen(path, "r");
-
+  FILE * fp = fopen(path, "rb");
   if (!fp) {
     perror(path);
     return NULL;
@@ -51,11 +50,9 @@ roy_string_read_file(const char * path) {
   fseek(fp, 0, SEEK_END);
   size_t size = ftell(fp);
   fseek(fp, 0, SEEK_SET);
-  ROY_STR(buf, size + 1)
-  fread(buf, sizeof(char), size, fp);
-
   RoyString * ret = new_empty();
-  roy_string_assign(ret, buf);
+  ret->str = calloc(size + 1, sizeof(char));
+  fread(ret->str, sizeof(char), size, fp);
   fclose(fp);
   return ret;
 }
@@ -353,19 +350,15 @@ roy_string_split(RoyDeque        * restrict dest,
   size_t pos = 0;
   RoyMatch match = roy_string_find(string, separator, pos);
   while (match.begin != PCRE2_ERROR_NOMATCH) {
-    RoyString * temp = roy_string_new("");
+    RoyString * temp = new_empty();
     roy_string_substring(temp, string, pos, match.begin);
-    if (!roy_string_empty(temp)) {
-      roy_deque_push_back(dest, temp);
-    }
+    roy_deque_push_back(dest, temp);
     pos += match.end;
     match = roy_string_find(string, separator, pos);
   }
-  RoyString * temp = roy_string_copy(string);
-  roy_string_erase_left(temp, pos);
-  if (!roy_string_empty(temp)) {
-    roy_deque_push_back(dest, temp);
-  }
+  RoyString * temp = new_empty();
+  roy_string_right(temp, string, roy_string_length(string) - pos);
+  roy_deque_push_back(dest, temp);
   return roy_deque_size(dest);
 }
 
