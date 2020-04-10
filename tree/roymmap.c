@@ -81,9 +81,8 @@ roy_mmap_count(const RoyMMap * mmap,
 void *
 roy_mmap_find(RoyMMap    * mmap,
               const void * key) {
-  RoyCPair * pair = roy_cpair_new(key, NULL);
-  RoyMSet * mset = roy_mset_find(mmap->root, pair, (RCompare)mmap->comparer);
-  free(pair);
+  RoyCPair pair = { key, NULL };
+  RoyMSet * mset = roy_mset_find(mmap->root, &pair, (RCompare)mmap->comparer);
   return mset ? roy_pair_value(mset->key) : NULL;
 }
 
