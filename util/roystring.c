@@ -192,7 +192,7 @@ roy_string_replace(RoyString  * restrict string,
     strncpy(temp, roy_string_cstr(string, 0), position);
     strcat (temp, substr);
     strcat (temp, roy_string_cstr(string, position + count));
-    string = roy_string_assign(string, temp);
+    roy_string_assign(string, temp);
     return true;
   }
   return false;

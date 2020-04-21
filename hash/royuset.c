@@ -28,8 +28,10 @@ roy_uset_new(size_t   bucket_count,
 void
 roy_uset_delete(RoyUSet * uset,
                 void    * user_data) {
-  for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
-    roy_slist_delete(uset->buckets[i], uset->deleter, user_data);
+  if (uset->deleter) {
+    for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
+      roy_slist_delete(uset->buckets[i], uset->deleter, user_data);
+    }
   }
   free(uset->buckets);
   free(uset);
