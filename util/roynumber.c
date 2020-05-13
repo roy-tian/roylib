@@ -214,7 +214,7 @@ roy_uint_prime(uint64_t number) {
 }
 
 uint64_t
-roy_next_prime(uint64_t number) {
+roy_uint_prime_next(uint64_t number) {
   while (!roy_uint_prime(number)) {
     number++;
   }
@@ -229,12 +229,5 @@ roy_random_new(void) {
 uint64_t
 roy_random_next(uint64_t min,
                 uint64_t max) {
-  if (max < min) {
-    return max;
-  }
-  uint64_t ret = max + 1;
-  while (ret > max) {
-    ret = rand() / ( (RAND_MAX + 1U) / max ) + min;
-  }
-  return ret;
+  return rand() % max + min;
 }

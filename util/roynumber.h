@@ -92,12 +92,12 @@ size_t roy_uint_count_bit(uint64_t number);
 bool roy_uint_prime(uint64_t number);
 
 /// @brief Returns the next prime number nearest to the given 'number'.
-uint64_t roy_next_prime(uint64_t number);
+uint64_t roy_uint_prime_next(uint64_t number);
 
 /// @brief Seeds the stdlib version generator.
 void roy_random_new(void);
 
-/// @brief Generates a pseudo-random integer N ∈ [min, max].
+/// @brief Generates a pseudo-random integer N ∈ [min, max).
 uint64_t roy_random_next(uint64_t min, uint64_t max);
 
 #endif // ROYNUMBER_H
