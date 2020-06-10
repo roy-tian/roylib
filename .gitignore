@@ -3,4 +3,4 @@
 /*build*
 /*test
 .DS_Store
-*.a
+*.[oa]

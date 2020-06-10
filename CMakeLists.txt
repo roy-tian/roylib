@@ -5,11 +5,6 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_FLAGS "-Wall -Wextra")
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 
-include_directories(
-        /usr/local/include
-        C:/Devs/MSYS/mingw64/lib/gcc/x86_64-w64-mingw32/*/include
-)
-
 add_library(roylib
         util/royinit.h    roy.h
         array/royarray.h  array/royarray.c
