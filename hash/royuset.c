@@ -16,7 +16,7 @@ roy_uset_new(size_t   bucket_count,
   ret->hash         = hash ? hash : MurmurHash2;
   ret->comparer     = comparer;
   ret->deleter      = deleter;
-  ret->bucket_count = roy_next_prime(bucket_count);
+  ret->bucket_count = roy_uint_prime_next(bucket_count);
   ret->size         = 0;
   ret->buckets      = calloc(roy_uset_bucket_count(ret), R_PTR_SIZE);
   for (size_t i = 0; i != roy_uset_bucket_count(ret); i++) {
