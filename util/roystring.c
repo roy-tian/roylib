@@ -245,6 +245,12 @@ roy_string_println(const RoyString * string) {
 }
 
 void
+roy_string_printw(const RoyString * string,
+                  int width) {
+  printf("%*s", width, roy_string_cstr(string, 0));
+}
+
+void
 roy_string_scan(RoyString * string,
                 size_t      buf_size) {
   ROY_STR(temp, buf_size)

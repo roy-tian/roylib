@@ -197,6 +197,12 @@ void roy_string_print(const RoyString * string);
 void roy_string_println(const RoyString * string);
 
 /**
+ * @brief Writes 'string' to stdout with 'width' specified.
+ * @param width - align right if positive, left if negative.
+ */
+void roy_string_printw(const RoyString * string, int width);
+
+/**
  * @brief Writes 'string' according to stdin.
  * @param buffer_size - size of the buffer inside the function.
  */ 
