@@ -1,8 +1,8 @@
 #include "royarray.h"
 
-// position E [0, size], aka [begin .. end]
+// position E [0, size], i.e. [begin .. end]
 static bool valid_position(const RoyArray * array, size_t position);
-// position E [0, size), aka [begin .. end-1]
+// position E [0, size), i.e. [begin .. end-1]
 static bool valid_data(const RoyArray * array, size_t position);
 
 RoyArray *
