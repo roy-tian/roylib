@@ -47,6 +47,14 @@ void roy_queue_delete(RoyQueue *queue, void * user_data);
 #define roy_queue_front(queue, element_type)  \
         ((element_type *)roy_array_pointer((RoyArray *)(queue), (queue)->front_index))
 
+/**
+ * @brief Access the last element of 'queue'.
+ * @return a typed pointer to the last element.
+ * @return NULL - if 'queue' is empty.
+ */
+#define roy_queue_back(queue, element_type)  \
+        ((element_type *)roy_array_pointer((RoyArray *)(queue), (queue)->back_index))
+
 /* CAPACITY */
 
 /// @brief Returns the number of elements in 'queue'.

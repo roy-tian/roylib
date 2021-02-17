@@ -57,6 +57,22 @@ const void * roy_vector_cpointer(const RoyVector * vector, size_t position);
 #define roy_vector_at(vector, position, element_type) \
         ((element_type *)roy_vector_pointer((vector), (position)))
 
+/**
+ * @brief Accesses the first element.
+ * @return a typed pointer to the first element.
+ * @return NULL - 'vector' is empty.
+ */
+#define roy_vector_front(vector, element_type) \
+        ((element_type *)roy_vector_pointer((vector), 0))
+
+/**
+ * @brief Accesses the last element.
+ * @return a typed pointer to the last element.
+ * @return NULL - 'vector' is empty.
+ */
+#define roy_vector_back(vector, element_type) \
+        ((element_type *)roy_vector_pointer((vector), ((vector)->size - 1)))
+
 /* CAPACITY */
 
 /// @brief Returns the number of elements in 'vector'.
