@@ -1,5 +1,5 @@
 #include "roymap.h"
-#include "../util/roypair.h"
+#include "../util/rpair.h"
 
 RoyMap *
 roy_map_new(RCompare comparer,

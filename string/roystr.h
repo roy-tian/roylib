@@ -3,7 +3,7 @@
 
 // DEPRECATED
 
-#include "royinit.h"
+#include "../util/rpre.h"
 
 #define ROY_STR(str, length) char str[length + 1]; memset(str, '\0', length + 1);
 

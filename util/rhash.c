@@ -1,4 +1,4 @@
-#include "hash.h"
+#include "rhash.h"
 
 uint64_t
 MurmurHash2(const void * key,

@@ -16,8 +16,8 @@
 #include "hash/royumset.h"
 #include "hash/royumap.h"
 #include "hash/royummap.h"
-#include "util/roystring.h"
-#include "util/royshell.h"
-#include "util/roynumber.h"
+#include "string/roystring.h"
+#include "string/royshell.h"
+#include "math/roynumber.h"
 
 #endif // ROY_H

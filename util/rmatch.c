@@ -1,6 +1,6 @@
 #define PCRE2_CODE_UNIT_WIDTH 8
 
-#include "roymatch.h"
+#include "rmatch.h"
 #include <pcre2.h>
 
 RoyMatch *

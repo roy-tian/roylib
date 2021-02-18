@@ -1,5 +1,5 @@
 #include "roynumber.h"
-#include "roystr.h"
+#include "../string/roystr.h"
 #include <limits.h>
 #include <math.h>
 #include <time.h>
@@ -153,81 +153,4 @@ roy_uint_to_str(char     * dest,
   return roy_str_reverse(dest);
 }
 
-uint64_t
-roy_uint_set_bits(uint64_t * dest,
-                  uint64_t   src,
-                  size_t     position,
-                  size_t     count) {
-  return *dest = (*dest & ~(~(~0ULL << count) << (position + 1 - count))) |
-                 ( src  &   ~(~0ULL << count) << (position + 1 - count));
-}
 
-uint64_t
-roy_uint_invert(uint64_t * number,
-                size_t     position,
-                size_t     count) {
-  return *number = *number ^ ~(~0ULL << count) << (position + 1 - count);
-}
-
-uint64_t
-roy_uint_ror(uint64_t * number,
-             size_t     steps,
-             size_t     width) {
-  uint64_t right = (*number & ~(~0ULL << steps)) << (width - steps);
-  *number >>= steps;
-  *number |= right;
-  return *number;
-}
-
-uint64_t
-roy_uint_rol(uint64_t * number,
-             size_t     steps,
-             size_t     width) {
-  uint64_t right = (*number & ~(~0ULL << (width - steps))) << steps;
-  *number >>= width - steps;
-  *number |= right;
-  return *number;
-}
-
-size_t
-roy_uint_count_bit(uint64_t number) {
-  size_t count = 0;
-  // 'n & n - 1' deletes the rightmost '1' of n.
-  for (; number != 0; number &= number - 1) { 
-    count++;
-  }
-  return count;
-}
-
-
-bool
-roy_uint_prime(uint64_t number) {
-  if (number < 2 || (number != 2 && number % 2 == 0)) {
-    return false;
-  }
-  for (size_t i = 3; i <= number / 2; i += 2) {
-    if (number % i == 0) {
-      return false;
-    }
-  }
-  return true;
-}
-
-uint64_t
-roy_uint_prime_next(uint64_t number) {
-  while (!roy_uint_prime(number)) {
-    number++;
-  }
-  return number;
-}
-
-void
-roy_random_new(void) {
-  srand((unsigned)time(NULL));
-}
-
-uint64_t
-roy_random_next(uint64_t min,
-                uint64_t max) {
-  return rand() % max + min;
-}

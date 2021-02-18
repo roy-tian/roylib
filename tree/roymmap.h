@@ -1,7 +1,7 @@
 #ifndef ROYMMAP_H
 #define ROYMMAP_H
 
-#include "../util/royinit.h"
+#include "../util/rpre.h"
 #include "roymset.h"
 
 struct RoyMMap_ {

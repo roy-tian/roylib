@@ -1,5 +1,5 @@
-#ifndef ROYINIT_H
-#define ROYINIT_H
+#ifndef RPREFIX_H
+#define RPREFIX_H
 
 #include <ctype.h>
 #include <stdarg.h>
@@ -15,23 +15,23 @@ typedef bool     (* RCondition) (const void *);
 typedef int      (* RCompare)   (const void *, const void *);
 typedef uint64_t (* RHash)      (const void *, size_t, uint64_t);
 
-enum Size {
+enum RSize {
   R_PTR_SIZE = sizeof(void *),
   R_BUF_SIZE = 0x400
 };
 
-enum Numeral {
+enum RNumeral {
   R_BINARY     = 0b10,
   R_OCTAL      =  010,
   R_DECIMAL    =   10,
   R_HEXDECIMAL = 0x10
 };
 
-enum Width {
+enum RWidth {
   R_BYTE  =  010,
   R_WORD  = 0x10,
   R_DWORD = 0x20,
   R_QWORD = 0x40
 };
 
-#endif // ROYINIT_H
+#endif // RPREFIX_H

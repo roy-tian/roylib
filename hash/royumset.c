@@ -1,7 +1,7 @@
 #include "royumset.h"
 #include "royuset.h"
-#include "hash.h"
-#include "../util/roynumber.h"
+#include "../util/rhash.h"
+#include "../math/roymath.h"
 #include <math.h>
 
 RoyUMSet *

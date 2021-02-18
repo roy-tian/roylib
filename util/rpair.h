@@ -1,7 +1,7 @@
 #ifndef ROYPAIR_H
 #define ROYPAIR_H
 
-#include "royinit.h"
+#include "rpre.h"
 
 struct RoyPair_ {
   void * key;

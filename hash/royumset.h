@@ -1,7 +1,7 @@
 #ifndef ROYUMSET_H
 #define ROYUMSET_H
 
-#include "../util/royinit.h"
+#include "../util/rpre.h"
 #include "../list/royslist.h"
 
 struct RoyUMSet_ {

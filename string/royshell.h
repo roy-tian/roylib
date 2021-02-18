@@ -1,4 +1,4 @@
-#include "royinit.h"
+#include "../util/rpre.h"
 #include "../list/roydeque.h"
 #include "../tree/roymap.h"
 #include "roystring.h"

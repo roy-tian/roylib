@@ -1,8 +1,8 @@
 #ifndef ROYSTRING_H
 #define ROYSTRING_H
 
-#include "royinit.h"
-#include "roymatch.h"
+#include "../util/rpre.h"
+#include "../util/rmatch.h"
 #include "../list/roydeque.h"
 
 struct RoyString_ {

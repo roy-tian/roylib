@@ -1,7 +1,7 @@
 #ifndef ROYSLIST_H
 #define ROYSLIST_H
 
-#include "../util/royinit.h"
+#include "../util/rpre.h"
 
 struct RoySList_ {
   void             * data;

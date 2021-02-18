@@ -1,11 +1,11 @@
-#ifndef ROYHASH_H
-#define ROYHASH_H
+#ifndef RHASH_H
+#define RHASH_H
 
 #ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 #endif
 
-#include "../util/royinit.h"
+#include "rpre.h"
 
 /**
  * @brief MurmurHash2, 64-bit versions, by Austin Appleby
@@ -17,4 +17,4 @@
  */
 uint64_t MurmurHash2(const void * key, size_t key_size, uint64_t seed);
 
-#endif // ROYHASH_H
+#endif // RHASH_H

@@ -1,6 +1,6 @@
 #include "royuset.h"
-#include "hash.h"
-#include "../util/roynumber.h"
+#include "../util/rhash.h"
+#include "../math/roymath.h"
 #include <math.h>
 
 static bool valid_bucket_index(const RoyUSet * uset, size_t bucket_index);

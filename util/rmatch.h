@@ -1,7 +1,7 @@
 #ifndef ROYMATCH_H
 #define ROYMATCH_H
 
-#include "royinit.h"
+#include "rpre.h"
 
 typedef struct RoyMatch_ {
   int begin;
