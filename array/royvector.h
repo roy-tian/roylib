@@ -1,15 +1,7 @@
 #ifndef ROYVECTOR_H
 #define ROYVECTOR_H
 
-#include "royarray.h"
-
-struct RoyVector_ {
-  void     ** data;
-  ROperate    deleter;
-  size_t      capacity;
-  size_t      size;
-  size_t      capacity_base;
-};
+#include "../util/rpre.h"
 
 /// @brief RoyVector: a container that encapsulates scalable size vectors.
 typedef struct RoyVector_ RoyVector;

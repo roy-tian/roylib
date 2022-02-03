@@ -1,5 +1,19 @@
 #include "royummap.h"
 
+struct RoyUMSet_ {
+  RoySList ** buckets;
+  uint64_t    seed;
+  RHash       hash;
+  RCompare    comparer;
+  ROperate    deleter;
+  size_t      bucket_count;
+  size_t      size;
+};
+
+struct RoyUMMap_ {
+  RoyUMSet * umset;
+};
+
 RoyUMMap *
 roy_ummap_new(size_t   bucket_count, 
               uint64_t seed, 

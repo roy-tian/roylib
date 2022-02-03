@@ -1,5 +1,18 @@
 #include "roydeque.h"
 
+struct RoyList_ {
+  void            * data;
+  struct RoyList_ * next;
+  struct RoyList_ * prev;
+};
+
+struct RoyDeque_ {
+  RoyList  * head;
+  RoyList  * tail;
+  ROperate   deleter;
+  size_t     size;
+};
+
 RoyDeque *
 roy_deque_new(ROperate deleter) {
   RoyDeque * ret = malloc(sizeof(RoyDeque));

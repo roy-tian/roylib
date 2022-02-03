@@ -1,4 +1,13 @@
 #include "royvector.h"
+#include "royarray.h"
+
+struct RoyVector_ {
+  void     ** data;
+  ROperate    deleter;
+  size_t      capacity;
+  size_t      size;
+  size_t      capacity_base;
+};
 
 static bool need_expand(const RoyVector * vector);
 static bool need_shrink(const RoyVector * vector);

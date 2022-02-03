@@ -3,13 +3,6 @@
 
 #include "roylist.h"
 
-struct RoyDeque_ {
-  RoyList  * head;
-  RoyList  * tail;
-  ROperate   deleter;
-  size_t     size;
-};
-
 /**
  * @brief RoyDeque: a double ended queue powered by a RoyDeque inside,
  *        which supports fast insertion and removal from both end of the queue.

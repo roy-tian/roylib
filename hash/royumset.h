@@ -4,16 +4,6 @@
 #include "../util/rpre.h"
 #include "../list/royslist.h"
 
-struct RoyUMSet_ {
-  RoySList ** buckets;
-  uint64_t    seed;
-  RHash       hash;
-  RCompare    comparer;
-  ROperate    deleter;
-  size_t      bucket_count;
-  size_t      size;
-};
-
 /**
  * RoyUMSet (aka 'Unordered Multi-Set' / 'Hash Multi-Set'): an associative container that contains a set of objects.
  * Search, insertion, and removal have average constant-time complexity.

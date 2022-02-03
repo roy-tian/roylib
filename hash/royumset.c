@@ -4,13 +4,23 @@
 #include "../math/roymath.h"
 #include <math.h>
 
+struct RoyUMSet_ {
+  RoySList ** buckets;
+  uint64_t    seed;
+  RHash       hash;
+  RCompare    comparer;
+  ROperate    deleter;
+  size_t      bucket_count;
+  size_t      size;
+};
+
 RoyUMSet *
 roy_umset_new(size_t   bucket_count,
               uint64_t seed,
               RHash    hash,
               RCompare comparer,
               ROperate deleter) {
-  RoyUMSet * ret    = malloc(sizeof(RoyUSet));
+  RoyUMSet * ret    = malloc(sizeof(RoyUMSet));
   ret->seed         = seed;
   ret->hash         = hash ? hash : MurmurHash2;
   ret->comparer     = comparer;

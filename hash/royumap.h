@@ -5,9 +5,6 @@
 #include "../util/rpair.h"
 #include "royuset.h"
 
-struct RoyUMap_ {
-  RoyUSet * uset;
-};
 
 /**
  * @brief RoyUMap [aka Unordered Map] is an associative container that contains key-value pairs with unique keys.

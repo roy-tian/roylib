@@ -3,15 +3,6 @@
 #include "../tree/roymap.h"
 #include "roystring.h"
 
-struct RoyShell_ {
-  RoyMap    * dict;
-  RoyString * prompt;
-  RoyString * ibuffer;
-  RoyString * obuffer;
-  RoyDeque  * argv;
-  RoyDeque  * ivector;
-  RoyDeque  * ovector;
-};
 
 /// @brief RoyShell: A simulated shell with simple function.
 typedef struct RoyShell_ RoyShell;

@@ -3,11 +3,6 @@
 
 #include "../util/rpre.h"
 
-struct RoySList_ {
-  void             * data;
-  struct RoySList_ * next;
-};
-
 /**
  * @brief RoySList: a container implemented as a singly-linked list which supports fast insertion and removal
  *        from anywhere in the container. fast random access is not supported.

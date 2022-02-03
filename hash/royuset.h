@@ -4,15 +4,6 @@
 #include "../util/rpre.h"
 #include "../list/royslist.h"
 
-struct RoyUSet_ {
-  RoySList ** buckets;
-  uint64_t    seed;
-  RHash       hash;
-  RCompare    comparer;
-  ROperate    deleter;
-  size_t      bucket_count;
-  size_t      size;
-};
 
 /**
  * @brief RoyUSet (aka 'Unordered Set' / 'Hash Set'): an associative container that contains a set of unique objects.

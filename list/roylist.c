@@ -5,6 +5,12 @@ static RoyList * node_new(void * data);
 static void      node_delete(RoyList * list, ROperate deleter, void * user_data);
 static void      sort_back(void * data, RoyList ** iter);
 
+struct RoyList_ {
+  void            * data;
+  struct RoyList_ * next;
+  struct RoyList_ * prev;
+};
+
 RoyList *
 roy_list_new(void) {
   RoyList * head = malloc(sizeof(RoyList));

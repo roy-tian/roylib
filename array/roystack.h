@@ -1,14 +1,7 @@
 #ifndef ROYSTACK_H
 #define ROYSTACK_H
 
-#include "royarray.h"
-
-struct RoyStack_ {
-  void     ** data;
-  ROperate    deleter;
-  size_t      capacity;
-  size_t      size;
-};
+#include "../util/rpre.h"
 
 /// @brief RoyStack: a container adapter that gives the functionality of a LIFO data structure.
 typedef struct RoyStack_ RoyStack;

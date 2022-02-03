@@ -6,6 +6,11 @@ static void       node_delete(RoySList * slist, ROperate deleter, void * user_da
 static RoySList * back(RoySList * slist);
 static void       sort_back(void * data, RoySList ** iter);
 
+struct RoySList_ {
+  void             * data;
+  struct RoySList_ * next;
+};
+
 RoySList *
 roy_slist_new(void) {
   return node_new(NULL);

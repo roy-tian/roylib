@@ -1,5 +1,12 @@
 #include "royarray.h"
 
+struct RoyArray_ {
+  void     ** data;
+  ROperate    deleter;
+  size_t      capacity;
+  size_t      size;
+};
+
 // position E [0, size], i.e. [begin .. end]
 static bool valid_position(const RoyArray * array, size_t position);
 // position E [0, size), i.e. [begin .. end-1]

@@ -3,6 +3,21 @@
 #include "../math/roymath.h"
 #include <math.h>
 
+struct RoySList_ {
+  void             * data;
+  struct RoySList_ * next;
+};
+
+struct RoyUSet_ {
+  RoySList ** buckets;
+  uint64_t    seed;
+  RHash       hash;
+  RCompare    comparer;
+  ROperate    deleter;
+  size_t      bucket_count;
+  size_t      size;
+};
+
 static bool valid_bucket_index(const RoyUSet * uset, size_t bucket_index);
 
 RoyUSet *

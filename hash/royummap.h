@@ -5,10 +5,6 @@
 #include "../util/rpair.h"
 #include "royumset.h"
 
-struct RoyUMMap_ {
-  RoyUMSet * umset;
-};
-
 /**
  * @brief RoyUMMap [aka Unordered Multi-Map] is an associative container that contains key-value pairs,
  * duplicated keys are allowed.

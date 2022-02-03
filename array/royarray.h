@@ -3,13 +3,6 @@
 
 #include "../util/rpre.h"
 
-struct RoyArray_ {
-  void     ** data;
-  ROperate    deleter;
-  size_t      capacity;
-  size_t      size;
-};
-
 /// @brief RoyArray: a container that encapsulates fixed size arrays.
 typedef struct RoyArray_ RoyArray;
 

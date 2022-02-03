@@ -1,16 +1,7 @@
 #ifndef ROYQUEUE_H
 #define ROYQUEUE_H
 
-#include "royarray.h"
-
-struct RoyQueue_ {
-  void     ** data;
-  ROperate    deleter;
-  size_t      capacity;
-  size_t      size;
-  size_t      front_index;
-  size_t      back_index;
-};
+#include "../util/rpre.h"
 
 /**
  * @brief RoyQueue: a container adapter that gives the functionality of a FIFO data structure,

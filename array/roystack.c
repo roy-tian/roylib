@@ -1,4 +1,12 @@
 #include "roystack.h"
+#include "royarray.h"
+
+struct RoyStack_ {
+  void     ** data;
+  ROperate    deleter;
+  size_t      capacity;
+  size_t      size;
+};
 
 RoyStack *
 roy_stack_new(size_t capacity, ROperate deleter) {

@@ -1,6 +1,16 @@
 #include "royshell.h"
 #include "../util/rpair.h"
 
+struct RoyShell_ {
+  RoyMap    * dict;
+  RoyString * prompt;
+  RoyString * ibuffer;
+  RoyString * obuffer;
+  RoyDeque  * argv;
+  RoyDeque  * ivector;
+  RoyDeque  * ovector;
+};
+
 static void pair_deleter(RoyPair * pair, void * user_data);
 static int pair_comparer(const RoyPair * lhs, const RoyPair * rhs);
 
