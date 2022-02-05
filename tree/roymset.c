@@ -10,7 +10,7 @@ roy_mset_new(void) {
 
 void
 roy_mset_delete(RoyMSet  * mset,
-                ROperate   deleter,
+                RDoer   deleter,
                 void     * user_data) {
   roy_set_delete((RoySet *)mset, deleter, user_data);
 }
@@ -46,9 +46,9 @@ bool roy_mset_empty(const RoyMSet * mset) {
 }
 
 RoyMSet *
-roy_mset_insert(RoyMSet  ** restrict mset,
-                void     *  restrict key,
-                RCompare    comparer) {
+roy_mset_insert(RoyMSet   ** restrict mset,
+                void      *  restrict key,
+                RComparer             comparer) {
   if (!*mset) {
     *mset = node_new(key);
   } else if (comparer(key, (*mset)->key) > 0) {
@@ -62,8 +62,8 @@ roy_mset_insert(RoyMSet  ** restrict mset,
 RoyMSet *
 roy_mset_remove(RoyMSet    ** mset,
                 const void *  key,
-                RCompare      comparer,
-                ROperate      deleter,
+                RComparer     comparer,
+                RDoer         deleter,
                 void       *  user_data) {
   while (roy_mset_find(*mset, key, comparer)) {
     roy_set_remove((RoySet **)mset, key, comparer, deleter, user_data);
@@ -72,16 +72,16 @@ roy_mset_remove(RoyMSet    ** mset,
 }
 
 void
-roy_mset_clear(RoyMSet  * mset,
-               ROperate   deleter,
-               void     * user_data) {
+roy_mset_clear(RoyMSet * mset,
+               RDoer     deleter,
+               void    * user_data) {
   roy_set_clear((RoySet *)mset, deleter, user_data);
 }
 
 size_t
 roy_mset_count(const RoyMSet * mset,
                const void    * key,
-               RCompare        comparer) {
+               RComparer       comparer) {
   if (!mset) {
     return 0;
   } else {
@@ -94,23 +94,23 @@ roy_mset_count(const RoyMSet * mset,
 RoyMSet *
 roy_mset_find(const RoyMSet * mset,
               const void    * key,
-              RCompare        comparer) {
+              RComparer       comparer) {
   return (RoyMSet *)roy_set_find((RoySet *)mset, key, comparer);
 }
 
 void
-roy_mset_for_each(RoyMSet  * mset,
-                  ROperate   operate,
-                  void     * user_data) {
-  roy_set_for_each((RoySet *)mset, operate, user_data);
+roy_mset_for_each(RoyMSet * mset,
+                  RDoer     doer,
+                  void    * user_data) {
+  roy_set_for_each((RoySet *)mset, doer, user_data);
 }
 
 void
-roy_mset_for_which(RoyMSet    * mset,
-                   RCondition   condition,
-                   ROperate     operate,
-                   void       * user_data) {
-  roy_set_for_which((RoySet *)mset, condition, operate, user_data);
+roy_mset_for_which(RoyMSet  * mset,
+                   RChecker   checker,
+                   RDoer      doer,
+                   void     * user_data) {
+  roy_set_for_which((RoySet *)mset, checker, doer, user_data);
 }
 
 /* PRIVATE FUNCTIONS BELOW */

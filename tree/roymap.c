@@ -2,8 +2,8 @@
 #include "../util/rpair.h"
 
 RoyMap *
-roy_map_new(RCompare comparer,
-            ROperate deleter) {
+roy_map_new(RComparer comparer,
+            RDoer     deleter) {
   RoyMap * ret  = malloc(sizeof(RoyMap));
   ret->root     = roy_set_new();
   ret->comparer = comparer;
@@ -77,16 +77,16 @@ roy_map_find(RoyMap     * map,
 }
 
 void
-roy_map_for_each(RoyMap   * map,
-                 ROperate   operate,
-                 void     * user_data) {
-  roy_set_for_each(map->root, operate, user_data);
+roy_map_for_each(RoyMap * map,
+                 RDoer    doer,
+                 void   * user_data) {
+  roy_set_for_each(map->root, doer, user_data);
 }
 
 void
-roy_map_for_which(RoyMap     * map,
-                  RCondition   condition,
-                  ROperate     operate,
-                  void       * user_data) {
-  roy_set_for_which(map->root, condition, operate, user_data);
+roy_map_for_which(RoyMap   * map,
+                  RChecker   checker,
+                  RDoer      doer,
+                  void     * user_data) {
+  roy_set_for_which(map->root, checker, doer, user_data);
 }

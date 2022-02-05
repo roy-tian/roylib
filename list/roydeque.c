@@ -7,14 +7,14 @@ struct RoyList_ {
 };
 
 struct RoyDeque_ {
-  RoyList  * head;
-  RoyList  * tail;
-  ROperate   deleter;
-  size_t     size;
+  RoyList * head;
+  RoyList * tail;
+  RDoer     deleter;
+  size_t    size;
 };
 
 RoyDeque *
-roy_deque_new(ROperate deleter) {
+roy_deque_new(RDoer deleter) {
   RoyDeque * ret = malloc(sizeof(RoyDeque));
   ret->head      = roy_list_new();
   ret->tail      = ret->head->next;
@@ -149,17 +149,17 @@ roy_deque_clear(RoyDeque * deque,
 size_t
 roy_deque_remove(RoyDeque   * deque,
                  const void * data,
-                 RCompare     comparer,
+                 RComparer    comparer,
                  void       * user_data) {
   return
     roy_list_remove(deque->head, data, comparer, deque->deleter, user_data);
 }
 
 size_t
-roy_deque_remove_if(RoyDeque   * deque,
-                    RCondition   condition,
-                    void       * user_data) {
-  return roy_list_remove_if(deque->head, condition, deque->deleter, user_data);
+roy_deque_remove_if(RoyDeque * deque,
+                    RChecker   checker,
+                    void     * user_data) {
+  return roy_list_remove_if(deque->head, checker, deque->deleter, user_data);
 }
 
 void
@@ -170,29 +170,29 @@ roy_deque_reverse(RoyDeque * deque) {
 }
 
 size_t
-roy_deque_unique(RoyDeque * deque,
-                 RCompare   comparer,
-                 void     * user_data) {
+roy_deque_unique(RoyDeque  * deque,
+                 RComparer   comparer,
+                 void      * user_data) {
   return roy_list_unique(deque->head, comparer, deque->deleter, user_data);
 }
 
 void
-roy_deque_sort(RoyDeque * deque,
-               RCompare   comparer) {
+roy_deque_sort(RoyDeque  * deque,
+               RComparer   comparer) {
   roy_list_sort(deque->head, comparer);
 }
 
 void
 roy_deque_for_each(RoyDeque * deque,
-                   ROperate   operate,
+                   RDoer      doer,
                    void     * user_data) {
-  roy_list_for_each(deque->head, operate, user_data);
+  roy_list_for_each(deque->head, doer, user_data);
 }
 
 void
-roy_deque_for_which(RoyDeque   * deque,
-                    RCondition   condition,
-                    ROperate     operate,
-                    void       * user_data) {
-  roy_list_for_which(deque->head, condition, operate, user_data);
+roy_deque_for_which(RoyDeque * deque,
+                    RChecker   checker,
+                    RDoer      doer,
+                    void     * user_data) {
+  roy_list_for_which(deque->head, checker, doer, user_data);
 }

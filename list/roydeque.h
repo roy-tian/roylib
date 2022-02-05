@@ -17,7 +17,7 @@ typedef struct RoyDeque_ RoyDeque;
  * @return The newly build RoyVector.
  * @note The behavior is undefined if any immature RoyVectors are operated.
  */
-RoyDeque * roy_deque_new(ROperate deleter);
+RoyDeque * roy_deque_new(RDoer deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyDeque - 'deque' itself.
@@ -163,16 +163,16 @@ void roy_deque_clear(RoyDeque * deque, void * user_data);
  * @return the number of elements being removed from 'deque'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_deque_remove(RoyDeque * deque, const void * data, RCompare comparer, void * user_data);
+size_t roy_deque_remove(RoyDeque * deque, const void * data, RComparer comparer, void * user_data);
 
 /**
- * @brief Removes all elements meet 'condition'.
- * @param condition - a function to check whether the given element meet the condition.
+ * @brief Removes all elements meet 'checker'.
+ * @param checker - a function to check whether the given element meet the checker.
  * @param user_data - data to cooperate with 'deleter'.
  * @return the number of elements being removed from 'deque'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_deque_remove_if(RoyDeque * deque, RCondition condition, void * user_data);
+size_t roy_deque_remove_if(RoyDeque * deque, RChecker checker, void * user_data);
 
 /// @brief Reverses the order of the elements in 'deque'.
 void roy_deque_reverse(RoyDeque * deque);
@@ -185,30 +185,30 @@ void roy_deque_reverse(RoyDeque * deque);
  * @return the number of elements being removed from 'deque'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_deque_unique(RoyDeque * deque, RCompare comparer, void * user_data);
+size_t roy_deque_unique(RoyDeque * deque, RComparer comparer, void * user_data);
 
 /**
  * @brief Sorts the elements in ascending order.
  * @param comparer - a function to compare two elements, acting like <=> operator in C++.
  * @note - This version uses heap sort strategy powered by RoyMSet.
  */
-void roy_deque_sort(RoyDeque * deque, RCompare comparer);
+void roy_deque_sort(RoyDeque * deque, RComparer comparer);
 
 /* TRAVERSE */
 
 /**
  * @brief Traverses all elements in 'deque' sequentially.
- * @param user_data - data to cooperate with 'operate'.
- * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
+ * @param doer - a function for element traversing.
  */
-void roy_deque_for_each(RoyDeque * deque, ROperate operate, void * user_data);
+void roy_deque_for_each(RoyDeque * deque, RDoer doer, void * user_data);
 
 /**
- * @brief Traverses elements whichever meets 'condition' in 'deque'.
- * @param condition - a function to check whether the given element meet the condition.
- * @param operate - a function for element traversing.
- * @param user_data - data to cooperate with 'operate'.
+ * @brief Traverses elements whichever meets 'checker' in 'deque'.
+ * @param checker - a function to check whether the given element meet the checker.
+ * @param doer - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
  */
-void roy_deque_for_which(RoyDeque * deque, RCondition condition, ROperate operate, void * user_data);
+void roy_deque_for_which(RoyDeque * deque, RChecker checker, RDoer doer, void * user_data);
 
 #endif // ROYDEQUE_H

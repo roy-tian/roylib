@@ -1,15 +1,15 @@
 #include "roylist.h"
 #include "../tree/roymset.h"
 
-static RoyList * node_new(void * data);
-static void      node_delete(RoyList * list, ROperate deleter, void * user_data);
-static void      sort_back(void * data, RoyList ** iter);
-
 struct RoyList_ {
   void            * data;
   struct RoyList_ * next;
   struct RoyList_ * prev;
 };
+
+static RoyList * node_new(void * data);
+static void      node_delete(RoyList * list, RDoer deleter, void * user_data);
+static void      sort_back(void * data, RoyList ** iter);
 
 RoyList *
 roy_list_new(void) {
@@ -24,9 +24,9 @@ roy_list_new(void) {
 }
 
 void
-roy_list_delete(RoyList  * list,
-                ROperate   deleter,
-                void     * user_data) {
+roy_list_delete(RoyList * list,
+                RDoer     deleter,
+                void    * user_data) {
   roy_list_clear(list, deleter, user_data);
   free(list);
 }
@@ -178,29 +178,29 @@ roy_list_push_back(RoyList * restrict list_tail,
 }
 
 bool
-roy_list_erase(RoyList  * list_head,
-               size_t     position,
-               ROperate   deleter,
-               void     * user_data) {
+roy_list_erase(RoyList * list_head,
+               size_t    position,
+               RDoer     deleter,
+               void    * user_data) {
   return roy_list_pop_front(roy_list_iterator(list_head, position)->prev,
                             deleter,
                             user_data);
 }
 
 bool
-roy_list_erase_reverse(RoyList  * list_tail,
-                       size_t     rposition,
-                       ROperate   deleter,
-                       void     * user_data) {
+roy_list_erase_reverse(RoyList * list_tail,
+                       size_t    rposition,
+                       RDoer     deleter,
+                       void    * user_data) {
   return roy_list_pop_back(roy_list_riterator(list_tail, rposition)->next,
                            deleter,
                            user_data);
 }
 
 bool
-roy_list_pop_front(RoyList  * list_head,
-                   ROperate   deleter,
-                   void     * user_data) {
+roy_list_pop_front(RoyList * list_head,
+                   RDoer     deleter,
+                   void    * user_data) {
   if (!roy_list_empty(list_head)) {
     RoyList * to_erase  = roy_list_begin(list_head);
     RoyList * next_elem = to_erase->next;
@@ -213,9 +213,9 @@ roy_list_pop_front(RoyList  * list_head,
 }
 
 bool
-roy_list_pop_back(RoyList  * list_tail,
-                  ROperate   deleter,
-                  void     * user_data) {
+roy_list_pop_back(RoyList * list_tail,
+                  RDoer     deleter,
+                  void    * user_data) {
   if (!roy_list_rempty(list_tail)) {
     RoyList * to_erase  = roy_list_rbegin(list_tail);
     RoyList * prev_elem = to_erase->prev;
@@ -228,9 +228,9 @@ roy_list_pop_back(RoyList  * list_tail,
 }
 
 void
-roy_list_clear(RoyList  * list_head,
-               ROperate   deleter,
-               void     * user_data) {
+roy_list_clear(RoyList * list_head,
+               RDoer     deleter,
+               void    * user_data) {
   while (!roy_list_empty(list_head)) {
     roy_list_pop_front(list_head, deleter, user_data);
   }
@@ -239,8 +239,8 @@ roy_list_clear(RoyList  * list_head,
 size_t
 roy_list_remove(RoyList    * list,
                 const void * data,
-                RCompare     comparer,
-                ROperate     deleter,
+                RComparer    comparer,
+                RDoer        deleter,
                 void       * user_data) {
   RoyList * iter = list;
   size_t count = 0;
@@ -256,14 +256,14 @@ roy_list_remove(RoyList    * list,
 }
 
 size_t
-roy_list_remove_if(RoyList    * list,
-                   RCondition   condition,
-                   ROperate     deleter,
-                   void       * user_data) {
+roy_list_remove_if(RoyList  * list,
+                   RChecker   checker,
+                   RDoer      deleter,
+                   void     * user_data) {
   RoyList * iter = list;
   size_t count = 0;
   while (!roy_list_empty(iter)) {
-    if (condition(roy_list_cbegin(list)->data)) {
+    if (checker(roy_list_cbegin(list)->data)) {
       roy_list_pop_front(iter, deleter, user_data);
       count++;
     } else {
@@ -288,10 +288,10 @@ roy_list_reverse(RoyList ** list) {
 }
 
 size_t
-roy_list_unique(RoyList  * list,
-                RCompare   comparer,
-                ROperate   deleter,
-                void     * user_data) {
+roy_list_unique(RoyList   * list,
+                RComparer   comparer,
+                RDoer       deleter,
+                void      * user_data) {
   RoyList * temp = list;
   size_t count = 0;
   while (temp->next && temp->next->next && temp->next->next->next) {
@@ -307,39 +307,39 @@ roy_list_unique(RoyList  * list,
 }
 
 void
-roy_list_sort(RoyList  * list,
-              RCompare   comparer) {
+roy_list_sort(RoyList   * list,
+              RComparer   comparer) {
   RoyMSet * mset = roy_mset_new();
   RoyList * iter = roy_list_begin(list);
   while (iter && iter->next) {
-    roy_mset_insert(&mset, iter->data, (RCompare)comparer);
+    roy_mset_insert(&mset, iter->data, (RComparer)comparer);
     iter = iter->next;
   }
   iter = roy_list_begin(list);
-  roy_mset_for_each(mset, (ROperate)sort_back, &iter);
+  roy_mset_for_each(mset, (RDoer)sort_back, &iter);
   roy_mset_delete(mset, NULL, NULL);
 }
 
 void
-roy_list_for_each(RoyList  * list,
-                  ROperate   operate,
-                  void     * user_data) {
+roy_list_for_each(RoyList * list,
+                  RDoer     doer,
+                  void    * user_data) {
   for (RoyList * iter = roy_list_begin(list);
        iter && iter->next;
        iter = iter->next) {
-    operate(iter->data, user_data);
+    doer(iter->data, user_data);
   }
 }
 
-void roy_list_for_which(RoyList    * list,
-                        RCondition   condition,
-                        ROperate     operate,
-                        void       * user_data) {
+void roy_list_for_which(RoyList  * list,
+                        RChecker   checker,
+                        RDoer      doer,
+                        void     * user_data) {
   for (RoyList * iter = roy_list_begin(list);
        iter && iter->next;
        iter = iter->next) {
-    if (condition(iter->data)) {
-      operate(iter->data, user_data);
+    if (checker(iter->data)) {
+      doer(iter->data, user_data);
     }
   } 
 }
@@ -357,7 +357,7 @@ node_new(void * data) {
 
 static void
 node_delete(RoyList * list,
-            ROperate  deleter,
+            RDoer     deleter,
             void    * user_data) {
   if (deleter) {
     deleter(list->data, user_data);

@@ -18,7 +18,7 @@ typedef struct RoyQueue_ RoyQueue;
  * @return The newly build RoyQueue.
  * @note The behavior is undefined if any immature RoyQueues are operated.
  */
-RoyQueue * roy_queue_new(size_t capacity, ROperate deleter);
+RoyQueue * roy_queue_new(size_t capacity, RDoer deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyQueue - 'queue' itself.

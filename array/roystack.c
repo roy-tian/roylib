@@ -2,14 +2,14 @@
 #include "royarray.h"
 
 struct RoyStack_ {
-  void     ** data;
-  ROperate    deleter;
-  size_t      capacity;
-  size_t      size;
+  void   ** data;
+  RDoer     deleter;
+  size_t    capacity;
+  size_t    size;
 };
 
 RoyStack *
-roy_stack_new(size_t capacity, ROperate deleter) {
+roy_stack_new(size_t capacity, RDoer deleter) {
   return (RoyStack *)roy_array_new(capacity, deleter);
 }
 

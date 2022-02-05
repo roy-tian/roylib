@@ -15,7 +15,7 @@ typedef struct RoyVector_ RoyVector;
  * @return The newly build RoyVector.
  * @note The behavior is undefined if any immature RoyVectors are operated.
  */
-RoyVector * roy_vector_new(size_t capacity, ROperate deleter);
+RoyVector * roy_vector_new(size_t capacity, RDoer deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyVector - 'vector' itself.
@@ -158,17 +158,17 @@ void roy_vector_clear(RoyVector * vector);
 
 /**
  * @brief Traverses all elements in 'vector' sequentially.
- * @param user_data - data to cooperate with 'operate'.
- * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
+ * @param doer - a function for element traversing.
  */
-void roy_vector_for_each(RoyVector * vector, ROperate operate, void * user_data);
+void roy_vector_for_each(RoyVector * vector, RDoer doer, void * user_data);
 
 /**
- * @brief Traverses elements whichever meets 'condition' in 'vector'.
- * @param user_data - data to cooperate with 'operate'.
- * @param condition - a function to check whether the given element meet the condition.
- * @param operate - a function for element traversing.
+ * @brief Traverses elements whichever meets 'checker' in 'vector'.
+ * @param user_data - data to cooperate with 'doer'.
+ * @param checker - a function to check whether the given element meet the checker.
+ * @param doer - a function for element traversing.
  */
-void roy_vector_for_which(RoyVector * vector, RCondition condition, ROperate operate, void * user_data);
+void roy_vector_for_which(RoyVector * vector, RChecker checker, RDoer doer, void * user_data);
 
 #endif // ROYVECTOR_H

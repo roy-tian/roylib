@@ -2,16 +2,16 @@
 #include "royarray.h"
 
 struct RoyQueue_ {
-  void     ** data;
-  ROperate    deleter;
-  size_t      capacity;
-  size_t      size;
-  size_t      front_index;
-  size_t      back_index;
+  void   ** data;
+  RDoer     deleter;
+  size_t    capacity;
+  size_t    size;
+  size_t    front_index;
+  size_t    back_index;
 };
 
 RoyQueue *
-roy_queue_new(size_t capacity, ROperate deleter) {
+roy_queue_new(size_t capacity, RDoer deleter) {
   RoyQueue * ret   = malloc(sizeof(RoyQueue));
   ret->data        = calloc(capacity, R_PTR_SIZE);
   ret->deleter     = deleter; 

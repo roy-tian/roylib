@@ -5,21 +5,21 @@
 #include <math.h>
 
 struct RoyUMSet_ {
-  RoySList ** buckets;
-  uint64_t    seed;
-  RHash       hash;
-  RCompare    comparer;
-  ROperate    deleter;
-  size_t      bucket_count;
-  size_t      size;
+  RoySList  ** buckets;
+  uint64_t     seed;
+  RHash        hash;
+  RComparer    comparer;
+  RDoer        deleter;
+  size_t       bucket_count;
+  size_t       size;
 };
 
 RoyUMSet *
-roy_umset_new(size_t   bucket_count,
-              uint64_t seed,
-              RHash    hash,
-              RCompare comparer,
-              ROperate deleter) {
+roy_umset_new(size_t    bucket_count,
+              uint64_t  seed,
+              RHash     hash,
+              RComparer comparer,
+              RDoer     deleter) {
   RoyUMSet * ret    = malloc(sizeof(RoyUMSet));
   ret->seed         = seed;
   ret->hash         = hash ? hash : MurmurHash2;
@@ -121,15 +121,15 @@ roy_umset_load_factor(const RoyUMSet * umset) {
 
 void
 roy_umset_for_each(RoyUMSet * umset,
-                   ROperate   oeprate,
+                   RDoer      oeprate,
                    void     * user_data) {
   roy_uset_for_each((RoyUSet *)umset, oeprate, user_data);
 }
 
 void
-roy_umset_for_which(RoyUMSet   * umset,
-                    RCondition   condition,
-                    ROperate     oeprate,
-                    void       * user_data) {
-  roy_uset_for_which((RoyUSet *)umset, condition, oeprate, user_data);
+roy_umset_for_which(RoyUMSet * umset,
+                    RChecker   checker,
+                    RDoer      oeprate,
+                    void     * user_data) {
+  roy_uset_for_which((RoyUSet *)umset, checker, oeprate, user_data);
 }

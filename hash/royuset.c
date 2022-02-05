@@ -9,23 +9,23 @@ struct RoySList_ {
 };
 
 struct RoyUSet_ {
-  RoySList ** buckets;
-  uint64_t    seed;
-  RHash       hash;
-  RCompare    comparer;
-  ROperate    deleter;
-  size_t      bucket_count;
-  size_t      size;
+  RoySList  ** buckets;
+  uint64_t     seed;
+  RHash        hash;
+  RComparer    comparer;
+  RDoer        deleter;
+  size_t       bucket_count;
+  size_t       size;
 };
 
 static bool valid_bucket_index(const RoyUSet * uset, size_t bucket_index);
 
 RoyUSet *
-roy_uset_new(size_t   bucket_count,
-             uint64_t seed,
-             RHash    hash,
-             RCompare comparer,
-             ROperate deleter) {
+roy_uset_new(size_t    bucket_count,
+             uint64_t  seed,
+             RHash     hash,
+             RComparer comparer,
+             RDoer     deleter) {
   RoyUSet * ret     = malloc(sizeof(RoyUSet));
   ret->seed         = seed;
   ret->hash         = hash ? hash : MurmurHash2;
@@ -162,9 +162,9 @@ roy_uset_load_factor(const RoyUSet * uset) {
 }
 
 void
-roy_uset_for_each(RoyUSet  * uset,
-                  ROperate   oeprate,
-                  void     * user_data) {
+roy_uset_for_each(RoyUSet * uset,
+                  RDoer     oeprate,
+                  void    * user_data) {
   for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
     if (uset->buckets[i] && !roy_slist_empty(uset->buckets[i])) {
       roy_slist_for_each(uset->buckets[i], oeprate, user_data);
@@ -173,13 +173,13 @@ roy_uset_for_each(RoyUSet  * uset,
 }
 
 void
-roy_uset_for_which(RoyUSet    * uset,
-                   RCondition   condition,
-                   ROperate     operate,
-                   void       * user_data) {
+roy_uset_for_which(RoyUSet  * uset,
+                   RChecker   checker,
+                   RDoer      doer,
+                   void     * user_data) {
   for (size_t i = 0; i != roy_uset_bucket_count(uset); i++) {
     if (uset->buckets[i] && !roy_slist_empty(uset->buckets[i])) {
-      roy_slist_for_which(uset->buckets[i], condition, operate, user_data);
+      roy_slist_for_which(uset->buckets[i], checker, doer, user_data);
     }
   }
 }

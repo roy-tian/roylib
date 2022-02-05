@@ -26,22 +26,22 @@ void roy_shell_start(RoyShell * shell);
 /**
  * @brief Adds a new command into command dictionary of 'shell'.
  * @param cmd - a string literal represented the new command.
- * @param operate - a function pointer to do the operation with current arg vector.
+ * @param doer - a function pointer to do the operation with current arg vector.
  * @note - A RoyShell must have at least a default command "" (empty string) in order to perform 'roy_shell_start'.
  */
-RoyShell * roy_shell_command_add(RoyShell * restrict shell, const char * restrict cmd, ROperate operate);
+RoyShell * roy_shell_command_add(RoyShell * restrict shell, const char * restrict cmd, RDoer doer);
 
-/// @brief A convenient #define for 'roy_shell_command_add' with identical name of cmd and 'operate' function.
-#define roy_shell_add(shell, cmd) roy_shell_command_add(shell, #cmd, (ROperate)cmd)
+/// @brief A convenient #define for 'roy_shell_command_add' with identical name of cmd and 'doer' function.
+#define roy_shell_add(shell, cmd) roy_shell_command_add(shell, #cmd, (RDoer)cmd)
 
 /// @brief A convenient #define for roy_shell_command_add(shell, "", cmd).
-#define roy_shell_default(shell, cmd) roy_shell_command_add(shell, "", (ROperate)cmd)
+#define roy_shell_default(shell, cmd) roy_shell_command_add(shell, "", (RDoer)cmd)
 
 /**
  * @brief Sets the text of shell prompt, "> " by default.
  * @param prompt - function to set prompt as a new string literal.
  */
-void roy_shell_set_prompt(RoyShell * shell, ROperate prompt);
+void roy_shell_set_prompt(RoyShell * shell, RDoer prompt);
 
 /**
  * @brief Counts the number of arguments of current line.

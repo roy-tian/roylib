@@ -6,8 +6,8 @@
 
 struct RoyMMap_ {
   RoyMSet  * root;
-  RCompare   comparer;
-  ROperate   deleter;
+  RComparer   comparer;
+  RDoer   deleter;
 };
 
 /**
@@ -26,7 +26,7 @@ typedef struct RoyMMap_ RoyMMap;
  * @return The newly build RoyMMap.
  * @note The behavior is undefined if any immature RoyMaps are operated.
  */
-RoyMMap * roy_mmap_new(RCompare comparer, ROperate deleter);
+RoyMMap * roy_mmap_new(RComparer comparer, RDoer deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyMMap - 'mmap' itself.
@@ -103,7 +103,7 @@ RoyMMap * roy_mmap_remove(RoyMMap * mmap, const void * key);
 
 /**
  * @brief Removes all the elements from 'mmap'.
- * @param user_data - data to cooperate with 'operate'.
+ * @param user_data - data to cooperate with 'doer'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
 void roy_mmap_clear(RoyMMap * mmap, void * user_data);
@@ -127,17 +127,17 @@ void * roy_mmap_find(RoyMMap * mmap, const void * key);
 
 /**
  * @brief Traverses all elements in 'mmap' in ascending order.
- * @param operate - a function for element traversing.
- * @param user_data - data to cooperate with 'operate'.
+ * @param doer - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
  */
-void roy_mmap_for_each(RoyMMap * mmap, ROperate operate, void * user_data);
+void roy_mmap_for_each(RoyMMap * mmap, RDoer doer, void * user_data);
 
 /**
- * @brief Traverses elements whichever meets 'condition' in 'mmap'.
- * @param condition - a function to check whether the given element meet the condition.
- * @param operate - a function for element traversing.
- * @param user_data - data to cooperate with 'operate'.
+ * @brief Traverses elements whichever meets 'checker' in 'mmap'.
+ * @param checker - a function to check whether the given element meet the checker.
+ * @param doer - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
  */
-void roy_mmap_for_which(RoyMMap * mmap, RCondition condition, ROperate operate, void * user_data);
+void roy_mmap_for_which(RoyMMap * mmap, RChecker checker, RDoer doer, void * user_data);
 
 #endif // ROYMMAP_H

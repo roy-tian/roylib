@@ -31,7 +31,7 @@ RoySet * roy_set_new(void);
  * @note - Always call this function after the work is done by the given 'set' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_set_delete(RoySet * set, ROperate deleter, void * user_data);
+void roy_set_delete(RoySet * set, RDoer deleter, void * user_data);
 
 /* ITERATORS */
 
@@ -81,7 +81,7 @@ bool roy_set_empty(const RoySet * set);
  * @return the 'set' after the operation.
  * @note - The behavior is undefined if 'key' is uninitialized.
  */
-RoySet * roy_set_insert(RoySet ** restrict set, void * restrict key, RCompare comparer);
+RoySet * roy_set_insert(RoySet ** restrict set, void * restrict key, RComparer comparer);
 
 /**
  * @brief Removes all the elements from 'set'.
@@ -89,7 +89,7 @@ RoySet * roy_set_insert(RoySet ** restrict set, void * restrict key, RCompare co
  * @param user_data - data to cooperate with 'deleter'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_set_clear(RoySet * set, ROperate deleter, void * user_data);
+void roy_set_clear(RoySet * set, RDoer deleter, void * user_data);
 
 /**
  * @brief Removes the element equivalents to 'key' from 'set'.
@@ -100,7 +100,7 @@ void roy_set_clear(RoySet * set, ROperate deleter, void * user_data);
  * @return the 'set' after the operation.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-RoySet * roy_set_remove(RoySet ** set, const void * key, RCompare comparer, ROperate deleter, void * user_data);
+RoySet * roy_set_remove(RoySet ** set, const void * key, RComparer comparer, RDoer deleter, void * user_data);
 
 /* LOOKUP */
 
@@ -110,23 +110,23 @@ RoySet * roy_set_remove(RoySet ** set, const void * key, RCompare comparer, ROpe
  * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'key'.
  * @return The iterator to the target element.
  */
-RoySet * roy_set_find(RoySet * set, const void * key, RCompare comparer);
+RoySet * roy_set_find(RoySet * set, const void * key, RComparer comparer);
 
 /* TRAVERSE */
 
 /**
  * @brief Traverses all elements in 'set' in ascending order.
- * @param operate - a function for element traversing.
+ * @param doer - a function for element traversing.
  * @param user_data - data to cooperate with 'deleter'.
  */
-void roy_set_for_each(RoySet * set, ROperate operate, void * user_data);
+void roy_set_for_each(RoySet * set, RDoer doer, void * user_data);
 
 /**
- * @brief Traverses elements whichever meets 'condition' in 'set'.
- * @param condition - a function to check whether the given element meet the condition.
- * @param operate - a function for element traversing.
+ * @brief Traverses elements whichever meets 'checker' in 'set'.
+ * @param checker - a function to check whether the given element meet the checker.
+ * @param doer - a function for element traversing.
  * @param user_data - data to cooperate with 'deleter'.
  */
-void roy_set_for_which(RoySet * set, RCondition condition, ROperate operate, void * user_data);
+void roy_set_for_which(RoySet * set, RChecker checker, RDoer doer, void * user_data);
 
 #endif // ROYSET_H

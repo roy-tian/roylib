@@ -1,13 +1,13 @@
 #include "royumap.h"
 
 struct RoyUSet_ {
-  RoySList ** buckets;
-  uint64_t    seed;
-  RHash       hash;
-  RCompare    comparer;
-  ROperate    deleter;
-  size_t      bucket_count;
-  size_t      size;
+  RoySList  ** buckets;
+  uint64_t     seed;
+  RHash        hash;
+  RComparer    comparer;
+  RDoer        deleter;
+  size_t       bucket_count;
+  size_t       size;
 };
 
 struct RoyUMap_ {
@@ -15,11 +15,11 @@ struct RoyUMap_ {
 };
 
 RoyUMap *
-roy_umap_new(size_t   bucket_count, 
-             uint64_t seed, 
-             RHash    hash, 
-             RCompare comparer, 
-             ROperate deleter) {
+roy_umap_new(size_t    bucket_count,
+             uint64_t  seed,
+             RHash     hash,
+             RComparer comparer,
+             RDoer     deleter) {
   RoyUMap * ret = malloc(sizeof(RoyUMap));
   ret->uset = roy_uset_new(bucket_count, seed, hash, comparer, deleter);
   return ret;
@@ -119,15 +119,15 @@ roy_umap_load_factor(const RoyUMap * umap) {
 
 void
 roy_umap_for_each(RoyUMap  * umap,
-                  ROperate   oeprate,
+                  RDoer   oeprate,
                   void     * user_data) {
   roy_uset_for_each(umap->uset, oeprate, user_data);
 }
 
 void
-roy_umap_for_which(RoyUMap    * umap,
-                   RCondition   condition,
-                   ROperate     operate,
-                   void       * user_data) {
-  roy_uset_for_which(umap->uset, condition, operate, user_data);
+roy_umap_for_which(RoyUMap  * umap,
+                   RChecker   checker,
+                   RDoer      doer,
+                   void     * user_data) {
+  roy_uset_for_which(umap->uset, checker, doer, user_data);
 }

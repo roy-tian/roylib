@@ -26,7 +26,7 @@ typedef struct RoyUMMap_ RoyUMMap;
  * @param deleter - a function for element deleting.
  * @return a pointer to a newly build RoyUMMap.
  */
-RoyUMMap * roy_ummap_new(size_t bucket_count, uint64_t seed, RHash hash, RCompare comparer, ROperate deleter);
+RoyUMMap * roy_ummap_new(size_t bucket_count, uint64_t seed, RHash hash, RComparer comparer, RDoer deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyUMMap - 'ummap' itself.
@@ -133,17 +133,17 @@ double roy_ummap_load_factor(const RoyUMMap * ummap);
 
 /**
  * @brief Traverses all elements in 'ummap'.
- * @param user_data - data to cooperate with 'operate'.
- * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
+ * @param doer - a function for element traversing.
  */
-void roy_ummap_for_each(RoyUMMap * ummap, ROperate oeprate, void * user_data);
+void roy_ummap_for_each(RoyUMMap * ummap, RDoer oeprate, void * user_data);
 
 /**
- * @brief Traverses elements whichever meets 'condition' in 'ummap'.
- * @param user_data - data to cooperate with 'operate'.
- * @param condition - a function to check whether the given element meet the condition.
- * @param operate - a function for element traversing.
+ * @brief Traverses elements whichever meets 'checker' in 'ummap'.
+ * @param user_data - data to cooperate with 'doer'.
+ * @param checker - a function to check whether the given element meet the checker.
+ * @param doer - a function for element traversing.
  */
-void roy_ummap_for_which(RoyUMMap * ummap, RCondition condition, ROperate operate, void * user_data);
+void roy_ummap_for_which(RoyUMMap * ummap, RChecker checker, RDoer doer, void * user_data);
 
 #endif // ROYUMAP_H

@@ -23,7 +23,7 @@ typedef struct RoyUMSet_ RoyUMSet;
  * @param deleter - a function for element deleting.
  * @return a pointer to a newly build RoyUMSet.
  */
-RoyUMSet * roy_umset_new(size_t bucket_count, uint64_t seed, RHash hash, RCompare comparer, ROperate deleter);
+RoyUMSet * roy_umset_new(size_t bucket_count, uint64_t seed, RHash hash, RComparer comparer, RDoer deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyUMSet - 'umset' itself.
@@ -140,17 +140,17 @@ double roy_umset_load_factor(const RoyUMSet * umset);
 
 /**
  * @brief Traverses all elements in 'umset'.
- * @param user_data - data to cooperate with 'operate'.
- * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
+ * @param doer - a function for element traversing.
  */
-void roy_umset_for_each(RoyUMSet * umset, ROperate oeprate, void * user_data);
+void roy_umset_for_each(RoyUMSet * umset, RDoer oeprate, void * user_data);
 
 /**
- * @brief Traverses elements whichever meets 'condition' in 'umset'.
- * @param user_data - data to cooperate with 'operate'.
- * @param condition - a function to check whether the given element meet the condition.
- * @param operate - a function for element traversing.
+ * @brief Traverses elements whichever meets 'checker' in 'umset'.
+ * @param user_data - data to cooperate with 'doer'.
+ * @param checker - a function to check whether the given element meet the checker.
+ * @param doer - a function for element traversing.
  */
-void roy_umset_for_which(RoyUMSet * umset, RCondition condition, ROperate oeprate, void * user_data);
+void roy_umset_for_which(RoyUMSet * umset, RChecker checker, RDoer oeprate, void * user_data);
 
 #endif // ROYUMSET_H

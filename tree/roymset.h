@@ -32,7 +32,7 @@ RoyMSet * roy_mset_new(void);
  * @note - Always call this function after the work is done by the given 'mset' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_mset_delete(RoyMSet * mset, ROperate deleter, void * user_data);
+void roy_mset_delete(RoyMSet * mset, RDoer deleter, void * user_data);
 
 
 /* ITERATORS */
@@ -82,7 +82,7 @@ bool roy_mset_empty(const RoyMSet * mset);
  * @return the 'mset' after the operation.
  * @note - The behavior is undefined if 'key' is uninitialized.
  */
-RoyMSet * roy_mset_insert(RoyMSet ** restrict mset, void * restrict key, RCompare comparer);
+RoyMSet * roy_mset_insert(RoyMSet ** restrict mset, void * restrict key, RComparer comparer);
 
 /**
  * @brief Removes all the elements from 'mset'.
@@ -90,7 +90,7 @@ RoyMSet * roy_mset_insert(RoyMSet ** restrict mset, void * restrict key, RCompar
  * @param user_data - data to cooperate with 'deleter'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_mset_clear(RoyMSet * mset, ROperate deleter, void * user_data);
+void roy_mset_clear(RoyMSet * mset, RDoer deleter, void * user_data);
 
 /**
  * @brief Removes the element equivalents to 'key' from 'mset'.
@@ -101,7 +101,7 @@ void roy_mset_clear(RoyMSet * mset, ROperate deleter, void * user_data);
  * @return the 'mset' after the operation.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-RoyMSet * roy_mset_remove(RoyMSet ** mset, const void * key, RCompare comparer, ROperate deleter, void * user_data);
+RoyMSet * roy_mset_remove(RoyMSet ** mset, const void * key, RComparer comparer, RDoer deleter, void * user_data);
 
 /* LOOKUP */
 
@@ -110,7 +110,7 @@ RoyMSet * roy_mset_remove(RoyMSet ** mset, const void * key, RCompare comparer, 
  * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'data'.
  * @return the number of elements equivalent to 'key'.
  */
-size_t roy_mset_count(const RoyMSet * mset, const void * key, RCompare comparer);
+size_t roy_mset_count(const RoyMSet * mset, const void * key, RComparer comparer);
 
 /**
  * @brief Finds the first element equivalent to 'key'.
@@ -118,23 +118,23 @@ size_t roy_mset_count(const RoyMSet * mset, const void * key, RCompare comparer)
  * @param comparer - a function to compare two elements, returns 0 if current element is equal to the given 'key'.
  * @return The iterator to the target element.
  */
-RoyMSet * roy_mset_find(const RoyMSet * mset, const void * key, RCompare comparer);
+RoyMSet * roy_mset_find(const RoyMSet * mset, const void * key, RComparer comparer);
 
 /* TRAVERSE */
 
 /**
  * @brief Traverses all elements in 'mset' in ascending order.
- * @param operate - a function for element traversing.
- * @param user_data - data to cooperate with 'operate'.
+ * @param doer - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
  */
-void roy_mset_for_each(RoyMSet * mset, ROperate operate, void * user_data);
+void roy_mset_for_each(RoyMSet * mset, RDoer doer, void * user_data);
 
 /**
- * @brief Traverses elements whichever meets 'condition' in 'mset'.
- * @param condition - a function to check whether the given element meet the condition.
- * @param operate - a function for element traversing.
- * @param user_data - data to cooperate with 'operate'.
+ * @brief Traverses elements whichever meets 'checker' in 'mset'.
+ * @param checker - a function to check whether the given element meet the checker.
+ * @param doer - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
  */
-void roy_mset_for_which(RoyMSet * mset, RCondition condition, ROperate operate, void * user_data);
+void roy_mset_for_which(RoyMSet * mset, RChecker checker, RDoer doer, void * user_data);
 
 #endif // ROYMSET_H

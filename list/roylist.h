@@ -25,7 +25,7 @@ RoyList * roy_list_new(void);
  * @note - Always call this function after the work is done by the given 'list' to get rid of memory leaking.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_list_delete(RoyList * list, ROperate deleter, void * user_data);
+void roy_list_delete(RoyList * list, RDoer deleter, void * user_data);
 
 /* ITERATORS */
 
@@ -183,7 +183,7 @@ void roy_list_push_back(RoyList * restrict list_tail, void * restrict data);
  * @retval false - 'position' exceeds or 'list' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-bool roy_list_erase(RoyList * list_head, size_t position, ROperate deleter, void * user_data);
+bool roy_list_erase(RoyList * list_head, size_t position, RDoer deleter, void * user_data);
 
 /**
  * @brief Removes specified element from 'list'.
@@ -195,7 +195,7 @@ bool roy_list_erase(RoyList * list_head, size_t position, ROperate deleter, void
  * @retval false - 'position' exceeds or 'list' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-bool roy_list_erase_reverse(RoyList * list_tail, size_t rposition, ROperate deleter, void * user_data);
+bool roy_list_erase_reverse(RoyList * list_tail, size_t rposition, RDoer deleter, void * user_data);
 
 /**
  * @brief Removes the first element from 'list'.
@@ -206,7 +206,7 @@ bool roy_list_erase_reverse(RoyList * list_tail, size_t rposition, ROperate dele
  * @retval false - 'list' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-bool roy_list_pop_front(RoyList * list_head, ROperate deleter, void * user_data);
+bool roy_list_pop_front(RoyList * list_head, RDoer deleter, void * user_data);
 
 /**
  * @brief Removes the last element from 'list'.
@@ -217,7 +217,7 @@ bool roy_list_pop_front(RoyList * list_head, ROperate deleter, void * user_data)
  * @retval false - 'list' is empty.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-bool roy_list_pop_back(RoyList * list_tail, ROperate deleter, void * user_data);
+bool roy_list_pop_back(RoyList * list_tail, RDoer deleter, void * user_data);
 
 /**
  * @brief Removes all the elements from 'list'.
@@ -225,7 +225,7 @@ bool roy_list_pop_back(RoyList * list_tail, ROperate deleter, void * user_data);
  * @param user_data - data to cooperate with 'deleter'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-void roy_list_clear(RoyList * list_head, ROperate deleter, void * user_data);
+void roy_list_clear(RoyList * list_head, RDoer deleter, void * user_data);
 
 /* LIST OPERATIONS */
 
@@ -238,17 +238,17 @@ void roy_list_clear(RoyList * list_head, ROperate deleter, void * user_data);
  * @return the number of elements being removed from 'list'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_list_remove(RoyList * list, const void * data, RCompare comparer, ROperate deleter, void * user_data);
+size_t roy_list_remove(RoyList * list, const void * data, RComparer comparer, RDoer deleter, void * user_data);
 
 /**
- * @brief Removes all elements meet 'condition'.
- * @param condition - a function to check whether the given element meet the condition.
+ * @brief Removes all elements meet 'checker'.
+ * @param checker - a function to check whether the given element meet the checker.
  * @param deleter - a function for element deleting.
  * @param user_data - data to cooperate with 'deleter'.
  * @return the number of elements being removed from 'list'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_list_remove_if(RoyList * list, RCondition condition, ROperate deleter, void * user_data);
+size_t roy_list_remove_if(RoyList * list, RChecker checker, RDoer deleter, void * user_data);
 
 /// @brief Reverses the order of the elements in 'list'.
 void roy_list_reverse(RoyList ** list);
@@ -262,30 +262,30 @@ void roy_list_reverse(RoyList ** list);
  * @return the number of elements being removed from 'list'.
  * @note - The behavior is undefined if 'deleter' deletes elements in a wrong manner.
  */
-size_t roy_list_unique(RoyList * list, RCompare comparer, ROperate deleter, void * user_data);
+size_t roy_list_unique(RoyList * list, RComparer comparer, RDoer deleter, void * user_data);
 
 /**
  * @brief Sorts the elements in ascending order.
  * @param comparer - a function to compare two elements, acting like <=> operator in C++.
  * @note - This version uses heap sort strategy powered by RoyMSet.
  */
-void roy_list_sort(RoyList * list, RCompare comparer);
+void roy_list_sort(RoyList * list, RComparer comparer);
 
 /* TRAVERSE */
 
 /**
  * @brief Traverses all elements in 'list' sequentially.
- * @param user_data - data to cooperate with 'operate'.
- * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
+ * @param doer - a function for element traversing.
  */
-void roy_list_for_each(RoyList * list, ROperate operate, void * user_data);
+void roy_list_for_each(RoyList * list, RDoer doer, void * user_data);
 
 /**
- * @brief Traverses elements whichever meets 'condition' in 'list'.
- * @param condition - a function to check whether the given element meet the condition.
- * @param operate - a function for element traversing.
- * @param user_data - data to cooperate with 'operate'.
+ * @brief Traverses elements whichever meets 'checker' in 'list'.
+ * @param checker - a function to check whether the given element meet the checker.
+ * @param doer - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
  */
-void roy_list_for_which(RoyList * list, RCondition condition, ROperate operate, void * user_data);
+void roy_list_for_which(RoyList * list, RChecker checker, RDoer doer, void * user_data);
 
 #endif // ROYLIST_H

@@ -15,7 +15,7 @@ typedef struct RoyArray_ RoyArray;
  * @return The newly build RoyArray.
  * @note The behavior is undefined if any immature RoyArrays are operated.
  */
-RoyArray * roy_array_new(size_t capacity, ROperate deleter);
+RoyArray * roy_array_new(size_t capacity, RDoer deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyArray - 'array' itself.
@@ -145,17 +145,17 @@ void roy_array_clear(RoyArray * array);
 
 /**
  * @brief Traverses all elements in 'array' sequentially.
- * @param operate - a function for element traversing.
- * @param user_data - data to cooperate with 'operate'.
+ * @param doer - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
  */
-void roy_array_for_each(RoyArray * array, ROperate operate, void * user_data);
+void roy_array_for_each(RoyArray * array, RDoer doer, void * user_data);
 
 /**
- * @brief Traverses elements whichever meets 'condition' in 'array'.
- * @param condition - a function to check whether the given element meet the condition.
- * @param operate - a function for element traversing.
- * @param user_data - data to cooperate with 'operate'.
+ * @brief Traverses elements whichever meets 'checker' in 'array'.
+ * @param checker - a function to check whether the given element meet the checker.
+ * @param doer - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
  */
-void roy_array_for_which(RoyArray * array, RCondition condition, ROperate operate, void * user_data);
+void roy_array_for_which(RoyArray * array, RChecker checker, RDoer doer, void * user_data);
 
 #endif // ROYARRAY_H

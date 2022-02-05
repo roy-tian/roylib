@@ -1,10 +1,10 @@
 #include "royarray.h"
 
 struct RoyArray_ {
-  void     ** data;
-  ROperate    deleter;
-  size_t      capacity;
-  size_t      size;
+  void   ** data;
+  RDoer     deleter;
+  size_t    capacity;
+  size_t    size;
 };
 
 // position E [0, size], i.e. [begin .. end]
@@ -13,7 +13,7 @@ static bool valid_position(const RoyArray * array, size_t position);
 static bool valid_data(const RoyArray * array, size_t position);
 
 RoyArray *
-roy_array_new(size_t capacity, ROperate deleter) {
+roy_array_new(size_t capacity, RDoer deleter) {
   RoyArray * ret = malloc(sizeof(RoyArray));
   ret->data      = calloc(capacity, R_PTR_SIZE);
   ret->deleter   = deleter;
@@ -144,21 +144,21 @@ roy_array_clear(RoyArray * array) {
 
 void
 roy_array_for_each(RoyArray * array,
-                   ROperate   operate,
+                   RDoer      doer,
                    void     * user_data) {
   for (size_t i = 0; i != roy_array_size(array); i++) {
-    operate(roy_array_pointer(array, i), user_data);
+    doer(roy_array_pointer(array, i), user_data);
   }
 }
 
 void
-roy_array_for_which(RoyArray   * array,
-                    RCondition   condition,
-                    ROperate     operate,
-                    void       * user_data) {
+roy_array_for_which(RoyArray * array,
+                    RChecker   checker,
+                    RDoer      doer,
+                    void     * user_data) {
   for (size_t i = 0; i != roy_array_size(array); i++) {
-    if (condition(roy_array_cpointer(array, i))) {
-      operate(roy_array_pointer(array, i), user_data);
+    if (checker(roy_array_cpointer(array, i))) {
+      doer(roy_array_pointer(array, i), user_data);
     }
   }
 }

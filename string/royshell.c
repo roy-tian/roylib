@@ -17,13 +17,13 @@ static int pair_comparer(const RoyPair * lhs, const RoyPair * rhs);
 RoyShell *
 roy_shell_new(void) {
   RoyShell * ret = malloc(sizeof(RoyShell));
-  ret->dict      = roy_map_new((RCompare)pair_comparer, (ROperate)pair_deleter);
+  ret->dict      = roy_map_new((RComparer)pair_comparer, (RDoer)pair_deleter);
   ret->prompt    = roy_string_new("> ");
   ret->ibuffer   = roy_string_new("");
   ret->obuffer   = roy_string_new("");
-  ret->argv      = roy_deque_new((ROperate)roy_string_delete);
-  ret->ivector   = roy_deque_new((ROperate)roy_string_delete);
-  ret->ovector   = roy_deque_new((ROperate)roy_string_delete);
+  ret->argv      = roy_deque_new((RDoer)roy_string_delete);
+  ret->ivector   = roy_deque_new((RDoer)roy_string_delete);
+  ret->ovector   = roy_deque_new((RDoer)roy_string_delete);
   return ret;
 }
 
@@ -55,7 +55,7 @@ roy_shell_start(RoyShell * shell) {
       // Clears the out buffer for new info to fill with:
       roy_string_clear(shell->obuffer);
       // Gets the cmd (aka the first token in argv):
-      ROperate func = roy_map_find(shell->dict, roy_shell_argv_at(shell, 0));
+      RDoer func = roy_map_find(shell->dict, roy_shell_argv_at(shell, 0));
       if (func) {
         func(shell, NULL); 
         // Clients take the resposibility to select useful outputs,
@@ -70,14 +70,14 @@ roy_shell_start(RoyShell * shell) {
 RoyShell *
 roy_shell_command_add(RoyShell   * shell,
                       const char * cmd,
-                      ROperate     operate) {
-  roy_map_insert(shell->dict, roy_string_new(cmd), operate);
+                      RDoer        doer) {
+  roy_map_insert(shell->dict, roy_string_new(cmd), doer);
   return shell;
 }
 
 void
-roy_shell_set_prompt(RoyShell   * shell,
-                     ROperate     prompt) {
+roy_shell_set_prompt(RoyShell * shell,
+                     RDoer      prompt) {
   prompt ? prompt(shell->prompt, NULL) : roy_string_assign(shell->prompt, "> ");
 }
 

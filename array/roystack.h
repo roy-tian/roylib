@@ -15,7 +15,7 @@ typedef struct RoyStack_ RoyStack;
  * @return The newly build RoyStack.
  * @note The behavior is undefined if any immature RoyStacks are operated.
  */
-RoyStack * roy_stack_new(size_t capacity, ROperate deleter);
+RoyStack * roy_stack_new(size_t capacity, RDoer deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyStack - 'stack' itself.

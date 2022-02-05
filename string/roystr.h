@@ -33,8 +33,8 @@ char * roy_str_replace_between(char * str, const char * pattern_head, const char
 // Replaces all 'old_ch' with 'new_ch'.
 char * roy_str_replace_all_char(char * str, int old_ch, int new_ch);
 
-// Replaces all characters meet 'condition' with 'new_ch'.
-char * roy_str_replace_all_char_if(char * str, int (* condition)(int), int new_ch);
+// Replaces all characters meet 'checker' with 'new_ch'.
+char * roy_str_replace_all_char_if(char * str, int (* checker)(int), int new_ch);
 
 // Gets the content of line 'line_number'.
 // (The behavior is undefined if 'line_number' exceeds 'str', or 'dest' is insufficient or uninitialized.)
@@ -80,8 +80,8 @@ char * roy_str_squeeze(char * str, const char * set);
 // Counts the occurrence times of 'ch' in 'str'.
 size_t roy_str_count_char(const char * str, int ch);
 
-// Counts the occurrence times of 'ch' in 'str' meets 'condition' function.
-size_t roy_str_count_char_if(const char * str, int (* condition)(int));
+// Counts the occurrence times of 'ch' in 'str' meets 'checker' function.
+size_t roy_str_count_char_if(const char * str, int (* checker)(int));
 
 // Counts the occurrence times of string 'sub' in 'str'.
 size_t roy_str_count_substring(const char * str, const char * sub, bool sensibility);

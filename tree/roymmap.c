@@ -2,8 +2,8 @@
 #include "../util/rpair.h"
 
 RoyMMap *
-roy_mmap_new(RCompare comparer,
-             ROperate deleter) {
+roy_mmap_new(RComparer comparer,
+             RDoer     deleter) {
   RoyMMap * ret = malloc(sizeof(RoyMMap));
   ret->root     = NULL;
   ret->comparer = comparer;
@@ -73,7 +73,7 @@ size_t
 roy_mmap_count(const RoyMMap * mmap,
                const void    * key) {
   RoyCPair * pair = roy_cpair_new(key, NULL);
-  size_t ret = roy_mset_count(mmap->root, pair, (RCompare)mmap->comparer);
+  size_t ret = roy_mset_count(mmap->root, pair, (RComparer)mmap->comparer);
   free(pair);
   return ret;
 }
@@ -82,21 +82,21 @@ void *
 roy_mmap_find(RoyMMap    * mmap,
               const void * key) {
   RoyCPair pair = { key, NULL };
-  RoyMSet * mset = roy_mset_find(mmap->root, &pair, (RCompare)mmap->comparer);
+  RoyMSet * mset = roy_mset_find(mmap->root, &pair, (RComparer)mmap->comparer);
   return mset ? roy_pair_value(mset->key) : NULL;
 }
 
 void
-roy_mmap_for_each(RoyMMap  * mmap,
-                  ROperate   operate,
-                  void     * user_data) {
-  roy_mset_for_each(mmap->root, operate, user_data);
+roy_mmap_for_each(RoyMMap * mmap,
+                  RDoer     doer,
+                  void    * user_data) {
+  roy_mset_for_each(mmap->root, doer, user_data);
 }
 
 void
-roy_mmap_for_which(RoyMMap    * mmap,
-                   RCondition   condition,
-                   ROperate     operate,
-                   void       * user_data) {
-  roy_mset_for_which(mmap->root, condition, operate, user_data);
+roy_mmap_for_which(RoyMMap  * mmap,
+                   RChecker   checker,
+                   RDoer      doer,
+                   void     * user_data) {
+  roy_mset_for_which(mmap->root, checker, doer, user_data);
 }

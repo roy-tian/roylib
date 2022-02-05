@@ -133,11 +133,11 @@ roy_str_replace_all_char(char * str,
 
 char *
 roy_str_replace_all_char_if(char  * str,
-                            int  (* condition)(int),
+                            int  (* checker)(int),
                             int     new_ch) {
   char * pstr = str;
   while (*pstr != '\0') {
-    if (condition(*pstr)) {
+    if (checker(*pstr)) {
       *pstr = new_ch;
     }
     pstr++;
@@ -350,10 +350,10 @@ roy_str_count_char(const char * str,
 
 size_t
 roy_str_count_char_if(const char  * str, 
-                      int        (* condition)(int)) {
+                      int        (* checker)(int)) {
   size_t count = 0;
   while (*str != '\0') {
-    if (condition(*str++)) {
+    if (checker(*str++)) {
       count++;
     }
   }

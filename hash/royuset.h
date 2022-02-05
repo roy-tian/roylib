@@ -24,7 +24,7 @@ typedef struct RoyUSet_ RoyUSet;
  * @param deleter - a function for element deleting.
  * @return a pointer to a newly build RoyUSet.
  */
-RoyUSet * roy_uset_new(size_t bucket_count, uint64_t seed, RHash hash, RCompare comparer, ROperate deleter);
+RoyUSet * roy_uset_new(size_t bucket_count, uint64_t seed, RHash hash, RComparer comparer, RDoer deleter);
 
 /**
  * @brief Releases all the elements and destroys the RoyUSet - 'uset' itself.
@@ -144,17 +144,17 @@ double roy_uset_load_factor(const RoyUSet * uset);
 
 /**
  * @brief Traverses all elements in 'uset'.
- * @param user_data - data to cooperate with 'operate'.
- * @param operate - a function for element traversing.
+ * @param user_data - data to cooperate with 'doer'.
+ * @param doer - a function for element traversing.
  */
-void roy_uset_for_each(RoyUSet * uset, ROperate oeprate, void * user_data);
+void roy_uset_for_each(RoyUSet * uset, RDoer oeprate, void * user_data);
 
 /**
- * @brief Traverses elements whichever meets 'condition' in 'uset'.
- * @param user_data - data to cooperate with 'operate'.
- * @param condition - a function to check whether the given element meet the condition.
- * @param operate - a function for element traversing.
+ * @brief Traverses elements whichever meets 'checker' in 'uset'.
+ * @param user_data - data to cooperate with 'doer'.
+ * @param checker - a function to check whether the given element meet the checker.
+ * @param doer - a function for element traversing.
  */
-void roy_uset_for_which(RoyUSet * uset, RCondition condition, ROperate operate, void * user_data);
+void roy_uset_for_which(RoyUSet * uset, RChecker checker, RDoer doer, void * user_data);
 
 #endif // ROYUSET_H

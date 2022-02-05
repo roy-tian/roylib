@@ -2,11 +2,11 @@
 #include "royarray.h"
 
 struct RoyVector_ {
-  void     ** data;
-  ROperate    deleter;
-  size_t      capacity;
-  size_t      size;
-  size_t      capacity_base;
+  void   ** data;
+  RDoer     deleter;
+  size_t    capacity;
+  size_t    size;
+  size_t    capacity_base;
 };
 
 static bool need_expand(const RoyVector * vector);
@@ -15,8 +15,8 @@ static void expand(RoyVector * vector);
 static void shrink(RoyVector * vector);
 
 RoyVector *
-roy_vector_new(size_t   capacity,
-               ROperate deleter) {
+roy_vector_new(size_t capacity,
+               RDoer  deleter) {
   RoyVector * ret    = malloc(sizeof(RoyVector));
   ret->data          = calloc(capacity, R_PTR_SIZE);
   ret->deleter       = deleter;
@@ -122,17 +122,17 @@ roy_vector_clear(RoyVector * vector) {
 
 void
 roy_vector_for_each(RoyVector * vector,
-                    ROperate    operate,
+                    RDoer       doer,
                     void      * user_data) {
-  roy_array_for_each((RoyArray *) vector, operate, user_data);
+  roy_array_for_each((RoyArray *) vector, doer, user_data);
 }
 
 void
-roy_vector_for_which(RoyVector  * vector,
-                     RCondition   condition,
-                     ROperate     operate,
-                     void       * user_data) {
-  roy_array_for_which((RoyArray *) vector, condition, operate, user_data);
+roy_vector_for_which(RoyVector * vector,
+                     RChecker    checker,
+                     RDoer       doer,
+                     void      * user_data) {
+  roy_array_for_which((RoyArray *) vector, checker, doer, user_data);
 }
 
 /* PRIVATE FUNCTIONS BELOW */
